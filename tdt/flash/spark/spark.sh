@@ -114,8 +114,8 @@ esac
 # esac
 # clear
 echo "-----------------------------------------------------------------------"
-AUDIOELFSIZE=`stat -c %s $TMPROOTDIR/boot/audio.elf`
-VIDEOELFSIZE=`stat -c %s $TMPROOTDIR/boot/video.elf`
+AUDIOELFSIZE=`stat -c %s $TMPROOTDIR/lib/firmware/audio.elf`
+VIDEOELFSIZE=`stat -c %s $TMPROOTDIR/lib/firmware/video.elf`
 if [ $AUDIOELFSIZE == "0" ]; then
   echo "!!! WARNING: AUDIOELF SIZE IS ZERO !!!"
   echo "IF YOUR ARE CREATING THE FW PART MAKE SURE THAT YOU USE CORRECT ELFS"

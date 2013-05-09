@@ -19,18 +19,27 @@ modprobe e2_proc
    echo "LOADING MODULES"   
    echo "LOAD" > /dev/vfd
 
-   if [ ! -e /boot/audio.elf ]; then
+   if [ ! -e /lib/firmware/audio.elf ]; then
       echo "FW MISSING!!!"
    fi
-      /bin/ustslave /dev/st231-1 /boot/audio.elf
+   if [ -e /lib/modules/ics.ko ]; then
+      modprobe /lib/modules/ics.ko firmware=1:video.elf,2:audio.elf bpa2_part=LMI_IO
+      modprobe /lib/modules/embx.ko
+      modprobe /lib/modules/embxmailbox.ko mailbox0=0xb9211000:136:set2 mailbox1=0xb9212000:137:set2
+#      modprobe /lib/modules/embxmailbox.ko mailbox0=0xFE211000:136:set2 mailbox1=0xFE212000:137:set2
+      modprobe /lib/modules/mme.ko pool_size=524288
+      modprobe /lib/modules/mme_user.ko
+   else
+      /bin/ustslave /dev/st231-1 /lib/firmware/audio.elf
    echo "load v firmware"
-      /bin/ustslave /dev/st231-0 /boot/video.elf
+      /bin/ustslave /dev/st231-0 /lib/firmware/video.elf
 
    echo "init embx"
    modprobe embxshell
    modprobe embxmailbox mailbox0=0xfe211000:136:set2 mailbox1=0xfe212000:0 ;
    modprobe embxshm mailbox0=shm:0:7:0x60000000:0:256:256:0:512:0x40000000:0x10000000 ;
    modprobe mme_host transport0=shm
+   fi
 
    echo "init AVS"
    modprobe avs type=avs_pio
