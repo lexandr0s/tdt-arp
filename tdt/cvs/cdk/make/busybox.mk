@@ -2,7 +2,7 @@
 # busybox
 #
 
-PKGR_busybox = r1
+PKGR_busybox = r2
 BEGIN[[
 busybox
   1.21.0
@@ -11,6 +11,7 @@ busybox
   patch:file://{PN}-{PV}-mdev.patch
   patch:file://{PN}-{PV}-platform.patch
   patch:file://{PN}-{PV}-xz.patch
+  patch:file://{PN}-{PV}-ntfs.patch
   nothing:file://{PN}-{PV}.config
   pmove:{PN}-{PV}/{PN}-{PV}.config:{PN}-{PV}/.config
   make:install:CONFIG_PREFIX=PKDIR
