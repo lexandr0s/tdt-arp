@@ -382,7 +382,7 @@ case "$IMAGE" in
         --enable-e2d*)
         echo "make yaud-enigma2-nightly";;
         --enable-nhd*)
-        echo "make yaud-neutrino-hd2";;
+        echo "make yaud-neutrino-hd-nightly";;
         --enable-xbd*)
         echo "make yaud-xbmc-nightly";;
         --enable-vdr*)

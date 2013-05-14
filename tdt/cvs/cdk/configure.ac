@@ -14,7 +14,8 @@ if test "$target" = "sh4-unknown-linux-gnu" ; then
 	target="sh4-linux"
 fi
 AC_SUBST(target)
-
+TUXBOX_BOXTYPE
+BOXTYPE=$(BOXTYPE)
 AC_PROG_INSTALL
 AC_SUBST(INSTALL)
 
@@ -475,6 +476,7 @@ AC_SUBST(CFLAGS)
 AC_SUBST(TARGET_CFLAGS)
 AC_SUBST(TARGET_CXXFLAGS)
 AC_SUBST(TARGET_LDFLAGS)
+AC_SUBST(BOXTYPE)
 
 AC_PREFIX_DEFAULT(/ufs910)
 
@@ -740,7 +742,7 @@ AC_SUBST(DRPMBUILD)
 AC_MSG_RESULT([
 summary:
 -------------------------------------------------------------------------------
-target cpu                  : $CPU_MODEL
+target cpu/boxtype          : $CPU_MODEL / $BOXTYPE
 STLinux 2.4                 : $enable_stm24
 Patchlevel P0207            : $enable_p0207
 Patchlevel P0209            : $enable_p0209

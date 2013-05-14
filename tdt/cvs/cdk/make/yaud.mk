@@ -69,12 +69,11 @@ yaud-vdr: yaud-none \
 		vdr \
 		release_vdr
 
-yaud-neutrino-hd2: yaud-none \
+yaud-neutrino-hd-nightly: yaud-none \
 		lirc \
 		stslave \
 		boot-elf \
-		firstboot \
-		neutrino-hd2 \
+		neutrino-hd-nightly \
 		release_neutrino
 
 yaud-enigma2-nightly: yaud-none \
