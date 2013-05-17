@@ -102,7 +102,7 @@ $(DEPDIR)/vsftpd.do_prepare: $(DEPENDS_vsftpd)
 $(DEPDIR)/vsftpd.do_compile: bootstrap $(DEPDIR)/vsftpd.do_prepare
 	cd $(DIR_vsftpd) && \
 		$(MAKE) clean && \
-		$(MAKE) $(MAKE_OPTS)
+		$(MAKE) $(MAKE_OPTS) CFLAGS="-pipe -Os -g0"
 	touch $@
 
 $(DEPDIR)/vsftpd: \
