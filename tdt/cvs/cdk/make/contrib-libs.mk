@@ -1506,7 +1506,6 @@ $(DEPDIR)/ffmpeg.do_compile: $(DEPDIR)/ffmpeg.do_prepare
 	./configure \
 		--disable-static \
 		--enable-shared \
-		--enable-small \
 		--disable-runtime-cpudetect \
 		--disable-ffserver \
 		--disable-ffplay \
@@ -1567,21 +1566,30 @@ $(DEPDIR)/ffmpeg.do_compile: $(DEPDIR)/ffmpeg.do_prepare
 		--enable-decoder=aac \
 		--enable-decoder=dvbsub \
 		--enable-decoder=flac \
+		--enable-decoder=flv \
 		--enable-decoder=h261 \
 		--enable-decoder=h263 \
 		--enable-decoder=h263i \
+		--enable-decoder=h263p \
 		--enable-decoder=h264 \
+		--enable-decoder=h264_crystalhd \
 		--enable-decoder=iff_byterun1 \
 		--enable-decoder=mjpeg \
 		--enable-decoder=mp3 \
+		--enable-decoder=mpegvideo \
 		--enable-decoder=mpeg1video \
 		--enable-decoder=mpeg2video \
+		--enable-decoder=mpeg2video_crystalhd \
+		--enable-decoder=mpeg4 \
+		--enable-decoder=mpeg4_crystalhd \
 		--enable-decoder=png \
 		--enable-decoder=theora \
 		--enable-decoder=vorbis \
 		--enable-parser=mjpeg \
 		--enable-demuxer=mjpeg \
 		--enable-protocol=file \
+		--enable-protocol=hls \
+		--enable-protocol=udp \
 		--disable-indevs \
 		--disable-outdevs \
 		--enable-avresample \
