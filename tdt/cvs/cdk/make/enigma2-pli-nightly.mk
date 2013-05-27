@@ -97,6 +97,7 @@ $(DIR_enigma2_pli)/config.status: bootstrap opkg ethtool freetype expat fontconf
 		./autogen.sh && \
 		sed -e 's|#!/usr/bin/python|#!$(crossprefix)/bin/python|' -i po/xml2po.py && \
 		./configure \
+			--build=$(build) \
 			--host=$(target) \
 			--with-libsdl=no \
 			--datadir=/usr/share \
