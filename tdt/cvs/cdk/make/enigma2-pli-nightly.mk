@@ -33,7 +33,7 @@ ifdef ENABLE_E2PD4
 endif
 
 ifdef ENABLE_E2PD5
-  git://github.com:schpuntik/enigma2-pli.git;b=master;protocol=ssh
+  git://github.com:schpuntik/enigma2-pli-arp.git;b=master;protocol=ssh
 endif
 
 ifdef ENABLE_E2PD6
