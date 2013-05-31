@@ -1604,6 +1604,7 @@ $(DEPDIR)/ffmpeg.do_compile: $(DEPDIR)/ffmpeg.do_prepare
 		--target-os=linux \
 		--arch=sh4 \
 		--disable-debug \
+		--extra-cflags="-fno-strict-aliasing" \
 		--enable-stripping \
 		--prefix=/usr
 	touch $@
