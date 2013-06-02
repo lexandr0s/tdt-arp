@@ -104,8 +104,8 @@
 +		}
 +
 +		//if stride and res is zero than this is most probably a stillpicture
-+		if(stride == 0) stride = 720;
-+		if(res == 0) res = 576;
++		if(stride == 0) stride = 1280;
++		if(res == 0) res = 720;
 +
 +		stride_half = stride / 2;
 +
