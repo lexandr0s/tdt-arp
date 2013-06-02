@@ -349,9 +349,9 @@ $(DEPDIR)/%libjpeg6b: $(DEPDIR)/libjpeg6b.do_compile
 #
 BEGIN[[
 libpng
-  1.5.6
+  1.6.2
   {PN}-{PV}
-  extract:http://www.fhloston-paradise.de/{PN}-{PV}.tar.gz
+  extract:http://prdownloads.sourceforge.net/libpng/{PN}-{PV}.tar.gz
   nothing:file://{PN}.diff
   patch:file://{PN}-{PV}-workaround_for_stmfb_alpha_error.patch
   make:install:prefix=PKDIR/usr
@@ -370,11 +370,11 @@ $(DEPDIR)/libpng.do_prepare: bootstrap libz $(DEPENDS_libpng)
 $(DEPDIR)/libpng.do_compile: $(DEPDIR)/libpng.do_prepare
 	export PATH=$(hostprefix)/bin:$(PATH) && \
 	cd $(DIR_libpng) && \
-		./autogen.sh && \
 		$(BUILDENV) \
 		./configure \
 			--build=$(build) \
 			--host=$(target) \
+			--enable-maintainer-mode \
 			--prefix=/usr && \
 		export ECHO="echo" && \
 		echo "Echo cmd =" $(ECHO) && \
