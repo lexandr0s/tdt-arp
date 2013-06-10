@@ -1662,6 +1662,7 @@ grab
   {PN}-{PV}
   git://git.code.sf.net/p/openpli/aio-grab
   patch:file://aio-grab-ADD_ST_SUPPORT.patch
+  patch:file://aio-grab-ADD_ST_FRAMESYNC_SUPPORT.patch
   make:install:DESTDIR=PKDIR
 ;
 ]]END
