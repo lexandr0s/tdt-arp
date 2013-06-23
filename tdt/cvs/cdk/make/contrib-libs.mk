@@ -4076,7 +4076,7 @@ BEGIN[[
 libdreamdvd2
   git
   libdreamdvd
-  nothing:git://github.com/mirakels/libdreamdvd.git:r=1bdc2c33f912b9e87cb7e204485a57c6a08a0e8c
+  nothing:git://github.com/mirakels/libdreamdvd.git:r=6aa22dd3f530ca4be49946e07e4a0bfe60427bdf
   patch:file://libdreamdvd-1.0-support_sh4.patch
   make:install:prefix=/usr:DESTDIR=PKDIR
 ;
@@ -4096,6 +4096,7 @@ $(DEPDIR)/libdreamdvd2.do_compile: $(DEPDIR)/libdreamdvd2.do_prepare
 	autoreconf -i && \
 	$(BUILDENV) \
 	./configure \
+		--build=$(build) \
 		--host=$(target) \
 		--prefix=/usr && \
 	$(MAKE) all
