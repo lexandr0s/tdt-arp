@@ -428,14 +428,14 @@ release_base: driver-ptinp driver-encrypt
 	echo "576i50" > $(prefix)/release/etc/videomode
 
 release_spark:
-	echo "spark" > $(prefix)/release/etc/hostname \
+	echo "spark" > $(prefix)/release/etc/hostname && \
 	echo "src/gz AR-P http://alien.sat-universum.de" | cat - $(prefix)/release/etc/opkg/official-feed.conf > $(prefix)/release/etc/opkg/official-feed && \
 	mv $(prefix)/release/etc/opkg/official-feed $(prefix)/release/etc/opkg/official-feed.conf && \
 	echo "src/gz plugins-feed http://extra.sat-universum.de" > $(prefix)/release/etc/opkg/plugins-feed.conf
 	true
 
 release_spark7162:
-	echo "spark7162" > $(prefix)/release/etc/hostname \
+	echo "spark7162" > $(prefix)/release/etc/hostname && \
 	echo "src/gz AR-P http://alien2.sat-universum.de" | cat - $(prefix)/release/etc/opkg/official-feed.conf > $(prefix)/release/etc/opkg/official-feed && \
 	mv -f $(prefix)/release/etc/opkg/official-feed $(prefix)/release/etc/opkg/official-feed.conf && \
 	echo "src/gz plugins-feed http://extra.sat-universum.de" > $(prefix)/release/etc/opkg/plugins-feed.conf
