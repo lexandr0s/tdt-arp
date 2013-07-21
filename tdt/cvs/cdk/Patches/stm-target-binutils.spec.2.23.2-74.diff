@@ -1,6 +1,6 @@
 --- stm-target-binutils.spec.orig	2012-07-12 12:08:26.060242765 +0200
 +++ stm-target-binutils.spec	2012-07-12 12:08:26.008242763 +0200
-@@ -40,9 +40,6 @@
+@@ -41,9 +41,6 @@
  BuildRequires: texinfo
  %endif
  BuildRequires: %{_stm_pkg_prefix}-host-autoconf
@@ -10,3 +10,13 @@
  BuildRequires: %{_stm_pkg_prefix}-host-rpmconfig
  
  Group: Development/Languages
+@@ -148,9 +145,6 @@
+ 
+ %make tooldir=%{_stm_target_prefix}
+ 
+-%if %target_cpu sh
+-(cd bfd ; make headers)
+-%endif
+ 
+ %install
+ %target_setup
