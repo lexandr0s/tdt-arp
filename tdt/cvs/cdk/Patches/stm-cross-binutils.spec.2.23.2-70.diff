@@ -18,3 +18,15 @@
         --with-system-zlib \
  %if "%{_stm_target_fpu}" == "yes"
  %if %target_arch armv7 armv7_uclibc
+
+@@ -145,10 +142,6 @@
+ 
+ %make
+ 
+-%if %target_cpu sh
+-(cd bfd ; make headers)
+-%endif
+-
+ %install
+ %cross_setup
+ srcdir=$PWD
