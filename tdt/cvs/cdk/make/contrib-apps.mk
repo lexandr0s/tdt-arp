@@ -33,7 +33,6 @@ $(DEPDIR)/%bzip2: $(DEPDIR)/bzip2.do_compile
 		$(INSTALL_bzip2)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_bzip2@
 	touch $@
 
 #
@@ -69,7 +68,6 @@ $(DEPDIR)/%module_init_tools: $(DEPDIR)/%lsb $(MODULE_INIT_TOOLS_ADAPTED_ETC_FIL
 		$(INSTALL_module_init_tools)
 	$(call adapted-etc-files,$(MODULE_INIT_TOOLS_ADAPTED_ETC_FILES))
 	$(call initdconfig,module-init-tools)
-#	@DISTCLEANUP_module_init_tools@
 	touch $@
 
 #
@@ -118,7 +116,6 @@ $(DEPDIR)/%grep: $(DEPDIR)/grep.do_compile
 		$(INSTALL_grep)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_grep@
 	touch $@
 
 #
@@ -167,7 +164,6 @@ $(DEPDIR)/%pppd: $(DEPDIR)/pppd.do_compile
 		$(INSTALL_pppd)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_pppd@
 	touch $@
 	
 #
@@ -206,7 +202,6 @@ $(DEPDIR)/%usb_modeswitch: $(DEPDIR)/usb_modeswitch.do_compile
 	  $(MAKE) $(MAKE_OPTS) install
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_usb_modeswitch@
 	touch $@
 	
 
@@ -246,7 +241,6 @@ $(DEPDIR)/%usb_modeswitch_data: $(DEPDIR)/usb_modeswitch_data.do_compile
 		$(MAKE) install
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_usb_modeswitch_data@
 	touch $@
 	
 #
@@ -294,7 +288,6 @@ $(DEPDIR)/%ntfs_3g: $(DEPDIR)/ntfs_3g.do_compile
 		$(INSTALL_ntfs_3g)
 	$(tocdk_build)	
 	$(toflash_build)
-#	@DISTCLEANUP_ntfs_3g@
 	touch $@
 	
 
@@ -329,7 +322,6 @@ $(DEPDIR)/%lsb: $(DEPDIR)/lsb.do_compile
 		$(INSTALL_lsb)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_lsb@
 	touch $@
 
 #
@@ -378,7 +370,6 @@ $(DEPDIR)/%portmap: $(DEPDIR)/%lsb $(PORTMAP_ADAPTED_ETC_FILES:%=root/etc/%) $(D
 	$(call initdconfig,portmap)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_portmap@
 	touch $@
 
 #
@@ -430,7 +421,6 @@ $(DEPDIR)/%openrdate: $(OPENRDATE_ADAPTED_ETC_FILES:%=root/etc/%) \
 			echo "Unable to enable initd service: $$s" ; done && rm *rpmsave 2>/dev/null || true )
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_openrdate@
 	touch $@
 
 #
@@ -501,7 +491,6 @@ $(DEPDIR)/e2fsprogs: $(DEPDIR)/e2fsprogs.do_compile
 	$(INSTALL) e2fsck/e2fsck.static $(PKDIR)/sbin
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_e2fsprogs@
 	touch $@
 
 #
@@ -557,7 +546,6 @@ $(DEPDIR)/%xfsprogs: $(DEPDIR)/xfsprogs.do_compile
 		$(INSTALL_xfsprogs)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_xfsprogs@
 	touch $@
 
 #
@@ -607,7 +595,6 @@ $(DEPDIR)/%mc: %glib2 $(DEPDIR)/mc.do_compile
 	$(toflash_build)
 #		export top_builddir=`pwd` && \
 #		$(MAKE) install DESTDIR=$(prefix)/$*cdkroot
-#	@DISTCLEANUP_mc@
 	touch $@
 
 #
@@ -655,7 +642,6 @@ $(DEPDIR)/%sdparm: $(DEPDIR)/sdparm.do_compile
 	$(tocdk_build)
 	mv -f $(PKDIR)/usr/bin/sdparm $(PKDIR)/sbin
 	$(toflash_build)
-#	@DISTCLEANUP_sdparm@
 	touch $@
 
 #
@@ -703,7 +689,6 @@ $(DEPDIR)/%sg3_utils: $(DEPDIR)/sg3_utils.do_compile
 		[ -f $$i ] && $(INSTALL) -m644 $$i $(prefix)/$*cdkroot/etc/$$i || true; \
 		[ "$${i%%/*}" = "init.d" ] && chmod 755 $(prefix)/$*cdkroot/etc/$$i || true; done ) && \
 	$(INSTALL) -m755 root/usr/sbin/sg_down.sh $(prefix)/$*cdkroot/usr/sbin
-#	@DISTCLEANUP_sg3_utils@
 	touch $@
 
 #
@@ -741,7 +726,6 @@ $(DEPDIR)/%ipkg: $(DEPDIR)/ipkg.do_compile
 	$(INSTALL) -d $(prefix)/$*cdkroot/etc/ipkg
 	$(INSTALL) -d $(prefix)/$*cdkroot/usr/lib/ipkg
 	$(INSTALL) -m 644 root/usr/lib/ipkg/status.initial $(prefix)/$*cdkroot/usr/lib/ipkg/status
-#	@DISTCLEANUP_ipkg@
 	touch $@
 
 #
@@ -776,7 +760,6 @@ $(DEPDIR)/%zd1211: $(DEPDIR)/zd1211.do_compile
 			INSTALL_MOD_PATH=$(targetprefix) \
 			install
 	$(DEPMOD) -ae -b $(targetprefix) -r $(KERNELVERSION)
-#	@DISTCLEANUP_zd1211@
 	touch $@
 
 #
@@ -812,7 +795,6 @@ $(DEPDIR)/nano: \
 $(DEPDIR)/%nano: $(DEPDIR)/nano.do_compile
 	cd $(DIR_nano) && \
 		$(INSTALL_nano)
-#	@DISTCLEANUP_nano@
 	touch $@
 
 #
@@ -847,7 +829,6 @@ $(DEPDIR)/rsync: \
 $(DEPDIR)/%rsync: $(DEPDIR)/rsync.do_compile
 	cd $(DIR_rsync) && \
 		$(INSTALL_rsync)
-#	@DISTCLEANUP_rsync@
 	touch $@
 
 #
@@ -883,7 +864,6 @@ $(DEPDIR)/%rfkill: $(DEPDIR)/rfkill.do_compile
 		$(INSTALL_rfkill)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_rfkill@
 	touch $@
 
 #
@@ -928,7 +908,6 @@ $(DEPDIR)/%lm_sensors: $(DEPDIR)/lm_sensors.do_compile
 		rm $(PKDIR)/usr/bin/ddcmon
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_lm_sensors@
 	touch $@
 
 #
@@ -982,7 +961,6 @@ $(DEPDIR)/%fuse: %curl %glib2 $(DEPDIR)/fuse.do_compile
 			echo "Unable to enable initd service: $$s" ; done && rm *rpmsave 2>/dev/null || true )
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_fuse@
 	touch $@
 
 #
@@ -1017,7 +995,6 @@ $(DEPDIR)/curlftpfs: \
 $(DEPDIR)/%curlftpfs: %fuse $(DEPDIR)/curlftpfs.do_compile
 	cd $(DIR_curlftpfs) && \
 		$(INSTALL_curlftpfs)
-#	@DISTCLEANUP_curlftpfs@
 	touch $@
 
 #
@@ -1050,7 +1027,6 @@ $(DEPDIR)/fbset: \
 $(DEPDIR)/%fbset: fbset.do_compile
 	cd $(DIR_fbset) && \
 		$(INSTALL_fbset)
-#	@DISTCLEANUP_fbset@
 	touch $@
 
 #
@@ -1078,7 +1054,6 @@ $(DEPDIR)/pngquant: \
 $(DEPDIR)/%pngquant: $(DEPDIR)/pngquant.do_compile
 	cd $(DIR_pngquant) && \
 		$(INSTALL_pngquant)
-#	@DISTCLEANUP_pngquant@
 	touch $@
 
 #
@@ -1113,7 +1088,6 @@ $(DEPDIR)/mplayer: \
 $(DEPDIR)/%mplayer: $(DEPDIR)/mplayer.do_compile
 	cd $(DIR_mplayer) && \
 		$(INSTALL_mplayer)
-#	@DISTCLEANUP_mplayer@
 	touch $@
 
 #
@@ -1173,7 +1147,6 @@ $(DEPDIR)/mencoder: \
 $(DEPDIR)/%mencoder: $(DEPDIR)/mencoder.do_compile
 	cd $(DIR_mencoder) && \
 		$(INSTALL_mencoder)
-#	@DISTCLEANUP_mencoder@
 	touch $@
 
 #
@@ -1216,7 +1189,6 @@ $(DEPDIR)/%jfsutils: $(DEPDIR)/jfsutils.do_compile
 		$(INSTALL_jfsutils)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_jfsutils@
 	touch $@
 
 #
@@ -1262,7 +1234,6 @@ $(DEPDIR)/%opkg: $(DEPDIR)/opkg.do_compile
 		$(INSTALL_opkg)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_opkg@
 	touch $@
 
 #
@@ -1541,7 +1512,6 @@ $(DEPDIR)/%hotplug_e2: $(DEPDIR)/hotplug_e2.do_compile
 	mkdir $(PKDIR)/sbin
 	cp -f $(PKDIR)/usr/bin/* $(PKDIR)/sbin
 	$(toflash_build)
-#	@DISTCLEANUP_hotplug_e2@
 	touch $@
 
 #
@@ -1595,7 +1565,6 @@ $(DEPDIR)/%autofs: $(DEPDIR)/autofs.do_compile
 		$(INSTALL_autofs)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_autofs@
 	touch $@
 
 #
@@ -1650,7 +1619,6 @@ $(DEPDIR)/%imagemagick: $(DEPDIR)/imagemagick.do_compile
 		$(INSTALL_imagemagick)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_imagemagick@
 	touch $@
 
 #
@@ -1813,7 +1781,6 @@ $(DEPDIR)/%parted: $(DEPDIR)/parted.do_compile
 		$(INSTALL_parted)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_parted@
 	touch $@
 
 #
@@ -1858,5 +1825,4 @@ $(DEPDIR)/%gettext: $(DEPDIR)/gettext.do_compile
 		$(INSTALL_gettext)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_gettext@
 	touch $@

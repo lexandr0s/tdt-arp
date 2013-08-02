@@ -58,8 +58,7 @@ $(DEPDIR)/%nfs_utils: $(NFS_UTILS_ADAPTED_ETC_FILES:%=root/etc/%) \
 		[ "$${i%%/*}" = "init.d" ] && chmod 755 $(PKDIR)/etc/$$i || true; done )
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_nfs_utils@
-	touch $@ || true
+	touch $@
 
 #
 # vsftpd
@@ -116,8 +115,7 @@ $(DEPDIR)/%vsftpd: $(DEPDIR)/vsftpd.do_compile
 		$(INSTALL_vsftpd)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_vsftpd@
-	touch $@ || true
+	touch $@
 
 #
 # ETHTOOL
@@ -157,8 +155,7 @@ $(DEPDIR)/%ethtool: $(DEPDIR)/ethtool.do_compile
 		$(INSTALL_ethtool)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_ethtool@
-	touch $@ || true
+	touch $@
 
 #
 # SAMBA
@@ -255,8 +252,7 @@ $(DEPDIR)/%samba: $(DEPDIR)/samba.do_compile
 		$(INSTALL_samba)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_samba@
-	touch $@ || true
+	touch $@
 
 #
 # NETIO
@@ -293,8 +289,7 @@ $(DEPDIR)/%netio: $(DEPDIR)/netio.do_compile
 		$(INSTALL_netio)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_netio@
-	touch $@ || true
+	touch $@
 
 #
 # LIGHTTPD
@@ -346,8 +341,7 @@ $(DEPDIR)/%lighttpd: $(DEPDIR)/lighttpd.do_compile
 	$(INSTALL) -d $(PKDIR)/etc/init.d && $(INSTALL) -m755 root/etc/init.d/lighttpd $(PKDIR)/etc/init.d
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_lighttpd@
-	touch $@ || true
+	touch $@
 
 #
 # NETKIT_FTP
@@ -387,8 +381,7 @@ $(DEPDIR)/%netkit_ftp: $(DEPDIR)/netkit_ftp.do_compile
 		$(INSTALL_netkit_ftp)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_netkit_ftp@
-	touch $@ || true
+	touch $@
 
 #
 # WIRELESS_TOOLS
@@ -424,8 +417,7 @@ $(DEPDIR)/%wireless_tools: $(DEPDIR)/wireless_tools.do_compile
 		$(INSTALL_wireless_tools)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_wireless_tools@
-	touch $@ || true
+	touch $@
 
 #
 # WPA_SUPPLICANT
@@ -462,14 +454,11 @@ $(DEPDIR)/%wpa_supplicant: $(DEPDIR)/wpa_supplicant.do_compile
 		$(INSTALL_wpa_supplicant)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_wpa_supplicant@
-	touch $@ || true
-
+	touch $@
 
 #
 # TRANSMISSION
 #
-
 BEGIN[[
 transmission
   2.77
@@ -534,5 +523,4 @@ $(DEPDIR)/%transmission: $(DEPDIR)/transmission.do_compile
 		$(INSTALL_DIR) $(PKDIR)/etc/init.d && \
 		$(INSTALL_BIN) transmission.init $(PKDIR)/etc/init.d/transmission
 	$(extra_build)
-#	@DISTCLEANUP_transmission@
 	touch $@
