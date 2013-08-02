@@ -26,8 +26,7 @@ $(DEPDIR)/bzip2.do_compile: $(DEPDIR)/bzip2.do_prepare
 		$(MAKE) all CC=$(target)-gcc
 	touch $@
 
-$(DEPDIR)/bzip2: \
-$(DEPDIR)/%bzip2: $(DEPDIR)/bzip2.do_compile
+$(DEPDIR)/bzip2: $(DEPDIR)/bzip2.do_compile
 	$(start_build)
 	cd $(DIR_bzip2) && \
 		$(INSTALL_bzip2)
@@ -62,8 +61,7 @@ $(DEPDIR)/module_init_tools.do_compile: $(DEPDIR)/module_init_tools.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/module_init_tools: \
-$(DEPDIR)/%module_init_tools: $(DEPDIR)/%lsb $(MODULE_INIT_TOOLS_ADAPTED_ETC_FILES:%=root/etc/%) $(DEPDIR)/module_init_tools.do_compile
+$(DEPDIR)/module_init_tools: $(DEPDIR)/%lsb $(MODULE_INIT_TOOLS_ADAPTED_ETC_FILES:%=root/etc/%) $(DEPDIR)/module_init_tools.do_compile
 	cd $(DIR_module_init_tools) && \
 		$(INSTALL_module_init_tools)
 	$(call adapted-etc-files,$(MODULE_INIT_TOOLS_ADAPTED_ETC_FILES))
@@ -109,8 +107,7 @@ $(DEPDIR)/grep.do_compile: $(DEPDIR)/grep.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/grep: \
-$(DEPDIR)/%grep: $(DEPDIR)/grep.do_compile
+$(DEPDIR)/grep: $(DEPDIR)/grep.do_compile
 	$(start_build)
 	cd $(DIR_grep) && \
 		$(INSTALL_grep)
@@ -157,8 +154,7 @@ $(DEPDIR)/pppd.do_compile: pppd.do_prepare
 		$(MAKE) $(MAKE_OPTS)
 	touch $@
 
-$(DEPDIR)/pppd: \
-$(DEPDIR)/%pppd: $(DEPDIR)/pppd.do_compile
+$(DEPDIR)/pppd: $(DEPDIR)/pppd.do_compile
 	$(start_build)
 	cd $(DIR_pppd)  && \
 		$(INSTALL_pppd)
@@ -192,8 +188,7 @@ $(DEPDIR)/usb_modeswitch.do_prepare: $(DEPENDS_usb_modeswitch) $(RDEPENDS_usb_mo
 $(DEPDIR)/usb_modeswitch.do_compile: $(DEPDIR)/usb_modeswitch.do_prepare
 	  touch $@
 
-$(DEPDIR)/usb_modeswitch: \
-$(DEPDIR)/%usb_modeswitch: $(DEPDIR)/usb_modeswitch.do_compile
+$(DEPDIR)/usb_modeswitch: $(DEPDIR)/usb_modeswitch.do_compile
 	$(start_build)
 	cd $(DIR_usb_modeswitch)  && \
 	  $(BUILDENV) \
@@ -232,8 +227,7 @@ $(DEPDIR)/usb_modeswitch_data.do_prepare: $(DEPENDS_usb_modeswitch_data)
 $(DEPDIR)/usb_modeswitch_data.do_compile: $(DEPDIR)/usb_modeswitch_data.do_prepare
 	touch $@
 
-$(DEPDIR)/usb_modeswitch_data: \
-$(DEPDIR)/%usb_modeswitch_data: $(DEPDIR)/usb_modeswitch_data.do_compile
+$(DEPDIR)/usb_modeswitch_data: $(DEPDIR)/usb_modeswitch_data.do_compile
 	$(start_build)
 	cd $(DIR_usb_modeswitch_data)  && \
 		$(BUILDENV) \
@@ -281,8 +275,7 @@ $(DEPDIR)/ntfs_3g.do_compile: bootstrap fuse $(DEPDIR)/ntfs_3g.do_prepare
 		$(MAKE) $(MAKE_OPTS)
 	touch $@
 
-$(DEPDIR)/ntfs_3g: \
-$(DEPDIR)/%ntfs_3g: $(DEPDIR)/ntfs_3g.do_compile
+$(DEPDIR)/ntfs_3g: $(DEPDIR)/ntfs_3g.do_compile
 	$(start_build)
 	cd $(DIR_ntfs_3g)  && \
 		$(INSTALL_ntfs_3g)
@@ -315,8 +308,7 @@ $(DEPDIR)/lsb.do_prepare: bootstrap $(DEPENDS_lsb)
 $(DEPDIR)/lsb.do_compile: $(DEPDIR)/lsb.do_prepare
 	touch $@
 
-$(DEPDIR)/lsb: \
-$(DEPDIR)/%lsb: $(DEPDIR)/lsb.do_compile
+$(DEPDIR)/lsb: $(DEPDIR)/lsb.do_compile
 	$(start_build)
 	cd $(DIR_lsb) && \
 		$(INSTALL_lsb)
@@ -358,8 +350,7 @@ $(DEPDIR)/portmap.do_compile: $(DEPDIR)/portmap.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/portmap: \
-$(DEPDIR)/%portmap: $(DEPDIR)/%lsb $(PORTMAP_ADAPTED_ETC_FILES:%=root/etc/%) $(DEPDIR)/portmap.do_compile
+$(DEPDIR)/portmap: $(DEPDIR)/%lsb $(PORTMAP_ADAPTED_ETC_FILES:%=root/etc/%) $(DEPDIR)/portmap.do_compile
 	$(start_build)
 	mkdir -p $(PKDIR)/sbin/
 	mkdir -p $(PKDIR)/etc/init.d/
@@ -405,8 +396,7 @@ $(DEPDIR)/openrdate.do_compile: $(DEPDIR)/openrdate.do_prepare
 		$(MAKE) 
 	touch $@
 
-$(DEPDIR)/openrdate: \
-$(DEPDIR)/%openrdate: $(OPENRDATE_ADAPTED_ETC_FILES:%=root/etc/%) \
+$(DEPDIR)/openrdate: $(OPENRDATE_ADAPTED_ETC_FILES:%=root/etc/%) \
 		$(DEPDIR)/openrdate.do_compile
 	$(start_build)
 	cd $(DIR_openrdate) && \
@@ -538,8 +528,7 @@ $(DEPDIR)/xfsprogs.do_compile: $(DEPDIR)/xfsprogs.do_prepare
 		$(MAKE) $(MAKE_OPTS)
 	touch $@
 
-$(DEPDIR)/xfsprogs: \
-$(DEPDIR)/%xfsprogs: $(DEPDIR)/xfsprogs.do_compile
+$(DEPDIR)/xfsprogs: $(DEPDIR)/xfsprogs.do_compile
 	$(start_build)
 	cd $(DIR_xfsprogs) && \
 		export top_builddir=`pwd` && \
@@ -586,8 +575,7 @@ $(DEPDIR)/mc.do_compile: $(DEPDIR)/mc.do_prepare | $(NCURSES_DEV)
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/mc: \
-$(DEPDIR)/%mc: %glib2 $(DEPDIR)/mc.do_compile
+$(DEPDIR)/mc: %glib2 $(DEPDIR)/mc.do_compile
 	$(start_build)
 	cd $(DIR_mc) && \
 		$(INSTALL_mc)
@@ -632,8 +620,7 @@ $(DEPDIR)/sdparm.do_compile: $(DEPDIR)/sdparm.do_prepare
 		$(MAKE) $(MAKE_OPTS)
 	touch $@
 
-$(DEPDIR)/sdparm: \
-$(DEPDIR)/%sdparm: $(DEPDIR)/sdparm.do_compile
+$(DEPDIR)/sdparm: $(DEPDIR)/sdparm.do_compile
 	$(start_build)
 	mkdir $(PKDIR)/sbin
 	cd $(DIR_sdparm) && \
@@ -677,8 +664,7 @@ $(DEPDIR)/sg3_utils.do_compile: $(DEPDIR)/sg3_utils.do_prepare
 		$(MAKE) $(MAKE_OPTS)
 	touch $@
 
-$(DEPDIR)/sg3_utils: \
-$(DEPDIR)/%sg3_utils: $(DEPDIR)/sg3_utils.do_compile
+$(DEPDIR)/sg3_utils: $(DEPDIR)/sg3_utils.do_compile
 	cd $(DIR_sg3_utils) && \
 		export PATH=$(MAKE_PATH) && \
 		$(INSTALL_sg3_utils)
@@ -717,8 +703,7 @@ $(DEPDIR)/ipkg.do_compile: $(DEPDIR)/ipkg.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/ipkg: \
-$(DEPDIR)/%ipkg: $(DEPDIR)/ipkg.do_compile
+$(DEPDIR)/ipkg: $(DEPDIR)/ipkg.do_compile
 	cd $(DIR_ipkg) && \
 		$(INSTALL_ipkg)
 	ln -sf ipkg-cl $(prefix)/$*cdkroot/usr/bin/ipkg && \
@@ -752,8 +737,7 @@ $(DEPDIR)/zd1211.do_compile: $(DEPDIR)/zd1211.do_prepare
 			CROSS_COMPILE=$(target)- ARCH=sh
 	touch $@
 
-$(DEPDIR)/zd1211: \
-$(DEPDIR)/%zd1211: $(DEPDIR)/zd1211.do_compile
+$(DEPDIR)/zd1211: $(DEPDIR)/zd1211.do_compile
 	cd $(DIR_zd1211) && \
 		$(MAKE) KERNEL_LOCATION=$(buildprefix)/linux \
 			BIN_DEST=$(targetprefix)/bin \
@@ -791,8 +775,7 @@ $(DEPDIR)/nano.do_compile: $(DEPDIR)/nano.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/nano: \
-$(DEPDIR)/%nano: $(DEPDIR)/nano.do_compile
+$(DEPDIR)/nano: $(DEPDIR)/nano.do_compile
 	cd $(DIR_nano) && \
 		$(INSTALL_nano)
 	touch $@
@@ -825,8 +808,7 @@ $(DEPDIR)/rsync.do_compile: $(DEPDIR)/rsync.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/rsync: \
-$(DEPDIR)/%rsync: $(DEPDIR)/rsync.do_compile
+$(DEPDIR)/rsync: $(DEPDIR)/rsync.do_compile
 	cd $(DIR_rsync) && \
 		$(INSTALL_rsync)
 	touch $@
@@ -857,8 +839,7 @@ $(DEPDIR)/rfkill.do_compile: $(DEPDIR)/rfkill.do_prepare
 		$(MAKE) $(MAKE_OPTS)
 	touch $@
 
-$(DEPDIR)/rfkill: \
-$(DEPDIR)/%rfkill: $(DEPDIR)/rfkill.do_compile
+$(DEPDIR)/rfkill: $(DEPDIR)/rfkill.do_compile
 	$(start_build)
 	cd $(DIR_rfkill) && \
 		$(INSTALL_rfkill)
@@ -895,8 +876,7 @@ $(DEPDIR)/lm_sensors.do_compile: $(DEPDIR)/lm_sensors.do_prepare
 		$(MAKE) $(MAKE_OPTS) MACHINE=sh PREFIX=/usr user
 	touch $@
 
-$(DEPDIR)/lm_sensors: \
-$(DEPDIR)/%lm_sensors: $(DEPDIR)/lm_sensors.do_compile
+$(DEPDIR)/lm_sensors: $(DEPDIR)/lm_sensors.do_compile
 	$(start_build)
 	cd $(DIR_lm_sensors) && \
 		$(INSTALL_lm_sensors) && \
@@ -947,8 +927,7 @@ $(DEPDIR)/fuse.do_compile: $(DEPDIR)/fuse.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/fuse: \
-$(DEPDIR)/%fuse: %curl %glib2 $(DEPDIR)/fuse.do_compile
+$(DEPDIR)/fuse: %curl %glib2 $(DEPDIR)/fuse.do_compile
 	  $(start_build)
 	  cd $(DIR_fuse) && \
 		$(INSTALL_fuse)
@@ -991,8 +970,7 @@ $(DEPDIR)/curlftpfs.do_compile: $(DEPDIR)/curlftpfs.do_prepare
 		$(MAKE) 
 	touch $@
 
-$(DEPDIR)/curlftpfs: \
-$(DEPDIR)/%curlftpfs: %fuse $(DEPDIR)/curlftpfs.do_compile
+$(DEPDIR)/curlftpfs: %fuse $(DEPDIR)/curlftpfs.do_compile
 	cd $(DIR_curlftpfs) && \
 		$(INSTALL_curlftpfs)
 	touch $@
@@ -1023,8 +1001,7 @@ $(DEPDIR)/fbset.do_compile: $(DEPDIR)/fbset.do_prepare
 		make CC="$(target)-gcc -Wall -O2 -I."
 	touch $@
 
-$(DEPDIR)/fbset: \
-$(DEPDIR)/%fbset: fbset.do_compile
+$(DEPDIR)/fbset: fbset.do_compile
 	cd $(DIR_fbset) && \
 		$(INSTALL_fbset)
 	touch $@
@@ -1050,8 +1027,7 @@ $(DEPDIR)/pngquant.do_compile: $(DEPDIR)/pngquant.do_prepare
 		$(target)-gcc -O3 -Wall -I. -funroll-loops -fomit-frame-pointer -o pngquant pngquant.c rwpng.c -lpng -lz -lm
 	touch $@
 
-$(DEPDIR)/pngquant: \
-$(DEPDIR)/%pngquant: $(DEPDIR)/pngquant.do_compile
+$(DEPDIR)/pngquant: $(DEPDIR)/pngquant.do_compile
 	cd $(DIR_pngquant) && \
 		$(INSTALL_pngquant)
 	touch $@
@@ -1084,8 +1060,7 @@ $(DEPDIR)/mplayer.do_compile: $(DEPDIR)/mplayer.do_prepare
 		$(MAKE) CC="$(target)-gcc"
 	touch $@
 
-$(DEPDIR)/mplayer: \
-$(DEPDIR)/%mplayer: $(DEPDIR)/mplayer.do_compile
+$(DEPDIR)/mplayer: $(DEPDIR)/mplayer.do_compile
 	cd $(DIR_mplayer) && \
 		$(INSTALL_mplayer)
 	touch $@
@@ -1143,8 +1118,7 @@ $(DEPDIR)/mencoder.do_compile: $(DEPDIR)/mplayer.do_prepare
 		$(MAKE) CC="$(target)-gcc"
 	touch $@
 
-$(DEPDIR)/mencoder: \
-$(DEPDIR)/%mencoder: $(DEPDIR)/mencoder.do_compile
+$(DEPDIR)/mencoder: $(DEPDIR)/mencoder.do_compile
 	cd $(DIR_mencoder) && \
 		$(INSTALL_mencoder)
 	touch $@
@@ -1182,8 +1156,7 @@ $(DEPDIR)/jfsutils.do_compile: $(DEPDIR)/jfsutils.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/jfsutils: \
-$(DEPDIR)/%jfsutils: $(DEPDIR)/jfsutils.do_compile
+$(DEPDIR)/jfsutils: $(DEPDIR)/jfsutils.do_compile
 	$(start_build)
 	cd $(DIR_jfsutils) && \
 		$(INSTALL_jfsutils)
@@ -1227,8 +1200,7 @@ $(DEPDIR)/opkg.do_compile: $(DEPDIR)/opkg.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/opkg: \
-$(DEPDIR)/%opkg: $(DEPDIR)/opkg.do_compile
+$(DEPDIR)/opkg: $(DEPDIR)/opkg.do_compile
 	$(start_build)
 	cd $(DIR_opkg) && \
 		$(INSTALL_opkg)
@@ -1503,8 +1475,7 @@ $(DEPDIR)/hotplug_e2.do_compile: $(DEPDIR)/hotplug_e2.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/hotplug_e2: \
-$(DEPDIR)/%hotplug_e2: $(DEPDIR)/hotplug_e2.do_compile
+$(DEPDIR)/hotplug_e2: $(DEPDIR)/hotplug_e2.do_compile
 	$(start_build)
 	cd $(DIR_hotplug_e2) && \
 		$(INSTALL_hotplug_e2)
@@ -1558,8 +1529,7 @@ $(DEPDIR)/autofs.do_compile: $(DEPDIR)/autofs.do_prepare
 		$(MAKE) all CC=$(target)-gcc STRIP=$(target)-strip
 	touch $@
 
-$(DEPDIR)/autofs: \
-$(DEPDIR)/%autofs: $(DEPDIR)/autofs.do_compile
+$(DEPDIR)/autofs: $(DEPDIR)/autofs.do_compile
 	$(start_build)
 	cd $(DIR_autofs) && \
 		$(INSTALL_autofs)
@@ -1612,8 +1582,7 @@ $(DEPDIR)/imagemagick.do_compile: $(DEPDIR)/imagemagick.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/imagemagick: \
-$(DEPDIR)/%imagemagick: $(DEPDIR)/imagemagick.do_compile
+$(DEPDIR)/imagemagick: $(DEPDIR)/imagemagick.do_compile
 	$(start_build)
 	cd $(DIR_imagemagick) && \
 		$(INSTALL_imagemagick)
@@ -1774,8 +1743,7 @@ $(DEPDIR)/parted.do_compile: $(DEPDIR)/parted.do_prepare
 		$(MAKE) all CC=$(target)-gcc STRIP=$(target)-strip
 	touch $@
 
-$(DEPDIR)/parted: \
-$(DEPDIR)/%parted: $(DEPDIR)/parted.do_compile
+$(DEPDIR)/parted: $(DEPDIR)/parted.do_compile
 	$(start_build)
 	cd $(DIR_parted) && \
 		$(INSTALL_parted)
@@ -1818,8 +1786,7 @@ $(DEPDIR)/gettext.do_compile: $(DEPDIR)/gettext.do_prepare
 		$(MAKE) all 
 	touch $@
 
-$(DEPDIR)/gettext: \
-$(DEPDIR)/%gettext: $(DEPDIR)/gettext.do_compile
+$(DEPDIR)/gettext: $(DEPDIR)/gettext.do_compile
 	$(start_build)
 	cd $(DIR_gettext) && \
 		$(INSTALL_gettext)

@@ -50,8 +50,7 @@ $(DEPDIR)/libz.do_compile: $(DEPDIR)/libz.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/libz: \
-$(DEPDIR)/%libz: $(DEPDIR)/libz.do_compile
+$(DEPDIR)/libz: $(DEPDIR)/libz.do_compile
 	$(start_build)
 	cd $(DIR_libz) && \
 		$(INSTALL_libz)
@@ -90,8 +89,7 @@ $(DEPDIR)/libreadline.do_compile: $(DEPDIR)/libreadline.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libreadline: \
-$(DEPDIR)/%libreadline: $(DEPDIR)/libreadline.do_compile
+$(DEPDIR)/libreadline: $(DEPDIR)/libreadline.do_compile
 	$(start_build)
 	cd $(DIR_libreadline) && \
 		$(INSTALL_libreadline)
@@ -172,8 +170,7 @@ $(DEPDIR)/freetype.do_compile: $(DEPDIR)/freetype.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/freetype: \
-$(DEPDIR)/%freetype: $(DEPDIR)/freetype.do_compile
+$(DEPDIR)/freetype: $(DEPDIR)/freetype.do_compile
 	$(start_build)
 	cd $(DIR_freetype) && \
 		sed -e "s,^prefix=,prefix=$(targetprefix)," < builds/unix/freetype-config > $(crossprefix)/bin/freetype-config && \
@@ -233,8 +230,7 @@ $(DEPDIR)/lirc.do_compile: $(DEPDIR)/lirc.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/lirc: \
-$(DEPDIR)/%lirc: $(DEPDIR)/lirc.do_compile
+$(DEPDIR)/lirc: $(DEPDIR)/lirc.do_compile
 	$(start_build)
 	cd $(DIR_lirc) && \
 		$(INSTALL_lirc)
@@ -285,8 +281,7 @@ $(DEPDIR)/jpeg.do_compile: $(DEPDIR)/jpeg.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/jpeg: \
-$(DEPDIR)/%jpeg: $(DEPDIR)/jpeg.do_compile
+$(DEPDIR)/jpeg: $(DEPDIR)/jpeg.do_compile
 	$(start_build)
 	cd $(DIR_jpeg) && \
 		$(INSTALL_jpeg)
@@ -327,8 +322,7 @@ $(DEPDIR)/libjpeg6b.do_compile: $(DEPDIR)/libjpeg6b.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libjpeg6b: \
-$(DEPDIR)/%libjpeg6b: $(DEPDIR)/libjpeg6b.do_compile
+$(DEPDIR)/libjpeg6b: $(DEPDIR)/libjpeg6b.do_compile
 	$(start_build)
 	cd $(DIR_libjpeg6b) && \
 		$(INSTALL_libjpeg6b)
@@ -373,8 +367,7 @@ $(DEPDIR)/libpng.do_compile: $(DEPDIR)/libpng.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libpng: \
-$(DEPDIR)/%libpng: $(DEPDIR)/libpng.do_compile
+$(DEPDIR)/libpng: $(DEPDIR)/libpng.do_compile
 	$(start_build)
 	cd $(DIR_libpng) && \
 		sed -e "s,^prefix=,prefix=$(PKDIR)," < libpng-config > $(crossprefix)/bin/libpng-config && \
@@ -420,8 +413,7 @@ $(DEPDIR)/libpng12.do_compile: $(DEPDIR)/libpng12.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libpng12: \
-$(DEPDIR)/%libpng12: $(DEPDIR)/libpng12.do_compile
+$(DEPDIR)/libpng12: $(DEPDIR)/libpng12.do_compile
 	$(start_build)
 	cd $(DIR_libpng12) && \
 		sed -e "s,^prefix=,prefix=$(PKDIR)," < libpng-config > $(crossprefix)/bin/libpng-config && \
@@ -464,8 +456,7 @@ $(DEPDIR)/libungif.do_compile: $(DEPDIR)/libungif.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/libungif: \
-$(DEPDIR)/%libungif: $(DEPDIR)/libungif.do_compile
+$(DEPDIR)/libungif: $(DEPDIR)/libungif.do_compile
 	$(start_build)
 	cd $(DIR_libungif) && \
 		$(INSTALL_libungif)
@@ -505,8 +496,7 @@ $(DEPDIR)/libgif.do_compile: $(DEPDIR)/libgif.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/libgif: \
-$(DEPDIR)/%libgif: $(DEPDIR)/libgif.do_compile
+$(DEPDIR)/libgif: $(DEPDIR)/libgif.do_compile
 	$(start_build)
 	cd $(DIR_libgif) && \
 		$(INSTALL_libgif)
@@ -553,8 +543,7 @@ $(DEPDIR)/curl.do_compile: $(DEPDIR)/curl.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/curl: \
-$(DEPDIR)/%curl: $(DEPDIR)/curl.do_compile
+$(DEPDIR)/curl: $(DEPDIR)/curl.do_compile
 	$(start_build)
 	cd $(DIR_curl) && \
 		sed -e "s,^prefix=,prefix=$(targetprefix)," < curl-config > $(crossprefix)/bin/curl-config && \
@@ -599,8 +588,7 @@ $(DEPDIR)/libfribidi.do_compile: $(DEPDIR)/libfribidi.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libfribidi: \
-$(DEPDIR)/%libfribidi: $(DEPDIR)/libfribidi.do_compile
+$(DEPDIR)/libfribidi: $(DEPDIR)/libfribidi.do_compile
 	$(start_build)
 	cd $(DIR_libfribidi) && \
 		$(INSTALL_libfribidi)
@@ -640,8 +628,7 @@ $(DEPDIR)/libsigc.do_compile: $(DEPDIR)/libsigc.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libsigc: \
-$(DEPDIR)/%libsigc: $(DEPDIR)/libsigc.do_compile
+$(DEPDIR)/libsigc: $(DEPDIR)/libsigc.do_compile
 	$(start_build)
 	cd $(DIR_libsigc) && \
 		$(INSTALL_libsigc)
@@ -691,8 +678,7 @@ $(DEPDIR)/libmad.do_compile: $(DEPDIR)/libmad.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libmad: \
-$(DEPDIR)/%libmad: $(DEPDIR)/libmad.do_compile
+$(DEPDIR)/libmad: $(DEPDIR)/libmad.do_compile
 	$(start_build)
 	cd $(DIR_libmad) && \
 		$(INSTALL_libmad)
@@ -734,8 +720,7 @@ $(DEPDIR)/libid3tag.do_compile: $(DEPDIR)/libid3tag.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libid3tag: \
-$(DEPDIR)/%libid3tag: %libz $(DEPDIR)/libid3tag.do_compile
+$(DEPDIR)/libid3tag: %libz $(DEPDIR)/libid3tag.do_compile
 	$(start_build)
 	cd $(DIR_libid3tag) && \
 		$(INSTALL_libid3tag)
@@ -829,8 +814,7 @@ $(DEPDIR)/glib2.do_compile: $(DEPDIR)/glib2.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/glib2: \
-$(DEPDIR)/%glib2: $(DEPDIR)/glib2.do_compile
+$(DEPDIR)/glib2: $(DEPDIR)/glib2.do_compile
 	$(start_build)
 	cd $(DIR_glib2) && \
 		$(INSTALL_glib2)
@@ -870,8 +854,7 @@ $(DEPDIR)/libiconv.do_compile: $(DEPDIR)/libiconv.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/libiconv: \
-$(DEPDIR)/%libiconv: $(DEPDIR)/libiconv.do_compile
+$(DEPDIR)/libiconv: $(DEPDIR)/libiconv.do_compile
 	$(start_build)
 	cd $(DIR_libiconv) && \
 		cp ./srcm4/* $(hostprefix)/share/aclocal/ && \
@@ -919,8 +902,7 @@ $(DEPDIR)/libmng.do_compile: $(DEPDIR)/libmng.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/libmng: \
-$(DEPDIR)/%libmng: $(DEPDIR)/libmng.do_compile
+$(DEPDIR)/libmng: $(DEPDIR)/libmng.do_compile
 	$(start_build)
 	cd $(DIR_libmng) && \
 		$(INSTALL_libmng)
@@ -962,8 +944,7 @@ $(DEPDIR)/lcms.do_compile: $(DEPDIR)/lcms.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/lcms: \
-$(DEPDIR)/%lcms: $(DEPDIR)/lcms.do_compile
+$(DEPDIR)/lcms: $(DEPDIR)/lcms.do_compile
 	$(start_build)
 	cd $(DIR_lcms) && \
 		$(INSTALL_lcms)
@@ -1029,8 +1010,7 @@ $(DEPDIR)/directfb.do_compile: $(DEPDIR)/directfb.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/directfb: \
-$(DEPDIR)/%directfb: $(DEPDIR)/directfb.do_compile
+$(DEPDIR)/directfb: $(DEPDIR)/directfb.do_compile
 	$(start_build)
 	cd $(DIR_directfb) && \
 		$(INSTALL_directfb)
@@ -1068,8 +1048,7 @@ $(DEPDIR)/dfbpp.do_compile: $(DEPDIR)/dfbpp.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/dfbpp: \
-$(DEPDIR)/%dfbpp: $(DEPDIR)/dfbpp.do_compile
+$(DEPDIR)/dfbpp: $(DEPDIR)/dfbpp.do_compile
 	$(start_build)
 	cd $(DIR_dfbpp) && \
 		$(INSTALL_dfbpp)
@@ -1114,8 +1093,7 @@ $(DEPDIR)/libstgles.do_compile: $(DEPDIR)/libstgles.do_prepare
 	$(MAKE) $(MAKE_OPTS)
 	touch $@
 
-$(DEPDIR)/libstgles: \
-$(DEPDIR)/%libstgles: $(DEPDIR)/libstgles.do_compile
+$(DEPDIR)/libstgles: $(DEPDIR)/libstgles.do_compile
 	$(start_build)
 	cd $(DIR_libstgles) && \
 		$(INSTALL_libstgles)
@@ -1156,8 +1134,7 @@ $(DEPDIR)/expat.do_compile: $(DEPDIR)/expat.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/expat: \
-$(DEPDIR)/%expat: $(DEPDIR)/expat.do_compile
+$(DEPDIR)/expat: $(DEPDIR)/expat.do_compile
 	$(start_build)
 	cd $(DIR_expat) && \
 		$(INSTALL_expat)
@@ -1208,8 +1185,7 @@ $(DEPDIR)/fontconfig.do_compile: $(DEPDIR)/fontconfig.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/fontconfig: \
-$(DEPDIR)/%fontconfig: $(DEPDIR)/fontconfig.do_compile
+$(DEPDIR)/fontconfig: $(DEPDIR)/fontconfig.do_compile
 	$(start_build)
 	cd $(DIR_fontconfig) && \
 		$(INSTALL_fontconfig)
@@ -1249,8 +1225,7 @@ $(DEPDIR)/libxmlccwrap.do_compile: $(DEPDIR)/libxmlccwrap.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libxmlccwrap: \
-$(DEPDIR)/%libxmlccwrap: libxmlccwrap.do_compile
+$(DEPDIR)/libxmlccwrap: libxmlccwrap.do_compile
 	$(start_build)
 	cd $(DIR_libxmlccwrap) && \
 		$(INSTALL_libxmlccwrap) && \
@@ -1291,8 +1266,7 @@ $(DEPDIR)/a52dec.do_compile: $(DEPDIR)/a52dec.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/a52dec: \
-$(DEPDIR)/%a52dec: a52dec.do_compile
+$(DEPDIR)/a52dec: a52dec.do_compile
 	$(start_build)
 	cd $(DIR_a52dec) && \
 		$(INSTALL_a52dec)
@@ -1334,8 +1308,7 @@ $(DEPDIR)/libdvdcss.do_compile: $(DEPDIR)/libdvdcss.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libdvdcss: \
-$(DEPDIR)/%libdvdcss: libdvdcss.do_compile
+$(DEPDIR)/libdvdcss: libdvdcss.do_compile
 	$(start_build)
 	cd $(DIR_libdvdcss) && \
 		$(INSTALL_libdvdcss)
@@ -1383,8 +1356,7 @@ $(DEPDIR)/libdvdnav.do_compile: $(DEPDIR)/libdvdnav.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libdvdnav: \
-$(DEPDIR)/%libdvdnav: libdvdnav.do_compile
+$(DEPDIR)/libdvdnav: libdvdnav.do_compile
 	 $(start_build)
 	 cd $(DIR_libdvdnav) && \
 		sed -e "s,^prefix=,prefix=$(targetprefix)," < misc/dvdnav-config > $(crossprefix)/bin/dvdnav-config && \
@@ -1435,8 +1407,7 @@ $(DEPDIR)/libdvdread.do_compile: $(DEPDIR)/libdvdread.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libdvdread: \
-$(DEPDIR)/%libdvdread: libdvdread.do_compile
+$(DEPDIR)/libdvdread: libdvdread.do_compile
 	$(start_build)
 	cd $(DIR_libdvdread) && \
 		sed -e "s,^prefix=,prefix=$(targetprefix)," < misc/dvdread-config > $(crossprefix)/bin/dvdread-config && \
@@ -1559,8 +1530,7 @@ $(DEPDIR)/ffmpeg.do_compile: $(DEPDIR)/ffmpeg.do_prepare
 		--prefix=/usr
 	touch $@
 
-$(DEPDIR)/ffmpeg: \
-$(DEPDIR)/%ffmpeg: $(DEPDIR)/ffmpeg.do_compile
+$(DEPDIR)/ffmpeg: $(DEPDIR)/ffmpeg.do_compile
 	$(start_build)
 	cd $(DIR_ffmpeg) && \
 		$(INSTALL_ffmpeg)
@@ -1601,8 +1571,7 @@ $(DEPDIR)/libass.do_compile: $(DEPDIR)/libass.do_prepare
 		--prefix=/usr
 	touch $@
 
-$(DEPDIR)/libass: \
-$(DEPDIR)/%libass: $(DEPDIR)/libass.do_compile
+$(DEPDIR)/libass: $(DEPDIR)/libass.do_compile
 	$(start_build)
 	cd $(DIR_libass) && \
 		$(INSTALL_libass)
@@ -1663,8 +1632,7 @@ $(DEPDIR)/webkitdfb.do_compile: $(DEPDIR)/webkitdfb.do_prepare
 		--with-networking-backend=soup
 	touch $@
 
-$(DEPDIR)/webkitdfb: \
-$(DEPDIR)/%webkitdfb: $(DEPDIR)/webkitdfb.do_compile
+$(DEPDIR)/webkitdfb: $(DEPDIR)/webkitdfb.do_compile
 	$(start_build)
 	cd $(DIR_webkitdfb) && \
 		$(INSTALL_webkitdfb)
@@ -1719,8 +1687,7 @@ $(DEPDIR)/icu4c.do_compile: $(DEPDIR)/icu4c.do_prepare
 		--disable-samples
 	touch $@
 
-$(DEPDIR)/icu4c: \
-$(DEPDIR)/%icu4c: $(DEPDIR)/icu4c.do_compile
+$(DEPDIR)/icu4c: $(DEPDIR)/icu4c.do_compile
 	$(start_build)
 	cd $(DIR_icu4c) && \
 		unset TARGET && \
@@ -1768,8 +1735,7 @@ $(DEPDIR)/enchant.do_compile: $(DEPDIR)/enchant.do_prepare
 	$(MAKE) LD=$(target)-ld
 	touch $@
 
-$(DEPDIR)/enchant: \
-$(DEPDIR)/%enchant: $(DEPDIR)/enchant.do_compile
+$(DEPDIR)/enchant: $(DEPDIR)/enchant.do_compile
 	$(start_build)
 	cd $(DIR_enchant) && \
 		$(INSTALL_enchant)
@@ -1812,8 +1778,7 @@ $(DEPDIR)/lite.do_compile: $(DEPDIR)/lite.do_prepare
 		--disable-debug
 	touch $@
 
-$(DEPDIR)/lite: \
-$(DEPDIR)/%lite: $(DEPDIR)/lite.do_compile
+$(DEPDIR)/lite: $(DEPDIR)/lite.do_compile
 	$(start_build)
 	cd $(DIR_lite) && \
 		$(INSTALL_lite)
@@ -1856,8 +1821,7 @@ $(DEPDIR)/sqlite.do_compile: $(DEPDIR)/sqlite.do_prepare
 		--disable-debug
 	touch $@
 
-$(DEPDIR)/sqlite: \
-$(DEPDIR)/%sqlite: $(DEPDIR)/sqlite.do_compile
+$(DEPDIR)/sqlite: $(DEPDIR)/sqlite.do_compile
 	$(start_build)
 	cd $(DIR_sqlite) && \
 		$(INSTALL_sqlite)
@@ -1897,8 +1861,7 @@ $(DEPDIR)/libsoup.do_compile: $(DEPDIR)/libsoup.do_prepare
 		--without-gnome
 	touch $@
 
-$(DEPDIR)/libsoup: \
-$(DEPDIR)/%libsoup: $(DEPDIR)/libsoup.do_compile
+$(DEPDIR)/libsoup: $(DEPDIR)/libsoup.do_compile
 	$(start_build)
 	cd $(DIR_libsoup) && \
 		$(INSTALL_libsoup)
@@ -1936,8 +1899,7 @@ $(DEPDIR)/pixman.do_compile: $(DEPDIR)/pixman.do_prepare
 		--prefix=/usr
 	touch $@
 
-$(DEPDIR)/pixman: \
-$(DEPDIR)/%pixman: $(DEPDIR)/pixman.do_compile
+$(DEPDIR)/pixman: $(DEPDIR)/pixman.do_compile
 	$(start_build)
 	cd $(DIR_pixman) && \
 		$(INSTALL_pixman)
@@ -1987,8 +1949,7 @@ $(DEPDIR)/cairo.do_compile: $(DEPDIR)/cairo.do_prepare
 		--program-suffix=-directfb
 	touch $@
 
-$(DEPDIR)/cairo: \
-$(DEPDIR)/%cairo: $(DEPDIR)/cairo.do_compile
+$(DEPDIR)/cairo: $(DEPDIR)/cairo.do_compile
 	$(start_build)
 	cd $(DIR_cairo) && \
 		$(INSTALL_cairo)
@@ -2026,8 +1987,7 @@ $(DEPDIR)/libogg.do_compile: $(DEPDIR)/libogg.do_prepare
 		--prefix=/usr
 	touch $@
 
-$(DEPDIR)/libogg: \
-$(DEPDIR)/%libogg: $(DEPDIR)/libogg.do_compile
+$(DEPDIR)/libogg: $(DEPDIR)/libogg.do_compile
 	$(start_build)
 	cd $(DIR_libogg) && \
 		$(INSTALL_libogg)
@@ -2079,8 +2039,7 @@ $(DEPDIR)/libflac.do_compile: $(DEPDIR)/libflac.do_prepare
 		--disable-cpplibs
 	touch $@
 
-$(DEPDIR)/libflac: \
-$(DEPDIR)/%libflac: $(DEPDIR)/libflac.do_compile
+$(DEPDIR)/libflac: $(DEPDIR)/libflac.do_compile
 	$(start_build)
 	cd $(DIR_libflac) && \
 		$(INSTALL_libflac)
@@ -2113,8 +2072,7 @@ $(DEPDIR)/elementtree.do_prepare: bootstrap $(DEPENDS_elementtree)
 $(DEPDIR)/elementtree.do_compile: $(DEPDIR)/elementtree.do_prepare
 	touch $@
 
-$(DEPDIR)/elementtree: \
-$(DEPDIR)/%elementtree: $(DEPDIR)/elementtree.do_compile
+$(DEPDIR)/elementtree: $(DEPDIR)/elementtree.do_compile
 	$(start_build)
 	cd $(DIR_elementtree) && \
 		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
@@ -2161,8 +2119,7 @@ $(DEPDIR)/libxml2.do_compile: $(DEPDIR)/libxml2.do_prepare
 		$(MAKE) all 
 	touch $@
 
-$(DEPDIR)/libxml2: \
-$(DEPDIR)/%libxml2: $(DEPDIR)/libxml2.do_compile
+$(DEPDIR)/libxml2: $(DEPDIR)/libxml2.do_compile
 	$(start_build)
 	cd $(DIR_libxml2) && \
 		$(INSTALL_libxml2) && \
@@ -2216,8 +2173,7 @@ $(DEPDIR)/libxslt.do_compile: $(DEPDIR)/libxslt.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libxslt: \
-$(DEPDIR)/%libxslt: %libxml2 libxslt.do_compile
+$(DEPDIR)/libxslt: %libxml2 libxslt.do_compile
 	$(start_build)
 	cd $(DIR_libxslt) && \
 		$(INSTALL_libxslt) && \
@@ -2258,8 +2214,7 @@ $(DEPDIR)/lxml.do_compile: $(DEPDIR)/lxml.do_prepare
 			--with-xslt-config=$(crossprefix)/bin/xslt-config
 	touch $@
 
-$(DEPDIR)/lxml: \
-$(DEPDIR)/%lxml: $(DEPDIR)/lxml.do_compile
+$(DEPDIR)/lxml: $(DEPDIR)/lxml.do_compile
 	$(start_build)
 	cd $(DIR_lxml) && \
 		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
@@ -2300,8 +2255,7 @@ $(DEPDIR)/setuptools.do_compile: $(DEPDIR)/setuptools.do_prepare
 		$(crossprefix)/bin/python ./setup.py build
 	touch $@
 
-$(DEPDIR)/setuptools: \
-$(DEPDIR)/%setuptools: $(DEPDIR)/setuptools.do_compile
+$(DEPDIR)/setuptools: $(DEPDIR)/setuptools.do_compile
 	$(start_build)
 	cd $(DIR_setuptools) && \
 		$(crossprefix)/bin/python ./setup.py install --root=$(PKDIR) --prefix=/usr
@@ -2348,8 +2302,7 @@ $(DEPDIR)/gdata.do_compile: $(DEPDIR)/gdata.do_prepare
 		$(crossprefix)/bin/python -c "import setuptools; execfile('setup.py')" build
 	touch $@
 
-$(DEPDIR)/gdata: \
-$(DEPDIR)/%gdata: $(DEPDIR)/gdata.do_compile
+$(DEPDIR)/gdata: $(DEPDIR)/gdata.do_compile
 	$(start_build)
 	cd $(DIR_gdata) && \
 		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
@@ -2398,8 +2351,7 @@ $(DEPDIR)/twisted.do_compile: $(DEPDIR)/twisted.do_prepare
 		$(crossprefix)/bin/python -c "import setuptools; execfile('setup.py')" build
 	touch $@
 
-$(DEPDIR)/twisted: \
-$(DEPDIR)/%twisted: $(DEPDIR)/twisted.do_compile
+$(DEPDIR)/twisted: $(DEPDIR)/twisted.do_compile
 	$(start_build)
 	cd $(DIR_twisted) && \
 		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
@@ -2440,8 +2392,7 @@ $(DEPDIR)/twistedweb2.do_compile: $(DEPDIR)/twistedweb2.do_prepare
 		$(crossprefix)/bin/python -c "import setuptools; execfile('setup.py')" build
 	touch $@
 
-$(DEPDIR)/twistedweb2: \
-$(DEPDIR)/%twistedweb2: $(DEPDIR)/twistedweb2.do_compile
+$(DEPDIR)/twistedweb2: $(DEPDIR)/twistedweb2.do_compile
 	$(start_build)
 	cd $(DIR_twistedweb2) && \
 		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
@@ -2513,8 +2464,7 @@ $(DEPDIR)/pycrypto.do_compile: $(DEPDIR)/pycrypto.do_prepare
 			--prefix=/usr
 	touch $@
 
-$(DEPDIR)/pycrypto: \
-$(DEPDIR)/%pycrypto: $(DEPDIR)/pycrypto.do_compile
+$(DEPDIR)/pycrypto: $(DEPDIR)/pycrypto.do_compile
 	$(start_build)
 	cd $(DIR_pycrypto) && \
 		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
@@ -2550,8 +2500,7 @@ $(DEPDIR)/pyusb.do_compile: $(DEPDIR)/pyusb.do_prepare
 		$(crossprefix)/bin/python ./setup.py build
 	touch $@
 
-$(DEPDIR)/pyusb: \
-$(DEPDIR)/%pyusb: $(DEPDIR)/pyusb.do_compile
+$(DEPDIR)/pyusb: $(DEPDIR)/pyusb.do_compile
 	$(start_build)
 	cd $(DIR_pyusb) && \
 		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
@@ -2588,8 +2537,7 @@ $(DEPDIR)/pyopenssl.do_compile: $(DEPDIR)/pyopenssl.do_prepare
 		$(crossprefix)/bin/python ./setup.py build
 	touch $@
 
-$(DEPDIR)/pyopenssl: \
-$(DEPDIR)/%pyopenssl: $(DEPDIR)/pyopenssl.do_compile
+$(DEPDIR)/pyopenssl: $(DEPDIR)/pyopenssl.do_compile
 	$(start_build)
 	cd $(DIR_pyopenssl) && \
 		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
@@ -2695,8 +2643,7 @@ $(DEPDIR)/python.do_compile: $(DEPDIR)/python.do_prepare
 			all ) && \
 	touch $@
 
-$(DEPDIR)/python: \
-$(DEPDIR)/%python: $(DEPDIR)/python.do_compile
+$(DEPDIR)/python: $(DEPDIR)/python.do_compile
 	$(start_build)
 	( cd $(DIR_python) && \
 		$(MAKE) $(MAKE_ARGS) \
@@ -2737,8 +2684,7 @@ $(DEPDIR)/pythonwifi.do_compile: $(DEPDIR)/pythonwifi.do_prepare
 		$(crossprefix)/bin/python ./setup.py build
 	touch $@
 
-$(DEPDIR)/pythonwifi: \
-$(DEPDIR)/%pythonwifi: $(DEPDIR)/pythonwifi.do_compile
+$(DEPDIR)/pythonwifi: $(DEPDIR)/pythonwifi.do_compile
 	$(start_build)
 	cd $(DIR_pythonwifi) && \
 		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
@@ -2773,8 +2719,7 @@ $(DEPDIR)/pythoncheetah.do_compile: $(DEPDIR)/pythoncheetah.do_prepare
 		$(crossprefix)/bin/python ./setup.py build
 	touch $@
 
-$(DEPDIR)/pythoncheetah: \
-$(DEPDIR)/%pythoncheetah: $(DEPDIR)/pythoncheetah.do_compile
+$(DEPDIR)/pythoncheetah: $(DEPDIR)/pythoncheetah.do_compile
 	$(start_build)
 	cd $(DIR_pythoncheetah) && \
 		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
@@ -2809,8 +2754,7 @@ $(DEPDIR)/zope_interface.do_compile: $(DEPDIR)/zope_interface.do_prepare
 		$(crossprefix)/bin/python ./setup.py build
 	touch $@
 
-$(DEPDIR)/zope_interface: \
-$(DEPDIR)/%zope_interface: $(DEPDIR)/zope_interface.do_compile
+$(DEPDIR)/zope_interface: $(DEPDIR)/zope_interface.do_compile
 	$(start_build)
 	cd $(DIR_zope_interface) && \
 		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
@@ -2862,8 +2806,7 @@ $(DEPDIR)/gstreamer.do_compile: $(DEPDIR)/gstreamer.do_prepare
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/gstreamer: \
-$(DEPDIR)/%gstreamer: $(DEPDIR)/gstreamer.do_compile
+$(DEPDIR)/gstreamer: $(DEPDIR)/gstreamer.do_compile
 	$(start_build)
 	$(BUILDENV) \
 	cd $(DIR_gstreamer) && \
@@ -2922,8 +2865,7 @@ $(DEPDIR)/gst_plugins_base.do_compile: $(DEPDIR)/gst_plugins_base.do_prepare
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/gst_plugins_base: \
-$(DEPDIR)/%gst_plugins_base: $(DEPDIR)/gst_plugins_base.do_compile
+$(DEPDIR)/gst_plugins_base: $(DEPDIR)/gst_plugins_base.do_compile
 	$(start_build)
 	cd $(DIR_gst_plugins_base) && \
 		$(BUILDENV) \
@@ -2988,8 +2930,7 @@ $(DEPDIR)/gst_plugins_good.do_compile: $(DEPDIR)/gst_plugins_good.do_prepare
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/gst_plugins_good: \
-$(DEPDIR)/%gst_plugins_good: $(DEPDIR)/gst_plugins_good.do_compile
+$(DEPDIR)/gst_plugins_good: $(DEPDIR)/gst_plugins_good.do_compile
 	$(start_build)
 	cd $(DIR_gst_plugins_good) && \
 		$(INSTALL_gst_plugins_good)
@@ -3043,8 +2984,7 @@ $(DEPDIR)/gst_plugins_bad.do_compile: $(DEPDIR)/gst_plugins_bad.do_prepare
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/gst_plugins_bad: \
-$(DEPDIR)/%gst_plugins_bad: $(DEPDIR)/gst_plugins_bad.do_compile
+$(DEPDIR)/gst_plugins_bad: $(DEPDIR)/gst_plugins_bad.do_compile
 	$(start_build)
 	cd $(DIR_gst_plugins_bad) && \
 		$(INSTALL_gst_plugins_bad)
@@ -3088,8 +3028,7 @@ $(DEPDIR)/gst_plugins_ugly.do_compile: $(DEPDIR)/gst_plugins_ugly.do_prepare
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/gst_plugins_ugly: \
-$(DEPDIR)/%gst_plugins_ugly: $(DEPDIR)/gst_plugins_ugly.do_compile
+$(DEPDIR)/gst_plugins_ugly: $(DEPDIR)/gst_plugins_ugly.do_compile
 	$(start_build)
 	cd $(DIR_gst_plugins_ugly) && \
 		$(INSTALL_gst_plugins_ugly)
@@ -3168,8 +3107,7 @@ $(DEPDIR)/gst_ffmpeg.do_compile: $(DEPDIR)/gst_ffmpeg.do_prepare
 		--enable-bzlib"
 	touch $@
 
-$(DEPDIR)/gst_ffmpeg: \
-$(DEPDIR)/%gst_ffmpeg: $(DEPDIR)/gst_ffmpeg.do_compile
+$(DEPDIR)/gst_ffmpeg: $(DEPDIR)/gst_ffmpeg.do_compile
 	$(start_build)
 	cd $(DIR_gst_ffmpeg) && \
 		$(INSTALL_gst_ffmpeg)
@@ -3210,8 +3148,7 @@ $(DEPDIR)/gst_plugins_fluendo_mpegdemux.do_compile: $(DEPDIR)/gst_plugins_fluend
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/gst_plugins_fluendo_mpegdemux: \
-$(DEPDIR)/%gst_plugins_fluendo_mpegdemux: $(DEPDIR)/gst_plugins_fluendo_mpegdemux.do_compile
+$(DEPDIR)/gst_plugins_fluendo_mpegdemux: $(DEPDIR)/gst_plugins_fluendo_mpegdemux.do_compile
 	$(start_build)
 	cd $(DIR_gst_plugins_fluendo_mpegdemux) && \
 		$(INSTALL_gst_plugins_fluendo_mpegdemux)
@@ -3257,8 +3194,7 @@ $(DEPDIR)/gst_plugin_subsink.do_compile: $(DEPDIR)/gst_plugin_subsink.do_prepare
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/gst_plugin_subsink: \
-$(DEPDIR)/%gst_plugin_subsink: $(DEPDIR)/gst_plugin_subsink.do_compile
+$(DEPDIR)/gst_plugin_subsink: $(DEPDIR)/gst_plugin_subsink.do_compile
 	$(start_build)
 	cd $(DIR_gst_plugin_subsink) && \
 		$(INSTALL_gst_plugin_subsink)
@@ -3304,8 +3240,7 @@ $(DEPDIR)/gst_plugins_dvbmediasink.do_compile: $(DEPDIR)/gst_plugins_dvbmediasin
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/gst_plugins_dvbmediasink: \
-$(DEPDIR)/%gst_plugins_dvbmediasink: $(DEPDIR)/gst_plugins_dvbmediasink.do_compile
+$(DEPDIR)/gst_plugins_dvbmediasink: $(DEPDIR)/gst_plugins_dvbmediasink.do_compile
 	$(start_build)
 	$(get_git_version)
 	cd $(DIR_gst_plugins_dvbmediasink) && \
@@ -3351,8 +3286,7 @@ $(DEPDIR)/libusb.do_compile: $(DEPDIR)/libusb.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libusb: \
-$(DEPDIR)/%libusb: $(DEPDIR)/libusb.do_compile
+$(DEPDIR)/libusb: $(DEPDIR)/libusb.do_compile
 	$(start_build)
 	cd $(DIR_libusb) && \
 		$(INSTALL_libusb)
@@ -3393,8 +3327,7 @@ $(DEPDIR)/graphlcd.do_compile: $(DEPDIR)/graphlcd.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/graphlcd: \
-$(DEPDIR)/%graphlcd: $(DEPDIR)/graphlcd.do_compile
+$(DEPDIR)/graphlcd: $(DEPDIR)/graphlcd.do_compile
 	$(start_build)
 	install -d $(PKDIR)/etc
 	cd $(DIR_graphlcd) && \
@@ -3440,8 +3373,7 @@ $(DEPDIR)/libgd2.do_compile: $(DEPDIR)/libgd2.do_prepare
 		--prefix=/usr && \
 		$(MAKE)
 
-$(DEPDIR)/libgd2: \
-$(DEPDIR)/%libgd2: $(DEPDIR)/libgd2.do_compile
+$(DEPDIR)/libgd2: $(DEPDIR)/libgd2.do_compile
 	$(start_build)
 	cd $(DIR_libgd2) && \
 		$(INSTALL_libgd2)
@@ -3479,8 +3411,7 @@ $(DEPDIR)/libusb2.do_compile: $(DEPDIR)/libusb2.do_prepare
 		--prefix=/usr && \
 		$(MAKE) all
 
-$(DEPDIR)/libusb2: \
-$(DEPDIR)/%libusb2: $(DEPDIR)/libusb2.do_compile
+$(DEPDIR)/libusb2: $(DEPDIR)/libusb2.do_compile
 	$(start_build)
 	cd $(DIR_libusb2) && \
 		$(INSTALL_libusb2)
@@ -3517,8 +3448,7 @@ $(DEPDIR)/libusbcompat.do_compile: $(DEPDIR)/libusbcompat.do_prepare
 		--prefix=/usr && \
 		$(MAKE)
 
-$(DEPDIR)/libusbcompat: \
-$(DEPDIR)/%libusbcompat: $(DEPDIR)/libusbcompat.do_compile
+$(DEPDIR)/libusbcompat: $(DEPDIR)/libusbcompat.do_compile
 	$(start_build)
 	cd $(DIR_libusbcompat) && \
 		$(INSTALL_libusbcompat)
@@ -3567,8 +3497,7 @@ $(DEPDIR)/evebrowser.do_compile: $(DEPDIR)/evebrowser.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/evebrowser: \
-$(DEPDIR)/%evebrowser: $(DEPDIR)/evebrowser.do_compile
+$(DEPDIR)/evebrowser: $(DEPDIR)/evebrowser.do_compile
 	$(start_build)
 	mkdir -p $(PKDIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/ && \
 	cd $(DIR_evebrowser) && \
@@ -3607,8 +3536,7 @@ $(DEPDIR)/brofs.do_compile: $(DEPDIR)/brofs.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/brofs: \
-$(DEPDIR)/%brofs: $(DEPDIR)/brofs.do_compile
+$(DEPDIR)/brofs: $(DEPDIR)/brofs.do_compile
 	$(start_build)
 	mkdir -p $(PKDIR)/usr/bin/
 	cd $(DIR_brofs) && \
@@ -3657,8 +3585,7 @@ $(DEPDIR)/libcap.do_compile: $(DEPDIR)/libcap.do_prepare
 	CC=sh4-linux-gcc
 	touch $@
 
-$(DEPDIR)/libcap: \
-$(DEPDIR)/%libcap: $(DEPDIR)/libcap.do_compile
+$(DEPDIR)/libcap: $(DEPDIR)/libcap.do_compile
 	@[ "x$*" = "x" ] && touch $@ || true
 	$(start_build)
 	cd $(DIR_libcap) && \
@@ -3716,8 +3643,7 @@ $(DEPDIR)/libalsa.do_compile: $(DEPDIR)/libalsa.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libalsa: \
-$(DEPDIR)/%libalsa: $(DEPDIR)/libalsa.do_compile
+$(DEPDIR)/libalsa: $(DEPDIR)/libalsa.do_compile
 	$(start_build)
 	cd $(DIR_libalsa) && \
 		$(INSTALL_libalsa)
@@ -3757,8 +3683,7 @@ $(DEPDIR)/rtmpdump.do_compile: $(DEPDIR)/rtmpdump.do_prepare
 		make CROSS_COMPILE=$(target)-
 	touch $@
 
-$(DEPDIR)/rtmpdump: \
-$(DEPDIR)/%rtmpdump: $(DEPDIR)/rtmpdump.do_compile
+$(DEPDIR)/rtmpdump: $(DEPDIR)/rtmpdump.do_compile
 	$(start_build)
 	cd $(DIR_rtmpdump) && \
 		$(INSTALL_rtmpdump)
@@ -3804,8 +3729,7 @@ $(DEPDIR)/libdvbsipp.do_compile: $(DEPDIR)/libdvbsipp.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libdvbsipp: \
-$(DEPDIR)/%libdvbsipp: $(DEPDIR)/libdvbsipp.do_compile
+$(DEPDIR)/libdvbsipp: $(DEPDIR)/libdvbsipp.do_compile
 	$(start_build)
 	cd $(DIR_libdvbsipp) && \
 		$(INSTALL_libdvbsipp)
@@ -3854,8 +3778,7 @@ $(DEPDIR)/tuxtxtlib.do_compile: $(DEPDIR)/tuxtxtlib.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/tuxtxtlib: \
-$(DEPDIR)/%tuxtxtlib: $(DEPDIR)/tuxtxtlib.do_compile
+$(DEPDIR)/tuxtxtlib: $(DEPDIR)/tuxtxtlib.do_compile
 	$(start_build)
 	$(AUTOPKGV_tuxtxtlib)
 	cd $(DIR_tuxtxtlib) && \
@@ -3909,8 +3832,7 @@ $(DEPDIR)/tuxtxt32bpp.do_compile: $(DEPDIR)/tuxtxt32bpp.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/tuxtxt32bpp: \
-$(DEPDIR)/%tuxtxt32bpp: $(DEPDIR)/tuxtxt32bpp.do_compile
+$(DEPDIR)/tuxtxt32bpp: $(DEPDIR)/tuxtxt32bpp.do_compile
 	$(start_build)
 	$(AUTOPKGV_tuxtxt32bpp)
 	cd $(DIR_tuxtxt32bpp) && \
@@ -3957,8 +3879,7 @@ $(DEPDIR)/libdreamdvd.do_compile: $(DEPDIR)/libdreamdvd.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libdreamdvd: \
-$(DEPDIR)/%libdreamdvd: $(DEPDIR)/libdreamdvd.do_compile
+$(DEPDIR)/libdreamdvd: $(DEPDIR)/libdreamdvd.do_compile
 	$(start_build)
 	cd $(DIR_libdreamdvd) && \
 		$(INSTALL_libdreamdvd)
@@ -3998,8 +3919,7 @@ $(DEPDIR)/libdreamdvd2.do_compile: $(DEPDIR)/libdreamdvd2.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libdreamdvd2: \
-$(DEPDIR)/%libdreamdvd2: $(DEPDIR)/libdreamdvd2.do_compile
+$(DEPDIR)/libdreamdvd2: $(DEPDIR)/libdreamdvd2.do_compile
 	$(start_build)
 	cd $(DIR_libdreamdvd2) && \
 		$(INSTALL_libdreamdvd2)
@@ -4040,8 +3960,7 @@ $(DEPDIR)/libmpeg2.do_compile: $(DEPDIR)/libmpeg2.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libmpeg2: \
-$(DEPDIR)/%libmpeg2: $(DEPDIR)/libmpeg2.do_compile
+$(DEPDIR)/libmpeg2: $(DEPDIR)/libmpeg2.do_compile
 	$(start_build)
 	cd $(DIR_libmpeg2) && \
 		$(INSTALL_libmpeg2)
@@ -4081,8 +4000,7 @@ $(DEPDIR)/libsamplerate.do_compile: $(DEPDIR)/libsamplerate.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libsamplerate: \
-$(DEPDIR)/%libsamplerate: $(DEPDIR)/libsamplerate.do_compile
+$(DEPDIR)/libsamplerate: $(DEPDIR)/libsamplerate.do_compile
 	$(start_build)
 	cd $(DIR_libsamplerate) && \
 		$(INSTALL_libsamplerate)
@@ -4120,8 +4038,7 @@ $(DEPDIR)/libvorbis.do_compile: $(DEPDIR)/libvorbis.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libvorbis: \
-$(DEPDIR)/%libvorbis: $(DEPDIR)/libvorbis.do_compile
+$(DEPDIR)/libvorbis: $(DEPDIR)/libvorbis.do_compile
 	$(start_build)
 	cd $(DIR_libvorbis) && \
 		$(INSTALL_libvorbis)
@@ -4160,8 +4077,7 @@ $(DEPDIR)/libmodplug.do_compile: $(DEPDIR)/libmodplug.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libmodplug: \
-$(DEPDIR)/%libmodplug: $(DEPDIR)/libmodplug.do_compile
+$(DEPDIR)/libmodplug: $(DEPDIR)/libmodplug.do_compile
 	$(start_build)
 	cd $(DIR_libmodplug) && \
 		$(INSTALL_libmodplug)
@@ -4201,8 +4117,7 @@ $(DEPDIR)/tiff.do_compile: $(DEPDIR)/tiff.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/tiff: \
-$(DEPDIR)/%tiff: $(DEPDIR)/tiff.do_compile
+$(DEPDIR)/tiff: $(DEPDIR)/tiff.do_compile
 	$(start_build)
 	cd $(DIR_tiff) && \
 		$(INSTALL_tiff)
@@ -4241,8 +4156,7 @@ $(DEPDIR)/lzo.do_compile: $(DEPDIR)/lzo.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/lzo: \
-$(DEPDIR)/%lzo: $(DEPDIR)/lzo.do_compile
+$(DEPDIR)/lzo: $(DEPDIR)/lzo.do_compile
 	$(start_build)
 	cd $(DIR_lzo) && \
 		$(INSTALL_lzo)
@@ -4282,8 +4196,7 @@ $(DEPDIR)/yajl.do_compile: $(DEPDIR)/yajl.do_prepare
 	$(MAKE) distro
 	touch $@
 
-$(DEPDIR)/yajl: \
-$(DEPDIR)/%yajl: $(DEPDIR)/yajl.do_compile
+$(DEPDIR)/yajl: $(DEPDIR)/yajl.do_compile
 	$(start_build)
 	cd $(DIR_yajl) && \
 		$(INSTALL_yajl)
@@ -4325,8 +4238,7 @@ $(DEPDIR)/libpcre.do_compile: $(DEPDIR)/libpcre.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libpcre: \
-$(DEPDIR)/%libpcre: $(DEPDIR)/libpcre.do_compile
+$(DEPDIR)/libpcre: $(DEPDIR)/libpcre.do_compile
 	$(start_build)
 	cd $(DIR_libpcre) && \
 		sed -e "s,^prefix=,prefix=$(targetprefix)," < pcre-config > $(crossprefix)/bin/pcre-config && \
@@ -4369,8 +4281,7 @@ $(DEPDIR)/libcdio.do_compile: $(DEPDIR)/libcdio.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libcdio: \
-$(DEPDIR)/%libcdio: $(DEPDIR)/libcdio.do_compile
+$(DEPDIR)/libcdio: $(DEPDIR)/libcdio.do_compile
 	$(start_build)
 	cd $(DIR_libcdio) && \
 		$(INSTALL_libcdio)
@@ -4412,8 +4323,7 @@ $(DEPDIR)/jasper.do_compile: $(DEPDIR)/jasper.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/jasper: \
-$(DEPDIR)/%jasper: $(DEPDIR)/jasper.do_compile
+$(DEPDIR)/jasper: $(DEPDIR)/jasper.do_compile
 	$(start_build)
 	cd $(DIR_jasper@/@DIR_jasper) && \
 		$(INSTALL_jasper)
@@ -4452,8 +4362,7 @@ $(DEPDIR)/mysql.do_compile: $(DEPDIR)/mysql.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/mysql: \
-$(DEPDIR)/%mysql: $(DEPDIR)/mysql.do_compile
+$(DEPDIR)/mysql: $(DEPDIR)/mysql.do_compile
 	$(start_build)
 	cd $(DIR_mysql) && \
 		$(INSTALL_mysql)
@@ -4489,8 +4398,7 @@ $(DEPDIR)/xupnpd.do_compile: $(DEPDIR)/xupnpd.do_prepare
 	$(MAKE) embedded
 	touch $@
 
-$(DEPDIR)/xupnpd: \
-$(DEPDIR)/%xupnpd: $(DEPDIR)/xupnpd.do_compile
+$(DEPDIR)/xupnpd: $(DEPDIR)/xupnpd.do_compile
 	$(start_build)
 	cd $(DIR_xupnpd)  && \
 	  install -d 0644  $(PKDIR)/{etc,usr/bin}; \
@@ -4539,8 +4447,7 @@ $(DEPDIR)/libmicrohttpd.do_compile: $(DEPDIR)/libmicrohttpd.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libmicrohttpd: \
-$(DEPDIR)/%libmicrohttpd: $(DEPDIR)/libmicrohttpd.do_compile
+$(DEPDIR)/libmicrohttpd: $(DEPDIR)/libmicrohttpd.do_compile
 	$(start_build)
 	cd $(DIR_libmicrohttpd) && \
 		$(INSTALL_libmicrohttpd)
@@ -4578,8 +4485,7 @@ $(DEPDIR)/libexif.do_compile: $(DEPDIR)/libexif.do_prepare
 		--prefix=/usr
 	touch $@
 
-$(DEPDIR)/libexif: \
-$(DEPDIR)/%libexif: $(DEPDIR)/libexif.do_compile
+$(DEPDIR)/libexif: $(DEPDIR)/libexif.do_compile
 	$(start_build)
 	cd $(DIR_libexif) && \
 		$(INSTALL_libexif)
@@ -4624,8 +4530,7 @@ $(DEPDIR)/minidlna.do_compile: $(DEPDIR)/minidlna.do_prepare
 	LIBATTR=no
 	touch $@
 
-$(DEPDIR)/minidlna: \
-$(DEPDIR)/%minidlna: $(DEPDIR)/minidlna.do_compile
+$(DEPDIR)/minidlna: $(DEPDIR)/minidlna.do_compile
 	$(start_build)
 	cd $(DIR_minidlna) && \
 		$(INSTALL_minidlna)
@@ -4701,8 +4606,7 @@ $(DEPDIR)/vlc.do_compile: $(DEPDIR)/vlc.do_prepare
 		--enable-run-as-root
 	touch $@
 
-$(DEPDIR)/vlc: \
-$(DEPDIR)/%vlc: $(DEPDIR)/vlc.do_compile
+$(DEPDIR)/vlc: $(DEPDIR)/vlc.do_compile
 	$(start_build)
 	cd $(DIR_vlc) && \
 		$(INSTALL_vlc)
@@ -4742,8 +4646,7 @@ $(DEPDIR)/djmount.do_compile: $(DEPDIR)/djmount.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/djmount: \
-$(DEPDIR)/%djmount: $(DEPDIR)/djmount.do_compile
+$(DEPDIR)/djmount: $(DEPDIR)/djmount.do_compile
 	$(start_build)
 	cd $(DIR_djmount) && \
 		$(INSTALL_djmount)
@@ -4782,8 +4685,7 @@ $(DEPDIR)/libupnp.do_compile: $(DEPDIR)/libupnp.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libupnp: \
-$(DEPDIR)/%libupnp: $(DEPDIR)/libupnp.do_compile
+$(DEPDIR)/libupnp: $(DEPDIR)/libupnp.do_compile
 	$(start_build)
 	cd $(DIR_libupnp) && \
 		$(INSTALL_libupnp)
@@ -4826,8 +4728,7 @@ $(DEPDIR)/rarfs.do_compile: $(DEPDIR)/rarfs.do_prepare
 		--prefix=/usr
 	touch $@
 
-$(DEPDIR)/rarfs: \
-$(DEPDIR)/%rarfs: $(DEPDIR)/rarfs.do_compile
+$(DEPDIR)/rarfs: $(DEPDIR)/rarfs.do_compile
 	$(start_build)
 	cd $(DIR_rarfs) && \
 		$(INSTALL_rarfs)
@@ -4861,8 +4762,7 @@ $(DEPDIR)/sshfs.do_compile: $(DEPDIR)/sshfs.do_prepare
 		--prefix=/usr
 	touch $@
 
-$(DEPDIR)/sshfs: \
-$(DEPDIR)/%sshfs: $(DEPDIR)/sshfs.do_compile
+$(DEPDIR)/sshfs: $(DEPDIR)/sshfs.do_compile
 	cd $(DIR_sshfs) && \
 		$(INSTALL_sshfs)
 	touch $@
@@ -4896,8 +4796,7 @@ $(DEPDIR)/gmediarender.do_compile: $(DEPDIR)/gmediarender.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/gmediarender: \
-$(DEPDIR)/%gmediarender: $(DEPDIR)/gmediarender.do_compile
+$(DEPDIR)/gmediarender: $(DEPDIR)/gmediarender.do_compile
 	cd $(DIR_gmediarender) && \
 		$(INSTALL_gmediarender)
 	touch $@
@@ -4946,8 +4845,7 @@ $(DEPDIR)/mediatomb.do_compile: $(DEPDIR)/mediatomb.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/mediatomb: \
-$(DEPDIR)/%mediatomb: $(DEPDIR)/mediatomb.do_compile
+$(DEPDIR)/mediatomb: $(DEPDIR)/mediatomb.do_compile
 	$(start_build)
 	cd $(DIR_mediatomb) && \
 		$(INSTALL_mediatomb)
@@ -4984,8 +4882,7 @@ $(DEPDIR)/tinyxml.do_compile: $(DEPDIR)/tinyxml.do_prepare
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/tinyxml: \
-$(DEPDIR)/%tinyxml: $(DEPDIR)/tinyxml.do_compile
+$(DEPDIR)/tinyxml: $(DEPDIR)/tinyxml.do_compile
 	$(start_build)
 	cd $(DIR_tinyxml) && \
 		$(INSTALL_tinyxml)
@@ -5029,8 +4926,7 @@ $(DEPDIR)/libnfs.do_compile: $(DEPDIR)/libnfs.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libnfs: \
-$(DEPDIR)/%libnfs: $(DEPDIR)/libnfs.do_compile
+$(DEPDIR)/libnfs: $(DEPDIR)/libnfs.do_compile
 	$(start_build)
 	cd $(DIR_libnfs) && \
 		$(INSTALL_libnfs)
@@ -5065,8 +4961,7 @@ $(DEPDIR)/taglib.do_compile: $(DEPDIR)/taglib.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/taglib: \
-$(DEPDIR)/%taglib: $(DEPDIR)/taglib.do_compile
+$(DEPDIR)/taglib: $(DEPDIR)/taglib.do_compile
 	$(start_build)
 	cd $(DIR_taglib) && \
 		$(INSTALL_taglib)
@@ -5101,8 +4996,7 @@ $(DEPDIR)/e2_rtmpgw.do_compile: $(DEPDIR)/e2_rtmpgw.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/e2_rtmpgw: \
-$(DEPDIR)/%e2_rtmpgw: $(DEPDIR)/e2_rtmpgw.do_compile
+$(DEPDIR)/e2_rtmpgw: $(DEPDIR)/e2_rtmpgw.do_compile
 	$(start_build)
 	cd $(DIR_e2_rtmpgw) && \
 		$(INSTALL_e2_rtmpgw)
