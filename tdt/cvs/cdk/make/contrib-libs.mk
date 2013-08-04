@@ -3439,6 +3439,7 @@ $(DEPDIR)/libusb.do_compile: $(DEPDIR)/libusb.do_prepare
 		$(MAKE) all
 	touch $@
 
+	
 $(DEPDIR)/libusb: \
 $(DEPDIR)/%libusb: $(DEPDIR)/libusb.do_compile
 	$(start_build)
@@ -3456,8 +3457,10 @@ BEGIN[[
 graphlcd
   git
   {PN}-{PV}
-  nothing:git://projects.vdr-developer.org/{PN}-base.git:r=281feef328f8e3772f7a0dde0a90c3a5260c334d:b=touchcol
+  nothing:git://projects.vdr-developer.org/{PN}-base.git:r=1e01a8963f9ab95ba40ddb44a6c166b8e546053d:b=touchcol
   patch:file://{PN}.patch
+  patch:file://{PN}_add_dynload_support.patch
+  patch:file://{PN}_support_libusb1.0.patch
   make:install:DESTDIR=PKDIR
 ;
 ]]END
@@ -3471,7 +3474,7 @@ FILES_graphlcd = \
 /usr/lib/libglcdskin* \
 /etc/graphlcd.conf
 
-$(DEPDIR)/graphlcd.do_prepare: bootstrap libusb $(DEPENDS_graphlcd)
+$(DEPDIR)/graphlcd.do_prepare: bootstrap libusb2 $(DEPENDS_graphlcd)
 	$(PREPARE_graphlcd)
 	touch $@
 
