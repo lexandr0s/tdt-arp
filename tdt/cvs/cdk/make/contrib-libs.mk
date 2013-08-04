@@ -3529,6 +3529,7 @@ $(DEPDIR)/libgd2.do_compile: $(DEPDIR)/libgd2.do_prepare
 		--host=$(target) \
 		--prefix=/usr && \
 		$(MAKE)
+	touch $@
 
 $(DEPDIR)/libgd2: \
 $(DEPDIR)/%libgd2: $(DEPDIR)/libgd2.do_compile
@@ -3545,7 +3546,7 @@ $(DEPDIR)/%libgd2: $(DEPDIR)/libgd2.do_compile
 #
 BEGIN[[
 libusb2
-  1.0.8
+  1.0.9
   libusb-{PV}
   extract:http://downloads.sourceforge.net/project/libusb/libusb-1.0/libusb-{PV}/libusb-{PV}.tar.bz2
   make:install:DESTDIR=PKDIR
@@ -3569,6 +3570,7 @@ $(DEPDIR)/libusb2.do_compile: $(DEPDIR)/libusb2.do_prepare
 		--host=$(target) \
 		--prefix=/usr && \
 		$(MAKE) all
+	touch $@
 
 $(DEPDIR)/libusb2: \
 $(DEPDIR)/%libusb2: $(DEPDIR)/libusb2.do_compile
@@ -3608,6 +3610,7 @@ $(DEPDIR)/libusbcompat.do_compile: $(DEPDIR)/libusbcompat.do_prepare
 		--host=$(target) \
 		--prefix=/usr && \
 		$(MAKE)
+	touch $@
 
 $(DEPDIR)/libusbcompat: \
 $(DEPDIR)/%libusbcompat: $(DEPDIR)/libusbcompat.do_compile
