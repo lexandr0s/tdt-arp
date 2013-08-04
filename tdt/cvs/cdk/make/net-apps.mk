@@ -47,8 +47,7 @@ $(DEPDIR)/nfs_utils.do_compile: bootstrap e2fsprogs $(DEPDIR)/nfs_utils.do_prepa
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/nfs_utils: \
-$(DEPDIR)/%nfs_utils: $(NFS_UTILS_ADAPTED_ETC_FILES:%=root/etc/%) \
+$(DEPDIR)/nfs_utils: $(NFS_UTILS_ADAPTED_ETC_FILES:%=root/etc/%) \
 		$(DEPDIR)/nfs_utils.do_compile
 	$(start_build)
 	cd $(DIR_nfs_utils) && \
@@ -104,8 +103,7 @@ $(DEPDIR)/vsftpd.do_compile: bootstrap $(DEPDIR)/vsftpd.do_prepare
 		$(MAKE) $(MAKE_OPTS)
 	touch $@
 
-$(DEPDIR)/vsftpd: \
-$(DEPDIR)/%vsftpd: $(DEPDIR)/vsftpd.do_compile
+$(DEPDIR)/vsftpd: $(DEPDIR)/vsftpd.do_compile
 	$(start_build)
 	mkdir -p $(PKDIR)/etc/
 	mkdir -p $(PKDIR)/usr/bin/
@@ -148,8 +146,7 @@ $(DEPDIR)/ethtool.do_compile: bootstrap $(DEPDIR)/ethtool.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/ethtool: \
-$(DEPDIR)/%ethtool: $(DEPDIR)/ethtool.do_compile
+$(DEPDIR)/ethtool: $(DEPDIR)/ethtool.do_compile
 	$(start_build)
 	cd $(DIR_ethtool)  && \
 		$(INSTALL_ethtool)
@@ -240,8 +237,7 @@ $(DEPDIR)/samba.do_compile: $(DEPDIR)/samba.do_prepare
 		$(target)-strip -s bin/smbd && $(target)-strip -s bin/nmbd
 	touch $@
 
-$(DEPDIR)/samba: \
-$(DEPDIR)/%samba: $(DEPDIR)/samba.do_compile
+$(DEPDIR)/samba: $(DEPDIR)/samba.do_compile
 	$(start_build)
 	cd $(DIR_samba) && \
 		cd source3 && \
@@ -281,8 +277,7 @@ $(DEPDIR)/netio.do_compile: bootstrap $(DEPDIR)/netio.do_prepare
 		$(MAKE) all O=.o X= CFLAGS="-DUNIX" LIBS="$(LDFLAGS) -lpthread" OUT=-o
 	touch $@
 
-$(DEPDIR)/netio: \
-$(DEPDIR)/%netio: $(DEPDIR)/netio.do_compile
+$(DEPDIR)/netio: $(DEPDIR)/netio.do_compile
 	$(start_build)
 	cd $(DIR_netio) && \
 		$(INSTALL) -d $(PKDIR)/usr/bin && \
@@ -327,8 +322,7 @@ $(DEPDIR)/lighttpd.do_compile: bootstrap $(DEPDIR)/lighttpd.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/lighttpd: \
-$(DEPDIR)/%lighttpd: $(DEPDIR)/lighttpd.do_compile
+$(DEPDIR)/lighttpd: $(DEPDIR)/lighttpd.do_compile
 	$(start_build)
 	cd $(DIR_lighttpd) && \
 		$(INSTALL_lighttpd)
@@ -374,8 +368,7 @@ $(DEPDIR)/netkit_ftp.do_compile: bootstrap ncurses libreadline $(DEPDIR)/netkit_
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/netkit_ftp: \
-$(DEPDIR)/%netkit_ftp: $(DEPDIR)/netkit_ftp.do_compile
+$(DEPDIR)/netkit_ftp: $(DEPDIR)/netkit_ftp.do_compile
 	$(start_build)
 	cd $(DIR_netkit_ftp)  && \
 		$(INSTALL_netkit_ftp)
@@ -410,8 +403,7 @@ $(DEPDIR)/wireless_tools.do_compile: bootstrap $(DEPDIR)/wireless_tools.do_prepa
 		$(MAKE) $(MAKE_OPTS)
 	touch $@
 
-$(DEPDIR)/wireless_tools: \
-$(DEPDIR)/%wireless_tools: $(DEPDIR)/wireless_tools.do_compile
+$(DEPDIR)/wireless_tools: $(DEPDIR)/wireless_tools.do_compile
 	$(start_build)
 	cd $(DIR_wireless_tools)  && \
 		$(INSTALL_wireless_tools)
@@ -447,8 +439,7 @@ $(DEPDIR)/wpa_supplicant.do_compile: bootstrap $(DEPDIR)/wpa_supplicant.do_prepa
 		$(MAKE) $(MAKE_OPTS)
 	touch $@
 
-$(DEPDIR)/wpa_supplicant: \
-$(DEPDIR)/%wpa_supplicant: $(DEPDIR)/wpa_supplicant.do_compile
+$(DEPDIR)/wpa_supplicant: $(DEPDIR)/wpa_supplicant.do_compile
 	$(start_build)
 	cd $(DIR_wpa_supplicant)/wpa_supplicant && \
 		$(INSTALL_wpa_supplicant)
@@ -512,8 +503,7 @@ $(DEPDIR)/transmission.do_compile: bootstrap libevent-dev curl $(DEPDIR)/transmi
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/transmission: \
-$(DEPDIR)/%transmission: $(DEPDIR)/transmission.do_compile
+$(DEPDIR)/transmission: $(DEPDIR)/transmission.do_compile
 	$(start_build)
 	cd $(DIR_transmission) && \
 		$(INSTALL_transmission) && \
