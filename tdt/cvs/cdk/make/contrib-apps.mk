@@ -184,7 +184,7 @@ usb_modeswitch
 ]]END
 
 DESCRIPTION_usb_modeswitch = usb_modeswitch
-RDEPENDS_usb_modeswitch = libusb usb_modeswitch_data
+RDEPENDS_usb_modeswitch = libusb2 libusbcompat usb_modeswitch_data
 FILES_usb_modeswitch = \
 /etc/* \
 /lib/udev/* \
