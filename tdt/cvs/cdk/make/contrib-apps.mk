@@ -215,7 +215,7 @@ $(DEPDIR)/%usb_modeswitch: $(DEPDIR)/usb_modeswitch.do_compile
 #
 BEGIN[[
 usb_modeswitch_data
-  20121109
+  20130610
   {PN}-{PV}
   extract:http://www.draisberghof.de/usb_modeswitch/{PN}-{PV}.tar.bz2
   patch:file://{PN}.patch
