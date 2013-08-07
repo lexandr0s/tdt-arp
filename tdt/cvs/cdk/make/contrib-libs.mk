@@ -3406,49 +3406,6 @@ $(DEPDIR)/%gst_plugins_dvbmediasink: $(DEPDIR)/gst_plugins_dvbmediasink.do_compi
 
 ##############################   EXTERNAL_LCD   ################################
 
-#
-# libusb
-#
-BEGIN[[
-libusb
-  0.1.12
-  {PN}-{PV}
-  extract:http://downloads.sourceforge.net/{PN}/{PN}-{PV}.tar.gz
-  make:install:DESTDIR=PKDIR
-;
-]]END
-
-DESCRIPTION_libusb = "libusb is a library which allows userspace application access to USB devices."
-
-FILES_libusb = \
-/usr/lib/libusb* \
-/usr/lib/libusbpp*
-
-$(DEPDIR)/libusb.do_prepare: $(DEPENDS_libusb)
-	$(PREPARE_libusb)
-	touch $@
-
-$(DEPDIR)/libusb.do_compile: $(DEPDIR)/libusb.do_prepare
-	export PATH=$(hostprefix)/bin:$(PATH) && \
-	cd $(DIR_libusb) && \
-	$(BUILDENV) \
-	./configure \
-		--host=$(target) \
-		--disable-build-docs \
-		--prefix=/usr && \
-		$(MAKE) all
-	touch $@
-
-	
-$(DEPDIR)/libusb: \
-$(DEPDIR)/%libusb: $(DEPDIR)/libusb.do_compile
-	$(start_build)
-	cd $(DIR_libusb) && \
-		$(INSTALL_libusb)
-	$(tocdk_build)
-	$(toflash_build)
-#	@DISTCLEANUP_libusb@
-	touch $@
 
 #
 # graphlcd
