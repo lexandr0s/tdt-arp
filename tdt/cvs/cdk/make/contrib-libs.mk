@@ -3546,7 +3546,7 @@ $(DEPDIR)/%libusb2: $(DEPDIR)/libusb2.do_compile
 # libusb-compat
 #
 BEGIN[[
-libusb-compat
+libusb_compat
   0.1.5
   libusb-compat-{PV}
   extract:http://downloads.sourceforge.net/project/libusb/libusb-compat-0.1/libusb-compat-{PV}/libusb-compat-{PV}.tar.bz2
@@ -3554,16 +3554,16 @@ libusb-compat
 ;
 ]]END
 
-DESCRIPTION_libusbcompat = "A compatibility layer allowing applications written for libusb-0.1 to work with libusb-1.0"
-FILES_libusbcompat = \
+DESCRIPTION_libusb_compat = "A compatibility layer allowing applications written for libusb-0.1 to work with libusb-1.0"
+FILES_libusb_compat = \
 /usr/lib/*.so*
 
-$(DEPDIR)/libusbcompat.do_prepare: bootstrap libusb2 $(DEPENDS_libusbcompat)
-	$(PREPARE_libusbcompat)
+$(DEPDIR)/libusb_compat.do_prepare: bootstrap libusb2 $(DEPENDS_libusb_compat)
+	$(PREPARE_libusb_compat)
 	touch $@
 
-$(DEPDIR)/libusbcompat.do_compile: $(DEPDIR)/libusbcompat.do_prepare
-	cd $(DIR_libusbcompat) && \
+$(DEPDIR)/libusb_compat.do_compile: $(DEPDIR)/libusb_compat.do_prepare
+	cd $(DIR_libusb_compat) && \
 	$(BUILDENV) \
 	./configure \
 		--build=$(build) \
@@ -3572,11 +3572,11 @@ $(DEPDIR)/libusbcompat.do_compile: $(DEPDIR)/libusbcompat.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/libusbcompat: \
-$(DEPDIR)/%libusbcompat: $(DEPDIR)/libusbcompat.do_compile
+$(DEPDIR)/libusb_compat: \
+$(DEPDIR)/%libusb_compat: $(DEPDIR)/libusb_compat.do_compile
 	$(start_build)
-	cd $(DIR_libusbcompat) && \
-		$(INSTALL_libusbcompat)
+	cd $(DIR_libusb_compat) && \
+		$(INSTALL_libusb_compat)
 	$(tocdk_build)
 	$(toflash_build)
 #	@DISTCLEANUP_libusbcompat@
