@@ -1,5 +1,5 @@
---- usb-modeswitch-data-20121109/Makefile.orig	2012-11-09 00:30:14.000000000 +0200
-+++ usb-modeswitch-data-20121109/Makefile	2012-12-07 10:48:13.968511781 +0200
+--- a/Makefile	2013-08-07 22:25:22.000000000 +0300
++++ b/Makefile	2013-08-15 22:21:30.600498245 +0300
 @@ -13,14 +13,14 @@
  clean:
  	$(RM) 40-usb_modeswitch.rules
@@ -7,13 +7,23 @@
 -install: all files-install db-install rules-reload
 +install: all files-install db-install
  
- install-packed: files-install db-install-packed rules-reload
+-install-packed: files-install db-install-packed rules-reload
++install-packed: files-install db-install-packed
  
  files-install: 
  	install -d $(PREFIX)/share/usb_modeswitch
  	install -d $(ETCDIR)/usb_modeswitch.d
 -	install -D --mode=644 40-usb_modeswitch.rules $(RULESDIR)/40-usb_modeswitch.rules
-+	#install -D --mode=644 40-usb_modeswitch.rules $(RULESDIR)/40-usb_modeswitch.rules
++# 	install -D --mode=644 40-usb_modeswitch.rules $(RULESDIR)/40-usb_modeswitch.rules
  
  40-usb_modeswitch.rules:
  	./gen-rules.tcl
+@@ -54,7 +54,7 @@
+ 		fi \
+ 	fi
+ 
+-uninstall: files-uninstall rules-reload
++uninstall: files-uninstall
+ 
+ files-uninstall:
+ 	$(RM) $(RULESDIR)/40-usb_modeswitch.rules

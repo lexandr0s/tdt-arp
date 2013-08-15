@@ -1,14 +1,13 @@
---- usb-modeswitch-1.2.5/Makefile.orig	2012-09-07 22:54:31.000000000 +0300
-+++ usb-modeswitch-1.2.5/Makefile	2012-12-06 12:57:33.304294479 +0200
-@@ -74,9 +74,9 @@
- 
- install-common: $(PROG) usb_modeswitch_dispatcher
+--- a/Makefile	2013-08-06 19:45:40.000000000 +0300
++++ b/Makefile	2013-08-15 22:15:54.352508773 +0300
+@@ -76,8 +76,8 @@
  	install -D --mode=755 usb_modeswitch $(SBINDIR)/usb_modeswitch
--	install -D --mode=755 usb_modeswitch.sh $(UDEVDIR)/usb_modeswitch
-+	#install -D --mode=755 usb_modeswitch.sh $(UDEVDIR)/usb_modeswitch
+ 	install -D --mode=755 usb_modeswitch.sh $(UDEVDIR)/usb_modeswitch
  	install -D --mode=644 usb_modeswitch.conf $(ETCDIR)/usb_modeswitch.conf
 -	install -D --mode=644 usb_modeswitch.1 $(MANDIR)/usb_modeswitch.1
-+	#install -D --mode=644 usb_modeswitch.1 $(MANDIR)/usb_modeswitch.1
- 	install -D --mode=755 usb_modeswitch_dispatcher $(SBINDIR)/usb_modeswitch_dispatcher
+-	install -D --mode=755 usb_modeswitch_dispatcher $(SBINDIR)/usb_modeswitch_dispatcher
++#	install -D --mode=644 usb_modeswitch.1 $(MANDIR)/usb_modeswitch.1
++#	install -D --mode=755 usb_modeswitch_dispatcher $(SBINDIR)/usb_modeswitch_dispatcher
  	install -d $(DESTDIR)/var/lib/usb_modeswitch
  
+ install: install-script
