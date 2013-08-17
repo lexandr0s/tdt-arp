@@ -1862,3 +1862,47 @@ $(DEPDIR)/%gettext: $(DEPDIR)/gettext.do_compile
 	$(toflash_build)
 #	@DISTCLEANUP_gettext@
 	touch $@
+
+
+
+#
+# tor
+#
+BEGIN[[
+tor
+  0.2.3.25
+  {PN}-{PV}
+  https://www.torproject.org/dist/{PN}-{PV}.tar.gz
+#  patch-0:file://tor.patch
+  make:install:DESTDIR=PKDIR
+
+;
+]]END
+
+DESCRIPTION_tor := Tor is a network of virtual tunnels that allows you to improve your privacy and security on the Internet.
+RDEPENDS_tor = libevent
+PKGR_tor = r0
+
+$(DEPDIR)/tor.do_prepare: $(DEPENDS_tor) $(RDEPENDS_tor)
+	$(PREPARE_tor)
+	touch $@
+
+$(DEPDIR)/tor.do_compile: $(DEPDIR)/tor.do_prepare
+	cd $(DIR_tor) && \
+		$(BUILDENV) \
+		./configure \
+			--prefix= \
+			--datarootdir=/usr/share \
+			--disable-asciidoc \
+			--build=$(build) \
+			--host=$(target) \
+			--target=$(target)  && \
+		$(MAKE) 
+	touch $@
+
+$(DEPDIR)/tor: $(DEPDIR)/tor.do_compile
+	$(start_build)
+	cd $(DIR_tor)  && \
+		$(INSTALL_tor)
+	$(extra_build)
+	touch $@
