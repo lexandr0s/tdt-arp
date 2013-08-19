@@ -1566,6 +1566,10 @@ $(DEPDIR)/ffmpeg.do_compile: $(DEPDIR)/ffmpeg.do_prepare
 		--enable-decoder=aac \
 		--enable-decoder=dvbsub \
 		--enable-decoder=flac \
+		--enable-decoder=wmv3 \
+		--enable-decoder=vp6 \
+		--enable-decoder=vp6a \
+		--enable-decoder=vp6f \
 		--enable-decoder=flv \
 		--enable-decoder=h261 \
 		--enable-decoder=h263 \
@@ -1587,6 +1591,7 @@ $(DEPDIR)/ffmpeg.do_compile: $(DEPDIR)/ffmpeg.do_prepare
 		--enable-decoder=vorbis \
 		--enable-parser=mjpeg \
 		--enable-demuxer=mjpeg \
+		--enable-demuxer=wav \
 		--enable-protocol=file \
 		--enable-protocol=hls \
 		--enable-protocol=udp \
@@ -3240,6 +3245,9 @@ $(DEPDIR)/gst_ffmpeg.do_compile: $(DEPDIR)/gst_ffmpeg.do_prepare
 		--enable-decoder=ogg \
 		--enable-decoder=vorbis \
 		--enable-decoder=flac \
+		--enable-decoder=vp6 \
+		--enable-decoder=vp6a \
+		--enable-decoder=vp6f \
 		\
 		--disable-demuxers \
 		--enable-demuxer=ogg \
