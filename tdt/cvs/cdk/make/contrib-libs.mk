@@ -1567,6 +1567,7 @@ $(DEPDIR)/ffmpeg.do_compile: $(DEPDIR)/ffmpeg.do_prepare
 		--enable-decoder=dvbsub \
 		--enable-decoder=flac \
 		--enable-decoder=wmv3 \
+		--enable-decoder=pcm_s16le \
 		--enable-decoder=vp6 \
 		--enable-decoder=vp6a \
 		--enable-decoder=vp6f \
