@@ -61,7 +61,7 @@ $(DEPDIR)/module_init_tools.do_compile: $(DEPDIR)/module_init_tools.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/module_init_tools: $(DEPDIR)/%lsb $(MODULE_INIT_TOOLS_ADAPTED_ETC_FILES:%=root/etc/%) $(DEPDIR)/module_init_tools.do_compile
+$(DEPDIR)/module_init_tools: $(DEPDIR)/lsb $(MODULE_INIT_TOOLS_ADAPTED_ETC_FILES:%=root/etc/%) $(DEPDIR)/module_init_tools.do_compile
 	cd $(DIR_module_init_tools) && \
 		$(INSTALL_module_init_tools)
 	$(call adapted-etc-files,$(MODULE_INIT_TOOLS_ADAPTED_ETC_FILES))
@@ -350,7 +350,7 @@ $(DEPDIR)/portmap.do_compile: $(DEPDIR)/portmap.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/portmap: $(DEPDIR)/%lsb $(PORTMAP_ADAPTED_ETC_FILES:%=root/etc/%) $(DEPDIR)/portmap.do_compile
+$(DEPDIR)/portmap: $(DEPDIR)/lsb $(PORTMAP_ADAPTED_ETC_FILES:%=root/etc/%) $(DEPDIR)/portmap.do_compile
 	$(start_build)
 	mkdir -p $(PKDIR)/sbin/
 	mkdir -p $(PKDIR)/etc/init.d/
