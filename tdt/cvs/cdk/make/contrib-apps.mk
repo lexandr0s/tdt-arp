@@ -167,7 +167,7 @@ $(DEPDIR)/pppd: $(DEPDIR)/pppd.do_compile
 #
 BEGIN[[
 usb_modeswitch
-  1.2.5
+  1.2.7
   {PN}-{PV}
   extract:http://www.draisberghof.de/usb_modeswitch/{PN}-{PV}.tar.bz2
   patch:file://{PN}.patch
@@ -176,7 +176,7 @@ usb_modeswitch
 ]]END
 
 DESCRIPTION_usb_modeswitch = usb_modeswitch
-RDEPENDS_usb_modeswitch = libusb usb_modeswitch_data
+RDEPENDS_usb_modeswitch = libusb2 libusb_compat usb_modeswitch_data
 FILES_usb_modeswitch = \
 /etc/* \
 /lib/udev/* \
@@ -205,7 +205,7 @@ $(DEPDIR)/usb_modeswitch: $(DEPDIR)/usb_modeswitch.do_compile
 #
 BEGIN[[
 usb_modeswitch_data
-  20121109
+  20130807
   {PN}-{PV}
   extract:http://www.draisberghof.de/usb_modeswitch/{PN}-{PV}.tar.bz2
   patch:file://{PN}.patch
@@ -1597,7 +1597,9 @@ BEGIN[[
 grab
   git
   {PN}-{PV}
-  git://github.com/technic/aio-grab.git
+  git://git.code.sf.net/p/openpli/aio-grab
+  patch:file://aio-grab-ADD_ST_SUPPORT.patch
+  patch:file://aio-grab-ADD_ST_FRAMESYNC_SUPPORT.patch
   make:install:DESTDIR=PKDIR
 ;
 ]]END
@@ -1792,4 +1794,48 @@ $(DEPDIR)/gettext: $(DEPDIR)/gettext.do_compile
 		$(INSTALL_gettext)
 	$(tocdk_build)
 	$(toflash_build)
+	touch $@
+
+
+
+#
+# tor
+#
+BEGIN[[
+tor
+  0.2.3.25
+  {PN}-{PV}
+  https://www.torproject.org/dist/{PN}-{PV}.tar.gz
+#  patch-0:file://tor.patch
+  make:install:DESTDIR=PKDIR
+
+;
+]]END
+
+DESCRIPTION_tor := Tor is a network of virtual tunnels that allows you to improve your privacy and security on the Internet.
+RDEPENDS_tor = libevent
+PKGR_tor = r0
+
+$(DEPDIR)/tor.do_prepare: $(DEPENDS_tor) $(RDEPENDS_tor)
+	$(PREPARE_tor)
+	touch $@
+
+$(DEPDIR)/tor.do_compile: $(DEPDIR)/tor.do_prepare
+	cd $(DIR_tor) && \
+		$(BUILDENV) \
+		./configure \
+			--prefix= \
+			--datarootdir=/usr/share \
+			--disable-asciidoc \
+			--build=$(build) \
+			--host=$(target) \
+			--target=$(target)  && \
+		$(MAKE) 
+	touch $@
+
+$(DEPDIR)/tor: $(DEPDIR)/tor.do_compile
+	$(start_build)
+	cd $(DIR_tor)  && \
+		$(INSTALL_tor)
+	$(extra_build)
 	touch $@

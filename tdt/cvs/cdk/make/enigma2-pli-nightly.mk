@@ -33,7 +33,7 @@ ifdef ENABLE_E2PD4
 endif
 
 ifdef ENABLE_E2PD5
-  git://github.com:schpuntik/enigma2-pli.git;b=master;protocol=ssh
+  git://github.com:schpuntik/enigma2-pli-arp.git;b=master;protocol=ssh
 endif
 
 ifdef ENABLE_E2PD6
@@ -97,6 +97,7 @@ $(DIR_enigma2_pli)/config.status: bootstrap opkg ethtool freetype expat fontconf
 		./autogen.sh && \
 		sed -e 's|#!/usr/bin/python|#!$(crossprefix)/bin/python|' -i po/xml2po.py && \
 		./configure \
+			--build=$(build) \
 			--host=$(target) \
 			--with-libsdl=no \
 			--datadir=/usr/share \

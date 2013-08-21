@@ -4989,20 +4989,42 @@ static enum dvbfe_search stv090x_search(struct dvb_frontend *fe, struct dvbfe_pa
 }
 #else
 
+static int stv090x_set_pls(struct stv090x_state *state, u8 pls_mode, u32 pls_code)
+{
+	if (pls_mode == 0 && pls_code == 0)
+		pls_code = 1;
+	pls_mode &= 0x03;
+	pls_code &= 0x3FFFF;
+
+	dprintk(1, "Set PLS code %d (mode %d)", pls_code, pls_mode);
+	if (STV090x_WRITE_DEMOD(state, PLROOT2, (pls_mode<<2) | (pls_code>>16)) < 0)
+		goto err;
+	if (STV090x_WRITE_DEMOD(state, PLROOT1, pls_code>>8) < 0)
+		goto err;
+	if (STV090x_WRITE_DEMOD(state, PLROOT0, pls_code) < 0)
+		goto err;
+	return 0;
+err:
+	dprintk(1, "I/O error");
+	return -1;
+}
+
+#define NO_STREAM_ID_FILTER	(~0U)
+
 static int stv090x_set_mis(struct stv090x_state *state, int mis)
 {
 	u32 reg;
 
-	if (mis < 0 || mis > 255)
-	{
+	if (mis == NO_STREAM_ID_FILTER) {
 		dprintk(1, "Disable MIS filtering");
+		stv090x_set_pls(state, 0, 0);
 		reg = STV090x_READ_DEMOD(state, PDELCTRL1);
 		STV090x_SETFIELD_Px(reg, FILTER_EN_FIELD, 0x00);
 		if (STV090x_WRITE_DEMOD(state, PDELCTRL1, reg) < 0)
 			goto err;
-	} else
-	{
+	} else {
 		dprintk(1, "Enable MIS filtering - %d", mis);
+		stv090x_set_pls(state, (mis>>26) & 0x3, (mis>>8) & 0x3FFFF);
 		reg = STV090x_READ_DEMOD(state, PDELCTRL1);
 		STV090x_SETFIELD_Px(reg, FILTER_EN_FIELD, 0x01);
 		if (STV090x_WRITE_DEMOD(state, PDELCTRL1, reg) < 0)
@@ -5265,7 +5287,6 @@ static int stv090x_read_cnr(struct dvb_frontend *fe, u16 *cnr)
 	s32 val_0, val_1, val = 0;
 	u8 lock_f;
 	s32 snr;
-	s32 div;
 
 	switch (state->delsys)
 	{
@@ -5286,9 +5307,9 @@ static int stv090x_read_cnr(struct dvb_frontend *fe, u16 *cnr)
 			}
 			val /= 16;
 			snr = stv090x_table_lookup(stv090x_s2cn_tab, ARRAY_SIZE(stv090x_s2cn_tab) - 1, val);
-			div = stv090x_s2cn_tab[0].read - stv090x_s2cn_tab[ARRAY_SIZE(stv090x_s2cn_tab) - 1].read;
-			*cnr = 0xFFFF - ((val * 0xFFFF) / div);
-			/* *cnr = snr * 0xFFFF / stv090x_s2cn_tab[ARRAY_SIZE(stv090x_s2cn_tab) - 1].real; */
+			if (snr < 0) snr = 0;
+			if (snr > 200) snr = 200;
+			*cnr = snr * 0xFFFF / 200;
 		}
 		break;
 
@@ -5310,8 +5331,9 @@ static int stv090x_read_cnr(struct dvb_frontend *fe, u16 *cnr)
 			}
 			val /= 16;
 			snr = stv090x_table_lookup(stv090x_s1cn_tab, ARRAY_SIZE(stv090x_s1cn_tab) - 1, val);
-			div = stv090x_s1cn_tab[0].read - stv090x_s1cn_tab[ARRAY_SIZE(stv090x_s1cn_tab) - 1].read;
-			*cnr = 0xFFFF - ((val * 0xFFFF) / div);
+			if (snr < 0) snr = 0;
+			if (snr > 200) snr = 200;
+			*cnr = snr * 0xFFFF / 200;
 		}
 		break;
 	default:

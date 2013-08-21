@@ -20,14 +20,7 @@
  * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
  */
 
-#ifdef __TDT__
 #include <linux/version.h>
-#endif
-#if defined(__TDT__) && (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 30))
-/* sound/driver.h not available in stlinux24 */
-#else
-#include <sound/driver.h>
-#endif
 #include <linux/ioport.h>
 #include <linux/bpa2.h>
 #include <linux/init.h>
@@ -62,12 +55,12 @@ MODULE_LICENSE("GPL");
 MODULE_SUPPORTED_DEVICE("{{ALSA,Pseudo soundcard}}");
 
 #if defined(__TDT__) && (LINUX_VERSION_CODE >= KERNEL_VERSION(2, 6, 30))
-#warning Need to remove these typedefs
+/* #warning Need to remove these typedefs */
 typedef struct snd_pcm_substream snd_pcm_substream_t;
 typedef struct snd_pcm_runtime   snd_pcm_runtime_t;
 #else
 #if defined (CONFIG_KERNELVERSION) /* STLinux 2.3 */
-#warning Need to remove these typedefs
+/* #warning Need to remove these typedefs */
 typedef struct snd_pcm_substream snd_pcm_substream_t;
 typedef struct snd_pcm_runtime   snd_pcm_runtime_t;
 #endif
@@ -111,16 +104,6 @@ MODULE_PARM_DESC(pcm_substreams, "PCM substreams # (1-16) for pseudo driver.");
 module_param_array(bpa2_partition, charp, NULL, 0444);
 MODULE_PARM_DESC(bpa2_partition, "BPA2 partition ID string from which to allocate memory.");
 static struct platform_device *devices[SNDRV_CARDS];
-
-#if defined(__TDT__) && defined(HAVANA_P0207_5)
-#define snd_assert(expr, args...) do {\
-	if (!(expr)) {\
-		printk(KERN_ERR "ksound-core: BUG? (%s)\n", #expr);\
-		args;\
-	}\
-} while (0)
-#endif
-
 
 #define _CARD(n, major, minor, freq, chan, f) { \
 	.name = n, \
@@ -590,6 +573,8 @@ static int snd_card_pseudo_alloc_pages(
 	return 0;
 }
 
+static int snd_card_pseudo_hw_free(struct snd_pcm_substream *substream);
+
 static int snd_card_pseudo_hw_params(struct snd_pcm_substream *substream,
 				     struct snd_pcm_hw_params *hw_params)
 {
@@ -601,6 +586,9 @@ static int snd_card_pseudo_hw_params(struct snd_pcm_substream *substream,
                 .user_data = substream,
         };
         int err;
+
+        /* might have been called before ...  --martii */
+        snd_card_pseudo_hw_free(substream);
 
         /* allocate the hardware buffer and map it appropriately */
         err = snd_card_pseudo_alloc_pages(substream, params_buffer_bytes(hw_params));

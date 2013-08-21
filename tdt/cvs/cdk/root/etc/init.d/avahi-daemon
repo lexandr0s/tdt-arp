@@ -6,12 +6,14 @@
 
 
 
+for IFACE in "$(ls -l /sys/class/net | grep -v virtual | grep -v eth0 | awk ' { print $9 } ' )"; do
+
 case "$1" in
 	start)
-	DHCP=`grep -c 'auto wlan0' /etc/network/interfaces`
+	DHCP=`grep -c "auto $IFACE" /etc/network/interfaces`
 	 if [ "$DHCP" = "1" ]; then 
-	    echo "Starting dhcp..."
-            /sbin/udhcpc -i wlan0 -p /var/run/udhcpc.wlan0.pid -b
+	    echo "Starting dhcp... $IFACE "
+            /sbin/udhcpc -i $IFACE -p /var/run/udhcpc.$IFACE.pid -b
 	 else
 	    /etc/init.d/udhcpc start 
 	 fi  
@@ -19,8 +21,8 @@ case "$1" in
 	stop)
 	DHCP=`grep -c dhcp /etc/network/interfaces`
 	if [ "$DHCP" = "1" ]; then 
-	   echo "Stoping dhcp..."
-           kill -9 `cat  /var/run/udhcpc.wlan0.pid`
+	   echo "Stoping dhcp...$IFACE"
+           kill -9 `cat  /var/run/udhcpc.$IFACE.pid`
 	else
 	   /etc/init.d/udhcpc stop 
 	fi  
@@ -34,4 +36,5 @@ case "$1" in
 		exit 1
 	 ;;	
 esac 
+done
 exit 0
