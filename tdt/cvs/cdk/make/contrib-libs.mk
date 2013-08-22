@@ -720,7 +720,7 @@ $(DEPDIR)/libid3tag.do_compile: $(DEPDIR)/libid3tag.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libid3tag: %libz $(DEPDIR)/libid3tag.do_compile
+$(DEPDIR)/libid3tag: libz $(DEPDIR)/libid3tag.do_compile
 	$(start_build)
 	cd $(DIR_libid3tag) && \
 		$(INSTALL_libid3tag)
@@ -2193,7 +2193,7 @@ $(DEPDIR)/libxslt.do_compile: $(DEPDIR)/libxslt.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libxslt: %libxml2 libxslt.do_compile
+$(DEPDIR)/libxslt: libxml2 libxslt.do_compile
 	$(start_build)
 	cd $(DIR_libxslt) && \
 		$(INSTALL_libxslt) && \
