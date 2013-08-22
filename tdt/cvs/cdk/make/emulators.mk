@@ -4,10 +4,11 @@
 PKGR_softcams = r1
 BEGIN[[
 softcams
-	git
-	{PN}-{PV}
-	# You can separate with ';' if ':' is in use
-	git://github.com:schpuntik/cams.git;protocol=ssh
+  git
+  {PN}-{PV}
+  # You can separate with ';' if ':' is in use
+  git://github.com:schpuntik/cams.git;protocol=ssh
+;
 ]]END
 
 $(DEPDIR)/softcams: $(DEPENDS_softcams)
