@@ -1,13 +1,13 @@
 #
 # Plugins
 #
-$(DEPDIR)/enigma2-plugins: enigma2_openwebif enigma2_networkbrowser openpli-plugins
+$(DEPDIR)/enigma2-plugins: enigma2_plugin_extensions_openwebif enigma2_networkbrowser openpli-plugins
 
 #
 # enigma2-openwebif
 #
 BEGIN[[
-enigma2_openwebif
+enigma2_plugin_extensions_openwebif
   git
   e2openplugin-OpenWebif
   nothing:git://github.com/schpuntik/e2openplugin-OpenWebif.git
@@ -15,23 +15,21 @@ enigma2_openwebif
 ;
 ]]END
 
-DESCRIPTION_enigma2_openwebif = "open webinteface plugin for enigma2 by openpli team"
-PKGR_enigma2_openwebif = r1
-RDEPENDS_enigma2_openwebif = python pythoncheetah grab
+DESCRIPTION_enigma2_plugin_extensions_openwebif = "open webinteface plugin for enigma2 by openpli team"
+PKGR_enigma2_plugin_extensions_openwebif = r1
+RDEPENDS_enigma2_plugin_extensions_openwebif = python pythoncheetah grab
 
-$(DEPDIR)/enigma2_openwebif.do_prepare: bootstrap $(RDEPENDS_enigma2_openwebif) $(DEPENDS_enigma2_openwebif)
-	$(PREPARE_enigma2_openwebif)
+$(DEPDIR)/enigma2_plugin_extensions_openwebif.do_prepare: bootstrap $(RDEPENDS_enigma2_plugin_extensions_openwebif) $(DEPENDS_enigma2_plugin_extensions_openwebif)
+	$(PREPARE_enigma2_plugin_extensions_openwebif)
 	touch $@
 
-$(DEPDIR)/enigma2_openwebif: \
-$(DEPDIR)/%enigma2_openwebif: $(DEPDIR)/enigma2_openwebif.do_prepare
+$(DEPDIR)/enigma2_plugin_extensions_openwebif: \
+$(DEPDIR)/%enigma2_plugin_extensions_openwebif: $(DEPDIR)/enigma2_plugin_extensions_openwebif.do_prepare
 	$(start_build)
-	cd $(DIR_enigma2_openwebif) && \
+	cd $(DIR_enigma2_plugin_extensions_openwebif) && \
 		$(BUILDENV) \
 		mkdir -p $(PKDIR)/usr/lib/enigma2/python/Plugins/Extensions && \
-		mkdir -p $(PKDIR)/usr/bin/ && \
 		cp -a plugin $(PKDIR)/usr/lib/enigma2/python/Plugins/Extensions/OpenWebif && \
-		cp -a $(buildprefix)/root/usr/bin/grab.sh $(PKDIR)/usr/bin/
 	$(e2extra_build)
 	touch $@
 
