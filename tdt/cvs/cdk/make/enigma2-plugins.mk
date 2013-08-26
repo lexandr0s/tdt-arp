@@ -36,6 +36,48 @@ $(DEPDIR)/%enigma2_openwebif: $(DEPDIR)/enigma2_openwebif.do_prepare
 	touch $@
 
 #
+# enigma2-mediaportal
+#
+BEGIN[[
+enigma2_plugin_extensions_mediaportal
+  git
+  MediaPortal
+  nothing:git://github.com/schpuntik/MediaPortal.git
+  make:install:DESTDIR=PKDIR
+;
+]]END
+
+DESCRIPTION_enigma2_plugin_extensions_mediaportal = "Enigma2 MediaPortal"
+PKGR_enigma2_plugin_extensions_mediaportal = r0
+RDEPENDS_enigma2_plugin_extensions_mediaportal = python
+
+$(DEPDIR)/enigma2_plugin_extensions_mediaportal.do_prepare: bootstrap $(RDEPENDS_enigma2_plugin_extensions_mediaportal) $(DEPENDS_enigma2_plugin_extensions_mediaportal)
+	$(PREPARE_enigma2_plugin_extensions_mediaportal)
+	touch $@
+
+$(DEPDIR)/enigma2_plugin_extensions_mediaportal.do_compile: $(DEPDIR)/enigma2_plugin_extensions_mediaportal.do_prepare
+	cd $(DIR_enigma2_plugin_extensions_mediaportal) && \
+		./autogen.sh && \
+		$(BUILDENV) \
+		./configure \
+			--host=$(target) \
+			--prefix=/usr \
+			--datadir=/usr/share \
+			--sysconfdir=/etc \
+			STAGING_INCDIR=$(hostprefix)/usr/include \
+			STAGING_LIBDIR=$(hostprefix)/usr/lib \
+			PY_PATH=$(targetprefix)/usr \
+			$(PLATFORM_CPPFLAGS)
+	touch $@
+
+$(DEPDIR)/enigma2_plugin_extensions_mediaportal: \
+$(DEPDIR)/%enigma2_plugin_extensions_mediaportal: $(DEPDIR)/enigma2_plugin_extensions_mediaportal.do_compile
+	$(start_build)
+	cd $(DIR_enigma2_plugin_extensions_mediaportal) && \
+		$(MAKE) install DESTDIR=$(PKDIR)
+	$(e2extra_build)
+	touch $@
+#
 # enigma2-networkbrowser
 #
 BEGIN[[
