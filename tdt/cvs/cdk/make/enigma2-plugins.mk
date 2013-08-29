@@ -1,7 +1,7 @@
 #
 # Plugins
 #
-$(DEPDIR)/enigma2-plugins: enigma2_plugin_extensions_openwebif enigma2_networkbrowser openpli-plugins
+$(DEPDIR)/enigma2-plugins: enigma2_plugin_extensions_openwebif enigma2_plugin_extensions_mediaportal enigma2_networkbrowser openpli-plugins
 
 #
 # enigma2-openwebif
@@ -10,7 +10,7 @@ BEGIN[[
 enigma2_plugin_extensions_openwebif
   git
   e2openplugin-OpenWebif
-  nothing:git://github.com/schpuntik/e2openplugin-OpenWebif.git
+  nothing:git://github.com/OpenAR-P/e2openplugin-OpenWebif.git
   make:install:DESTDIR=PKDIR
 ;
 ]]END
@@ -40,7 +40,7 @@ BEGIN[[
 enigma2_plugin_extensions_mediaportal
   git
   MediaPortal
-  nothing:git://github.com/schpuntik/MediaPortal.git
+  nothing:git://github.com/OpenAR-P/MediaPortal.git
   make:install:DESTDIR=PKDIR
 ;
 ]]END
@@ -73,6 +73,7 @@ $(DEPDIR)/%enigma2_plugin_extensions_mediaportal: $(DEPDIR)/enigma2_plugin_exten
 	$(start_build)
 	cd $(DIR_enigma2_plugin_extensions_mediaportal) && \
 		$(MAKE) install DESTDIR=$(PKDIR)
+	$(toflash_build)
 	$(e2extra_build)
 	touch $@
 #
@@ -82,7 +83,7 @@ BEGIN[[
 enigma2_networkbrowser
   git
   {PN}-{PV}
-  nothing:git://openpli.git.sourceforge.net/gitroot/openpli/plugins-enigma2:sub=networkbrowser
+  nothing:git://git.code.sf.net/p/openpli/plugins-enigma2:sub=networkbrowser
   patch:file://{PN}-support_autofs.patch
   make:install:DESTDIR=PKDIR
 ;

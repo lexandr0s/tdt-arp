@@ -6,7 +6,7 @@ BEGIN[[
 e2plugin
   git
   {PN}
-  git://github.com/schpuntik/enigma2-plugins-sh4.git
+  git://github.com/OpenAR-P/enigma2-plugins-sh4.git
 ;
 ]]END
 
