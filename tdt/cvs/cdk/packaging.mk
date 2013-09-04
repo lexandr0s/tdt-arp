@@ -2,7 +2,7 @@ PARENT_PK = ''
 
 PACKAGE_PARAMS_LIST := PKGV PKGR DESCRIPTION SECTION PRIORITY MAINTAINER LICENSE PACKAGE_ARCH HOMEPAGE RDEPENDS RREPLACES RCONFLICTS SRC_URI FILES NAME preinst postinst prerm postrm conffiles PACKAGES
 
-EXPORT_ALLENV = $(shell echo '$(.VARIABLES) ' | awk -v RS=' ' '/^[a-zA-Z0-9_]+$$/')
+EXPORT_ALLENV = $(shell echo '$(.VARIABLES) ' | awk -v RS=' ' '/^[a-zA-Z0-9_-]+$$/')
 EXPORT_ENV = $(filter PARENT_PK, $(EXPORT_ALLENV))
 EXPORT_ENV += $(filter $(addsuffix _%, $(PACKAGE_PARAMS_LIST)), $(EXPORT_ALLENV))
 export $(EXPORT_ENV)
@@ -101,7 +101,7 @@ define start_build
 	$(eval export $(EXPORT_ENV))$(warning MANUAL_EXPORT)
 	@echo
 	@echo "====> checking for PARENT_PK variable"
-	$(eval $(if $(filter '',$(PARENT_PK)), $@: PARENT_PK = $(subst -,_,$(notdir $@))))
+	$(eval $(if $(filter '',$(PARENT_PK)), $@: PARENT_PK = $(notdir $@)))
 	$(eval export PARENT_PK)
 	@echo "====> start_build $(PARENT_PK)"
 	rm -rf $(PKDIR)
