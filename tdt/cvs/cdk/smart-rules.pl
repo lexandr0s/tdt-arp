@@ -187,7 +187,10 @@ sub process_rule($) {
   {
       $f = $url;
       $f =~ s#^file://##;
-      $f = "$patchesdir/$f";
+      # relative path
+      if ( not $f =~ m#^/#) {
+          $f = "$patchesdir/$f";
+      }
   }
   elsif ( $url =~ m#^($supported_protocols)# )
   {
