@@ -28,24 +28,23 @@ ifdef ENABLE_E2PD3
 endif
 
 ifdef ENABLE_E2PD4
-  git://openpli.git.sourceforge.net/gitroot/openpli/enigma2:r=002b85aa8350e9d8e88f75af48c3eb8a6cdfb880
-  patch:file://enigma2-pli-nightly.4.diff
+  git://github.com:schpuntik/enigma2-pli.git:b=staging:protocol=ssh
 endif
 
 ifdef ENABLE_E2PD5
-  git://github.com:schpuntik/enigma2-pli-arp.git;b=master;protocol=ssh
+  git://github.com:schpuntik/enigma2-pli-arp.git:b=master:protocol=ssh
 endif
 
 ifdef ENABLE_E2PD6
-    git://github.com/technic/amiko-e2-pli.git:b=testing
+    git://github.com/OpenAR-P/amiko-e2-pli.git:b=testing
 endif
 
 ifdef ENABLE_E2PD7
-  git://github.com:schpuntik/enigma2-pli.git;b=last;protocol=ssh
+  git://github.com:schpuntik/enigma2-pli.git:b=last:protocol=ssh
 endif
 
 ifdef ENABLE_E2PD8
-  git://github.com/technic/amiko-e2-pli.git:b=master
+  git://github.com/OpenAR-P/amiko-e2-pli.git:b=master
 endif
 ;
 ]]END
