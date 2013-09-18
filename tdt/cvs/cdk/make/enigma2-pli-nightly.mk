@@ -28,23 +28,23 @@ ifdef ENABLE_E2PD3
 endif
 
 ifdef ENABLE_E2PD4
-  git://github.com:schpuntik/enigma2-pli.git:b=staging:protocol=ssh
+  git://github.com:schpuntik/enigma2-pli-arp.git;b=staging;protocol=ssh
 endif
 
 ifdef ENABLE_E2PD5
-  git://github.com:schpuntik/enigma2-pli-arp.git:b=master:protocol=ssh
+  git://github.com:schpuntik/enigma2-pli-arp.git;b=master;protocol=ssh
 endif
 
 ifdef ENABLE_E2PD6
-    git://github.com/OpenAR-P/amiko-e2-pli.git:b=testing
+    git://github.com/OpenAR-P/amiko-e2-pli.git;b=testing
 endif
 
 ifdef ENABLE_E2PD7
-  git://github.com:schpuntik/enigma2-pli.git:b=last:protocol=ssh
+  git://github.com:schpuntik/enigma2-pli-arp.git;b=last;protocol=ssh
 endif
 
 ifdef ENABLE_E2PD8
-  git://github.com/OpenAR-P/amiko-e2-pli.git:b=master
+  git://github.com/OpenAR-P/amiko-e2-pli.git;b=master
 endif
 ;
 ]]END
