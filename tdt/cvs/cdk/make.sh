@@ -231,10 +231,10 @@ esac
 			echo "   1) Sat, 17 Mar 2012 19:51 - E2 OpenPli 945aeb939308b3652b56bc6c577853369d54a537"
 			echo "   2) Sat, 18 May 2012 15:26 - E2 OpenPli 839e96b79600aba73f743fd39628f32bc1628f4c"
 			echo "   3) Mon, 20 Aug 2012 16:00 - E2 OpenPli 51a7b9349070830b5c75feddc52e97a1109e381e"
-			echo "   4) Fri, 24 Aug 2012 23:42 - E2 OpenPli 002b85aa8350e9d8e88f75af48c3eb8a6cdfb880"
+			echo "   4) AR-P - E2 OpenPli non-public branch staging"
 			echo "   5) AR-P - E2 OpenPli non-public branch master"
 			echo "   6) AR-P - E2 OpenPli branch testing"
-			echo "   7) AR-P - E2 OpenPli branch last"
+			echo "   7) AR-P - E2 OpenPli non-public branch last"
 			echo "   8) AR-P - E2 OpenPli branch master"
 		    read -p "Select enigma2 OpenPli revision (0-8):"
 			
