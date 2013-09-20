@@ -169,7 +169,7 @@ samba
   {PN}-{PV}
   extract:http://www.{PN}.org/{PN}/ftp/stable/{PN}-{PV}.tar.gz
   patch:file://{PN}-{PV}.diff
-  make:install bin/smbd bin/nmbd:DESTDIR=PKDIR:prefix=./.
+  make:install:prefix=/usr:DESTDIR=PKDIR
 ;
 ]]END
 
@@ -177,9 +177,11 @@ DESCRIPTION_samba = "samba"
 FILES_samba = \
 /usr/sbin/* \
 /usr/lib/*.so \
+/usr/lib/*.so.* \
 /etc/init.d/* \
 /etc/samba/smb.conf \
-/usr/lib/vfs/*.so
+/usr/lib/vfs/*.so \
+/usr/lib/vfs/*.so.*
 
 $(DEPDIR)/samba.do_prepare: bootstrap $(DEPENDS_samba)
 	$(PREPARE_samba)
@@ -191,11 +193,14 @@ $(DEPDIR)/samba.do_compile: $(DEPDIR)/samba.do_prepare
 		cd source3 && \
 		./autogen.sh && \
 		$(BUILDENV) \
+		CFLAGS=-O2 \
 		libreplace_cv_HAVE_GETADDRINFO=no \
+		libreplace_cv_READDIR_NEEDED=no \
 		./configure \
 			--build=$(build) \
 			--host=$(target) \
 			--prefix= \
+			--includedir=/usr/include \
 			--exec-prefix=/usr \
 			--disable-pie \
 			--disable-avahi \
@@ -233,7 +238,7 @@ $(DEPDIR)/samba.do_compile: $(DEPDIR)/samba.do_prepare
 			--without-acl-support \
 			--with-configdir=/etc/samba \
 			--with-privatedir=/etc/samba \
-			--with-mandir=/usr/share/man \
+			--with-mandir=no \
 			--with-piddir=/var/run \
 			--with-logfilebase=/var/log \
 			--with-lockdir=/var/lock \
