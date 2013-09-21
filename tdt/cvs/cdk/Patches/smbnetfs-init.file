@@ -16,7 +16,7 @@ case "$1" in
 		;;
 	stop)
 		echo "Stopping smbnetfs"
-		killall /usr/bin/smbnetfs
+		killall smbnetfs
 		rmdir "${MOUNTPOINT}"
 		;;
 	*)
