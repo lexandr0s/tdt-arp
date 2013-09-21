@@ -165,7 +165,7 @@ $(DEPDIR)/%ethtool: $(DEPDIR)/ethtool.do_compile
 #
 BEGIN[[
 samba
-  3.6.12
+  3.6.18
   {PN}-{PV}
   extract:http://www.{PN}.org/{PN}/ftp/stable/{PN}-{PV}.tar.gz
   patch:file://{PN}-{PV}.diff
@@ -176,12 +176,8 @@ samba
 DESCRIPTION_samba = "samba"
 FILES_samba = \
 /usr/sbin/* \
-/usr/lib/*.so \
-/usr/lib/*.so.* \
 /etc/init.d/* \
-/etc/samba/smb.conf \
-/usr/lib/vfs/*.so \
-/usr/lib/vfs/*.so.*
+/etc/samba/smb.conf
 
 $(DEPDIR)/samba.do_prepare: bootstrap $(DEPENDS_samba)
 	$(PREPARE_samba)
