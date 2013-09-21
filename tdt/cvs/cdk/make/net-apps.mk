@@ -542,3 +542,47 @@ $(DEPDIR)/%transmission: $(DEPDIR)/transmission.do_compile
 	$(extra_build)
 #	@DISTCLEANUP_transmission@
 	touch $@
+
+#
+# SMBNETFS
+#
+BEGIN[[
+smbnetfs
+  0.5.3a
+  {PN}-{PV}
+  extract:https://sourceforge.net/projects/{PN}/files/{PN}/SMBNetFS-{PV}/{PN}-{PV}.tar.bz2
+  patch-0:file://{PN}.diff
+  nothing:file://{PN}-init.file
+  make:install:DESTDIR=PKDIR
+;
+]]END
+
+DESCRIPTION_smbnetfs = "smbnetfs"
+
+$(DEPDIR)/smbnetfs.do_prepare: $(DEPENDS_smbnetfs)
+	$(PREPARE_smbnetfs)
+	touch $@
+
+$(DEPDIR)/smbnetfs.do_compile: bootstrap fuse samba $(DEPDIR)/smbnetfs.do_prepare
+	cd $(DIR_smbnetfs)  && \
+		$(BUILDENV) \
+		PKG_CONFIG=$(hostprefix)/bin/pkg-config \
+		./configure \
+			--prefix=/usr \
+			--build=$(build) \
+			--host=$(target) \
+			--target=$(target)  && \
+		$(MAKE)
+	touch $@
+
+$(DEPDIR)/smbnetfs: \
+$(DEPDIR)/%smbnetfs: $(DEPDIR)/smbnetfs.do_compile
+	$(start_build)
+	cd $(DIR_smbnetfs)  && \
+		install -D -m 0600 conf/smbnetfs.conf.spark $(PKDIR)/etc/smbnetfs.conf; \
+		install -D -m 0600 conf/smbnetfs.user.conf $(PKDIR)/etc/smbnetfs.user.conf; \
+		$(INSTALL_smbnetfs)
+	install -D -m 0755 Patches/smbnetfs-init.file $(PKDIR)/etc/init.d/smbnetfs
+	$(tocdk_build)
+	$(toflash_build)	
+	touch $@
