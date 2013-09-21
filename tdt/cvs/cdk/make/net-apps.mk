@@ -173,11 +173,16 @@ samba
 ;
 ]]END
 
+PACKAGES_samba = samba_lib samba
 DESCRIPTION_samba = "samba"
 FILES_samba = \
 /usr/sbin/* \
 /etc/init.d/* \
 /etc/samba/smb.conf
+DESCRIPTION_samba_lib = "samba_lib" 
+FILES_samba_lib = \
+/usr/lib/*.so \
+/usr/lib/*.so.*
 
 $(DEPDIR)/samba.do_prepare: bootstrap $(DEPENDS_samba)
 	$(PREPARE_samba)
