@@ -557,7 +557,15 @@ smbnetfs
 ;
 ]]END
 
-DESCRIPTION_smbnetfs = "smbnetfs"
+DESCRIPTION_smbnetfs = "SMBNetFS is a Linux/FreeBSD filesystem that allow you to use samba/microsoft network in the same manner as the network neighborhood in Microsoft Windows."
+define preinst_smbnetfs
+#!/bin/sh
+test -f /etc/smbnetfs.user.conf && cp /etc/smbnetfs.user.conf /etc/smbnetfs.user.conf.org
+endef
+define postinst_smbnetfs
+#!/bin/sh
+test -f /etc/smbnetfs.user.conf.org && mv /etc/smbnetfs.user.conf.org /etc/smbnetfs.user.conf
+endef
 
 $(DEPDIR)/smbnetfs.do_prepare: $(DEPENDS_smbnetfs)
 	$(PREPARE_smbnetfs)
