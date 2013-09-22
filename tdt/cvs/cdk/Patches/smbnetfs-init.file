@@ -4,7 +4,7 @@ MOUNTPOINT=/media/samba
 
 case "$1" in
 	start)
-		lsmod | grep "fuse" || (echo "Load fuse"; modprobe fuse)
+		test -f /etc/init.d/fuse && /etc/init.d/fuse start
 		echo "Starting smbnetfs"
 		test -d "${MOUNTPOINT}" || mkdir "${MOUNTPOINT}"
 		if ! /usr/bin/smbnetfs -o allow_root config=/etc/smbnetfs.conf "${MOUNTPOINT}"
