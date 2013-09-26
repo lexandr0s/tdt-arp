@@ -2,13 +2,12 @@
 # BOOTSTRAP
 #
 $(DEPDIR)/bootstrap: \
-$(DEPDIR)/%bootstrap: \
 		build.env \
-		%libtool \
-		%$(FILESYSTEM) \
-		%$(GLIBC) \
-		%$(CROSS_LIBGCC) \
-		%$(LIBSTDC)
+		libtool \
+		$(FILESYSTEM) \
+		$(GLIBC) \
+		$(CROSS_LIBGCC) \
+		$(LIBSTDC)
 
 	@[ "x$*" = "x" ] && touch -r RPMS/sh4/$(STLINUX)-sh4-$(LIBSTDC)-$(GCC_VERSION).sh4.rpm $@ || true
 
@@ -16,44 +15,41 @@ $(DEPDIR)/%bootstrap: \
 # BARE-OS
 #
 bare-os: \
-%bare-os: \
-		%bootstrap \
-		%$(LIBTERMCAP) \
-		%$(NCURSES_BASE) \
-		%$(NCURSES) \
-		%$(BASE_PASSWD) \
-		%$(MAKEDEV) \
-		%$(BASE_FILES) \
-		%module_init_tools \
-		%busybox \
-		%libz \
-		%grep \
-		%$(INITSCRIPTS) \
-		%$(NETBASE) \
-		%$(BC) \
-		%$(SYSVINIT) \
-		%$(DISTRIBUTIONUTILS) \
+		bootstrap \
+		$(LIBTERMCAP) \
+		$(NCURSES_BASE) \
+		$(NCURSES) \
+		$(BASE_PASSWD) \
+		$(MAKEDEV) \
+		$(BASE_FILES) \
+		module_init_tools \
+		busybox \
+		libz \
+		grep \
+		$(INITSCRIPTS) \
+		$(NETBASE) \
+		$(BC) \
+		$(SYSVINIT) \
+		$(DISTRIBUTIONUTILS) \
 		\
-		%e2fsprogs \
-		%u-boot-utils
+		e2fsprogs \
+		u-boot-utils
 
 net-utils: \
-%net-utils: \
-		%$(NETKIT_FTP) \
-		%portmap \
-		%$(NFSSERVER) \
-		%vsftpd \
-		%ethtool \
-		%opkg \
-		%grep \
-		%$(CIFS)
+		$(NETKIT_FTP) \
+		portmap \
+		$(NFSSERVER) \
+		vsftpd \
+		ethtool \
+		opkg \
+		grep \
+		$(CIFS)
 
 disk-utils: \
-%disk-utils: \
-		%$(XFSPROGS) \
-		%util-linux \
-		%jfsutils \
-		%$(SG3)
+		$(XFSPROGS) \
+		util-linux \
+		jfsutils \
+		$(SG3)
 #
 # YAUD
 #
