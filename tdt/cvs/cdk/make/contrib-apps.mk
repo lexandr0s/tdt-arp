@@ -575,7 +575,7 @@ $(DEPDIR)/mc.do_compile: $(DEPDIR)/mc.do_prepare | $(NCURSES_DEV)
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/mc: %glib2 $(DEPDIR)/mc.do_compile
+$(DEPDIR)/mc: glib2 $(DEPDIR)/mc.do_compile
 	$(start_build)
 	cd $(DIR_mc) && \
 		$(INSTALL_mc)
@@ -927,7 +927,7 @@ $(DEPDIR)/fuse.do_compile: $(DEPDIR)/fuse.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/fuse: %curl %glib2 $(DEPDIR)/fuse.do_compile
+$(DEPDIR)/fuse: curl glib2 $(DEPDIR)/fuse.do_compile
 	  $(start_build)
 	  cd $(DIR_fuse) && \
 		$(INSTALL_fuse)
@@ -970,7 +970,7 @@ $(DEPDIR)/curlftpfs.do_compile: $(DEPDIR)/curlftpfs.do_prepare
 		$(MAKE) 
 	touch $@
 
-$(DEPDIR)/curlftpfs: %fuse $(DEPDIR)/curlftpfs.do_compile
+$(DEPDIR)/curlftpfs: fuse $(DEPDIR)/curlftpfs.do_compile
 	cd $(DIR_curlftpfs) && \
 		$(INSTALL_curlftpfs)
 	touch $@
