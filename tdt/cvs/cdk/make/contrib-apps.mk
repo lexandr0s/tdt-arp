@@ -77,10 +77,9 @@ $(DEPDIR)/%module_init_tools: $(DEPDIR)/%lsb $(MODULE_INIT_TOOLS_ADAPTED_ETC_FIL
 #
 BEGIN[[
 grep
-  2.5.1
+  2.14
   {PN}-{PV}
-  extract:ftp://mirrors.kernel.org/gnu/{PN}/{PN}-{PV}.tar.bz2
-  nothing:http://64studio.hivelocity.net/apt/pool/main/g/{PN}/{PN}_{PV}.ds2-6.diff.gz
+  extract:ftp://mirrors.kernel.org/gnu/{PN}/{PN}-{PV}.tar.xz
   make:install:DESTDIR=PKDIR
 ;
 ]]END
@@ -1660,7 +1659,7 @@ BEGIN[[
 grab
   git
   {PN}-{PV}
-  git://git.code.sf.net/p/openpli/aio-grab: r=75812d958cb7732f14287dc0b4db917c6982935b
+  git://git.code.sf.net/p/openpli/aio-grab.git: r=75812d958cb7732f14287dc0b4db917c6982935b
   patch:file://aio-grab-ADD_ST_SUPPORT.patch
   patch:file://aio-grab-ADD_ST_FRAMESYNC_SUPPORT.patch
   make:install:DESTDIR=PKDIR
