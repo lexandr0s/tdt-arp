@@ -3888,7 +3888,7 @@ BEGIN[[
 tuxtxtlib
   1.0
   libtuxtxt
-  nothing:git://git.code.sf.net/p/openpli/tuxtxt:r=4ff8fff:sub=libtuxtxt
+  nothing:git://git.code.sf.net/p/openpli/tuxtxt.git:r=4ff8fff:sub=libtuxtxt
   patch:file://libtuxtxt-{PV}-fix_dbox_headers.diff
   make:install:prefix=/usr:DESTDIR=PKDIR
 ;
@@ -3940,7 +3940,7 @@ BEGIN[[
 tuxtxt32bpp
   1.0
   tuxtxt
-  nothing:git://git.code.sf.net/p/openpli/tuxtxt:r=4ff8fff:sub=tuxtxt
+  nothing:git://git.code.sf.net/p/openpli/tuxtxt.git:r=4ff8fff:sub=tuxtxt
   patch:file://{PN}-{PV}-fix_dbox_headers.diff
   make:install:prefix=/usr:DESTDIR=PKDIR
 # overwrite after make install
