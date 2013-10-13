@@ -8,7 +8,7 @@
  Patch100: gcc-4.7.3-stm-130807.patch
  Patch101: gcc-4.7.0-sh-use-gnu-hash-style.patch
  Patch102: gcc-4.2.4-multilibpath.patch
-@@ -60,6 +61,9 @@
+@@ -61,6 +62,9 @@
  
  %define _gccdir %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}
  
@@ -18,7 +18,7 @@
  %description
  This is the GNU C compiler, a fairly portable optimizing compiler which
  supports multiple languages.  This package includes support for C, and
-@@ -150,6 +154,7 @@
+@@ -151,6 +155,7 @@
  
  # SH4 common patches
  %if %target_cpu sh
@@ -26,7 +26,7 @@
  %patch100 -p1
  %patch101 -p1
  %patch102 -p1
-@@ -181,7 +186,7 @@
+@@ -183,7 +188,7 @@
  echo 'STMicroelectronics/Linux Base %{version}-%{release}' > gcc/DEV-PHASE
  
  # Update configure in the gcc directory
@@ -35,7 +35,7 @@
  
  ##############################################################################
  
-@@ -224,7 +229,7 @@
+@@ -226,7 +231,7 @@
          --with-gmp=%{_stm_cross_dir} \
          --with-mpfr=%{_stm_cross_dir} \
          --without-ppl \
@@ -44,7 +44,7 @@
          --enable-__cxa_atexit \
  %if "%{_stm_target_fpu}" == "no"
  %if %target_arch sh4_uclibc
-@@ -265,15 +270,6 @@
+@@ -267,15 +272,6 @@
  %cross_setup
  %cross_makeinstall
  
@@ -60,7 +60,7 @@
  cd ..
  
  %compress_man %{buildroot}%{_stm_cross_info_dir}
-@@ -340,14 +336,16 @@
+@@ -342,14 +338,16 @@
  	\( -name "libmudflap*" -o -name "libssp*" \) -print | \
  	xargs --no-run-if-empty --verbose rm
  # Remove some installed files we don't ship, to keep rpm happy
@@ -82,7 +82,7 @@
  
  rm -rf %{buildroot}%{_stm_cross_targetconf_dir}/share/gcc-%{version}/python
  
-@@ -448,10 +446,6 @@
+@@ -450,10 +448,6 @@
  %{_stm_cross_targetconf_dir}/bin/cpp
  %{_stm_cross_sharedstate_dir}/locale/*/LC_MESSAGES/cpplib.mo
  
@@ -93,7 +93,7 @@
  %files -n %{_gpp_pkgname}
  %defattr(-,root,root)
  %{_stm_cross_bin_dir}/%{_stm_target_toolprefix}g++
-@@ -466,7 +460,6 @@
+@@ -468,7 +462,6 @@
  
  %files -n %{_gcc_pkgname}-doc
  %defattr(-,root,root)
@@ -101,7 +101,7 @@
  %{_stm_cross_man_dir}/man7/*
  
  %if %target_cpu sh
-@@ -483,22 +476,6 @@
+@@ -485,22 +478,6 @@
  %{_stm_cross_target_dir}/lib/m4-nofpu/libgcc_s-%{version}.so.1
  %endif
  
@@ -122,5 +122,5 @@
 -	%{_stm_cross_info_dir}/gcc.info
 -
  %changelog
- * Thu Aug 08 2013 Christian Bruel <christian.bruel@st.com> 123
- - [Add patch: gcc-4.7.3-stm-130807.patch]
+ * Thu Oct 02 2013 Laurent Alfonsi <laurent.alfonsi@st.com> 124
+ - [Add patch: gcc-4.7.3-bugzilla-36994.patch]
