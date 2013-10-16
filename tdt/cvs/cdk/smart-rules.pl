@@ -246,6 +246,8 @@ sub process_dir ($)
   $output .= "LIST_DISTCLEAN += $package-distclean" . "\n";
 
   $output .= "DEPENDS_$package = \$(DEPDIR)/$package.version_\$(PKGV_$package)-\$(PKGR_$package)" . "\n";
+  $output .= "DEPENDS_$package += \$(BDEPENDS_$package)" . "\n";
+  $output .= "RDEPENDS_$package = \$(BDEPENDS_$package)" . "\n";
 
   if ($version =~ m#^git|svn$#)
   {
