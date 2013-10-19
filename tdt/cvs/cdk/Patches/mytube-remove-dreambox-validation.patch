@@ -1,14 +1,15 @@
 --- a/mytube/src/plugin.py	2013-09-28 16:25:39.460362521 +0300
 +++ b/mytube/src/plugin.py	2013-10-17 23:12:10.000000000 +0300
-@@ -1,7 +1,6 @@
+@@ -1,8 +1,6 @@
  from . import _
  
  from Plugins.Plugin import PluginDescriptor
 -from MyTubeService import validate_cert
- from enigma import eTPM
+-from enigma import eTPM
  from Components.config import ConfigSubsection, config, ConfigYesNo
  
-@@ -11,17 +10,8 @@
+ config.plugins.mytubestart = ConfigSubsection()
+@@ -11,17 +9,8 @@
  
  def MyTubeMain(session, **kwargs):
  	import ui
