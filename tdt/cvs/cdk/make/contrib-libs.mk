@@ -2382,7 +2382,7 @@ $(DEPDIR)/%setuptools: $(DEPDIR)/setuptools.do_compile
 #
 BEGIN[[
 gdata
-  2.0.17
+  2.0.18
   gdata-{PV}
   extract:http://gdata-python-client.googlecode.com/files/gdata-{PV}.tar.gz
 ;
