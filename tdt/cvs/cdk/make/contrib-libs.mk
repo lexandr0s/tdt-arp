@@ -1589,6 +1589,7 @@ $(DEPDIR)/ffmpeg.do_compile: $(DEPDIR)/ffmpeg.do_prepare
 		--enable-parser=mjpeg \
 		--enable-demuxer=mjpeg \
 		--enable-demuxer=wav \
+		--enable-demuxer=hls \
 		--enable-protocol=file \
 		--enable-protocol=hls \
 		--enable-protocol=udp \
