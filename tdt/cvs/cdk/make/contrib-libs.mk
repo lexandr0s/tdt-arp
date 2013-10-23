@@ -71,6 +71,7 @@ libreadline
 ]]END
 
 DESCRIPTION_libreadline = GNU readline library
+BDEPENDS_libreadline += ncurses
 FILES_libreadline = \
 /usr/lib
 
@@ -345,11 +346,12 @@ libpng
 ]]END
 
 DESCRIPTION_libpng = "libpng"
+BDEPENDS_libpng += libz
 
 FILES_libpng = \
 /usr/lib/*.so*
 
-$(DEPDIR)/libpng.do_prepare: bootstrap libz $(DEPENDS_libpng)
+$(DEPDIR)/libpng.do_prepare: bootstrap $(DEPENDS_libpng)
 	$(PREPARE_libpng)
 	touch $@
 
@@ -391,11 +393,12 @@ libpng12
 ]]END
 
 DESCRIPTION_libpng12 = "libpng12"
+BDEPENDS_libpng12 += libz
 
 FILES_libpng12 = \
 /usr/lib/libpng12.so*
 
-$(DEPDIR)/libpng12.do_prepare: bootstrap libz $(DEPENDS_libpng12)
+$(DEPDIR)/libpng12.do_prepare: bootstrap $(DEPENDS_libpng12)
 	$(PREPARE_libpng12)
 	touch $@
 
@@ -609,6 +612,7 @@ libsigc
 ]]END
 
 DESCRIPTION_libsigc = "libsigc"
+BDEPENDS_libsigc += libstdc++
 
 FILES_libsigc = \
 /usr/lib/*.so*
@@ -700,11 +704,12 @@ libid3tag
 ]]END
 
 DESCRIPTION_libid3tag = "libid3tag"
+BDEPENDS_libid3tag += libz
 
 FILES_libid3tag = \
 /usr/lib/*.so*
 
-$(DEPDIR)/libid3tag.do_prepare: bootstrap libz $(DEPENDS_libid3tag)
+$(DEPDIR)/libid3tag.do_prepare: bootstrap $(DEPENDS_libid3tag)
 	$(PREPARE_libid3tag)
 	touch $@
 
@@ -720,7 +725,7 @@ $(DEPDIR)/libid3tag.do_compile: $(DEPDIR)/libid3tag.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/libid3tag: libz $(DEPDIR)/libid3tag.do_compile
+$(DEPDIR)/libid3tag: $(DEPDIR)/libid3tag.do_compile
 	$(start_build)
 	cd $(DIR_libid3tag) && \
 		$(INSTALL_libid3tag)
@@ -1206,11 +1211,12 @@ libxmlccwrap
 ]]END
 
 DESCRIPTION_libxmlccwrap = "libxmlccwrap is a small C++ wrapper around libxml2 and libxslt "
+BDEPENDS_libxmlccwrap += libxslt
 
 FILES_libxmlccwrap = \
 /usr/lib/*.so*
 
-$(DEPDIR)/libxmlccwrap.do_prepare: bootstrap libxslt $(DEPENDS_libxmlccwrap)
+$(DEPDIR)/libxmlccwrap.do_prepare: bootstrap $(DEPENDS_libxmlccwrap)
 	$(PREPARE_libxmlccwrap)
 	touch $@
 
@@ -1330,12 +1336,13 @@ libdvdnav
 ]]END
 
 DESCRIPTION_libdvdnav = "libdvdnav"
+BDEPENDS_libdvdnav = libdvdread
 
 FILES_libdvdnav = \
 /usr/lib/*.so* \
 /usr/bin/dvdnav-config
 
-$(DEPDIR)/libdvdnav.do_prepare: bootstrap libdvdread $(DEPENDS_libdvdnav)
+$(DEPDIR)/libdvdnav.do_prepare: bootstrap $(DEPENDS_libdvdnav)
 	$(PREPARE_libdvdnav)
 	touch $@
 
@@ -1572,11 +1579,12 @@ libass
 ]]END
 
 DESCRIPTION_libass = "libass"
+BDEPENDS_libass += freetype libfribidi
 
 FILES_libass = \
 /usr/lib/*.so*
 
-$(DEPDIR)/libass.do_prepare: bootstrap freetype libfribidi $(DEPENDS_libass)
+$(DEPDIR)/libass.do_prepare: bootstrap $(DEPENDS_libass)
 	$(PREPARE_libass)
 	touch $@
 
@@ -1613,11 +1621,12 @@ webkitdfb
 ]]END
 
 DESCRIPTION_webkitdfb = "webkitdfb"
-RDEPENDS_webkitdfb = lite enchant fontconfig sqlite cairo enchant
+BDEPENDS_webkitdfb = glib2 icu4c libxml2 enchant lite curl fontconfig sqlite libsoup cairo jpeg
+
 FILES_webkitdfb = \
 /usr/lib*
 
-$(DEPDIR)/webkitdfb.do_prepare: bootstrap glib2 icu4c libxml2 enchant lite curl fontconfig sqlite libsoup cairo jpeg $(DEPENDS_webkitdfb)
+$(DEPDIR)/webkitdfb.do_prepare: bootstrap $(DEPENDS_webkitdfb)
 	$(PREPARE_webkitdfb)
 	touch $@
 
@@ -2218,10 +2227,12 @@ lxml
 ]]END
 
 DESCRIPTION_lxml = "Python binding for the libxml2 and libxslt libraries"
+BDEPENDS_lxml = python
+
 FILES_lxml = \
 $(PYTHON_DIR)
 
-$(DEPDIR)/lxml.do_prepare: bootstrap python $(DEPENDS_lxml)
+$(DEPDIR)/lxml.do_prepare: bootstrap $(DEPENDS_lxml)
 	$(PREPARE_lxml)
 	touch $@
 
@@ -2257,6 +2268,7 @@ setuptools
 ]]END
 
 DESCRIPTION_setuptools = "setuptools"
+DEPENDS_setuptools += python
 
 FILES_setuptools = \
 $(PYTHON_DIR)/site-packages/*.py \
@@ -3416,10 +3428,11 @@ libusb_compat
 ]]END
 
 DESCRIPTION_libusb_compat = "A compatibility layer allowing applications written for libusb-0.1 to work with libusb-1.0"
+BDEPENDS_libusb_compat = libusb2
 FILES_libusb_compat = \
 /usr/lib/*.so*
 
-$(DEPDIR)/libusb_compat.do_prepare: bootstrap libusb2 $(DEPENDS_libusb_compat)
+$(DEPDIR)/libusb_compat.do_prepare: bootstrap $(DEPENDS_libusb_compat)
 	$(PREPARE_libusb_compat)
 	touch $@
 
@@ -3649,13 +3662,14 @@ rtmpdump
 ;
 ]]END
 DESCRIPTION_rtmpdump = "rtmpdump is a tool for dumping media content streamed over RTMP."
+BDEPENDS_rtmpdump = openssl libz
 
 FILES_rtmpdump = \
 /usr/bin/rtmpdump \
 /usr/lib/librtmp* \
 /usr/sbin/rtmpgw
 
-$(DEPDIR)/rtmpdump.do_prepare: bootstrap openssl openssl-dev libz $(DEPENDS_rtmpdump)
+$(DEPDIR)/rtmpdump.do_prepare: bootstrap openssl-dev $(DEPENDS_rtmpdump)
 	$(PREPARE_rtmpdump)
 	touch $@
 
