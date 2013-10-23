@@ -159,21 +159,24 @@ $(DEPDIR)/ethtool: $(DEPDIR)/ethtool.do_compile
 #
 BEGIN[[
 samba
-  3.6.12
+  3.6.18
   {PN}-{PV}
   extract:http://www.{PN}.org/{PN}/ftp/stable/{PN}-{PV}.tar.gz
   patch:file://{PN}-{PV}.diff
-  make:install bin/smbd bin/nmbd:DESTDIR=PKDIR:prefix=./.
+  make:install:prefix=/usr:DESTDIR=PKDIR
 ;
 ]]END
 
+PACKAGES_samba = samba_lib samba
 DESCRIPTION_samba = "samba"
 FILES_samba = \
 /usr/sbin/* \
-/usr/lib/*.so \
 /etc/init.d/* \
-/etc/samba/smb.conf \
-/usr/lib/vfs/*.so
+/etc/samba/smb.conf
+DESCRIPTION_samba_lib = "samba_lib" 
+FILES_samba_lib = \
+/usr/lib/*.so \
+/usr/lib/*.so.*
 
 $(DEPDIR)/samba.do_prepare: bootstrap $(DEPENDS_samba)
 	$(PREPARE_samba)
@@ -185,11 +188,14 @@ $(DEPDIR)/samba.do_compile: $(DEPDIR)/samba.do_prepare
 		cd source3 && \
 		./autogen.sh && \
 		$(BUILDENV) \
+		CFLAGS=-O2 \
 		libreplace_cv_HAVE_GETADDRINFO=no \
+		libreplace_cv_READDIR_NEEDED=no \
 		./configure \
 			--build=$(build) \
 			--host=$(target) \
 			--prefix= \
+			--includedir=/usr/include \
 			--exec-prefix=/usr \
 			--disable-pie \
 			--disable-avahi \
@@ -227,7 +233,7 @@ $(DEPDIR)/samba.do_compile: $(DEPDIR)/samba.do_prepare
 			--without-acl-support \
 			--with-configdir=/etc/samba \
 			--with-privatedir=/etc/samba \
-			--with-mandir=/usr/share/man \
+			--with-mandir=no \
 			--with-piddir=/var/run \
 			--with-logfilebase=/var/log \
 			--with-lockdir=/var/lock \
@@ -513,4 +519,56 @@ $(DEPDIR)/transmission: $(DEPDIR)/transmission.do_compile
 		$(INSTALL_DIR) $(PKDIR)/etc/init.d && \
 		$(INSTALL_BIN) transmission.init $(PKDIR)/etc/init.d/transmission
 	$(extra_build)
+	touch $@
+
+#
+# SMBNETFS
+#
+BEGIN[[
+smbnetfs
+  0.5.3a
+  {PN}-{PV}
+  extract:https://sourceforge.net/projects/{PN}/files/{PN}/SMBNetFS-{PV}/{PN}-{PV}.tar.bz2
+  patch-0:file://{PN}.diff
+  nothing:file://{PN}-init.file
+  make:install:DESTDIR=PKDIR
+;
+]]END
+
+DESCRIPTION_smbnetfs = "SMBNetFS is a Linux/FreeBSD filesystem that allow you to use samba/microsoft network in the same manner as the network neighborhood in Microsoft Windows."
+define preinst_smbnetfs
+#!/bin/sh
+test -f /etc/smbnetfs.user.conf && cp /etc/smbnetfs.user.conf /etc/smbnetfs.user.conf.org
+endef
+define postinst_smbnetfs
+#!/bin/sh
+test -f /etc/smbnetfs.user.conf.org && mv /etc/smbnetfs.user.conf.org /etc/smbnetfs.user.conf
+endef
+
+$(DEPDIR)/smbnetfs.do_prepare: $(DEPENDS_smbnetfs)
+	$(PREPARE_smbnetfs)
+	touch $@
+
+$(DEPDIR)/smbnetfs.do_compile: bootstrap fuse samba $(DEPDIR)/smbnetfs.do_prepare
+	cd $(DIR_smbnetfs)  && \
+		$(BUILDENV) \
+		PKG_CONFIG=$(hostprefix)/bin/pkg-config \
+		./configure \
+			--prefix=/usr \
+			--build=$(build) \
+			--host=$(target) \
+			--target=$(target)  && \
+		$(MAKE)
+	touch $@
+
+$(DEPDIR)/smbnetfs: \
+$(DEPDIR)/%smbnetfs: $(DEPDIR)/smbnetfs.do_compile
+	$(start_build)
+	cd $(DIR_smbnetfs)  && \
+		install -D -m 0600 conf/smbnetfs.conf.spark $(PKDIR)/etc/smbnetfs.conf; \
+		install -D -m 0600 conf/smbnetfs.user.conf $(PKDIR)/etc/smbnetfs.user.conf; \
+		$(INSTALL_smbnetfs)
+	install -D -m 0755 Patches/smbnetfs-init.file $(PKDIR)/etc/init.d/smbnetfs
+	$(tocdk_build)
+	$(toflash_build)	
 	touch $@

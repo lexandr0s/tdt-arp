@@ -121,9 +121,7 @@ min-extras: \
 	pppd \
 	modem-scripts \
 	ntfs_3g \
-	enigma2_openwebif \
-	enigma2-plugins-sh4-networkbrowser \
-	$(addsuffix -openpli,$(openpli_plugin_distlist)) \
+	enigma2-plugins \
 	wireless_tools \
 	enigma2-plugins-sh4
 	

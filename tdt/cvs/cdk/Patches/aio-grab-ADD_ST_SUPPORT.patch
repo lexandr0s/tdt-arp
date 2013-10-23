@@ -1,10 +1,14 @@
---- aio-grab-47983a78821c0fdbef3aab36113d5c6fc34bb11b/main.c.org	2013-05-26 13:32:36.000000000 +0200
-+++ aio-grab-47983a78821c0fdbef3aab36113d5c6fc34bb11b/main.c	2013-06-02 12:31:40.450417839 +0200
-@@ -37,9 +37,47 @@
+--- grab-git/main.c.org	2013-10-16 18:37:08.827800327 +0300
++++ grab-git/main.c	2013-10-16 18:35:01.435168629 +0300
+@@ -37,6 +37,7 @@
  #include <sys/mman.h>
  #include <linux/types.h>
  #include <linux/fb.h>
 +#include "../../../cvs/driver/bpamem/bpamem.h"
+ 
+ /* HACK: jpeglib.h redefines our VERSION variable */
+ const char *GRABVERSION = VERSION;
+@@ -44,6 +45,43 @@
  #include "png.h"
  #include "jpeglib.h"
  
@@ -48,16 +52,16 @@
  #define CLAMP(x)    ((x < 0) ? 0 : ((x > 255) ? 255 : x))
  #define SWAP(x,y)	{ x ^= y; y ^= x; x ^= y; }
  
-@@ -82,7 +120,7 @@
+@@ -86,7 +124,7 @@
  void (*resize)(const unsigned char *source, unsigned char *dest, int xsource, int ysource, int xdest, int ydest, int colors);
  void combine(unsigned char *output, const unsigned char *video, const unsigned char *osd, int vleft, int vtop, int vwidth, int vheight, int xres, int yres);
  
--static enum {UNKNOWN, PALLAS, VULCAN, XILLEON, BRCM7400, BRCM7401, BRCM7405, BRCM7325, BRCM7335, BRCM7358, BRCM7356} stb_type = UNKNOWN;
-+static enum {UNKNOWN, PALLAS, VULCAN, XILLEON, BRCM7400, BRCM7401, BRCM7405, BRCM7325, BRCM7335, BRCM7358, BRCM7356,ST} stb_type = UNKNOWN;
+-static enum {UNKNOWN, PALLAS, VULCAN, XILLEON, BRCM7400, BRCM7401, BRCM7405, BRCM7325, BRCM7335, BRCM7358, BRCM7356, BRCM7424, BRCM7425} stb_type = UNKNOWN;
++static enum {UNKNOWN, PALLAS, VULCAN, XILLEON, BRCM7400, BRCM7401, BRCM7405, BRCM7325, BRCM7335, BRCM7358, BRCM7356, BRCM7424, BRCM7425, ST} stb_type = UNKNOWN;
  
  static int chr_luma_stride = 0x40;
  static int chr_luma_register_offset = 0;
-@@ -127,6 +165,7 @@
+@@ -131,6 +169,7 @@
  		if (strcasestr(buf,"VULCAN")) stb_type=VULCAN;
  		if (strcasestr(buf,"PALLAS")) stb_type=PALLAS;
  		if (strcasestr(buf,"XILLEON")) stb_type=XILLEON;
@@ -65,7 +69,7 @@
  	}
  	fclose(fp);
  
-@@ -676,7 +715,221 @@
+@@ -697,7 +736,221 @@
  	char buf[256];
  	FILE *fp;
  
@@ -81,24 +85,24 @@
 +		BPAMemMapMemData bpa_data;
 +		char bpa_mem_device[30];
 +		char *decode_surface;
-+
-+		fp = fopen("/proc/stb/vmpeg/0/xres","r");
++	
++		fp = fopen("/proc/stb/vmpeg/0/xres", "r");
 +		if (fp)
 +		{
-+			while (fgets(buf,sizeof(buf),fp))
++			while (fgets(buf,sizeof(buf), fp))
 +			{
 +				sscanf(buf,"%x",&stride);
 +			}
 +			fclose(fp);
 +		}
-+		fp = fopen("/proc/stb/vmpeg/0/yres","r");
++		fp = fopen("/proc/stb/vmpeg/0/yres", "r");
 +		if (fp)
 +		{
-+			while (fgets(buf,sizeof(buf),fp))
++			while (fgets(buf,sizeof(buf), fp))
 +			{
 +				sscanf(buf,"%x",&res);
 +			}
-+			fclose(fp);
++		fclose(fp);
 +		}
 +
 +		//if stride and res is zero than this is most probably a stillpicture
@@ -113,24 +117,24 @@
 +		memset(chroma, 0x80, stride * res / 2);
 +
 +		fd_bpa = open("/dev/bpamem0", O_RDWR);
-+
++	
 +		if(fd_bpa < 0)
 +		{
 +			fprintf(stderr, "cannot access /dev/bpamem0! err = %d\n", fd_bpa);
 +			return;
 +		}
-+
++	
 +		bpa_data.bpa_part  = "LMI_VID";
 +		bpa_data.phys_addr = 0x00000000;
 +		bpa_data.mem_size = 0;
 +
-+		fp = fopen("/proc/bpa2","r");
++		fp = fopen("/proc/bpa2", "r");
 +		if (fp)
 +		{
 +			unsigned char found_part = 0;
 +			unsigned long mem_size = 0;
 +			unsigned long phys_addr = 0;
-+			while (fgets(buf,sizeof(buf),fp))
++			while (fgets(buf,sizeof(buf), fp))
 +			{
 +				if(found_part || strstr(buf, bpa_data.bpa_part) != NULL)
 +				{
@@ -159,22 +163,22 @@
 +			fprintf(stderr, "cannot map required mem\n");
 +			return;
 +		}
-+
++	
 +		sprintf(bpa_mem_device, "/dev/bpamem%d", bpa_data.device_num);
 +		close(fd_bpa);
-+
++	
 +		fd_bpa = open(bpa_mem_device, O_RDWR);
-+
++	
 +		// if somebody forgot to add all bpamem devs then this gets really bad here
 +		if(fd_bpa < 0)
 +		{
 +			fprintf(stderr, "cannot access %s! err = %d\n", bpa_mem_device, fd_bpa);
 +			return;
 +		}
-+
++	
 +		decode_surface = (char *)mmap(0, bpa_data.mem_size, PROT_WRITE|PROT_READ, MAP_SHARED, fd_bpa, 0);
 +	
-+		if(decode_surface == MAP_FAILED)
++		if(decode_surface == MAP_FAILED) 
 +		{
 +			fprintf(stderr, "could not map bpa mem");
 +			close(fd_bpa);
@@ -183,21 +187,21 @@
 +
 +		//luma
 +		layer_offset = 0;
-+
++		
 +		//we do not have to round that every luma res will be a multiple of 16
 +		yblock = res/16; //45
 +		xblock = stride/16; //80
-+
++		
 +		//thereby yblockoffset does also not to be rounded up
 +		yblockoffset = xblock * 256/*16x16px*/ * 2/*2 block rows*/; //0xA000 for 1280
-+
++		
 +		printf("yblock: %u xblock:%u yblockoffset:0x%x\n", yblock, xblock, yblockoffset);
-+
++		
 +		OUTITER       = 0;
 +		OUTITERoffset = 0;
 +		OUTINC        = 1; /*no spaces between pixel*/
 +		out           = luma;
-+
++		
 +		for(even = 0; even < 2; even++)
 +		{
 +			offset        = layer_offset + even * 0x100;
@@ -208,14 +212,14 @@
 +				for (ixblock = 0; ixblock < xblock; ixblock++)
 +				{
 +					int line; 
-+
++					
 +					OUTITER = OUTITERoffset;
 +					for (line = 0; line < 16; line++)
 +					{
 +						OUT_LU_16(offset, line);
 +						OUTITER += (stride - 16 /*we have already incremented by 16*/);
 +					}
-+
++					
 +					//0x00, 0x200, ...
 +					offset += 0x200;
 +					OUTITERoffset += 16;
@@ -223,7 +227,7 @@
 +				OUTITERoffset += stride * 31;
 +			}
 +		}
-+
++		
 +		//chroma
 +		layer_offset = ((stride*res + yblockoffset/2 /*round up*/) / yblockoffset) * yblockoffset;
 +
@@ -232,17 +236,17 @@
 +		//and every chroma x res /2 will be a multiple of 8
 +		yblock = res/16; //45
 +		xblock = (stride_half)/8; //no roundin
-+
++		
 +		//if xblock is not even than we will have to move to the next even value an 
 +		yblockoffset = (((xblock + 1) / 2) * 2) * 64/*8x8px*/ * 2/*2 block rows*/ * 2/*cr cb*/; 
-+
++		
 +		printf("yblock: %u xblock:%u yblockoffset:0x%x\n", yblock, xblock, yblockoffset);
-+
++		
 +		OUTITER       = 0;
 +		OUTITERoffset = 0;
 +		OUTINC        = 2;
 +		out           = chroma;
-+
++		
 +		for(cr = 0; cr < 2; cr++)
 +		{
 +			for(even = 0; even < 2; even++)
@@ -254,7 +258,7 @@
 +				{
 +					for (ixblock = 0; ixblock < xblock; ixblock++)
 +					{
-+						int line;
++						int line; 
 +						OUTITER = OUTITERoffset;
 +						
 +						for (line = 0; line < 8; line++)
@@ -262,7 +266,7 @@
 +							OUT_CH_8(offset, line, !cr);
 +							OUTITER += (stride - 16 /*we have already incremented by OUTINC*8=16*/);
 +						}
-+
++					
 +						//0x00 0x80 0x200 0x280, ...
 +						offset += (offset%0x100?0x180/*80->200*/:0x80/*0->80*/);
 +						OUTITERoffset += 16/*OUTINC*8=16*/;
@@ -288,7 +292,7 @@
  	{
  		// grab bcm pic from decoder memory
  		const unsigned char* data = (unsigned char*)mmap(0, 100, PROT_READ, MAP_SHARED, mem_fd, registeroffset);
-@@ -1075,12 +1328,14 @@
+@@ -1099,12 +1369,14 @@
  			// now we do 4 pixels on each iteration this is more code but much faster
  			int Y=yuv2rgbtable_y[luma[pos]];
  
@@ -303,7 +307,7 @@
  			video[out1+rgbstride]=CLAMP((Y + RU)>>16);
  			video[out1+1+rgbstride]=CLAMP((Y - GV - GU)>>16);
  			video[out1+2+rgbstride]=CLAMP((Y + BV)>>16);
-@@ -1090,12 +1345,14 @@
+@@ -1114,12 +1386,14 @@
  
  			Y=yuv2rgbtable_y[luma[pos]];
  

@@ -1430,7 +1430,7 @@ $(DEPDIR)/libdvdread: libdvdread.do_compile
 #
 BEGIN[[
 ffmpeg
-  2.0
+  2.0.2
   {PN}-{PV}
   extract:http://{PN}.org/releases/{PN}-{PV}.tar.gz
   patch:file://{PN}-{PV}.patch
@@ -1514,6 +1514,7 @@ $(DEPDIR)/ffmpeg.do_compile: $(DEPDIR)/ffmpeg.do_prepare
 		--enable-decoder=aac \
 		--enable-decoder=dvbsub \
 		--enable-decoder=flac \
+		--enable-decoder=pcm_s16le \
 		--enable-decoder=flv \
 		--enable-decoder=h261 \
 		--enable-decoder=h263 \
@@ -1535,6 +1536,8 @@ $(DEPDIR)/ffmpeg.do_compile: $(DEPDIR)/ffmpeg.do_prepare
 		--enable-decoder=vorbis \
 		--enable-parser=mjpeg \
 		--enable-demuxer=mjpeg \
+		--enable-demuxer=wav \
+		--enable-demuxer=hls \
 		--enable-protocol=file \
 		--enable-protocol=hls \
 		--enable-protocol=udp \
@@ -2299,7 +2302,7 @@ $(DEPDIR)/setuptools: $(DEPDIR)/setuptools.do_compile
 #
 BEGIN[[
 gdata
-  2.0.17
+  2.0.18
   gdata-{PV}
   extract:http://gdata-python-client.googlecode.com/files/gdata-{PV}.tar.gz
 ;
@@ -3127,6 +3130,9 @@ $(DEPDIR)/gst_ffmpeg.do_compile: $(DEPDIR)/gst_ffmpeg.do_prepare
 		--enable-decoder=ogg \
 		--enable-decoder=vorbis \
 		--enable-decoder=flac \
+		--enable-decoder=vp6 \
+		--enable-decoder=vp6a \
+		--enable-decoder=vp6f \
 		\
 		--disable-demuxers \
 		--enable-demuxer=ogg \
@@ -3743,7 +3749,7 @@ BEGIN[[
 tuxtxtlib
   1.0
   libtuxtxt
-  nothing:git://git.code.sf.net/p/openpli/tuxtxt:r=4ff8fff:sub=libtuxtxt
+  nothing:git://git.code.sf.net/p/openpli/tuxtxt.git:r=4ff8fff:sub=libtuxtxt
   patch:file://libtuxtxt-{PV}-fix_dbox_headers.diff
   make:install:prefix=/usr:DESTDIR=PKDIR
 ;
@@ -3793,7 +3799,7 @@ BEGIN[[
 tuxtxt32bpp
   1.0
   tuxtxt
-  nothing:git://git.code.sf.net/p/openpli/tuxtxt:r=4ff8fff:sub=tuxtxt
+  nothing:git://git.code.sf.net/p/openpli/tuxtxt.git:r=4ff8fff:sub=tuxtxt
   patch:file://{PN}-{PV}-fix_dbox_headers.diff
   make:install:prefix=/usr:DESTDIR=PKDIR
 # overwrite after make install

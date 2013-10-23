@@ -53,9 +53,9 @@
 /* ***************************** */
 
 //for buffered io
-#define FILLBUFSIZE 0
-#define FILLBUFDIFF 1048576
-#define FILLBUFPAKET 5120
+#define FILLBUFSIZE 0 
+#define FILLBUFDIFF (1024*1024)
+#define FILLBUFPAKET (1024*4) 
 #define FILLBUFSEEKTIME 3 //sec
 
 static int ffmpeg_buf_size = FILLBUFSIZE + FILLBUFDIFF;
@@ -566,7 +566,7 @@ if(!context->playback->BackWard && audioMute)
                     avOut.timeScale  = videoTrack->TimeScale;
                     avOut.width      = videoTrack->width;
                     avOut.height     = videoTrack->height;
-                    avOut.type       = "video";
+                    avOut.type       = OUTPUT_TYPE_VIDEO;
 
                     if (context->output->video->Write(context, &avOut) < 0) {
                         ffmpeg_err("writing data to video device failed\n");
@@ -608,7 +608,7 @@ if(!context->playback->BackWard && audioMute)
                         avOut.timeScale  = 0;
                         avOut.width      = 0;
                         avOut.height     = 0;
-                        avOut.type       = "audio";
+                        avOut.type       = OUTPUT_TYPE_AUDIO;
 
 #ifdef reverse_playback_3
                         if (!context->playback->BackWard)
@@ -662,7 +662,7 @@ if(!context->playback->BackWard && audioMute)
                             avOut.timeScale  = 0;
                             avOut.width      = 0;
                             avOut.height     = 0;
-                            avOut.type       = "audio";
+                            avOut.type       = OUTPUT_TYPE_AUDIO;
 
 #ifdef reverse_playback_3
                             if (!context->playback->BackWard)
@@ -684,7 +684,7 @@ if(!context->playback->BackWard && audioMute)
                         avOut.timeScale  = 0;
                         avOut.width      = 0;
                         avOut.height     = 0;
-                        avOut.type       = "audio";
+                        avOut.type       = OUTPUT_TYPE_AUDIO;
 
 #ifdef reverse_playback_3
                         if (!context->playback->BackWard)
@@ -706,7 +706,7 @@ if(!context->playback->BackWard && audioMute)
                         avOut.timeScale  = 0;
                         avOut.width      = 0;
                         avOut.height     = 0;
-                        avOut.type       = "audio";
+                        avOut.type       = OUTPUT_TYPE_AUDIO;
 
 #ifdef reverse_playback_3
                         if (!context->playback->BackWard)
@@ -1146,10 +1146,15 @@ int ffmpeg_read(void *opaque, uint8_t *buf, int buf_size)
     while(sumlen < buf_size && (--count) > 0)
     {
         len = ffmpeg_read_real(opaque, buf, buf_size - sumlen);
+        if(len <= 0 )
+        {
+            if (len < 0 || sumlen >= FILLBUFPAKET) break;
+            usleep(10000);
+            continue;
+        }
+        
         sumlen += len;
         buf += len;
-        if(len == 0)
-            usleep(10000);
     }
 
     if(count == 0)
@@ -1300,7 +1305,7 @@ int container_ffmpeg_init(Context_t *context, char * filename)
     avcodec_register_all();
     av_register_all();
     avformat_network_init();
-//    av_log_set_level( AV_LOG_DEBUG );
+ //   av_log_set_level( AV_LOG_DEBUG );
  
 #if LIBAVCODEC_VERSION_MAJOR < 54
     if ((err = av_open_input_file(&avContext, filename, NULL, 0, NULL)) != 0) {
@@ -2358,7 +2363,7 @@ static int Command(void  *_context, ContainerCmd_t command, void * argument)
     return ret;
 }
 
-static char *FFMPEG_Capabilities[] = {"avi", "mkv", "mp4", "ts", "mov", "flv", "flac", "mp3", "mpg", "m2ts", "vob", "wmv","wma", "asf", "mp2", "m4v", "m4a", "divx", "dat", "mpeg", "trp", "mts", "vdr", "ogg", "wav", NULL };
+static char *FFMPEG_Capabilities[] = {"avi", "mkv", "mp4", "ts", "mov", "flv", "flac", "mp3", "mpg", "m2ts", "vob", "wmv","wma", "asf", "mp2", "m4v", "m4a", "divx", "dat", "mpeg", "trp", "mts", "vdr", "ogg", "wav", "m3u8", NULL };
 
 Container_t FFMPEGContainer = {
     "FFMPEG",

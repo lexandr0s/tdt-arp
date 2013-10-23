@@ -72,10 +72,9 @@ $(DEPDIR)/module_init_tools: $(DEPDIR)/lsb $(MODULE_INIT_TOOLS_ADAPTED_ETC_FILES
 #
 BEGIN[[
 grep
-  2.5.1
+  2.14
   {PN}-{PV}
-  extract:ftp://mirrors.kernel.org/gnu/{PN}/{PN}-{PV}.tar.bz2
-  nothing:http://64studio.hivelocity.net/apt/pool/main/g/{PN}/{PN}_{PV}.ds2-6.diff.gz
+  extract:ftp://mirrors.kernel.org/gnu/{PN}/{PN}-{PV}.tar.xz
   make:install:DESTDIR=PKDIR
 ;
 ]]END
@@ -417,9 +416,9 @@ $(DEPDIR)/openrdate: $(OPENRDATE_ADAPTED_ETC_FILES:%=root/etc/%) \
 #
 BEGIN[[
 e2fsprogs
-  1.42.7
+  1.42.8
   {PN}-{PV}
-  extract:http://sourceforge.net/projects/e2fsprogs/files/e2fsprogs/v{PV}/{PN}-{PV}.tar.gz
+  extract:http://sourceforge.net/projects/{PN}/files/{PN}/v{PV}/{PN}-{PV}.tar.gz
   patch:file://{PN}-{PV}.patch
   make:install:DESTDIR=PKDIR
 ;
@@ -1596,7 +1595,7 @@ BEGIN[[
 grab
   git
   {PN}-{PV}
-  git://git.code.sf.net/p/openpli/aio-grab: r=75812d958cb7732f14287dc0b4db917c6982935b
+  git://git.code.sf.net/p/openpli/aio-grab.git: r=9202f954c1ae4f0e3fcddb630cdf843c1bcf4f22
   patch:file://aio-grab-ADD_ST_SUPPORT.patch
   patch:file://aio-grab-ADD_ST_FRAMESYNC_SUPPORT.patch
   make:install:DESTDIR=PKDIR

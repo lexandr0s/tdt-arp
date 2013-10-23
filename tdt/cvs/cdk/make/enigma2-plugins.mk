@@ -1,40 +1,81 @@
 #
 # Plugins
 #
-$(DEPDIR)/enigma2-plugins: enigma2_openwebif enigma2_networkbrowser openpli-plugins
+$(DEPDIR)/enigma2-plugins: enigma2_plugin_extensions_openwebif enigma2_plugin_extensions_mediaportal enigma2_networkbrowser openpli-plugins
 
 #
 # enigma2-openwebif
 #
 BEGIN[[
-enigma2_openwebif
+enigma2_plugin_extensions_openwebif
   git
   e2openplugin-OpenWebif
-  nothing:git://github.com/schpuntik/e2openplugin-OpenWebif.git
+  nothing:git://github.com/OpenAR-P/e2openplugin-OpenWebif.git
   make:install:DESTDIR=PKDIR
 ;
 ]]END
 
-DESCRIPTION_enigma2_openwebif = "open webinteface plugin for enigma2 by openpli team"
-PKGR_enigma2_openwebif = r1
-RDEPENDS_enigma2_openwebif = python pythoncheetah grab
+DESCRIPTION_enigma2_plugin_extensions_openwebif = "open webinteface plugin for enigma2 by openpli team"
+PKGR_enigma2_plugin_extensions_openwebif = r1
+RDEPENDS_enigma2_plugin_extensions_openwebif = python pythoncheetah grab
 
-$(DEPDIR)/enigma2_openwebif.do_prepare: bootstrap $(RDEPENDS_enigma2_openwebif) $(DEPENDS_enigma2_openwebif)
-	$(PREPARE_enigma2_openwebif)
+$(DEPDIR)/enigma2_plugin_extensions_openwebif.do_prepare: bootstrap $(RDEPENDS_enigma2_plugin_extensions_openwebif) $(DEPENDS_enigma2_plugin_extensions_openwebif)
+	$(PREPARE_enigma2_plugin_extensions_openwebif)
 	touch $@
 
-$(DEPDIR)/enigma2_openwebif: \
-$(DEPDIR)/%enigma2_openwebif: $(DEPDIR)/enigma2_openwebif.do_prepare
+$(DEPDIR)/enigma2_plugin_extensions_openwebif: \
+$(DEPDIR)/%enigma2_plugin_extensions_openwebif: $(DEPDIR)/enigma2_plugin_extensions_openwebif.do_prepare
 	$(start_build)
-	cd $(DIR_enigma2_openwebif) && \
+	cd $(DIR_enigma2_plugin_extensions_openwebif) && \
 		$(BUILDENV) \
 		mkdir -p $(PKDIR)/usr/lib/enigma2/python/Plugins/Extensions && \
-		mkdir -p $(PKDIR)/usr/bin/ && \
 		cp -a plugin $(PKDIR)/usr/lib/enigma2/python/Plugins/Extensions/OpenWebif && \
-		cp -a $(buildprefix)/root/usr/bin/grab.sh $(PKDIR)/usr/bin/
 	$(e2extra_build)
 	touch $@
 
+#
+# enigma2-mediaportal
+#
+BEGIN[[
+enigma2_plugin_extensions_mediaportal
+  git
+  MediaPortal
+  nothing:git://github.com/OpenAR-P/MediaPortal.git
+  make:install:DESTDIR=PKDIR
+;
+]]END
+
+DESCRIPTION_enigma2_plugin_extensions_mediaportal = "Enigma2 MediaPortal"
+PKGR_enigma2_plugin_extensions_mediaportal = r0
+RDEPENDS_enigma2_plugin_extensions_mediaportal = python
+
+$(DEPDIR)/enigma2_plugin_extensions_mediaportal.do_prepare: bootstrap $(RDEPENDS_enigma2_plugin_extensions_mediaportal) $(DEPENDS_enigma2_plugin_extensions_mediaportal)
+	$(PREPARE_enigma2_plugin_extensions_mediaportal)
+	touch $@
+
+$(DEPDIR)/enigma2_plugin_extensions_mediaportal.do_compile: $(DEPDIR)/enigma2_plugin_extensions_mediaportal.do_prepare
+	cd $(DIR_enigma2_plugin_extensions_mediaportal) && \
+		./autogen.sh && \
+		$(BUILDENV) \
+		./configure \
+			--host=$(target) \
+			--prefix=/usr \
+			--datadir=/usr/share \
+			--sysconfdir=/etc \
+			STAGING_INCDIR=$(hostprefix)/usr/include \
+			STAGING_LIBDIR=$(hostprefix)/usr/lib \
+			PY_PATH=$(targetprefix)/usr \
+			$(PLATFORM_CPPFLAGS)
+	touch $@
+
+$(DEPDIR)/enigma2_plugin_extensions_mediaportal: \
+$(DEPDIR)/%enigma2_plugin_extensions_mediaportal: $(DEPDIR)/enigma2_plugin_extensions_mediaportal.do_compile
+	$(start_build)
+	cd $(DIR_enigma2_plugin_extensions_mediaportal) && \
+		$(MAKE) install DESTDIR=$(PKDIR)
+	$(toflash_build)
+	$(e2extra_build)
+	touch $@
 #
 # enigma2-networkbrowser
 #
@@ -42,7 +83,7 @@ BEGIN[[
 enigma2_networkbrowser
   git
   {PN}-{PV}
-  nothing:git://openpli.git.sourceforge.net/gitroot/openpli/plugins-enigma2:sub=networkbrowser
+  nothing:git://git.code.sf.net/p/openpli/plugins-enigma2:sub=networkbrowser
   patch:file://{PN}-support_autofs.patch
   make:install:DESTDIR=PKDIR
 ;
