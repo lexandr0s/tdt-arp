@@ -22,7 +22,6 @@ bare-os: \
 		$(BASE_PASSWD) \
 		$(MAKEDEV) \
 		$(BASE_FILES) \
-		module_init_tools \
 		busybox \
 		libz \
 		grep \

@@ -43,7 +43,7 @@ module_init_tools
   {PN}-{PV}
   extract:http://ftp.be.debian.org/pub/linux/utils/kernel/{PN}/{PN}-{PV}.tar.bz2
   patch:file://module-init-tools-no-man.patch
-  make:INSTALL=install:install:sbin_PROGRAMS="depmod modinfo":bin_PROGRAMS=:mandir=/usr/share/man:DESTDIR=TARGETS
+  make:INSTALL=install:install:sbin_PROGRAMS="depmod modinfo":bin_PROGRAMS=:mandir=/usr/share/man:DESTDIR=PKDIR
 ;
 ]]END
 
@@ -62,10 +62,9 @@ $(DEPDIR)/module_init_tools.do_compile: $(DEPDIR)/module_init_tools.do_prepare
 	touch $@
 
 $(DEPDIR)/module_init_tools: $(DEPDIR)/lsb $(MODULE_INIT_TOOLS_ADAPTED_ETC_FILES:%=root/etc/%) $(DEPDIR)/module_init_tools.do_compile
+	$(start_build)
 	cd $(DIR_module_init_tools) && \
 		$(INSTALL_module_init_tools)
-	$(call adapted-etc-files,$(MODULE_INIT_TOOLS_ADAPTED_ETC_FILES))
-	$(call initdconfig,module-init-tools)
 	touch $@
 
 #
