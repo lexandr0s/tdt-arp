@@ -59,9 +59,6 @@ SED=$(shell which sed)
 
 MAKE_PATH := $(hostprefix)/bin:$(PATH)
 
-ADAPTED_ETC_FILES =
-ETC_RW_FILES =
-
 # rpm helper-"functions":
 PKG_CONFIG_PATH = $(targetprefix)/usr/lib/pkgconfig
 REWRITE_LIBDIR = sed -i "s,^libdir=.*,libdir='$(targetprefix)/usr/lib'," $(targetprefix)/usr/lib

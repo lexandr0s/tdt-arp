@@ -47,14 +47,10 @@ $(DEPDIR)/nfs_utils.do_compile: bootstrap e2fsprogs $(DEPDIR)/nfs_utils.do_prepa
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/nfs_utils: $(NFS_UTILS_ADAPTED_ETC_FILES:%=root/etc/%) \
-		$(DEPDIR)/nfs_utils.do_compile
+$(DEPDIR)/nfs_utils: $(DEPDIR)/nfs_utils.do_compile
 	$(start_build)
 	cd $(DIR_nfs_utils) && \
 		$(INSTALL_nfs_utils)
-	( cd root/etc && for i in $(NFS_UTILS_ADAPTED_ETC_FILES); do \
-		[ -f $$i ] && $(INSTALL) -m644 $$i $(PKDIR)/etc/$$i || true; \
-		[ "$${i%%/*}" = "init.d" ] && chmod 755 $(PKDIR)/etc/$$i || true; done )
 	$(tocdk_build)
 	$(toflash_build)
 	touch $@

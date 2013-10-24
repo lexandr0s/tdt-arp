@@ -61,7 +61,7 @@ $(DEPDIR)/module_init_tools.do_compile: $(DEPDIR)/module_init_tools.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/module_init_tools: $(DEPDIR)/lsb $(MODULE_INIT_TOOLS_ADAPTED_ETC_FILES:%=root/etc/%) $(DEPDIR)/module_init_tools.do_compile
+$(DEPDIR)/module_init_tools: $(DEPDIR)/lsb $(DEPDIR)/module_init_tools.do_compile
 	$(start_build)
 	cd $(DIR_module_init_tools) && \
 		$(INSTALL_module_init_tools)
@@ -348,15 +348,13 @@ $(DEPDIR)/portmap.do_compile: $(DEPDIR)/portmap.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/portmap: $(DEPDIR)/lsb $(PORTMAP_ADAPTED_ETC_FILES:%=root/etc/%) $(DEPDIR)/portmap.do_compile
+$(DEPDIR)/portmap: $(DEPDIR)/lsb $(DEPDIR)/portmap.do_compile
 	$(start_build)
 	mkdir -p $(PKDIR)/sbin/
 	mkdir -p $(PKDIR)/etc/init.d/
 	mkdir -p $(PKDIR)/usr/share/man/man8
 	cd $(DIR_portmap) && \
 		$(INSTALL_portmap)
-	$(call adapted-etc-files,$(PORTMAP_ADAPTED_ETC_FILES))
-	$(call initdconfig,portmap)
 	$(tocdk_build)
 	$(toflash_build)
 	touch $@
@@ -394,19 +392,10 @@ $(DEPDIR)/openrdate.do_compile: $(DEPDIR)/openrdate.do_prepare
 		$(MAKE) 
 	touch $@
 
-$(DEPDIR)/openrdate: $(OPENRDATE_ADAPTED_ETC_FILES:%=root/etc/%) \
-		$(DEPDIR)/openrdate.do_compile
+$(DEPDIR)/openrdate: $(DEPDIR)/openrdate.do_compile
 	$(start_build)
 	cd $(DIR_openrdate) && \
 		$(INSTALL_openrdate)
-	$(INSTALL_DIR) $(PKDIR)/etc/init.d/ && \
-	( cd root/etc && for i in $(OPENRDATE_ADAPTED_ETC_FILES); do \
-		[ -f $$i ] && $(INSTALL) -m644 $$i $(PKDIR)/etc/$$i || true; \
-		[ "$${i%%/*}" = "init.d" ] && chmod 755 $(PKDIR)/etc/$$i || true; done ) && \
-	( export HHL_CROSS_TARGET_DIR=$(prefix)/release && cd $(prefix)/release/etc/init.d && \
-		for s in rdate ; do \
-			$(hostprefix)/bin/target-initdconfig --add $$s || \
-			echo "Unable to enable initd service: $$s" ; done && rm *rpmsave 2>/dev/null || true )
 	$(tocdk_build)
 	$(toflash_build)
 	touch $@
@@ -669,10 +658,6 @@ $(DEPDIR)/sg3_utils: $(DEPDIR)/sg3_utils.do_compile
 	$(INSTALL) -d $(prefix)/$*cdkroot/etc/default && \
 	$(INSTALL) -d $(prefix)/$*cdkroot/etc/init.d && \
 	$(INSTALL) -d $(prefix)/$*cdkroot/usr/sbin && \
-	( cd root/etc && for i in $(SG3_UTILS_ADAPTED_ETC_FILES); do \
-		[ -f $$i ] && $(INSTALL) -m644 $$i $(prefix)/$*cdkroot/etc/$$i || true; \
-		[ "$${i%%/*}" = "init.d" ] && chmod 755 $(prefix)/$*cdkroot/etc/$$i || true; done ) && \
-	$(INSTALL) -m755 root/usr/sbin/sg_down.sh $(prefix)/$*cdkroot/usr/sbin
 	touch $@
 
 #
