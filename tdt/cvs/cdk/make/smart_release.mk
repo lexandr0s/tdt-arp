@@ -3,7 +3,7 @@
 #
 BEGIN[[
 init_scripts
-  0.10
+  0.11
   {PN}-{PV}
   pdircreate:{PN}-{PV}
   nothing:file://../root/etc/inittab
@@ -24,6 +24,7 @@ init_scripts
   nothing:file://../root/release/umountfs
   nothing:file://../root/release/lircd
   nothing:file://../root/etc/init.d/avahi-daemon
+  nothing:file://../root/etc/init.d/busybox-cron
   nothing:file://../root/etc/init.d/rdate
 ;
 ]]END
@@ -45,7 +46,8 @@ crond \
 lircd \
 umountfs \
 avahi-daemon \
-rdate
+busybox-cron \
+rdate 
 
 define postinst_init_scripts
 #!/bin/sh
@@ -311,6 +313,7 @@ release_base: driver-ptinp driver-encrypt
 	$(INSTALL_DIR) $(prefix)/release/dev.static && \
 	$(INSTALL_DIR) $(prefix)/release/etc && \
 	$(INSTALL_DIR) $(prefix)/release/etc/fonts && \
+	$(INSTALL_DIR) $(prefix)/release/etc/cron && \
 	$(INSTALL_DIR) $(prefix)/release/etc/init.d && \
 	$(INSTALL_DIR) $(prefix)/release/etc/modprobe.d && \
 	$(INSTALL_DIR) $(prefix)/release/etc/network && \
