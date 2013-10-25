@@ -24,7 +24,6 @@ bare-os: \
 		$(BASE_FILES) \
 		busybox \
 		libz \
-		grep \
 		$(INITSCRIPTS) \
 		$(NETBASE) \
 		$(BC) \
@@ -41,7 +40,6 @@ net-utils: \
 		vsftpd \
 		ethtool \
 		opkg \
-		grep \
 		$(CIFS)
 
 disk-utils: \
