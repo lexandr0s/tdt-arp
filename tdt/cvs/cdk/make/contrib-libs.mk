@@ -349,9 +349,9 @@ $(DEPDIR)/%libjpeg6b: $(DEPDIR)/libjpeg6b.do_compile
 #
 BEGIN[[
 libpng
-  1.5.6
+  1.6.2
   {PN}-{PV}
-  extract:http://www.fhloston-paradise.de/{PN}-{PV}.tar.gz
+  extract:http://prdownloads.sourceforge.net/libpng/{PN}-{PV}.tar.gz
   nothing:file://{PN}.diff
   patch:file://{PN}-{PV}-workaround_for_stmfb_alpha_error.patch
   make:install:prefix=PKDIR/usr
@@ -370,11 +370,11 @@ $(DEPDIR)/libpng.do_prepare: bootstrap libz $(DEPENDS_libpng)
 $(DEPDIR)/libpng.do_compile: $(DEPDIR)/libpng.do_prepare
 	export PATH=$(hostprefix)/bin:$(PATH) && \
 	cd $(DIR_libpng) && \
-		./autogen.sh && \
 		$(BUILDENV) \
 		./configure \
 			--build=$(build) \
 			--host=$(target) \
+			--enable-maintainer-mode \
 			--prefix=/usr && \
 		export ECHO="echo" && \
 		echo "Echo cmd =" $(ECHO) && \
@@ -1482,7 +1482,7 @@ $(DEPDIR)/%libdvdread: libdvdread.do_compile
 #
 BEGIN[[
 ffmpeg
-  1.2.1
+  2.0.2
   {PN}-{PV}
   extract:http://{PN}.org/releases/{PN}-{PV}.tar.gz
   patch:file://{PN}-{PV}.patch
@@ -1506,7 +1506,6 @@ $(DEPDIR)/ffmpeg.do_compile: $(DEPDIR)/ffmpeg.do_prepare
 	./configure \
 		--disable-static \
 		--enable-shared \
-		--enable-small \
 		--disable-runtime-cpudetect \
 		--disable-ffserver \
 		--disable-ffplay \
@@ -1567,21 +1566,33 @@ $(DEPDIR)/ffmpeg.do_compile: $(DEPDIR)/ffmpeg.do_prepare
 		--enable-decoder=aac \
 		--enable-decoder=dvbsub \
 		--enable-decoder=flac \
+		--enable-decoder=pcm_s16le \
+		--enable-decoder=flv \
 		--enable-decoder=h261 \
 		--enable-decoder=h263 \
 		--enable-decoder=h263i \
+		--enable-decoder=h263p \
 		--enable-decoder=h264 \
+		--enable-decoder=h264_crystalhd \
 		--enable-decoder=iff_byterun1 \
 		--enable-decoder=mjpeg \
 		--enable-decoder=mp3 \
+		--enable-decoder=mpegvideo \
 		--enable-decoder=mpeg1video \
 		--enable-decoder=mpeg2video \
+		--enable-decoder=mpeg2video_crystalhd \
+		--enable-decoder=mpeg4 \
+		--enable-decoder=mpeg4_crystalhd \
 		--enable-decoder=png \
 		--enable-decoder=theora \
 		--enable-decoder=vorbis \
 		--enable-parser=mjpeg \
 		--enable-demuxer=mjpeg \
+		--enable-demuxer=wav \
+		--enable-demuxer=hls \
 		--enable-protocol=file \
+		--enable-protocol=hls \
+		--enable-protocol=udp \
 		--disable-indevs \
 		--disable-outdevs \
 		--enable-avresample \
@@ -1596,6 +1607,7 @@ $(DEPDIR)/ffmpeg.do_compile: $(DEPDIR)/ffmpeg.do_prepare
 		--target-os=linux \
 		--arch=sh4 \
 		--disable-debug \
+		--extra-cflags="-fno-strict-aliasing" \
 		--enable-stripping \
 		--prefix=/usr
 	touch $@
@@ -2371,7 +2383,7 @@ $(DEPDIR)/%setuptools: $(DEPDIR)/setuptools.do_compile
 #
 BEGIN[[
 gdata
-  2.0.17
+  2.0.18
   gdata-{PV}
   extract:http://gdata-python-client.googlecode.com/files/gdata-{PV}.tar.gz
 ;
@@ -3231,6 +3243,9 @@ $(DEPDIR)/gst_ffmpeg.do_compile: $(DEPDIR)/gst_ffmpeg.do_prepare
 		--enable-decoder=ogg \
 		--enable-decoder=vorbis \
 		--enable-decoder=flac \
+		--enable-decoder=vp6 \
+		--enable-decoder=vp6a \
+		--enable-decoder=vp6f \
 		\
 		--disable-demuxers \
 		--enable-demuxer=ogg \
@@ -3397,48 +3412,6 @@ $(DEPDIR)/%gst_plugins_dvbmediasink: $(DEPDIR)/gst_plugins_dvbmediasink.do_compi
 
 ##############################   EXTERNAL_LCD   ################################
 
-#
-# libusb
-#
-BEGIN[[
-libusb
-  0.1.12
-  {PN}-{PV}
-  extract:http://downloads.sourceforge.net/{PN}/{PN}-{PV}.tar.gz
-  make:install:DESTDIR=PKDIR
-;
-]]END
-
-DESCRIPTION_libusb = "libusb is a library which allows userspace application access to USB devices."
-
-FILES_libusb = \
-/usr/lib/libusb* \
-/usr/lib/libusbpp*
-
-$(DEPDIR)/libusb.do_prepare: $(DEPENDS_libusb)
-	$(PREPARE_libusb)
-	touch $@
-
-$(DEPDIR)/libusb.do_compile: $(DEPDIR)/libusb.do_prepare
-	export PATH=$(hostprefix)/bin:$(PATH) && \
-	cd $(DIR_libusb) && \
-	$(BUILDENV) \
-	./configure \
-		--host=$(target) \
-		--disable-build-docs \
-		--prefix=/usr && \
-		$(MAKE) all
-	touch $@
-
-$(DEPDIR)/libusb: \
-$(DEPDIR)/%libusb: $(DEPDIR)/libusb.do_compile
-	$(start_build)
-	cd $(DIR_libusb) && \
-		$(INSTALL_libusb)
-	$(tocdk_build)
-	$(toflash_build)
-#	@DISTCLEANUP_libusb@
-	touch $@
 
 #
 # graphlcd
@@ -3447,8 +3420,10 @@ BEGIN[[
 graphlcd
   git
   {PN}-{PV}
-  nothing:git://projects.vdr-developer.org/{PN}-base.git:r=281feef328f8e3772f7a0dde0a90c3a5260c334d:b=touchcol
+  nothing:git://projects.vdr-developer.org/{PN}-base.git:r=1e01a8963f9ab95ba40ddb44a6c166b8e546053d:b=touchcol
   patch:file://{PN}.patch
+  patch:file://{PN}_add_dynload_support.patch
+  patch:file://{PN}_support_libusb1.0.patch
   make:install:DESTDIR=PKDIR
 ;
 ]]END
@@ -3462,7 +3437,7 @@ FILES_graphlcd = \
 /usr/lib/libglcdskin* \
 /etc/graphlcd.conf
 
-$(DEPDIR)/graphlcd.do_prepare: bootstrap libusb $(DEPENDS_graphlcd)
+$(DEPDIR)/graphlcd.do_prepare: bootstrap libusb2 $(DEPENDS_graphlcd)
 	$(PREPARE_graphlcd)
 	touch $@
 
@@ -3520,6 +3495,7 @@ $(DEPDIR)/libgd2.do_compile: $(DEPDIR)/libgd2.do_prepare
 		--host=$(target) \
 		--prefix=/usr && \
 		$(MAKE)
+	touch $@
 
 $(DEPDIR)/libgd2: \
 $(DEPDIR)/%libgd2: $(DEPDIR)/libgd2.do_compile
@@ -3536,7 +3512,7 @@ $(DEPDIR)/%libgd2: $(DEPDIR)/libgd2.do_compile
 #
 BEGIN[[
 libusb2
-  1.0.8
+  1.0.9
   libusb-{PV}
   extract:http://downloads.sourceforge.net/project/libusb/libusb-1.0/libusb-{PV}/libusb-{PV}.tar.bz2
   make:install:DESTDIR=PKDIR
@@ -3560,6 +3536,7 @@ $(DEPDIR)/libusb2.do_compile: $(DEPDIR)/libusb2.do_prepare
 		--host=$(target) \
 		--prefix=/usr && \
 		$(MAKE) all
+	touch $@
 
 $(DEPDIR)/libusb2: \
 $(DEPDIR)/%libusb2: $(DEPDIR)/libusb2.do_compile
@@ -3572,39 +3549,40 @@ $(DEPDIR)/%libusb2: $(DEPDIR)/libusb2.do_compile
 	touch $@
 
 #
-# libusbcompat
+# libusb-compat
 #
 BEGIN[[
-libusbcompat
-  0.1.3
+libusb_compat
+  0.1.5
   libusb-compat-{PV}
   extract:http://downloads.sourceforge.net/project/libusb/libusb-compat-0.1/libusb-compat-{PV}/libusb-compat-{PV}.tar.bz2
   make:install:DESTDIR=PKDIR
 ;
 ]]END
 
-DESCRIPTION_libusbcompat = "A compatibility layer allowing applications written for libusb-0.1 to work with libusb-1.0"
-FILES_libusbcompat = \
+DESCRIPTION_libusb_compat = "A compatibility layer allowing applications written for libusb-0.1 to work with libusb-1.0"
+FILES_libusb_compat = \
 /usr/lib/*.so*
 
-$(DEPDIR)/libusbcompat.do_prepare: bootstrap libusb2 $(DEPENDS_libusbcompat)
-	$(PREPARE_libusbcompat)
+$(DEPDIR)/libusb_compat.do_prepare: bootstrap libusb2 $(DEPENDS_libusb_compat)
+	$(PREPARE_libusb_compat)
 	touch $@
 
-$(DEPDIR)/libusbcompat.do_compile: $(DEPDIR)/libusbcompat.do_prepare
-	cd $(DIR_libusbcompat) && \
+$(DEPDIR)/libusb_compat.do_compile: $(DEPDIR)/libusb_compat.do_prepare
+	cd $(DIR_libusb_compat) && \
 	$(BUILDENV) \
 	./configure \
 		--build=$(build) \
 		--host=$(target) \
 		--prefix=/usr && \
 		$(MAKE)
+	touch $@
 
-$(DEPDIR)/libusbcompat: \
-$(DEPDIR)/%libusbcompat: $(DEPDIR)/libusbcompat.do_compile
+$(DEPDIR)/libusb_compat: \
+$(DEPDIR)/%libusb_compat: $(DEPDIR)/libusb_compat.do_compile
 	$(start_build)
-	cd $(DIR_libusbcompat) && \
-		$(INSTALL_libusbcompat)
+	cd $(DIR_libusb_compat) && \
+		$(INSTALL_libusb_compat)
 	$(tocdk_build)
 	$(toflash_build)
 #	@DISTCLEANUP_libusbcompat@
@@ -3911,7 +3889,7 @@ BEGIN[[
 tuxtxtlib
   1.0
   libtuxtxt
-  nothing:git://git.code.sf.net/p/openpli/tuxtxt:r=4ff8fff:sub=libtuxtxt
+  nothing:git://git.code.sf.net/p/openpli/tuxtxt.git:r=4ff8fff:sub=libtuxtxt
   patch:file://libtuxtxt-{PV}-fix_dbox_headers.diff
   make:install:prefix=/usr:DESTDIR=PKDIR
 ;
@@ -3963,7 +3941,7 @@ BEGIN[[
 tuxtxt32bpp
   1.0
   tuxtxt
-  nothing:git://git.code.sf.net/p/openpli/tuxtxt:r=4ff8fff:sub=tuxtxt
+  nothing:git://git.code.sf.net/p/openpli/tuxtxt.git:r=4ff8fff:sub=tuxtxt
   patch:file://{PN}-{PV}-fix_dbox_headers.diff
   make:install:prefix=/usr:DESTDIR=PKDIR
 # overwrite after make install
@@ -4067,7 +4045,7 @@ BEGIN[[
 libdreamdvd2
   git
   libdreamdvd
-  nothing:git://github.com/mirakels/libdreamdvd.git:r=1bdc2c33f912b9e87cb7e204485a57c6a08a0e8c
+  nothing:git://github.com/mirakels/libdreamdvd.git:r=6aa22dd3f530ca4be49946e07e4a0bfe60427bdf
   patch:file://libdreamdvd-1.0-support_sh4.patch
   make:install:prefix=/usr:DESTDIR=PKDIR
 ;
@@ -4087,6 +4065,7 @@ $(DEPDIR)/libdreamdvd2.do_compile: $(DEPDIR)/libdreamdvd2.do_prepare
 	autoreconf -i && \
 	$(BUILDENV) \
 	./configure \
+		--build=$(build) \
 		--host=$(target) \
 		--prefix=/usr && \
 	$(MAKE) all

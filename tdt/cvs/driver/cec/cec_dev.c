@@ -6,6 +6,10 @@
 #include <linux/kernel.h>
 #include <linux/mm.h>
 #include <linux/poll.h>
+#include <linux/version.h>
+
+#include <linux/device.h> /* class_creatre */ 
+#include <linux/cdev.h> /* cdev_init */
 
 #include "cec_opcodes.h"
 #include "cec_worker.h"
@@ -178,6 +182,7 @@ static unsigned int CECdev_poll(struct file *filp, poll_table *wait)
 {
 	unsigned int mask = 0;
 
+	poll_wait(filp, &wq, wait);
 	if(outputBufferStart != outputBufferEnd)
 	{
 		mask = POLLIN | POLLRDNORM;
@@ -254,12 +259,40 @@ static struct file_operations cec_fops =
 	.release  = CECdev_close
 };
 
+#define DEVICE_NAME "CEC" 
+
+static        dev_t  cec_dev_num; 
+static struct cdev   cec_cdev; 
+static struct class *cec_class = 0;
 int init_dev(void)
 {
+	int result;
 	outputBufferStart = outputBufferEnd = 0;
 
-	if (register_chrdev(CEC_MAJOR,"CEC",&cec_fops))
-		dprintk(0,"unable to get major %d for CEC\n", CEC_MAJOR);
+	//if (register_chrdev(CEC_MAJOR,"CEC",&cec_fops))
+	//	dprintk(0,"unable to get major %d for CEC\n", CEC_MAJOR);
+  cec_dev_num = MKDEV(CEC_MAJOR, 0);
+  result = register_chrdev_region(cec_dev_num, 1, DEVICE_NAME);
+  if (result < 0) {
+    dprintk(0, KERN_ALERT "CEC cannot register device (%d)\n", result);
+    return result;
+  }
+
+  cdev_init(&cec_cdev, &cec_fops);
+  cec_cdev.owner = THIS_MODULE;
+  cec_cdev.ops   = &cec_fops;
+  if (cdev_add(&cec_cdev, cec_dev_num, 1) < 0)
+  {
+    dprintk(0,"CEC couldn't register '%s' driver\n", DEVICE_NAME);
+    return -1;
+  }
+
+  cec_class = class_create(THIS_MODULE, DEVICE_NAME);
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,30)
+  device_create(cec_class, NULL, MKDEV(CEC_MAJOR, 0), NULL, "hdmi_cec", 0);
+#else
+  class_device_create(cec_class, NULL, MKDEV(CEC_MAJOR, 0), NULL, "hdmi_cec", 0);
+#endif
 
 	vOpen.fp = NULL;
 	sema_init(&vOpen.sem, 1);
@@ -271,5 +304,13 @@ int init_dev(void)
 
 int cleanup_dev(void)
 {
-	unregister_chrdev(CEC_MAJOR,"CEC");
+	//unregister_chrdev(CEC_MAJOR,"CEC");
+	cdev_del(&cec_cdev);
+	unregister_chrdev_region(cec_dev_num, 1);
+#if LINUX_VERSION_CODE >= KERNEL_VERSION(2,6,30)
+  device_destroy(cec_class, MKDEV(CEC_MAJOR, 0));
+#else
+  class_device_destroy(cec_class, MKDEV(CEC_MAJOR, 0));
+#endif
+  class_destroy(cec_class);
 }

@@ -6,7 +6,8 @@ BEGIN[[
 e2plugin
   git
   {PN}
-  git://github.com/schpuntik/enigma2-plugins-sh4.git
+  git://github.com/OpenAR-P/enigma2-plugins-sh4.git
+  patch:file://mytube-remove-dreambox-validation.patch
 ;
 ]]END
 
@@ -20,6 +21,7 @@ DESCRIPTION_e2plugin_meta := Enigma2 plugins metadata
 PACKAGES_e2plugin = e2plugin_meta
 DIST_e2plugin = enigma2_plugin_systemplugins_networkbrowser \
 enigma2_plugin_extensions_alternativesoftcammanager \
+enigma2_plugin_extensions_mytube \
 enigma2_plugin_extensions_webinterface \
 enigma2_plugin_extensions_quickepg \
 enigma2_plugin_systemplugins_libgisclubskin
@@ -29,6 +31,7 @@ enigma2_plugin_systemplugins_libgisclubskin
 enigma2_plugins_nontyp := \
 $(DEPDIR)/enigma2-plugins-sh4-networkbrowser \
 $(DEPDIR)/enigma2-plugins-sh4-multiquickbutton \
+$(DEPDIR)/enigma2-plugins-sh4-mytube \
 $(DEPDIR)/enigma2-plugins-sh4-libgisclubskin
 
 

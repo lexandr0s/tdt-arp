@@ -30,7 +30,7 @@ GLIBC := glibc
 GLIBC_DEV := glibc-dev
 FILES_glibc = /lib
 FILES_glibc_dev = /lib /usr/lib
-GLIBC_VERSION := 2.10.2-40
+GLIBC_VERSION := 2.10.2-43
 GLIBC_RAWVERSION := $(firstword $(subst -, ,$(GLIBC_VERSION)))
 GLIBC_SPEC := stm-target-$(GLIBC).spec
 GLIBC_SPEC_PATCH :=
@@ -70,10 +70,10 @@ $(DEPDIR)/%$(GLIBC_DEV): $(DEPDIR)/%$(GLIBC) $(GLIBC_DEV_RPM)
 #
 BINUTILS := binutils
 BINUTILS_DEV := binutils-dev
-BINUTILS_VERSION := 2.23.1-71
+BINUTILS_VERSION := 2.23.2-75
 BINUTILS_SPEC := stm-target-$(BINUTILS).spec
 BINUTILS_SPEC_PATCH := $(BINUTILS_SPEC).$(BINUTILS_VERSION).diff
-BINUTILS_PATCHES :=
+BINUTILS_PATCHES := stm-target-$(BINUTILS).$(BINUTILS_VERSION).diff
 BINUTILS_RPM := RPMS/sh4/$(STLINUX)-sh4-$(BINUTILS)-$(BINUTILS_VERSION).sh4.rpm
 BINUTILS_DEV_RPM := RPMS/sh4/$(STLINUX)-sh4-$(BINUTILS_DEV)-$(BINUTILS_VERSION).sh4.rpm
 
@@ -215,7 +215,7 @@ FILES_libstdc++-dev = \
 /usr/lib/*.so*
 
 LIBGCC := libgcc
-GCC_VERSION := 4.7.2-124
+GCC_VERSION := 4.7.3-129
 GCC_SPEC := stm-target-$(GCC).spec
 GCC_SPEC_PATCH := $(GCC_SPEC).$(GCC_VERSION).diff
 GCC_PATCHES := stm-target-$(GCC).$(GCC_VERSION).diff
@@ -474,7 +474,7 @@ $(DEPDIR)/$(BASE_FILES): $(DEPDIR)/%$(BASE_FILES): $(BASE_FILES_ADAPTED_ETC_FILE
 #
 LIBATTR := libattr
 LIBATTR_DEV := libattr-dev
-LIBATTR_VERSION := 2.4.43-4
+LIBATTR_VERSION := 2.4.47-5
 LIBATTR_SPEC := stm-target-$(LIBATTR).spec
 LIBATTR_SPEC_PATCH :=
 LIBATTR_PATCHES :=
@@ -594,7 +594,7 @@ UDEV_DEV_RPM := RPMS/sh4/$(STLINUX)-sh4-$(UDEV_DEV)-$(UDEV_VERSION).sh4.rpm
 RDEPENDS_udev := libattr libacl
 
 $(UDEV_RPM) $(UDEV_DEV_RPM): \
-		glib2 libacl libacl-dev libusb usbutils \
+		glib2 libacl libacl-dev libusb_compat usbutils \
 		$(if $(UDEV_SPEC_PATCH),Patches/$(UDEV_SPEC_PATCH)) \
 		$(if $(UDEV_PATCHES),$(UDEV_PATCHES:%=Patches/%)) \
 		$(archivedir)/$(STLINUX)-target-$(UDEV)-$(UDEV_VERSION).src.rpm

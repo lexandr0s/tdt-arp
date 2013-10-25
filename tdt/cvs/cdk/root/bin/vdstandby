@@ -3,6 +3,7 @@ if [ $# -eq 1 ]; then
    if [ "$1" = "-a" ]; then
 	echo "enter standby..."
 	/bin/stfbcontrol hd
+	/bin/fp_control -l 0 1
 	echo on > /proc/stb/avs/0/standby
 	echo off > /dev/vfd 
 	sleep 2 
@@ -12,6 +13,7 @@ if [ $# -eq 1 ]; then
 	echo "end standby..."
        #enable hdmi
        stfbcontrol he
+       /bin/fp_control -l 0 0
        echo off > /proc/stb/avs/0/standby
     fi
 fi

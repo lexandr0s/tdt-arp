@@ -1,6 +1,6 @@
 --- samba-3.6.4/source3/configure.in.org	2010-06-18 16:01:04.000000000 +-0400
 +++ samba-3.6.4/source3/configure.in	2010-08-30 22:31:04.000000000 +-0400
-@@ -325,38 +325,6 @@
+@@ -319,38 +319,6 @@
  fi
  fi
  
@@ -39,7 +39,7 @@
  dnl Figure out the flags to support named structure initializers
  
  LIBREPLACE_C99_STRUCT_INIT([],[AC_MSG_ERROR([c99 structure initializer are not supported])])
-@@ -624,7 +592,7 @@
+@@ -618,7 +586,7 @@
  # Tests for linux LFS support. Need kernel 2.4 and glibc2.2 or greater support.
  #
      *linux*)
@@ -48,7 +48,7 @@
          old_CPPFLAGS="$CPPFLAGS"
          CPPFLAGS="-D_LARGEFILE64_SOURCE -D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE $CPPFLAGS"
         AC_TRY_RUN([
-@@ -663,13 +631,14 @@
+@@ -657,13 +625,14 @@
         exit(1);
  #endif
  }
@@ -70,7 +70,7 @@
  	fi
  	AC_MSG_RESULT([$LINUX_LFS_SUPPORT])
  	;;
-@@ -1147,10 +1116,8 @@
+@@ -1141,10 +1110,8 @@
  # Check to see if core dump directory is defined in linux
  # with /proc/sys/kernel/core_pattern
  
@@ -82,7 +82,7 @@
  
  #############################
  # check if building with gpfs
-@@ -2593,40 +2564,6 @@
+@@ -2622,40 +2593,6 @@
  fi
  # end utmp details
  
@@ -123,7 +123,7 @@
  ICONV_LOOK_DIRS="/usr /usr/local /sw /opt"
  AC_ARG_WITH(libiconv,
  [AS_HELP_STRING([--with-libiconv=BASEDIR], [Use libiconv in BASEDIR/lib and BASEDIR/include (default=auto)])],
-@@ -2833,6 +2770,10 @@
+@@ -2862,6 +2799,10 @@
      AC_DEFINE(HAVE_KERNEL_OPLOCKS_LINUX,1,[Whether to use linux kernel oplocks])
  fi
  
@@ -134,7 +134,7 @@
  AC_CACHE_CHECK([for kernel change notify support],samba_cv_HAVE_KERNEL_CHANGE_NOTIFY,[
  AC_TRY_RUN([
  #include <sys/types.h>
-@@ -3845,7 +3785,6 @@
+@@ -3874,7 +3815,6 @@
    # Heimdal checks.
    AC_CHECK_LIB_EXT(crypto, KRB5_LIBS, des_set_key)
    AC_CHECK_LIB_EXT(asn1, KRB5_LIBS, copy_Authenticator)

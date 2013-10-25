@@ -833,6 +833,7 @@ Makefile\
 :make/misc-specs.mk\
 :make/cleantargets.mk\
 :make/tags.mk\
+:make/emulators.mk\
 :make/smart_release.mk\
 :make/smart_release_xbmc.mk\
 :make/release_neutrino.mk\

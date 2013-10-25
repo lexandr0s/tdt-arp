@@ -6,7 +6,7 @@ BEGIN[[
 e2skin
   git
   {PN}
-  git://github.com/schpuntik/enigma2-skins-sh4.git:b=master
+  git://github.com/OpenAR-P/enigma2-skins-sh4.git:b=master
 ;
 ]]END
 

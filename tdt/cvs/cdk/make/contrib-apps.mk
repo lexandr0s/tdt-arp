@@ -77,10 +77,9 @@ $(DEPDIR)/%module_init_tools: $(DEPDIR)/%lsb $(MODULE_INIT_TOOLS_ADAPTED_ETC_FIL
 #
 BEGIN[[
 grep
-  2.5.1
+  2.14
   {PN}-{PV}
-  extract:ftp://mirrors.kernel.org/gnu/{PN}/{PN}-{PV}.tar.bz2
-  nothing:http://64studio.hivelocity.net/apt/pool/main/g/{PN}/{PN}_{PV}.ds2-6.diff.gz
+  extract:ftp://mirrors.kernel.org/gnu/{PN}/{PN}-{PV}.tar.xz
   make:install:DESTDIR=PKDIR
 ;
 ]]END
@@ -175,7 +174,7 @@ $(DEPDIR)/%pppd: $(DEPDIR)/pppd.do_compile
 #
 BEGIN[[
 usb_modeswitch
-  1.2.5
+  1.2.7
   {PN}-{PV}
   extract:http://www.draisberghof.de/usb_modeswitch/{PN}-{PV}.tar.bz2
   patch:file://{PN}.patch
@@ -184,7 +183,7 @@ usb_modeswitch
 ]]END
 
 DESCRIPTION_usb_modeswitch = usb_modeswitch
-RDEPENDS_usb_modeswitch = libusb usb_modeswitch_data
+RDEPENDS_usb_modeswitch = libusb2 libusb_compat usb_modeswitch_data
 FILES_usb_modeswitch = \
 /etc/* \
 /lib/udev/* \
@@ -215,7 +214,7 @@ $(DEPDIR)/%usb_modeswitch: $(DEPDIR)/usb_modeswitch.do_compile
 #
 BEGIN[[
 usb_modeswitch_data
-  20121109
+  20130807
   {PN}-{PV}
   extract:http://www.draisberghof.de/usb_modeswitch/{PN}-{PV}.tar.bz2
   patch:file://{PN}.patch
@@ -438,9 +437,9 @@ $(DEPDIR)/%openrdate: $(OPENRDATE_ADAPTED_ETC_FILES:%=root/etc/%) \
 #
 BEGIN[[
 e2fsprogs
-  1.42.7
+  1.42.8
   {PN}-{PV}
-  extract:http://sourceforge.net/projects/e2fsprogs/files/e2fsprogs/v{PV}/{PN}-{PV}.tar.gz
+  extract:http://sourceforge.net/projects/{PN}/files/{PN}/v{PV}/{PN}-{PV}.tar.gz
   patch:file://{PN}-{PV}.patch
   make:install:DESTDIR=PKDIR
 ;
@@ -1660,7 +1659,9 @@ BEGIN[[
 grab
   git
   {PN}-{PV}
-  git://github.com/technic/aio-grab.git
+  git://git.code.sf.net/p/openpli/aio-grab.git: r=9202f954c1ae4f0e3fcddb630cdf843c1bcf4f22
+  patch:file://aio-grab-ADD_ST_SUPPORT.patch
+  patch:file://aio-grab-ADD_ST_FRAMESYNC_SUPPORT.patch
   make:install:DESTDIR=PKDIR
 ;
 ]]END
@@ -1859,4 +1860,48 @@ $(DEPDIR)/%gettext: $(DEPDIR)/gettext.do_compile
 	$(tocdk_build)
 	$(toflash_build)
 #	@DISTCLEANUP_gettext@
+	touch $@
+
+
+
+#
+# tor
+#
+BEGIN[[
+tor
+  0.2.3.25
+  {PN}-{PV}
+  https://www.torproject.org/dist/{PN}-{PV}.tar.gz
+#  patch-0:file://tor.patch
+  make:install:DESTDIR=PKDIR
+
+;
+]]END
+
+DESCRIPTION_tor := Tor is a network of virtual tunnels that allows you to improve your privacy and security on the Internet.
+RDEPENDS_tor = libevent
+PKGR_tor = r0
+
+$(DEPDIR)/tor.do_prepare: $(DEPENDS_tor) $(RDEPENDS_tor)
+	$(PREPARE_tor)
+	touch $@
+
+$(DEPDIR)/tor.do_compile: $(DEPDIR)/tor.do_prepare
+	cd $(DIR_tor) && \
+		$(BUILDENV) \
+		./configure \
+			--prefix= \
+			--datarootdir=/usr/share \
+			--disable-asciidoc \
+			--build=$(build) \
+			--host=$(target) \
+			--target=$(target)  && \
+		$(MAKE) 
+	touch $@
+
+$(DEPDIR)/tor: $(DEPDIR)/tor.do_compile
+	$(start_build)
+	cd $(DIR_tor)  && \
+		$(INSTALL_tor)
+	$(extra_build)
 	touch $@

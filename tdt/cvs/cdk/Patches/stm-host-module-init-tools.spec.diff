@@ -28,7 +28,7 @@
  
  cd ..
  cp COPYING LICENSE
-@@ -58,9 +52,6 @@
+@@ -56,9 +50,6 @@
  %files -n %{_pkgname}
  %defattr(-,root,root)
  %attr(755,root,root)%{_stm_host_bin_dir}/depmod

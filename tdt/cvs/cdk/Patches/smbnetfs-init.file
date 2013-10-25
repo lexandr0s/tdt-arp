@@ -1,0 +1,26 @@
+#!/bin/sh
+
+MOUNTPOINT=/media/samba
+
+case "$1" in
+	start)
+		test -f /etc/init.d/fuse && /etc/init.d/fuse start
+		echo "Starting smbnetfs"
+		test -d "${MOUNTPOINT}" || mkdir "${MOUNTPOINT}"
+		if ! /usr/bin/smbnetfs -o allow_root config=/etc/smbnetfs.conf "${MOUNTPOINT}"
+		then
+			rmdir "${MOUNTPOINT}"
+			echo "smbnetfs starting ERROR!"
+			exit 1
+		fi
+		;;
+	stop)
+		echo "Stopping smbnetfs"
+		umount "${MOUNTPOINT}"
+		rmdir "${MOUNTPOINT}"
+		;;
+	*)
+		echo "Usage: $0 {start|stop}"
+		exit 1
+		;;
+esac
