@@ -249,29 +249,29 @@ endif
 	touch $@
 
 #
-# jpeg
+# libjpeg
 #
 BEGIN[[
-jpeg
+libjpeg
   8d
-  {PN}-{PV}
-  extract:http://www.ijg.org/files/{PN}src.v{PV}.tar.gz
-  patch:file://{PN}.diff
+  jpeg-{PV}
+  extract:http://www.ijg.org/files/jpegsrc.v{PV}.tar.gz
+  patch:file://jpeg.diff
   make:install:DESTDIR=PKDIR
 ;
 ]]END
 
-DESCRIPTION_jpeg = "jpeg"
+DESCRIPTION_libjpeg = "libjpeg"
 
-FILES_jpeg = \
+FILES_libjpeg = \
 /usr/lib/*.so* 
 
-$(DEPDIR)/jpeg.do_prepare: bootstrap $(DEPENDS_jpeg)
-	$(PREPARE_jpeg)
+$(DEPDIR)/libjpeg.do_prepare: bootstrap $(DEPENDS_libjpeg)
+	$(PREPARE_libjpeg)
 	touch $@
 
-$(DEPDIR)/jpeg.do_compile: $(DEPDIR)/jpeg.do_prepare
-	cd $(DIR_jpeg) && \
+$(DEPDIR)/libjpeg.do_compile: $(DEPDIR)/libjpeg.do_prepare
+	cd $(DIR_libjpeg) && \
 		$(BUILDENV) \
 		./configure \
 			--build=$(build) \
@@ -282,51 +282,10 @@ $(DEPDIR)/jpeg.do_compile: $(DEPDIR)/jpeg.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/jpeg: $(DEPDIR)/jpeg.do_compile
+$(DEPDIR)/libjpeg: $(DEPDIR)/libjpeg.do_compile
 	$(start_build)
-	cd $(DIR_jpeg) && \
-		$(INSTALL_jpeg)
-	$(tocdk_build)
-	$(toflash_build)
-	touch $@
-
-#
-# jpeg-6b
-#
-BEGIN[[
-libjpeg6b
-  6b1
-  jpeg-{PV}
-  extract:http://ftp.de.debian.org/debian/pool/main/libj/libjpeg6b/{PN}_{PV}.orig.tar.gz
-  make:install:DESTDIR=PKDIR
-;
-]]END
-
-DESCRIPTION_libjpeg6b = "libjpeg6b"
-
-FILES_libjpeg6b = \
-/usr/lib/libjpeg.so.* 
-
-$(DEPDIR)/libjpeg6b.do_prepare: bootstrap $(DEPENDS_libjpeg6b)
-	$(PREPARE_libjpeg6b)
-	touch $@
-
-$(DEPDIR)/libjpeg6b.do_compile: $(DEPDIR)/libjpeg6b.do_prepare
-	cd $(DIR_libjpeg6b) && \
-		$(BUILDENV) \
-		./configure \
-			--build=$(build) \
-			--host=$(target) \
-			--enable-shared \
-			--enable-static \
-			--prefix=/usr && \
-		$(MAKE) all
-	touch $@
-
-$(DEPDIR)/libjpeg6b: $(DEPDIR)/libjpeg6b.do_compile
-	$(start_build)
-	cd $(DIR_libjpeg6b) && \
-		$(INSTALL_libjpeg6b)
+	cd $(DIR_libjpeg) && \
+		$(INSTALL_libjpeg)
 	$(tocdk_build)
 	$(toflash_build)
 	touch $@
@@ -773,21 +732,65 @@ $(DEPDIR)/libvorbisidec: $(DEPDIR)/libvorbisidec.do_compile
 	touch $@
 
 #
+# libffi
+#
+BEGIN[[
+libffi
+  3.0.13
+  {PN}-{PV}
+  extract:ftp://sourceware.org/pub/{PN}/{PN}-{PV}.tar.gz
+  patch:file://libffi-3.0.11.patch
+  make:install:DESTDIR=PKDIR
+;
+]]END
+DESCRIPTION_libffi = libffi
+
+FILES_libffi = \
+/usr/lib/*.so*
+
+$(DEPDIR)/libffi.do_prepare: bootstrap libjpeg lcms $(DEPENDS_libffi)
+	$(PREPARE_libffi)
+	touch $@
+
+$(DEPDIR)/libffi.do_compile: $(DEPDIR)/libffi.do_prepare
+	cd $(DIR_libffi) && \
+		$(BUILDENV) \
+		CFLAGS="$(TARGET_CFLAGS) -Os" \
+		./configure \
+			--build=$(build) \
+			--host=$(target) \
+			--target=$(target) \
+			--disable-static \
+			--enable-builddir=libffi \
+			--prefix=/usr && \
+		$(MAKE) all
+	touch $@
+
+$(DEPDIR)/libffi: $(DEPDIR)/libffi.do_compile
+	$(start_build)
+	cd $(DIR_libffi) && \
+		$(INSTALL_libffi)
+	$(tocdk_build)
+	$(toflash_build)
+	touch $@
+
+
+#
 # libglib2
 # You need libglib2.0-dev on host system
 #
 BEGIN[[
 glib2
-  2.28.3
+  2.34.3
   glib-{PV}
-  extract:http://ftp.acc.umu.se/pub/GNOME/sources/glib/2.28/glib-{PV}.tar.gz
+  extract:http://ftp.gnome.org/pub/GNOME/sources/glib/2.34/glib-{PV}.tar.xz
   patch:file://glib-{PV}.patch
   make:install:DESTDIR=PKDIR
 ;
 ]]END
 
 DESCRIPTION_glib2 = "libglib2"
-
+BDEPENDS_glib2 = libffi
 FILES_glib2 = \
 /usr/lib/*.so*
 
@@ -885,7 +888,7 @@ DESCRIPTION_libmng = "libmng - Multiple-image Network Graphics"
 FILES_libmng = \
 /usr/lib/*.so*
 
-$(DEPDIR)/libmng.do_prepare: bootstrap libz jpeg lcms $(DEPENDS_libmng)
+$(DEPDIR)/libmng.do_prepare: bootstrap libz libjpeg lcms $(DEPENDS_libmng)
 	$(PREPARE_libmng)
 	touch $@
 
@@ -933,7 +936,7 @@ DESCRIPTION_lcms = "lcms"
 FILES_lcms = \
 /usr/lib/*
 
-$(DEPDIR)/lcms.do_prepare: bootstrap libz jpeg $(DEPENDS_lcms)
+$(DEPDIR)/lcms.do_prepare: bootstrap libz libjpeg $(DEPENDS_lcms)
 	$(PREPARE_lcms)
 	touch $@
 
@@ -962,13 +965,12 @@ $(DEPDIR)/lcms: $(DEPDIR)/lcms.do_compile
 #
 BEGIN[[
 directfb
-  1.4.11
+  1.6.3
   DirectFB-{PV}
-  extract:http://{PN}.org/downloads/Core/DirectFB-1.4/DirectFB-{PV}.tar.gz
-  patch:file://{PN}-{PV}+STM2010.12.15-4.diff
-  patch:file://{PN}-{PV}+STM2010.12.15-4.no-vt.diff
-  patch:file://{PN}-libpng.diff
-  patch:file://{PN}-{PV}+STM2010.12.15-4.enigma2remote.diff
+  extract:http://{PN}.org/downloads/Core/DirectFB-1.6/DirectFB-{PV}.tar.gz
+  patch:file://{PN}-{PV}.stm.diff
+  patch:file://{PN}-{PV}.no-vt.diff
+  patch:file://{PN}-{PV}.enigma2remote.diff
   make:install:DESTDIR=PKDIR:LD=sh4-linux-ld
 ;
 ]]END
@@ -977,11 +979,11 @@ DESCRIPTION_directfb = "directfb"
 
 FILES_directfb = \
 /usr/lib/*.so* \
-/usr/lib/directfb-1.4-5/gfxdrivers/*.so* \
-/usr/lib/directfb-1.4-5/inputdrivers/*.so* \
-/usr/lib/directfb-1.4-5/interfaces/*.so* \
-/usr/lib/directfb-1.4-5/systems/libdirectfb_stmfbdev.so \
-/usr/lib/directfb-1.4-5/wm/*.so* \
+/usr/lib/directfb-1.6-3/gfxdrivers/*.so* \
+/usr/lib/directfb-1.6-3/inputdrivers/*.so* \
+/usr/lib/directfb-1.6-3/interfaces/*.so* \
+/usr/lib/directfb-1.6-3/systems/libdirectfb_stmfbdev.so \
+/usr/lib/directfb-1.6-3/wm/*.so* \
 /usr/bin/*
 
 $(DEPDIR)/directfb.do_prepare: bootstrap freetype $(DEPENDS_directfb)
@@ -1039,7 +1041,7 @@ DESCRIPTION_dfbpp = ""
 FILES_dfbpp = \
 /usr/lib/*.so*
 
-$(DEPDIR)/dfbpp.do_prepare: bootstrap libz jpeg directfb $(DEPENDS_dfbpp)
+$(DEPDIR)/dfbpp.do_prepare: bootstrap libz libjpeg directfb $(DEPENDS_dfbpp)
 	$(PREPARE_dfbpp)
 	touch $@
 
@@ -1068,7 +1070,7 @@ BEGIN[[
 libstgles
   git
   {PN}-{PV}
-  plink:../apps/misc/tools/{PN}:{PN}-{PV}
+  plink:$(appsdir)/misc/tools/{PN}:{PN}-{PV}
   make:install:DESTDIR=PKDIR
 ;
 ]]END
@@ -1164,7 +1166,7 @@ FILES_fontconfig = \
 /etc \
 /usr/lib/*
 
-$(DEPDIR)/fontconfig.do_prepare: bootstrap libz libxml2 freetype $(DEPENDS_fontconfig)
+$(DEPDIR)/fontconfig.do_prepare: bootstrap libz libxml2 freetype expat $(DEPENDS_fontconfig)
 	$(PREPARE_fontconfig)
 	touch $@
 
@@ -1624,7 +1626,7 @@ webkitdfb
 ]]END
 
 DESCRIPTION_webkitdfb = "webkitdfb"
-BDEPENDS_webkitdfb = glib2 icu4c libxml2 enchant lite curl fontconfig sqlite libsoup cairo jpeg
+BDEPENDS_webkitdfb = glib2 icu4c libxml2 enchant lite curl fontconfig sqlite libsoup cairo libjpeg
 
 FILES_webkitdfb = \
 /usr/lib*
@@ -3356,7 +3358,7 @@ FILES_libgd2 = \
 /usr/lib/libgd* \
 /usr/bin/*
 
-$(DEPDIR)/libgd2.do_prepare: bootstrap libz libpng jpeg libiconv freetype fontconfig $(DEPENDS_libgd2)
+$(DEPDIR)/libgd2.do_prepare: bootstrap libz libpng libjpeg libiconv freetype fontconfig $(DEPENDS_libgd2)
 	$(PREPARE_libgd2)
 	touch $@
 
@@ -3962,7 +3964,13 @@ $(DEPDIR)/libmpeg2.do_compile: $(DEPDIR)/libmpeg2.do_prepare
 	$(BUILDENV) \
 	./configure \
 		--host=$(target) \
-		--prefix=/usr && \
+		--prefix=/usr \
+		--disable-debug \
+		--disable-accel-detect \
+		--disable-sdl \
+		--disable-warnings \
+		--disable-gprof \
+		--without-x&& \
 	$(MAKE) all
 	touch $@
 
@@ -4302,7 +4310,7 @@ BEGIN[[
 jasper
   1.900.1
   {PN}-{PV}
-  extract:http://www.ece.uvic.ca/~frodo/{PN}/software/{PN}-{PV}.zip
+  extract:http://www.ece.uvic.ca/~mdadams/{PN}/software/{PN}-{PV}.zip
   make:install:prefix=/usr:DESTDIR=PKDIR
 ;
 ]]END
@@ -4321,7 +4329,7 @@ $(DEPDIR)/jasper.do_prepare: bootstrap $(DEPENDS_jasper)
 
 $(DEPDIR)/jasper.do_compile: $(DEPDIR)/jasper.do_prepare
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	cd $(DIR_jasper@/@DIR_jasper) && \
+	cd $(DIR_jasper) && \
 	$(BUILDENV) \
 	./configure \
 		--host=$(target) \
@@ -4331,7 +4339,7 @@ $(DEPDIR)/jasper.do_compile: $(DEPDIR)/jasper.do_prepare
 
 $(DEPDIR)/jasper: $(DEPDIR)/jasper.do_compile
 	$(start_build)
-	cd $(DIR_jasper@/@DIR_jasper) && \
+	cd $(DIR_jasper) && \
 		$(INSTALL_jasper)
 	$(tocdk_build)
 	$(toflash_build)
@@ -4517,7 +4525,7 @@ DESCRIPTION_minidlna = "The MiniDLNA daemon is an UPnP-A/V and DLNA service whic
 FILES_minidlna = \
 /usr/lib/* \
 /usr/sbin/*
-$(DEPDIR)/minidlna.do_prepare: bootstrap ffmpeg libflac libogg libvorbis libid3tag sqlite libexif jpeg $(DEPENDS_minidlna)
+$(DEPDIR)/minidlna.do_prepare: bootstrap ffmpeg libflac libogg libvorbis libid3tag sqlite libexif libjpeg $(DEPENDS_minidlna)
 	$(PREPARE_minidlna)
 	touch $@
 
