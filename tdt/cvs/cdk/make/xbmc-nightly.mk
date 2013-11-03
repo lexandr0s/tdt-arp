@@ -209,3 +209,51 @@ $(DEPDIR)/tvheadend: $(DEPDIR)/tvheadend.do_compile
 	$(tocdk_build)
 	$(toflash_build)
 	touch $@
+
+#
+# XBMC-PVR-ADDONS
+#
+BEGIN[[
+xbmc_pvr_addons
+  git
+  xbmc-pvr-addons
+  nothing:git://github.com/opdenkamp/xbmc-pvr-addons.git:b=frodo
+  patch:file://xbmc-pvr-addons-arch-sh-support.diff
+  make:install:DESTDIR=PKDIR
+;
+]]END
+
+DESCRIPTION_xbmc_pvr_addons = "pvr addons for xbmc "
+SRC_URI_xbmc_pvr_addons = "https://github.com/opdenkamp/xbmc-pvr-addons/"
+#BDEPENDS_xbmc_pvr_addons = xbmc
+PKGR_xbmc_pvr_addons =r1
+FILES_xbmc_pvr_addons = \
+	/usr/lib/xbmc/addons/pvr.hts/* \
+	/usr/share/xbmc/addons/pvr.hts/*
+
+$(DEPDIR)/xbmc_pvr_addons.do_prepare: bootstrap $(DEPENDS_xbmc_pvr_addons)
+	$(PREPARE_xbmc_pvr_addons)
+	touch $@
+
+$(DEPDIR)/xbmc_pvr_addons.do_compile: $(DEPDIR)/xbmc_pvr_addons.do_prepare
+	cd $(DIR_xbmc_pvr_addons) && \
+	$(BUILDENV) \
+	./bootstrap && \
+	./configure \
+		--build=$(build) \
+		--host=$(target) \
+		--prefix=/usr \
+		--disable-static \
+		--disable-mysql \
+		--enable-addons-with-dependencies \
+		--enable-shared && \
+	$(MAKE)
+	touch $@
+
+$(DEPDIR)/xbmc_pvr_addons: $(DEPDIR)/xbmc_pvr_addons.do_compile
+	$(start_build)
+	cd $(DIR_xbmc_pvr_addons) && \
+		$(INSTALL_xbmc_pvr_addons)
+	$(tocdk_build)
+	$(toflash_build)
+	touch $@
