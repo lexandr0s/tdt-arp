@@ -2392,20 +2392,14 @@ gdata
 DESCRIPTION_gdata = "The Google Data APIs (Google Data) provide a simple protocol for reading and writing data on the web. Though it is possible to use these services with a simple HTTP client, this library provides helpful tools to streamline your code and keep up with server-side changes. "
 FILES_gdata = \
 $(PYTHON_DIR)/site-packages/atom/*.py \
-$(PYTHON_DIR)/site-packages/atom/*.pyo \
 $(PYTHON_DIR)/site-packages/gdata/*.py \
-$(PYTHON_DIR)/site-packages/gdata/*.pyo \
-$(PYTHON_DIR)/site-packages/gdata/*.pyo \
 $(PYTHON_DIR)/site-packages/gdata/youtube/*.py \
-$(PYTHON_DIR)/site-packages/gdata/youtube/*.pyo \
 $(PYTHON_DIR)/site-packages/gdata/geo/*.py \
-$(PYTHON_DIR)/site-packages/gdata/geo/*.pyo \
 $(PYTHON_DIR)/site-packages/gdata/media/*.py \
-$(PYTHON_DIR)/site-packages/gdata/media/*.pyo \
 $(PYTHON_DIR)/site-packages/gdata/oauth/*.py \
-$(PYTHON_DIR)/site-packages/gdata/oauth/*.pyo \
 $(PYTHON_DIR)/site-packages/gdata/tlslite/*.py \
-$(PYTHON_DIR)/site-packages/gdata/tlslite/*.pyo
+$(PYTHON_DIR)/site-packages/gdata/tlslite/integration/*.py \
+$(PYTHON_DIR)/site-packages/gdata/tlslite/utils/*.py
 
 $(DEPDIR)/gdata.do_prepare: bootstrap setuptools $(DEPENDS_gdata)
 	$(PREPARE_gdata)
