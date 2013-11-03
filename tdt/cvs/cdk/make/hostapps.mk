@@ -107,6 +107,29 @@ $(crossprefix)/bin/ipkg-build: filesystem $(DEPENDS_ipkg_utils) | $(ipkprefix)
 		$(MAKE) all PREFIX=$(crossprefix) && \
 		$(MAKE) install PREFIX=$(crossprefix)
 	touch $@
+#
+# fluxcomp_host
+#
+BEGIN[[
+fluxcomp_host
+  git
+  {PN}-{PV}
+  nothing:git://git.directfb.org/git/directfb/core/flux.git
+  make:install
+;
+]]END
+
+
+$(DEPDIR)/fluxcomp_host: bootstrap $(DEPENDS_fluxcomp_host)
+	$(PREPARE_fluxcomp_host)
+	cd $(DIR_fluxcomp_host) && \
+	./autogen.sh &&\
+	./configure \
+		--prefix=$(crossprefix) && \
+	$(MAKE) all PREFIX=$(crossprefix) && \
+	$(MAKE) install PREFIX=$(crossprefix)
+	touch $@
+
 
 #
 # OPKG-HOST
