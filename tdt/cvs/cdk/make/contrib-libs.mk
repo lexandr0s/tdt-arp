@@ -967,8 +967,8 @@ BEGIN[[
 directfb
   1.6.3
   DirectFB-{PV}
-  extract:http://{PN}.org/downloads/Core/DirectFB-1.6/DirectFB-{PV}.tar.gz
-  patch:file://{PN}-{PV}.stm.diff
+  extract:http://ptxdist.sat-universum.de/DirectFB-{PV}.tar.bz2
+  patch:file://{PN}-{PV}.stm.patch
   patch:file://{PN}-{PV}.no-vt.diff
   patch:file://{PN}-{PV}.enigma2remote.diff
   make:install:DESTDIR=PKDIR:LD=sh4-linux-ld
@@ -976,17 +976,22 @@ directfb
 ]]END
 
 DESCRIPTION_directfb = "directfb"
+BDEPENDS_directfb = \
+		libpng \
+		libjpeg \
+		tiff \
+		jasper
 
 FILES_directfb = \
 /usr/lib/*.so* \
-/usr/lib/directfb-1.6-3/gfxdrivers/*.so* \
-/usr/lib/directfb-1.6-3/inputdrivers/*.so* \
-/usr/lib/directfb-1.6-3/interfaces/*.so* \
-/usr/lib/directfb-1.6-3/systems/libdirectfb_stmfbdev.so \
-/usr/lib/directfb-1.6-3/wm/*.so* \
-/usr/bin/*
+/usr/lib/directfb-1.6-0-pure/gfxdrivers/*.so* \
+/usr/lib/directfb-1.6-0-pure/inputdrivers/*.so* \
+/usr/lib/directfb-1.6-0-pure/interfaces/*.so* \
+/usr/lib/directfb-1.6-0-pure/systems/libdirectfb_stmfbdev.so \
+/usr/lib/directfb-1.6-0-pure/wm/*.so* \
+/usr/bin/dfbinfo
 
-$(DEPDIR)/directfb.do_prepare: bootstrap freetype $(DEPENDS_directfb)
+$(DEPDIR)/directfb.do_prepare: bootstrap freetype fluxcomp_host $(DEPENDS_directfb)
 	$(PREPARE_directfb)
 	touch $@
 
@@ -995,24 +1000,42 @@ $(DEPDIR)/directfb.do_compile: $(DEPDIR)/directfb.do_prepare
 	cd $(DIR_directfb) && \
 		cp $(hostprefix)/share/libtool/config/ltmain.sh . && \
 		cp $(hostprefix)/share/libtool/config/ltmain.sh .. && \
-		libtoolize -f -c && \
-		autoreconf --verbose --force --install -I$(hostprefix)/share/aclocal && \
+		autoreconf -f -i -I$(hostprefix)/share/aclocal && \
 		$(BUILDENV) \
+		CFLAGS="$(TARGET_CFLAGS) -g3" \
 		./configure \
 			--build=$(build) \
 			--host=$(target) \
 			--prefix=/usr \
 			--enable-static \
-			--disable-sdl \
-			--disable-x11 \
-			--disable-devmem \
+			--with-tests \
+			--with-tools \
+			--disable-osx \
+			--disable-network \
+			--disable-multicore \
 			--disable-multi \
-			--with-gfxdrivers=stgfx \
-			--with-inputdrivers=linuxinput,enigma2remote \
-			--without-software \
-			--enable-stmfbdev \
+			--enable-voodoo \
+			--disable-devmem \
+			--disable-sdl \
+			--disable-webp \
+			--with-message-size=65536 \
+			--disable-linotype \
+			--disable-vnc \
+			--disable-zlib \
+			--with-inputdrivers=keyboard,linuxinput,ps2mouse,enigma2remote \
+			--disable-x11 \
 			--disable-fbdev \
-			--enable-mme=yes && \
+			--enable-stmfbdev \
+			--disable-video4linux \
+			--disable-video4linux2 \
+			--disable-debug-support \
+			--disable-trace \
+			--enable-mme \
+			--disable-unique \
+			--enable-gif \
+			--enable-png \
+			--enable-jpeg \
+			--enable-freetype && \
 			export top_builddir=`pwd` && \
 		$(MAKE)
 	touch $@
