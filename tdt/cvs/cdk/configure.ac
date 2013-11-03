@@ -416,22 +416,6 @@ AC_ARG_ENABLE(xbd2,
 TDT_CONDITIONAL(ENABLE_XBD2,test "$enable_xbd2" = "yes")
 AC_SUBST(XBD2)
 
-AC_ARG_ENABLE(xbd3,
-	AS_HELP_STRING(--enable-xbd3,  enable xbmc-nigthly diff3 ),
-	[case "${enableval}" in
-		yes) XBD3=xbd3 ;;
-	esac], [enable_xbd3=no])
-TDT_CONDITIONAL(ENABLE_XBD3,test "$enable_xbd3" = "yes")
-AC_SUBST(XBD3)
-
-AC_ARG_ENABLE(xbd4,
-	AS_HELP_STRING(--enable-xbd4,  enable xbmc-nigthly diff4 ),
-	[case "${enableval}" in
-		yes) XBD2=xbd4 ;;
-	esac], [enable_xbd4=no])
-TDT_CONDITIONAL(ENABLE_XBD4,test "$enable_xbd4" = "yes")
-AC_SUBST(XBD4)
-
 AC_ARG_ENABLE(nhd0,
 	AS_HELP_STRING(--enable-nhd0,  enable neutrino-hd-nigthly diff0 ),
 	[case "${enableval}" in
