@@ -2,7 +2,7 @@
 BEGIN[[
 enigma2
   git
-  $(appsdir)/{PN}-nightly
+  {PN}-nightly
 ifdef ENABLE_E2D0
   git://gitorious.org/open-duckbox-project-sh4/guigit.git:r=945aeb939308b3652b56bc6c577853369d54a537
   patch:file://enigma2-nightly.0.diff
@@ -65,7 +65,7 @@ $(DEPDIR)/enigma2-nightly.do_prepare:$(DEPENDS_enigma2)
 	touch $@
 
 
-$(appsdir)/enigma2-nightly/config.status: bootstrap freetype expat fontconfig libpng jpeg libgif libfribidi libid3tag libmad libsigc libreadline \
+$(DIR_enigma2)/config.status: bootstrap freetype expat fontconfig libpng libjpeg libgif libfribidi libid3tag libmad libsigc libreadline \
 		libdvbsipp python libxml2 libxslt elementtree zope_interface twisted pyopenssl lxml libxmlccwrap ncurses-dev libdreamdvd sdparm opkg-host ipkg-utils $(MEDIAFW_DEP) $(EXTERNALLCD_DEP)
 	cd $(DIR_enigma2) && \
 		./autogen.sh && \
