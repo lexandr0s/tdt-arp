@@ -162,3 +162,50 @@ xbmc-nightly-distclean:
 	rm -f $(DEPDIR)/xbmc-nightly.do_compile
 	rm -f $(DEPDIR)/xbmc-nightly.do_prepare
 	rm -rf $(DIR_xbmc)
+
+#
+# TVHEADEND
+#
+BEGIN[[
+tvheadend
+  git
+  {PN}-{PV}
+  nothing:git://github.com/tvheadend/tvheadend.git
+  make:install:DESTDIR=PKDIR
+;
+]]END
+
+DESCRIPTION_tvheadend = "tvheadend"
+SRC_URI_tvheadend = "https://tvheadend.org/"
+#BDEPENDS_tvheadend = xbmc
+PKGR_tvheadend =r1
+FILES_tvheadend = \
+	/usr/bin/tvheadend \
+	/usr/share/tvheadend/*
+
+FILES_tvheadend_init = \
+
+
+$(DEPDIR)/tvheadend.do_prepare: bootstrap directfb $(DEPENDS_tvheadend)
+	$(PREPARE_tvheadend)
+	touch $@
+
+$(DEPDIR)/tvheadend.do_compile: $(DEPDIR)/tvheadend.do_prepare
+	cd $(DIR_tvheadend) && \
+	$(BUILDENV) \
+	./configure \
+		--build=$(build) \
+		--host=$(target) \
+		--enable-bundle \
+		--platform=linux \
+		--prefix=/usr && \
+	$(MAKE)
+	touch $@
+
+$(DEPDIR)/tvheadend: $(DEPDIR)/tvheadend.do_compile
+	$(start_build)
+	cd $(DIR_tvheadend) && \
+		$(INSTALL_tvheadend)
+	$(tocdk_build)
+	$(toflash_build)
+	touch $@
