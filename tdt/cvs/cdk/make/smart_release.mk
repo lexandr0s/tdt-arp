@@ -226,24 +226,31 @@ $(DEPDIR)/udev-rules: $(DEPENDS_udev_rules) $(RDEPENDS_udev_rules)
 
 DESCRIPTION_boot_elf = firmware non public
 SRC_URI_boot_elf = unknown
-PKGV_boot_elf = r2
+PKGV_boot_elf = r3
 RDEPENDS_boot_elf :=
 
 
 $(DEPDIR)/boot-elf: firmware $(RDEPENDS_boot_elf)
 	$(start_build)
 	$(INSTALL_DIR) $(PKDIR)/lib/firmware/
+	$(INSTALL_DIR) $(PKDIR)/boot/
 ifdef ENABLE_SPARK
-	$(INSTALL_FILE) $(archivedir)/boot/video_7111.elf $(PKDIR)/lib/firmware/video.elf
-	$(INSTALL_FILE) $(archivedir)/boot/audio_7111.elf $(PKDIR)/lib/firmware/audio.elf
+	$(INSTALL_FILE) $(archivedir)/boot/video_7111.elf $(PKDIR)/boot/video.elf
+	$(INSTALL_FILE) $(archivedir)/boot/audio_7111.elf $(PKDIR)/boot/audio.elf
+	ln -sf /boot/video.elf $(PKDIR)/lib/firmware/video.elf
+	ln -sf /boot/audio.elf $(PKDIR)/lib/firmware/audio.elf
 endif
 ifdef ENABLE_SPARK7162
-	$(INSTALL_FILE) $(archivedir)/boot/video_7105.elf $(PKDIR)/lib/firmware/video.elf
-	$(INSTALL_FILE) $(archivedir)/boot/audio_7105.elf $(PKDIR)/lib/firmware/audio.elf
+	$(INSTALL_FILE) $(archivedir)/boot/video_7111.elf $(PKDIR)/boot/video.elf
+	$(INSTALL_FILE) $(archivedir)/boot/audio_7111.elf $(PKDIR)/boot/audio.elf
+	ln -sf /boot/video.elf $(PKDIR)/lib/firmware/video.elf
+	ln -sf /boot/audio.elf $(PKDIR)/lib/firmware/audio.elf
 endif
 ifdef ENABLE_HL101
-	$(INSTALL_FILE) $(archivedir)/boot/video_7109.elf $(PKDIR)/lib/firmware/video.elf
-	$(INSTALL_FILE) $(archivedir)/boot/audio_7109.elf $(PKDIR)/lib/firmware/audio.elf
+	$(INSTALL_FILE) $(archivedir)/boot/video_7109.elf $(PKDIR)/boot/video.elf
+	$(INSTALL_FILE) $(archivedir)/boot/audio_7109.elf $(PKDIR)/boot/audio.elf
+	ln -sf /boot/video.elf $(PKDIR)/lib/firmware/video.elf
+	ln -sf /boot/audio.elf $(PKDIR)/lib/firmware/audio.elf
 endif
 	$(toflash_build)
 	touch $@
