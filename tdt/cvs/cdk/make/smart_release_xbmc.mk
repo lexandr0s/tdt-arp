@@ -22,6 +22,7 @@ init_scripts_xbmc
   nothing:file://../root/release/syslogd
   nothing:file://../root/release/umountfs
   nothing:file://../root/release/lircd
+  nothing:file://../root/etc/init.d/tvheadend
 ;
 ]]END
 
@@ -39,6 +40,7 @@ sendsigs \
 telnetd \
 syslogd \
 lircd \
+tvheadend \
 umountfs
 
 define postinst_init_scripts_xbmc
@@ -86,7 +88,7 @@ release_xbmc_spark7162:
 #
 $(DEPDIR)/release_xbmc: $(DEPDIR)/%release_xbmc:release_base release_common_utils release_$(HL101)$(SPARK)$(SPARK7162) release_xbmc_$(HL101)$(SPARK)$(SPARK7162)
 # Post tweaks
-	depmod -b $(prefix)/release $(KERNELVERSION)
+	$(DEPMOD) -b $(prefix)/release $(KERNELVERSION)
 	touch $@
 
 release-xbmc_clean:

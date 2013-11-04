@@ -2,13 +2,12 @@
 # BOOTSTRAP
 #
 $(DEPDIR)/bootstrap: \
-$(DEPDIR)/%bootstrap: \
 		build.env \
-		%libtool \
-		%$(FILESYSTEM) \
-		%$(GLIBC) \
-		%$(CROSS_LIBGCC) \
-		%$(LIBSTDC)
+		libtool \
+		$(FILESYSTEM) \
+		$(GLIBC) \
+		$(CROSS_LIBGCC) \
+		$(LIBSTDC)
 
 	@[ "x$*" = "x" ] && touch -r RPMS/sh4/$(STLINUX)-sh4-$(LIBSTDC)-$(GCC_VERSION).sh4.rpm $@ || true
 
@@ -16,44 +15,38 @@ $(DEPDIR)/%bootstrap: \
 # BARE-OS
 #
 bare-os: \
-%bare-os: \
-		%bootstrap \
-		%$(LIBTERMCAP) \
-		%$(NCURSES_BASE) \
-		%$(NCURSES) \
-		%$(BASE_PASSWD) \
-		%$(MAKEDEV) \
-		%$(BASE_FILES) \
-		%module_init_tools \
-		%busybox \
-		%libz \
-		%grep \
-		%$(INITSCRIPTS) \
-		%$(NETBASE) \
-		%$(BC) \
-		%$(SYSVINIT) \
-		%$(DISTRIBUTIONUTILS) \
+		bootstrap \
+		$(LIBTERMCAP) \
+		$(NCURSES_BASE) \
+		$(NCURSES) \
+		$(BASE_PASSWD) \
+		$(MAKEDEV) \
+		$(BASE_FILES) \
+		busybox \
+		libz \
+		$(INITSCRIPTS) \
+		$(NETBASE) \
+		$(BC) \
+		$(SYSVINIT) \
+		$(DISTRIBUTIONUTILS) \
 		\
-		%e2fsprogs \
-		%u-boot-utils
+		e2fsprogs \
+		u-boot-utils
 
 net-utils: \
-%net-utils: \
-		%$(NETKIT_FTP) \
-		%portmap \
-		%$(NFSSERVER) \
-		%vsftpd \
-		%ethtool \
-		%opkg \
-		%grep \
-		%$(CIFS)
+		$(NETKIT_FTP) \
+		portmap \
+		$(NFSSERVER) \
+		vsftpd \
+		ethtool \
+		opkg \
+		$(CIFS)
 
 disk-utils: \
-%disk-utils: \
-		%$(XFSPROGS) \
-		%util-linux \
-		%jfsutils \
-		%$(SG3)
+		$(XFSPROGS) \
+		util-linux \
+		jfsutils \
+		$(SG3)
 #
 # YAUD
 #
@@ -75,15 +68,6 @@ yaud-neutrino-hd-nightly: yaud-none \
 		boot-elf \
 		neutrino-hd-nightly \
 		release_neutrino
-
-yaud-enigma2-nightly: yaud-none \
-		host_python \
-		lirc \
-		stslave \
-		boot-elf \
-		init-scripts \
-		enigma2-nightly \
-		release
 
 yaud-enigma2-pli-nightly-base: yaud-none \
 		host_python \

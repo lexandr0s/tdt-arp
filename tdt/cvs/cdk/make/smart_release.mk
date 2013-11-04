@@ -3,7 +3,7 @@
 #
 BEGIN[[
 init_scripts
-  0.10
+  0.11
   {PN}-{PV}
   pdircreate:{PN}-{PV}
   nothing:file://../root/etc/inittab
@@ -24,6 +24,7 @@ init_scripts
   nothing:file://../root/release/umountfs
   nothing:file://../root/release/lircd
   nothing:file://../root/etc/init.d/avahi-daemon
+  nothing:file://../root/etc/init.d/busybox-cron
   nothing:file://../root/etc/init.d/rdate
 ;
 ]]END
@@ -45,7 +46,8 @@ crond \
 lircd \
 umountfs \
 avahi-daemon \
-rdate
+busybox-cron \
+rdate 
 
 define postinst_init_scripts
 #!/bin/sh
@@ -224,24 +226,31 @@ $(DEPDIR)/udev-rules: $(DEPENDS_udev_rules) $(RDEPENDS_udev_rules)
 
 DESCRIPTION_boot_elf = firmware non public
 SRC_URI_boot_elf = unknown
-PKGV_boot_elf = r2
+PKGV_boot_elf = r3
 RDEPENDS_boot_elf :=
 
 
 $(DEPDIR)/boot-elf: firmware $(RDEPENDS_boot_elf)
 	$(start_build)
 	$(INSTALL_DIR) $(PKDIR)/lib/firmware/
+	$(INSTALL_DIR) $(PKDIR)/boot/
 ifdef ENABLE_SPARK
-	$(INSTALL_FILE) $(archivedir)/boot/video_7111.elf $(PKDIR)/lib/firmware/video.elf
-	$(INSTALL_FILE) $(archivedir)/boot/audio_7111.elf $(PKDIR)/lib/firmware/audio.elf
+	$(INSTALL_FILE) $(archivedir)/boot/video_7111.elf $(PKDIR)/boot/video.elf
+	$(INSTALL_FILE) $(archivedir)/boot/audio_7111.elf $(PKDIR)/boot/audio.elf
+	ln -sf /boot/video.elf $(PKDIR)/lib/firmware/video.elf
+	ln -sf /boot/audio.elf $(PKDIR)/lib/firmware/audio.elf
 endif
 ifdef ENABLE_SPARK7162
-	$(INSTALL_FILE) $(archivedir)/boot/video_7105.elf $(PKDIR)/lib/firmware/video.elf
-	$(INSTALL_FILE) $(archivedir)/boot/audio_7105.elf $(PKDIR)/lib/firmware/audio.elf
+	$(INSTALL_FILE) $(archivedir)/boot/video_7111.elf $(PKDIR)/boot/video.elf
+	$(INSTALL_FILE) $(archivedir)/boot/audio_7111.elf $(PKDIR)/boot/audio.elf
+	ln -sf /boot/video.elf $(PKDIR)/lib/firmware/video.elf
+	ln -sf /boot/audio.elf $(PKDIR)/lib/firmware/audio.elf
 endif
 ifdef ENABLE_HL101
-	$(INSTALL_FILE) $(archivedir)/boot/video_7109.elf $(PKDIR)/lib/firmware/video.elf
-	$(INSTALL_FILE) $(archivedir)/boot/audio_7109.elf $(PKDIR)/lib/firmware/audio.elf
+	$(INSTALL_FILE) $(archivedir)/boot/video_7109.elf $(PKDIR)/boot/video.elf
+	$(INSTALL_FILE) $(archivedir)/boot/audio_7109.elf $(PKDIR)/boot/audio.elf
+	ln -sf /boot/video.elf $(PKDIR)/lib/firmware/video.elf
+	ln -sf /boot/audio.elf $(PKDIR)/lib/firmware/audio.elf
 endif
 	$(toflash_build)
 	touch $@
@@ -311,6 +320,7 @@ release_base: driver-ptinp driver-encrypt
 	$(INSTALL_DIR) $(prefix)/release/dev.static && \
 	$(INSTALL_DIR) $(prefix)/release/etc && \
 	$(INSTALL_DIR) $(prefix)/release/etc/fonts && \
+	$(INSTALL_DIR) $(prefix)/release/etc/cron && \
 	$(INSTALL_DIR) $(prefix)/release/etc/init.d && \
 	$(INSTALL_DIR) $(prefix)/release/etc/modprobe.d && \
 	$(INSTALL_DIR) $(prefix)/release/etc/network && \

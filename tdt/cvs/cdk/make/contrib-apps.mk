@@ -26,14 +26,12 @@ $(DEPDIR)/bzip2.do_compile: $(DEPDIR)/bzip2.do_prepare
 		$(MAKE) all CC=$(target)-gcc
 	touch $@
 
-$(DEPDIR)/bzip2: \
-$(DEPDIR)/%bzip2: $(DEPDIR)/bzip2.do_compile
+$(DEPDIR)/bzip2: $(DEPDIR)/bzip2.do_compile
 	$(start_build)
 	cd $(DIR_bzip2) && \
 		$(INSTALL_bzip2)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_bzip2@
 	touch $@
 
 #
@@ -45,7 +43,7 @@ module_init_tools
   {PN}-{PV}
   extract:http://ftp.be.debian.org/pub/linux/utils/kernel/{PN}/{PN}-{PV}.tar.bz2
   patch:file://module-init-tools-no-man.patch
-  make:INSTALL=install:install:sbin_PROGRAMS="depmod modinfo":bin_PROGRAMS=:mandir=/usr/share/man:DESTDIR=TARGETS
+  make:INSTALL=install:install:sbin_PROGRAMS="depmod modinfo":bin_PROGRAMS=:mandir=/usr/share/man:DESTDIR=PKDIR
 ;
 ]]END
 
@@ -63,13 +61,10 @@ $(DEPDIR)/module_init_tools.do_compile: $(DEPDIR)/module_init_tools.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/module_init_tools: \
-$(DEPDIR)/%module_init_tools: $(DEPDIR)/%lsb $(MODULE_INIT_TOOLS_ADAPTED_ETC_FILES:%=root/etc/%) $(DEPDIR)/module_init_tools.do_compile
+$(DEPDIR)/module_init_tools: $(DEPDIR)/lsb $(DEPDIR)/module_init_tools.do_compile
+	$(start_build)
 	cd $(DIR_module_init_tools) && \
 		$(INSTALL_module_init_tools)
-	$(call adapted-etc-files,$(MODULE_INIT_TOOLS_ADAPTED_ETC_FILES))
-	$(call initdconfig,module-init-tools)
-#	@DISTCLEANUP_module_init_tools@
 	touch $@
 
 #
@@ -110,14 +105,12 @@ $(DEPDIR)/grep.do_compile: $(DEPDIR)/grep.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/grep: \
-$(DEPDIR)/%grep: $(DEPDIR)/grep.do_compile
+$(DEPDIR)/grep: $(DEPDIR)/grep.do_compile
 	$(start_build)
 	cd $(DIR_grep) && \
 		$(INSTALL_grep)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_grep@
 	touch $@
 
 #
@@ -159,14 +152,12 @@ $(DEPDIR)/pppd.do_compile: pppd.do_prepare
 		$(MAKE) $(MAKE_OPTS)
 	touch $@
 
-$(DEPDIR)/pppd: \
-$(DEPDIR)/%pppd: $(DEPDIR)/pppd.do_compile
+$(DEPDIR)/pppd: $(DEPDIR)/pppd.do_compile
 	$(start_build)
 	cd $(DIR_pppd)  && \
 		$(INSTALL_pppd)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_pppd@
 	touch $@
 	
 #
@@ -195,8 +186,7 @@ $(DEPDIR)/usb_modeswitch.do_prepare: $(DEPENDS_usb_modeswitch) $(RDEPENDS_usb_mo
 $(DEPDIR)/usb_modeswitch.do_compile: $(DEPDIR)/usb_modeswitch.do_prepare
 	  touch $@
 
-$(DEPDIR)/usb_modeswitch: \
-$(DEPDIR)/%usb_modeswitch: $(DEPDIR)/usb_modeswitch.do_compile
+$(DEPDIR)/usb_modeswitch: $(DEPDIR)/usb_modeswitch.do_compile
 	$(start_build)
 	cd $(DIR_usb_modeswitch)  && \
 	  $(BUILDENV) \
@@ -205,7 +195,6 @@ $(DEPDIR)/%usb_modeswitch: $(DEPDIR)/usb_modeswitch.do_compile
 	  $(MAKE) $(MAKE_OPTS) install
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_usb_modeswitch@
 	touch $@
 	
 
@@ -236,8 +225,7 @@ $(DEPDIR)/usb_modeswitch_data.do_prepare: $(DEPENDS_usb_modeswitch_data)
 $(DEPDIR)/usb_modeswitch_data.do_compile: $(DEPDIR)/usb_modeswitch_data.do_prepare
 	touch $@
 
-$(DEPDIR)/usb_modeswitch_data: \
-$(DEPDIR)/%usb_modeswitch_data: $(DEPDIR)/usb_modeswitch_data.do_compile
+$(DEPDIR)/usb_modeswitch_data: $(DEPDIR)/usb_modeswitch_data.do_compile
 	$(start_build)
 	cd $(DIR_usb_modeswitch_data)  && \
 		$(BUILDENV) \
@@ -245,7 +233,6 @@ $(DEPDIR)/%usb_modeswitch_data: $(DEPDIR)/usb_modeswitch_data.do_compile
 		$(MAKE) install
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_usb_modeswitch_data@
 	touch $@
 	
 #
@@ -286,14 +273,12 @@ $(DEPDIR)/ntfs_3g.do_compile: bootstrap fuse $(DEPDIR)/ntfs_3g.do_prepare
 		$(MAKE) $(MAKE_OPTS)
 	touch $@
 
-$(DEPDIR)/ntfs_3g: \
-$(DEPDIR)/%ntfs_3g: $(DEPDIR)/ntfs_3g.do_compile
+$(DEPDIR)/ntfs_3g: $(DEPDIR)/ntfs_3g.do_compile
 	$(start_build)
 	cd $(DIR_ntfs_3g)  && \
 		$(INSTALL_ntfs_3g)
 	$(tocdk_build)	
 	$(toflash_build)
-#	@DISTCLEANUP_ntfs_3g@
 	touch $@
 	
 
@@ -321,14 +306,12 @@ $(DEPDIR)/lsb.do_prepare: bootstrap $(DEPENDS_lsb)
 $(DEPDIR)/lsb.do_compile: $(DEPDIR)/lsb.do_prepare
 	touch $@
 
-$(DEPDIR)/lsb: \
-$(DEPDIR)/%lsb: $(DEPDIR)/lsb.do_compile
+$(DEPDIR)/lsb: $(DEPDIR)/lsb.do_compile
 	$(start_build)
 	cd $(DIR_lsb) && \
 		$(INSTALL_lsb)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_lsb@
 	touch $@
 
 #
@@ -365,19 +348,15 @@ $(DEPDIR)/portmap.do_compile: $(DEPDIR)/portmap.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/portmap: \
-$(DEPDIR)/%portmap: $(DEPDIR)/%lsb $(PORTMAP_ADAPTED_ETC_FILES:%=root/etc/%) $(DEPDIR)/portmap.do_compile
+$(DEPDIR)/portmap: $(DEPDIR)/lsb $(DEPDIR)/portmap.do_compile
 	$(start_build)
 	mkdir -p $(PKDIR)/sbin/
 	mkdir -p $(PKDIR)/etc/init.d/
 	mkdir -p $(PKDIR)/usr/share/man/man8
 	cd $(DIR_portmap) && \
 		$(INSTALL_portmap)
-	$(call adapted-etc-files,$(PORTMAP_ADAPTED_ETC_FILES))
-	$(call initdconfig,portmap)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_portmap@
 	touch $@
 
 #
@@ -413,23 +392,12 @@ $(DEPDIR)/openrdate.do_compile: $(DEPDIR)/openrdate.do_prepare
 		$(MAKE) 
 	touch $@
 
-$(DEPDIR)/openrdate: \
-$(DEPDIR)/%openrdate: $(OPENRDATE_ADAPTED_ETC_FILES:%=root/etc/%) \
-		$(DEPDIR)/openrdate.do_compile
+$(DEPDIR)/openrdate: $(DEPDIR)/openrdate.do_compile
 	$(start_build)
 	cd $(DIR_openrdate) && \
 		$(INSTALL_openrdate)
-	$(INSTALL_DIR) $(PKDIR)/etc/init.d/ && \
-	( cd root/etc && for i in $(OPENRDATE_ADAPTED_ETC_FILES); do \
-		[ -f $$i ] && $(INSTALL) -m644 $$i $(PKDIR)/etc/$$i || true; \
-		[ "$${i%%/*}" = "init.d" ] && chmod 755 $(PKDIR)/etc/$$i || true; done ) && \
-	( export HHL_CROSS_TARGET_DIR=$(prefix)/release && cd $(prefix)/release/etc/init.d && \
-		for s in rdate ; do \
-			$(hostprefix)/bin/target-initdconfig --add $$s || \
-			echo "Unable to enable initd service: $$s" ; done && rm *rpmsave 2>/dev/null || true )
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_openrdate@
 	touch $@
 
 #
@@ -500,7 +468,6 @@ $(DEPDIR)/e2fsprogs: $(DEPDIR)/e2fsprogs.do_compile
 	$(INSTALL) e2fsck/e2fsck.static $(PKDIR)/sbin
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_e2fsprogs@
 	touch $@
 
 #
@@ -548,15 +515,13 @@ $(DEPDIR)/xfsprogs.do_compile: $(DEPDIR)/xfsprogs.do_prepare
 		$(MAKE) $(MAKE_OPTS)
 	touch $@
 
-$(DEPDIR)/xfsprogs: \
-$(DEPDIR)/%xfsprogs: $(DEPDIR)/xfsprogs.do_compile
+$(DEPDIR)/xfsprogs: $(DEPDIR)/xfsprogs.do_compile
 	$(start_build)
 	cd $(DIR_xfsprogs) && \
 		export top_builddir=`pwd` && \
 		$(INSTALL_xfsprogs)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_xfsprogs@
 	touch $@
 
 #
@@ -597,8 +562,7 @@ $(DEPDIR)/mc.do_compile: $(DEPDIR)/mc.do_prepare | $(NCURSES_DEV)
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/mc: \
-$(DEPDIR)/%mc: %glib2 $(DEPDIR)/mc.do_compile
+$(DEPDIR)/mc: glib2 $(DEPDIR)/mc.do_compile
 	$(start_build)
 	cd $(DIR_mc) && \
 		$(INSTALL_mc)
@@ -606,7 +570,6 @@ $(DEPDIR)/%mc: %glib2 $(DEPDIR)/mc.do_compile
 	$(toflash_build)
 #		export top_builddir=`pwd` && \
 #		$(MAKE) install DESTDIR=$(prefix)/$*cdkroot
-#	@DISTCLEANUP_mc@
 	touch $@
 
 #
@@ -644,8 +607,7 @@ $(DEPDIR)/sdparm.do_compile: $(DEPDIR)/sdparm.do_prepare
 		$(MAKE) $(MAKE_OPTS)
 	touch $@
 
-$(DEPDIR)/sdparm: \
-$(DEPDIR)/%sdparm: $(DEPDIR)/sdparm.do_compile
+$(DEPDIR)/sdparm: $(DEPDIR)/sdparm.do_compile
 	$(start_build)
 	mkdir $(PKDIR)/sbin
 	cd $(DIR_sdparm) && \
@@ -654,7 +616,6 @@ $(DEPDIR)/%sdparm: $(DEPDIR)/sdparm.do_compile
 	$(tocdk_build)
 	mv -f $(PKDIR)/usr/bin/sdparm $(PKDIR)/sbin
 	$(toflash_build)
-#	@DISTCLEANUP_sdparm@
 	touch $@
 
 #
@@ -690,19 +651,13 @@ $(DEPDIR)/sg3_utils.do_compile: $(DEPDIR)/sg3_utils.do_prepare
 		$(MAKE) $(MAKE_OPTS)
 	touch $@
 
-$(DEPDIR)/sg3_utils: \
-$(DEPDIR)/%sg3_utils: $(DEPDIR)/sg3_utils.do_compile
+$(DEPDIR)/sg3_utils: $(DEPDIR)/sg3_utils.do_compile
 	cd $(DIR_sg3_utils) && \
 		export PATH=$(MAKE_PATH) && \
 		$(INSTALL_sg3_utils)
 	$(INSTALL) -d $(prefix)/$*cdkroot/etc/default && \
 	$(INSTALL) -d $(prefix)/$*cdkroot/etc/init.d && \
 	$(INSTALL) -d $(prefix)/$*cdkroot/usr/sbin && \
-	( cd root/etc && for i in $(SG3_UTILS_ADAPTED_ETC_FILES); do \
-		[ -f $$i ] && $(INSTALL) -m644 $$i $(prefix)/$*cdkroot/etc/$$i || true; \
-		[ "$${i%%/*}" = "init.d" ] && chmod 755 $(prefix)/$*cdkroot/etc/$$i || true; done ) && \
-	$(INSTALL) -m755 root/usr/sbin/sg_down.sh $(prefix)/$*cdkroot/usr/sbin
-#	@DISTCLEANUP_sg3_utils@
 	touch $@
 
 #
@@ -731,8 +686,7 @@ $(DEPDIR)/ipkg.do_compile: $(DEPDIR)/ipkg.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/ipkg: \
-$(DEPDIR)/%ipkg: $(DEPDIR)/ipkg.do_compile
+$(DEPDIR)/ipkg: $(DEPDIR)/ipkg.do_compile
 	cd $(DIR_ipkg) && \
 		$(INSTALL_ipkg)
 	ln -sf ipkg-cl $(prefix)/$*cdkroot/usr/bin/ipkg && \
@@ -740,7 +694,6 @@ $(DEPDIR)/%ipkg: $(DEPDIR)/ipkg.do_compile
 	$(INSTALL) -d $(prefix)/$*cdkroot/etc/ipkg
 	$(INSTALL) -d $(prefix)/$*cdkroot/usr/lib/ipkg
 	$(INSTALL) -m 644 root/usr/lib/ipkg/status.initial $(prefix)/$*cdkroot/usr/lib/ipkg/status
-#	@DISTCLEANUP_ipkg@
 	touch $@
 
 #
@@ -767,15 +720,13 @@ $(DEPDIR)/zd1211.do_compile: $(DEPDIR)/zd1211.do_prepare
 			CROSS_COMPILE=$(target)- ARCH=sh
 	touch $@
 
-$(DEPDIR)/zd1211: \
-$(DEPDIR)/%zd1211: $(DEPDIR)/zd1211.do_compile
+$(DEPDIR)/zd1211: $(DEPDIR)/zd1211.do_compile
 	cd $(DIR_zd1211) && \
 		$(MAKE) KERNEL_LOCATION=$(buildprefix)/linux \
 			BIN_DEST=$(targetprefix)/bin \
 			INSTALL_MOD_PATH=$(targetprefix) \
 			install
 	$(DEPMOD) -ae -b $(targetprefix) -r $(KERNELVERSION)
-#	@DISTCLEANUP_zd1211@
 	touch $@
 
 #
@@ -807,11 +758,9 @@ $(DEPDIR)/nano.do_compile: $(DEPDIR)/nano.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/nano: \
-$(DEPDIR)/%nano: $(DEPDIR)/nano.do_compile
+$(DEPDIR)/nano: $(DEPDIR)/nano.do_compile
 	cd $(DIR_nano) && \
 		$(INSTALL_nano)
-#	@DISTCLEANUP_nano@
 	touch $@
 
 #
@@ -842,11 +791,9 @@ $(DEPDIR)/rsync.do_compile: $(DEPDIR)/rsync.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/rsync: \
-$(DEPDIR)/%rsync: $(DEPDIR)/rsync.do_compile
+$(DEPDIR)/rsync: $(DEPDIR)/rsync.do_compile
 	cd $(DIR_rsync) && \
 		$(INSTALL_rsync)
-#	@DISTCLEANUP_rsync@
 	touch $@
 
 #
@@ -875,14 +822,12 @@ $(DEPDIR)/rfkill.do_compile: $(DEPDIR)/rfkill.do_prepare
 		$(MAKE) $(MAKE_OPTS)
 	touch $@
 
-$(DEPDIR)/rfkill: \
-$(DEPDIR)/%rfkill: $(DEPDIR)/rfkill.do_compile
+$(DEPDIR)/rfkill: $(DEPDIR)/rfkill.do_compile
 	$(start_build)
 	cd $(DIR_rfkill) && \
 		$(INSTALL_rfkill)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_rfkill@
 	touch $@
 
 #
@@ -914,8 +859,7 @@ $(DEPDIR)/lm_sensors.do_compile: $(DEPDIR)/lm_sensors.do_prepare
 		$(MAKE) $(MAKE_OPTS) MACHINE=sh PREFIX=/usr user
 	touch $@
 
-$(DEPDIR)/lm_sensors: \
-$(DEPDIR)/%lm_sensors: $(DEPDIR)/lm_sensors.do_compile
+$(DEPDIR)/lm_sensors: $(DEPDIR)/lm_sensors.do_compile
 	$(start_build)
 	cd $(DIR_lm_sensors) && \
 		$(INSTALL_lm_sensors) && \
@@ -927,7 +871,6 @@ $(DEPDIR)/%lm_sensors: $(DEPDIR)/lm_sensors.do_compile
 		rm $(PKDIR)/usr/bin/ddcmon
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_lm_sensors@
 	touch $@
 
 #
@@ -967,8 +910,7 @@ $(DEPDIR)/fuse.do_compile: $(DEPDIR)/fuse.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/fuse: \
-$(DEPDIR)/%fuse: %curl %glib2 $(DEPDIR)/fuse.do_compile
+$(DEPDIR)/fuse: curl glib2 $(DEPDIR)/fuse.do_compile
 	  $(start_build)
 	  cd $(DIR_fuse) && \
 		$(INSTALL_fuse)
@@ -981,7 +923,6 @@ $(DEPDIR)/%fuse: %curl %glib2 $(DEPDIR)/fuse.do_compile
 			echo "Unable to enable initd service: $$s" ; done && rm *rpmsave 2>/dev/null || true )
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_fuse@
 	touch $@
 
 #
@@ -1012,11 +953,9 @@ $(DEPDIR)/curlftpfs.do_compile: $(DEPDIR)/curlftpfs.do_prepare
 		$(MAKE) 
 	touch $@
 
-$(DEPDIR)/curlftpfs: \
-$(DEPDIR)/%curlftpfs: %fuse $(DEPDIR)/curlftpfs.do_compile
+$(DEPDIR)/curlftpfs: fuse $(DEPDIR)/curlftpfs.do_compile
 	cd $(DIR_curlftpfs) && \
 		$(INSTALL_curlftpfs)
-#	@DISTCLEANUP_curlftpfs@
 	touch $@
 
 #
@@ -1045,11 +984,9 @@ $(DEPDIR)/fbset.do_compile: $(DEPDIR)/fbset.do_prepare
 		make CC="$(target)-gcc -Wall -O2 -I."
 	touch $@
 
-$(DEPDIR)/fbset: \
-$(DEPDIR)/%fbset: fbset.do_compile
+$(DEPDIR)/fbset: fbset.do_compile
 	cd $(DIR_fbset) && \
 		$(INSTALL_fbset)
-#	@DISTCLEANUP_fbset@
 	touch $@
 
 #
@@ -1073,11 +1010,9 @@ $(DEPDIR)/pngquant.do_compile: $(DEPDIR)/pngquant.do_prepare
 		$(target)-gcc -O3 -Wall -I. -funroll-loops -fomit-frame-pointer -o pngquant pngquant.c rwpng.c -lpng -lz -lm
 	touch $@
 
-$(DEPDIR)/pngquant: \
-$(DEPDIR)/%pngquant: $(DEPDIR)/pngquant.do_compile
+$(DEPDIR)/pngquant: $(DEPDIR)/pngquant.do_compile
 	cd $(DIR_pngquant) && \
 		$(INSTALL_pngquant)
-#	@DISTCLEANUP_pngquant@
 	touch $@
 
 #
@@ -1108,11 +1043,9 @@ $(DEPDIR)/mplayer.do_compile: $(DEPDIR)/mplayer.do_prepare
 		$(MAKE) CC="$(target)-gcc"
 	touch $@
 
-$(DEPDIR)/mplayer: \
-$(DEPDIR)/%mplayer: $(DEPDIR)/mplayer.do_compile
+$(DEPDIR)/mplayer: $(DEPDIR)/mplayer.do_compile
 	cd $(DIR_mplayer) && \
 		$(INSTALL_mplayer)
-#	@DISTCLEANUP_mplayer@
 	touch $@
 
 #
@@ -1168,11 +1101,9 @@ $(DEPDIR)/mencoder.do_compile: $(DEPDIR)/mplayer.do_prepare
 		$(MAKE) CC="$(target)-gcc"
 	touch $@
 
-$(DEPDIR)/mencoder: \
-$(DEPDIR)/%mencoder: $(DEPDIR)/mencoder.do_compile
+$(DEPDIR)/mencoder: $(DEPDIR)/mencoder.do_compile
 	cd $(DIR_mencoder) && \
 		$(INSTALL_mencoder)
-#	@DISTCLEANUP_mencoder@
 	touch $@
 
 #
@@ -1208,14 +1139,12 @@ $(DEPDIR)/jfsutils.do_compile: $(DEPDIR)/jfsutils.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/jfsutils: \
-$(DEPDIR)/%jfsutils: $(DEPDIR)/jfsutils.do_compile
+$(DEPDIR)/jfsutils: $(DEPDIR)/jfsutils.do_compile
 	$(start_build)
 	cd $(DIR_jfsutils) && \
 		$(INSTALL_jfsutils)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_jfsutils@
 	touch $@
 
 #
@@ -1254,14 +1183,12 @@ $(DEPDIR)/opkg.do_compile: $(DEPDIR)/opkg.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/opkg: \
-$(DEPDIR)/%opkg: $(DEPDIR)/opkg.do_compile
+$(DEPDIR)/opkg: $(DEPDIR)/opkg.do_compile
 	$(start_build)
 	cd $(DIR_opkg) && \
 		$(INSTALL_opkg)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_opkg@
 	touch $@
 
 #
@@ -1531,8 +1458,7 @@ $(DEPDIR)/hotplug_e2.do_compile: $(DEPDIR)/hotplug_e2.do_prepare
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/hotplug_e2: \
-$(DEPDIR)/%hotplug_e2: $(DEPDIR)/hotplug_e2.do_compile
+$(DEPDIR)/hotplug_e2: $(DEPDIR)/hotplug_e2.do_compile
 	$(start_build)
 	cd $(DIR_hotplug_e2) && \
 		$(INSTALL_hotplug_e2)
@@ -1540,7 +1466,6 @@ $(DEPDIR)/%hotplug_e2: $(DEPDIR)/hotplug_e2.do_compile
 	mkdir $(PKDIR)/sbin
 	cp -f $(PKDIR)/usr/bin/* $(PKDIR)/sbin
 	$(toflash_build)
-#	@DISTCLEANUP_hotplug_e2@
 	touch $@
 
 #
@@ -1587,14 +1512,12 @@ $(DEPDIR)/autofs.do_compile: $(DEPDIR)/autofs.do_prepare
 		$(MAKE) all CC=$(target)-gcc STRIP=$(target)-strip
 	touch $@
 
-$(DEPDIR)/autofs: \
-$(DEPDIR)/%autofs: $(DEPDIR)/autofs.do_compile
+$(DEPDIR)/autofs: $(DEPDIR)/autofs.do_compile
 	$(start_build)
 	cd $(DIR_autofs) && \
 		$(INSTALL_autofs)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_autofs@
 	touch $@
 
 #
@@ -1642,14 +1565,12 @@ $(DEPDIR)/imagemagick.do_compile: $(DEPDIR)/imagemagick.do_prepare
 	$(MAKE) all
 	touch $@
 
-$(DEPDIR)/imagemagick: \
-$(DEPDIR)/%imagemagick: $(DEPDIR)/imagemagick.do_compile
+$(DEPDIR)/imagemagick: $(DEPDIR)/imagemagick.do_compile
 	$(start_build)
 	cd $(DIR_imagemagick) && \
 		$(INSTALL_imagemagick)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_imagemagick@
 	touch $@
 
 #
@@ -1668,7 +1589,7 @@ grab
 
 DESCRIPTION_grab = make enigma2 screenshots
 PKGR_grab = r1
-RDEPENDS_grab = libpng jpeg
+RDEPENDS_grab = libpng libjpeg
 
 $(DEPDIR)/grab.do_prepare: bootstrap $(RDEPENDS_grab) $(DEPENDS_grab)
 	$(PREPARE_grab)
@@ -1807,14 +1728,12 @@ $(DEPDIR)/parted.do_compile: $(DEPDIR)/parted.do_prepare
 		$(MAKE) all CC=$(target)-gcc STRIP=$(target)-strip
 	touch $@
 
-$(DEPDIR)/parted: \
-$(DEPDIR)/%parted: $(DEPDIR)/parted.do_compile
+$(DEPDIR)/parted: $(DEPDIR)/parted.do_compile
 	$(start_build)
 	cd $(DIR_parted) && \
 		$(INSTALL_parted)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_parted@
 	touch $@
 
 #
@@ -1852,14 +1771,12 @@ $(DEPDIR)/gettext.do_compile: $(DEPDIR)/gettext.do_prepare
 		$(MAKE) all 
 	touch $@
 
-$(DEPDIR)/gettext: \
-$(DEPDIR)/%gettext: $(DEPDIR)/gettext.do_compile
+$(DEPDIR)/gettext: $(DEPDIR)/gettext.do_compile
 	$(start_build)
 	cd $(DIR_gettext) && \
 		$(INSTALL_gettext)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_gettext@
 	touch $@
 
 

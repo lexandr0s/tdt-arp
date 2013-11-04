@@ -1,34 +1,5 @@
 # misc/tools
 
-#DESCRIPTION_misc_tools = "misc tools for box"
-#SRC_URI_misc_tools = "git://gitorious.org/~schpuntik/open-duckbox-project-sh4/tdt-amiko.git"
-#DIR_misc_tools = $(appsdir)/misc/tools
-
-
-#$(appsdir)/misc/tools/config.status: bootstrap libpng
-#$(appsdir)/misc/tools/config.status: bootstrap
-#	export PATH=$(hostprefix)/bin:$(PATH) && \
-#	cd $(appsdir)/misc/tools && \
-#	libtoolize -f -c && \
-#	$(CONFIGURE) --prefix= \
-#	$(if $(MULTICOM406), --enable-multicom406) $(if $(MULTICOM324), --enable-multicom324)
-#
-#$(DEPDIR)/misc-tools: $(DEPDIR)/%misc-tools: driver libstdc++-dev libdvdnav libdvdcss libpng jpeg ffmpeg expat fontconfig bzip2 $(appsdir)/misc/tools/config.status
-#	$(start_build)
-#	$(get_git_version)
-#	$(MAKE) -C $(appsdir)/misc/tools all install DESTDIR=$(PKDIR) \
-#	CPPFLAGS="\
-#	$(if $(SPARK), -DPLATFORM_SPARK) \
-#	$(if $(SPARK7162), -DPLATFORM_SPARK7162) \
-#	$(if $(HL101), -DPLATFORM_HL101) \
-#	$(if $(PLAYER179), -DPLAYER179) \
-#	$(if $(PLAYER191), -DPLAYER191) \
-#	$(if $(VDR1722), -DVDR1722) \
-#	$(if $(VDR1727), -DVDR1727)"
-#	$(tocdk_build)
-#	$(toflash_build)
-#	[ "x$*" = "x" ] && touch $@ || true
-
 misc-tools-clean: \
 	devinit-clean \
 	evremote2-clean \
@@ -89,8 +60,7 @@ $(DEPDIR)/devinit.do_compile: $(DEPDIR)/devinit.do_prepare
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/devinit: \
-$(DEPDIR)/%devinit: $(DEPDIR)/devinit.do_compile
+$(DEPDIR)/devinit: $(DEPDIR)/devinit.do_compile
 	$(start_build)
 	$(get_git_version)
 	cd $(DIR_devinit) && \
@@ -103,7 +73,7 @@ $(DEPDIR)/%devinit: $(DEPDIR)/devinit.do_compile
 	$(if $(PLAYER191), -DPLAYER191)"
 	$(tocdk_build)
 	$(toflash_build)
-	[ "x$*" = "x" ] && touch $@ || true
+	touch $@
 
 #
 # EVREMOTE2
@@ -149,8 +119,7 @@ $(DEPDIR)/evremote2.do_compile: $(DEPDIR)/evremote2.do_prepare
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/evremote2: \
-$(DEPDIR)/%evremote2: $(DEPDIR)/evremote2.do_compile
+$(DEPDIR)/evremote2: $(DEPDIR)/evremote2.do_compile
 	$(start_build)
 	$(get_git_version)
 	cd $(DIR_evremote2) && \
@@ -163,7 +132,7 @@ $(DEPDIR)/%evremote2: $(DEPDIR)/evremote2.do_compile
 	$(if $(PLAYER191), -DPLAYER191)"
 	$(tocdk_build)
 	$(toflash_build)
-	[ "x$*" = "x" ] && touch $@ || true
+	touch $@
 
 #
 # FP-CONTROL
@@ -208,8 +177,7 @@ $(DEPDIR)/fp_control.do_compile: $(DEPDIR)/fp_control.do_prepare
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/fp_control: \
-$(DEPDIR)/%fp_control: $(DEPDIR)/fp_control.do_compile
+$(DEPDIR)/fp_control: $(DEPDIR)/fp_control.do_compile
 	$(start_build)
 	$(get_git_version)
 	cd $(DIR_fp_control) && \
@@ -222,7 +190,7 @@ $(DEPDIR)/%fp_control: $(DEPDIR)/fp_control.do_compile
 	$(if $(PLAYER191), -DPLAYER191)"
 	$(tocdk_build)
 	$(toflash_build)
-	[ "x$*" = "x" ] && touch $@ || true
+	touch $@
 
 #
 # gitVCInfo
@@ -267,8 +235,7 @@ $(DEPDIR)/gitVCInfo.do_compile: $(DEPDIR)/gitVCInfo.do_prepare
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/gitVCInfo: \
-$(DEPDIR)/%gitVCInfo: $(DEPDIR)/gitVCInfo.do_compile
+$(DEPDIR)/gitVCInfo: $(DEPDIR)/gitVCInfo.do_compile
 	$(start_build)
 	$(get_git_version)
 	cd $(DIR_gitVCInfo) && \
@@ -281,7 +248,7 @@ $(DEPDIR)/%gitVCInfo: $(DEPDIR)/gitVCInfo.do_compile
 	$(if $(PLAYER191), -DPLAYER191)"
 	$(tocdk_build)
 	$(toflash_build)
-	[ "x$*" = "x" ] && touch $@ || true
+	touch $@
 
 #
 # HOTPLUG
@@ -326,8 +293,7 @@ $(DEPDIR)/hotplug.do_compile: $(DEPDIR)/hotplug.do_prepare
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/hotplug: \
-$(DEPDIR)/%hotplug: $(DEPDIR)/hotplug.do_compile
+$(DEPDIR)/hotplug: $(DEPDIR)/hotplug.do_compile
 	$(start_build)
 	$(get_git_version)
 	cd $(DIR_hotplug) && \
@@ -340,7 +306,7 @@ $(DEPDIR)/%hotplug: $(DEPDIR)/hotplug.do_compile
 	$(if $(PLAYER191), -DPLAYER191)"
 	$(tocdk_build)
 	$(toflash_build)
-	[ "x$*" = "x" ] && touch $@ || true#
+	touch $@
 
 #
 # LIBEPLAYER3
@@ -357,6 +323,8 @@ libeplayer3
 DESCRIPTION_libeplayer3 = "libeplayer3"
 SRC_URI_libeplayer3 = "https://code.google.com/p/tdt-amiko/"
 PKGR_libeplayer3 = r1
+BDEPENDS_libeplayer3 += driver libstdc++ libdvdnav libdvdcss libpng libjpeg ffmpeg expat fontconfig bzip2
+
 FILES_libeplayer3 = \
 /bin/eplayer3 \
 /bin/meta \
@@ -374,7 +342,7 @@ define DEPSCLEANUP_libeplayer3
 	rm -f $(DEPDIR)/libeplayer3.do_compile
 endef
 
-$(DEPDIR)/libeplayer3.do_prepare: bootstrap driver libstdc++-dev libdvdnav libdvdcss libpng jpeg ffmpeg expat fontconfig bzip2 $(DEPENDS_libeplayer3)
+$(DEPDIR)/libeplayer3.do_prepare: bootstrap libstdc++-dev $(DEPENDS_libeplayer3)
 	$(PREPARE_libeplayer3)
 	touch $@
 
@@ -388,8 +356,7 @@ $(DEPDIR)/libeplayer3.do_compile: $(DEPDIR)/libeplayer3.do_prepare
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/libeplayer3: \
-$(DEPDIR)/%libeplayer3: $(DEPDIR)/libeplayer3.do_compile
+$(DEPDIR)/libeplayer3: $(DEPDIR)/libeplayer3.do_compile
 	$(start_build)
 	$(get_git_version)
 	cd $(DIR_libeplayer3) && \
@@ -402,7 +369,7 @@ $(DEPDIR)/%libeplayer3: $(DEPDIR)/libeplayer3.do_compile
 	$(if $(PLAYER191), -DPLAYER191)"
 	$(tocdk_build)
 	$(toflash_build)
-	[ "x$*" = "x" ] && touch $@ || true
+	touch $@
 
 #
 # LIBMME-HOST
@@ -447,8 +414,7 @@ $(DEPDIR)/libmme_host.do_compile: $(DEPDIR)/libmme_host.do_prepare
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/libmme_host: \
-$(DEPDIR)/%libmme_host: $(DEPDIR)/libmme_host.do_compile
+$(DEPDIR)/libmme_host: $(DEPDIR)/libmme_host.do_compile
 	$(start_build)
 	$(get_git_version)
 	cd $(DIR_libmme_host) && \
@@ -461,7 +427,7 @@ $(DEPDIR)/%libmme_host: $(DEPDIR)/libmme_host.do_compile
 	$(if $(PLAYER191), -DPLAYER191)"
 	$(tocdk_build)
 	$(toflash_build)
-	[ "x$*" = "x" ] && touch $@ || true
+	touch $@
 
 #
 # LIBMMEIMAGE
@@ -507,8 +473,7 @@ $(DEPDIR)/libmmeimage.do_compile: $(DEPDIR)/libmmeimage.do_prepare
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/libmmeimage: \
-$(DEPDIR)/%libmmeimage: $(DEPDIR)/libmmeimage.do_compile
+$(DEPDIR)/libmmeimage: $(DEPDIR)/libmmeimage.do_compile
 	$(start_build)
 	$(get_git_version)
 	cd $(DIR_libmmeimage) && \
@@ -521,7 +486,7 @@ $(DEPDIR)/%libmmeimage: $(DEPDIR)/libmmeimage.do_compile
 	$(if $(PLAYER191), -DPLAYER191)"
 	$(tocdk_build)
 	$(toflash_build)
-	[ "x$*" = "x" ] && touch $@ || true
+	touch $@
 
 #
 # SHOWIFRAME
@@ -566,8 +531,7 @@ $(DEPDIR)/showiframe.do_compile: $(DEPDIR)/showiframe.do_prepare
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/showiframe: \
-$(DEPDIR)/%showiframe: $(DEPDIR)/showiframe.do_compile
+$(DEPDIR)/showiframe: $(DEPDIR)/showiframe.do_compile
 	$(start_build)
 	$(get_git_version)
 	cd $(DIR_showiframe) && \
@@ -580,7 +544,7 @@ $(DEPDIR)/%showiframe: $(DEPDIR)/showiframe.do_compile
 	$(if $(PLAYER191), -DPLAYER191)"
 	$(tocdk_build)
 	$(toflash_build)
-	[ "x$*" = "x" ] && touch $@ || true
+	touch $@
 
 #
 #STFBCONTROL
@@ -625,8 +589,7 @@ $(DEPDIR)/stfbcontrol.do_compile: $(DEPDIR)/stfbcontrol.do_prepare
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/stfbcontrol: \
-$(DEPDIR)/%stfbcontrol: $(DEPDIR)/stfbcontrol.do_compile
+$(DEPDIR)/stfbcontrol: $(DEPDIR)/stfbcontrol.do_compile
 	$(start_build)
 	$(get_git_version)
 	cd $(DIR_stfbcontrol) && \
@@ -639,7 +602,7 @@ $(DEPDIR)/%stfbcontrol: $(DEPDIR)/stfbcontrol.do_compile
 	$(if $(PLAYER191), -DPLAYER191)"
 	$(tocdk_build)
 	$(toflash_build)
-	[ "x$*" = "x" ] && touch $@ || true
+	touch $@
 
 #
 # STREAMPROXY
@@ -684,8 +647,7 @@ $(DEPDIR)/streamproxy.do_compile: $(DEPDIR)/streamproxy.do_prepare
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/streamproxy: \
-$(DEPDIR)/%streamproxy: $(DEPDIR)/streamproxy.do_compile
+$(DEPDIR)/streamproxy: $(DEPDIR)/streamproxy.do_compile
 	$(start_build)
 	$(get_git_version)
 	cd $(DIR_streamproxy) && \
@@ -698,7 +660,7 @@ $(DEPDIR)/%streamproxy: $(DEPDIR)/streamproxy.do_compile
 	$(if $(PLAYER191), -DPLAYER191)"
 	$(tocdk_build)
 	$(toflash_build)
-	[ "x$*" = "x" ] && touch $@ || true
+	touch $@
 
 #
 # USTSLAVE
@@ -743,8 +705,7 @@ $(DEPDIR)/ustslave.do_compile: $(DEPDIR)/ustslave.do_prepare
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/ustslave: \
-$(DEPDIR)/%ustslave: $(DEPDIR)/ustslave.do_compile
+$(DEPDIR)/ustslave: $(DEPDIR)/ustslave.do_compile
 	$(start_build)
 	$(get_git_version)
 	cd $(DIR_ustslave) && \
@@ -757,7 +718,7 @@ $(DEPDIR)/%ustslave: $(DEPDIR)/ustslave.do_compile
 	$(if $(PLAYER191), -DPLAYER191)"
 	$(tocdk_build)
 	$(toflash_build)
-	[ "x$*" = "x" ] && touch $@ || true
+	touch $@
 
 #
 # EPLAYER4
@@ -802,8 +763,7 @@ $(DEPDIR)/eplayer4.do_compile: $(DEPDIR)/eplayer4.do_prepare
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/eplayer4: \
-$(DEPDIR)/%eplayer4: $(DEPDIR)/eplayer4.do_compile
+$(DEPDIR)/eplayer4: $(DEPDIR)/eplayer4.do_compile
 	$(start_build)
 	$(get_git_version)
 	cd $(DIR_eplayer4) && \
@@ -816,4 +776,4 @@ $(DEPDIR)/%eplayer4: $(DEPDIR)/eplayer4.do_compile
 	$(if $(PLAYER191), -DPLAYER191)"
 	$(tocdk_build)
 	$(toflash_build)
-	[ "x$*" = "x" ] && touch $@ || true
+	touch $@

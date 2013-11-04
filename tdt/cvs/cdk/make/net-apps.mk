@@ -47,19 +47,13 @@ $(DEPDIR)/nfs_utils.do_compile: bootstrap e2fsprogs $(DEPDIR)/nfs_utils.do_prepa
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/nfs_utils: \
-$(DEPDIR)/%nfs_utils: $(NFS_UTILS_ADAPTED_ETC_FILES:%=root/etc/%) \
-		$(DEPDIR)/nfs_utils.do_compile
+$(DEPDIR)/nfs_utils: $(DEPDIR)/nfs_utils.do_compile
 	$(start_build)
 	cd $(DIR_nfs_utils) && \
 		$(INSTALL_nfs_utils)
-	( cd root/etc && for i in $(NFS_UTILS_ADAPTED_ETC_FILES); do \
-		[ -f $$i ] && $(INSTALL) -m644 $$i $(PKDIR)/etc/$$i || true; \
-		[ "$${i%%/*}" = "init.d" ] && chmod 755 $(PKDIR)/etc/$$i || true; done )
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_nfs_utils@
-	touch $@ || true
+	touch $@
 
 #
 # vsftpd
@@ -105,8 +99,7 @@ $(DEPDIR)/vsftpd.do_compile: bootstrap $(DEPDIR)/vsftpd.do_prepare
 		$(MAKE) $(MAKE_OPTS) CFLAGS="-pipe -Os -g0"
 	touch $@
 
-$(DEPDIR)/vsftpd: \
-$(DEPDIR)/%vsftpd: $(DEPDIR)/vsftpd.do_compile
+$(DEPDIR)/vsftpd: $(DEPDIR)/vsftpd.do_compile
 	$(start_build)
 	mkdir -p $(PKDIR)/etc/
 	mkdir -p $(PKDIR)/usr/bin/
@@ -116,8 +109,7 @@ $(DEPDIR)/%vsftpd: $(DEPDIR)/vsftpd.do_compile
 		$(INSTALL_vsftpd)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_vsftpd@
-	touch $@ || true
+	touch $@
 
 #
 # ETHTOOL
@@ -150,15 +142,13 @@ $(DEPDIR)/ethtool.do_compile: bootstrap $(DEPDIR)/ethtool.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/ethtool: \
-$(DEPDIR)/%ethtool: $(DEPDIR)/ethtool.do_compile
+$(DEPDIR)/ethtool: $(DEPDIR)/ethtool.do_compile
 	$(start_build)
 	cd $(DIR_ethtool)  && \
 		$(INSTALL_ethtool)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_ethtool@
-	touch $@ || true
+	touch $@
 
 #
 # SAMBA
@@ -249,8 +239,7 @@ $(DEPDIR)/samba.do_compile: $(DEPDIR)/samba.do_prepare
 		$(target)-strip -s bin/smbd && $(target)-strip -s bin/nmbd
 	touch $@
 
-$(DEPDIR)/samba: \
-$(DEPDIR)/%samba: $(DEPDIR)/samba.do_compile
+$(DEPDIR)/samba: $(DEPDIR)/samba.do_compile
 	$(start_build)
 	cd $(DIR_samba) && \
 		cd source3 && \
@@ -261,8 +250,7 @@ $(DEPDIR)/%samba: $(DEPDIR)/samba.do_compile
 		$(INSTALL_samba)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_samba@
-	touch $@ || true
+	touch $@
 
 #
 # NETIO
@@ -291,16 +279,14 @@ $(DEPDIR)/netio.do_compile: bootstrap $(DEPDIR)/netio.do_prepare
 		$(MAKE) all O=.o X= CFLAGS="-DUNIX" LIBS="$(LDFLAGS) -lpthread" OUT=-o
 	touch $@
 
-$(DEPDIR)/netio: \
-$(DEPDIR)/%netio: $(DEPDIR)/netio.do_compile
+$(DEPDIR)/netio: $(DEPDIR)/netio.do_compile
 	$(start_build)
 	cd $(DIR_netio) && \
 		$(INSTALL) -d $(PKDIR)/usr/bin && \
 		$(INSTALL_netio)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_netio@
-	touch $@ || true
+	touch $@
 
 #
 # LIGHTTPD
@@ -338,8 +324,7 @@ $(DEPDIR)/lighttpd.do_compile: bootstrap $(DEPDIR)/lighttpd.do_prepare
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/lighttpd: \
-$(DEPDIR)/%lighttpd: $(DEPDIR)/lighttpd.do_compile
+$(DEPDIR)/lighttpd: $(DEPDIR)/lighttpd.do_compile
 	$(start_build)
 	cd $(DIR_lighttpd) && \
 		$(INSTALL_lighttpd)
@@ -352,8 +337,7 @@ $(DEPDIR)/%lighttpd: $(DEPDIR)/lighttpd.do_compile
 	$(INSTALL) -d $(PKDIR)/etc/init.d && $(INSTALL) -m755 root/etc/init.d/lighttpd $(PKDIR)/etc/init.d
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_lighttpd@
-	touch $@ || true
+	touch $@
 
 #
 # NETKIT_FTP
@@ -386,15 +370,13 @@ $(DEPDIR)/netkit_ftp.do_compile: bootstrap ncurses libreadline $(DEPDIR)/netkit_
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/netkit_ftp: \
-$(DEPDIR)/%netkit_ftp: $(DEPDIR)/netkit_ftp.do_compile
+$(DEPDIR)/netkit_ftp: $(DEPDIR)/netkit_ftp.do_compile
 	$(start_build)
 	cd $(DIR_netkit_ftp)  && \
 		$(INSTALL_netkit_ftp)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_netkit_ftp@
-	touch $@ || true
+	touch $@
 
 #
 # WIRELESS_TOOLS
@@ -423,15 +405,13 @@ $(DEPDIR)/wireless_tools.do_compile: bootstrap $(DEPDIR)/wireless_tools.do_prepa
 		$(MAKE) $(MAKE_OPTS)
 	touch $@
 
-$(DEPDIR)/wireless_tools: \
-$(DEPDIR)/%wireless_tools: $(DEPDIR)/wireless_tools.do_compile
+$(DEPDIR)/wireless_tools: $(DEPDIR)/wireless_tools.do_compile
 	$(start_build)
 	cd $(DIR_wireless_tools)  && \
 		$(INSTALL_wireless_tools)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_wireless_tools@
-	touch $@ || true
+	touch $@
 
 #
 # WPA_SUPPLICANT
@@ -461,21 +441,17 @@ $(DEPDIR)/wpa_supplicant.do_compile: bootstrap $(DEPDIR)/wpa_supplicant.do_prepa
 		$(MAKE) $(MAKE_OPTS)
 	touch $@
 
-$(DEPDIR)/wpa_supplicant: \
-$(DEPDIR)/%wpa_supplicant: $(DEPDIR)/wpa_supplicant.do_compile
+$(DEPDIR)/wpa_supplicant: $(DEPDIR)/wpa_supplicant.do_compile
 	$(start_build)
 	cd $(DIR_wpa_supplicant)/wpa_supplicant && \
 		$(INSTALL_wpa_supplicant)
 	$(tocdk_build)
 	$(toflash_build)
-#	@DISTCLEANUP_wpa_supplicant@
-	touch $@ || true
-
+	touch $@
 
 #
 # TRANSMISSION
 #
-
 BEGIN[[
 transmission
   2.77
@@ -529,8 +505,7 @@ $(DEPDIR)/transmission.do_compile: bootstrap libevent-dev curl $(DEPDIR)/transmi
 		$(MAKE)
 	touch $@
 
-$(DEPDIR)/transmission: \
-$(DEPDIR)/%transmission: $(DEPDIR)/transmission.do_compile
+$(DEPDIR)/transmission: $(DEPDIR)/transmission.do_compile
 	$(start_build)
 	cd $(DIR_transmission) && \
 		$(INSTALL_transmission) && \
@@ -540,7 +515,6 @@ $(DEPDIR)/%transmission: $(DEPDIR)/transmission.do_compile
 		$(INSTALL_DIR) $(PKDIR)/etc/init.d && \
 		$(INSTALL_BIN) transmission.init $(PKDIR)/etc/init.d/transmission
 	$(extra_build)
-#	@DISTCLEANUP_transmission@
 	touch $@
 
 #

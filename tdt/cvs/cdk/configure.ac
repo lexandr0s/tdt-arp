@@ -320,78 +320,6 @@ AC_ARG_ENABLE(e2pd8,
 TDT_CONDITIONAL(ENABLE_E2PD8,test "$enable_e2pd8" = "yes")
 AC_SUBST(E2PD8)
 
-AC_ARG_ENABLE(e2d0,
-	AS_HELP_STRING(--enable-e2d0,  enable enigma2-nigthly diff0 ),
-	[case "${enableval}" in
-		yes) E2D0=e2d0 ;;
-	esac], [enable_e2d0=no])
-TDT_CONDITIONAL(ENABLE_E2D0,test "$enable_e2d0" = "yes")
-AC_SUBST(E2D0)
-
-AC_ARG_ENABLE(e2d1,
-	AS_HELP_STRING(--enable-e2d1,  enable enigma2-nigthly diff1 ),
-	[case "${enableval}" in
-		yes) E2D1=e2d1 ;;
-	esac], [enable_e2d1=no])
-TDT_CONDITIONAL(ENABLE_E2D1,test "$enable_e2d1" = "yes")
-AC_SUBST(E2D1)
-
-AC_ARG_ENABLE(e2d2,
-	AS_HELP_STRING(--enable-e2d2,  enable enigma2-nigthly diff2 ),
-	[case "${enableval}" in
-		yes) E2D2=e2d2 ;;
-	esac], [enable_e2d2=no])
-TDT_CONDITIONAL(ENABLE_E2D2,test "$enable_e2d2" = "yes")
-AC_SUBST(E2D2)
-
-AC_ARG_ENABLE(e2d3,
-	AS_HELP_STRING(--enable-e2d3,  enable enigma2-nigthly diff3 ),
-	[case "${enableval}" in
-		yes) E2D3=e2d3 ;;
-	esac], [enable_e2d3=no])
-TDT_CONDITIONAL(ENABLE_E2D3,test "$enable_e2d3" = "yes")
-AC_SUBST(E2D3)
-
-AC_ARG_ENABLE(e2d4,
-	AS_HELP_STRING(--enable-e2d4,  enable enigma2-nigthly diff4 ),
-	[case "${enableval}" in
-		yes) E2D4=e2d4 ;;
-	esac], [enable_e2d4=no])
-TDT_CONDITIONAL(ENABLE_E2D4,test "$enable_e2d4" = "yes")
-AC_SUBST(E2D4)
-
-AC_ARG_ENABLE(e2d5,
-	AS_HELP_STRING(--enable-e2d5,  enable enigma2-nigthly diff5 ),
-	[case "${enableval}" in
-		yes) E2D5=e2d5 ;;
-	esac], [enable_e2d5=no])
-TDT_CONDITIONAL(ENABLE_E2D5,test "$enable_e2d5" = "yes")
-AC_SUBST(E2D5)
-
-AC_ARG_ENABLE(e2d6,
-	AS_HELP_STRING(--enable-e2d6,  enable enigma2-nigthly diff6 ),
-	[case "${enableval}" in
-		yes) E2D6=e2d6 ;;
-	esac], [enable_e2d6=no])
-TDT_CONDITIONAL(ENABLE_E2D6,test "$enable_e2d6" = "yes")
-AC_SUBST(E2D6)
-
-AC_ARG_ENABLE(e2d7,
-	AS_HELP_STRING(--enable-e2d7,  enable enigma2-nigthly diff7 ),
-	[case "${enableval}" in
-		yes) E2D7=e2d7 ;;
-	esac], [enable_e2d7=no])
-TDT_CONDITIONAL(ENABLE_E2D7,test "$enable_e2d7" = "yes")
-AC_SUBST(E2D7)
-
-AC_ARG_ENABLE(e2d8,
-	AS_HELP_STRING(--enable-e2d8,  enable enigma2-nigthly diff8 ),
-	[case "${enableval}" in
-		yes) E2D8=e2d8 ;;
-	esac], [enable_e2d8=no])
-TDT_CONDITIONAL(ENABLE_E2D8,test "$enable_e2d8" = "yes")
-AC_SUBST(E2D8)
-
 AC_ARG_ENABLE(xbd0,
 	AS_HELP_STRING(--enable-xbd0,  enable xbmc-nigthly diff0 ),
 	[case "${enableval}" in
@@ -415,22 +343,6 @@ AC_ARG_ENABLE(xbd2,
 	esac], [enable_xbd2=no])
 TDT_CONDITIONAL(ENABLE_XBD2,test "$enable_xbd2" = "yes")
 AC_SUBST(XBD2)
-
-AC_ARG_ENABLE(xbd3,
-	AS_HELP_STRING(--enable-xbd3,  enable xbmc-nigthly diff3 ),
-	[case "${enableval}" in
-		yes) XBD3=xbd3 ;;
-	esac], [enable_xbd3=no])
-TDT_CONDITIONAL(ENABLE_XBD3,test "$enable_xbd3" = "yes")
-AC_SUBST(XBD3)
-
-AC_ARG_ENABLE(xbd4,
-	AS_HELP_STRING(--enable-xbd4,  enable xbmc-nigthly diff4 ),
-	[case "${enableval}" in
-		yes) XBD2=xbd4 ;;
-	esac], [enable_xbd4=no])
-TDT_CONDITIONAL(ENABLE_XBD4,test "$enable_xbd4" = "yes")
-AC_SUBST(XBD4)
 
 AC_ARG_ENABLE(nhd0,
 	AS_HELP_STRING(--enable-nhd0,  enable neutrino-hd-nigthly diff0 ),
@@ -822,7 +734,6 @@ Makefile\
 :make/net-apps.mk\
 :make/misc_tools.mk\
 :make/enigma2-plugins.mk\
-:make/enigma2-nightly.mk\
 :make/externe-plugins.mk\
 :make/externe-skins.mk\
 :make/xbmc-nightly.mk\

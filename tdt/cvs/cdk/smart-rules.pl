@@ -187,7 +187,10 @@ sub process_rule($) {
   {
       $f = $url;
       $f =~ s#^file://##;
-      $f = "$patchesdir/$f";
+      # relative path
+      if ( not $f =~ m#^/#) {
+          $f = "$patchesdir/$f";
+      }
   }
   elsif ( $url =~ m#^($supported_protocols)# )
   {
@@ -243,6 +246,8 @@ sub process_dir ($)
   $output .= "LIST_DISTCLEAN += $package-distclean" . "\n";
 
   $output .= "DEPENDS_$package = \$(DEPDIR)/$package.version_\$(PKGV_$package)-\$(PKGR_$package)" . "\n";
+  $output .= "DEPENDS_$package += \$(BDEPENDS_$package)" . "\n";
+  $output .= "RDEPENDS_$package = \$(BDEPENDS_$package)" . "\n";
 
   if ($version =~ m#^git|svn$#)
   {
@@ -303,7 +308,7 @@ sub process_prepare ($)
       }
       elsif ( $_[1] =~ m#\.zip$# )
       {
-        $output .= "unzip -d $dir " . $f;
+        $output .= "unzip  " . $f;
       }
       elsif ( $_[1] =~ m#\.src\.rpm$# )
       {

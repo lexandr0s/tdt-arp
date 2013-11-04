@@ -42,7 +42,7 @@ $(DEPDIR)/neutrino-hd-nightly.do_prepare: $(DEPENDS_neutrino_hd)
 	$(PREPARE_neutrino_hd)
 	touch $@
 
-$(DIR_neutrino_hd)/config.status: bootstrap freetype $(EXTERNALLCD_DEP) jpeg libpng libgif libid3tag curl libmad libvorbisidec libboost libflac openssl sdparm 
+$(DIR_neutrino_hd)/config.status: bootstrap freetype $(EXTERNALLCD_DEP) libjpeg libpng libgif libid3tag curl libmad libvorbisidec libboost libflac openssl sdparm 
 	export PATH=$(hostprefix)/bin:$(PATH) && \
 	cd $(DIR_neutrino_hd) && \
 		ACLOCAL_FLAGS="-I $(hostprefix)/share/aclocal" ./autogen.sh && \

@@ -72,7 +72,7 @@ define fromrpm_build
 endef
 
 flash_ipkg_args = -f $(crossprefix)/etc/opkg.conf -o $(prefix)/pkgroot
-cdk_ipkg_args = -f $(crossprefix)/etc/opkg-cdk.conf -o $(targetprefix)
+cdk_ipkg_args = -f $(crossprefix)/etc/opkg-cdk.conf -o $(targetprefix) --nodeps
 
 define do_build_pkg
 	@echo
