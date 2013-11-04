@@ -69,15 +69,6 @@ yaud-neutrino-hd-nightly: yaud-none \
 		neutrino-hd-nightly \
 		release_neutrino
 
-yaud-enigma2-nightly: yaud-none \
-		host_python \
-		lirc \
-		stslave \
-		boot-elf \
-		init-scripts \
-		enigma2-nightly \
-		release
-
 yaud-enigma2-pli-nightly-base: yaud-none \
 		host_python \
 		lirc \

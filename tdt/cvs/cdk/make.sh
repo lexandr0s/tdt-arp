@@ -212,18 +212,17 @@ esac
 
 ##############################################
 
-echo -e "\nSelect Image (Enigma2/PLI, Neutrino, XBMC, VDR): "
+echo -e "\nSelect Image (Enigma2-PLI, Neutrino, XBMC, VDR): "
 echo "   1) Enigma2PLI"
-echo "   2) Enigma2"
-echo "   3) Neutrino"
-echo "   4) XBMC"
-echo "   5) VDR"
+echo "   2) Neutrino"
+echo "   3) XBMC"
+echo "   4) VDR"
 case $8 in
-        [1-5]) REPLY=$8
+        [1-4]) REPLY=$8
         echo -e "\nSelected Image: $REPLY\n"
         ;;
         *)
-        read -p "Select Image (1-5)? ";;
+        read -p "Select Image (1-4)? ";;
 esac
 		if [ "$REPLY" == 1 ]; then
 		    echo -e "\nChoose enigma2 OpenPli revision:"
@@ -251,30 +250,6 @@ esac
 			*) IMAGE="--enable-e2pd8";;
 			esac
 		elif [ "$REPLY" == 2 ]; then
-		    echo -e "\nChoose enigma2 revisions:"
-			echo "	0) Newest (Can fail due to outdated patch)"
-			echo "	1) Sat, 29 Mar 2011 13:49 - E2 V3.0 e013d09af0e010f15e225a12dcc217abc052ee19"
-			echo "	2) inactive"
-			echo "	3) inactive"
-			echo "	4) inactive"
-			echo "	5) Fri,  5 Nov 2010 00:16 - E2 V2.4 libplayer3 7fd4241a1d7b8d7c36385860b24882636517473b"
-			echo "	6) Wed,  6 Jul 2011 11:17 - E2 V3.1 gstreamer  388dcd814d4e99720cb9a6c769611be4951e4ad4"
-			echo "	7) Current E2 gitgui arp-team eplayer3/gstreamer "
-			echo "	8) Current E2 gitgui arp-team no gstreamer"
-		    read -p "Select enigma2 revision (0-8):"
-			case "$REPLY" in
-			0) IMAGE="--enable-e2d0";;
-			1) IMAGE="--enable-e2d1";;
-			2) IMAGE="--enable-e2d2";;
-			3) IMAGE="--enable-e2d3";;
-			4) IMAGE="--enable-e2d4";;
-			5) IMAGE="--enable-e2d5";;
-			6) IMAGE="--enable-e2d6";;
-			7) IMAGE="--enable-e2d7";;
-			8) IMAGE="--enable-e2d8";;
-			*) IMAGE="--enable-e2d8";;
-			esac
-		elif [ "$REPLY" == 3 ]; then
 		    echo -e "\nChoose Neutrino revisions:"
 			echo "	0) current inactive... comming soon"
 			echo "	1) current inactive... comming soon"
@@ -286,7 +261,7 @@ esac
 			2) IMAGE="--enable-nhd2";;
 			*) IMAGE="--enable-nhd0";;
 			esac
-		elif [ "$REPLY" == 4 ]; then
+		elif [ "$REPLY" == 3 ]; then
 		    echo -e "\nChoose XBMC revisions:"
 			echo "	0) XBMC 12.2 Frodo"
 			echo "	1) Sat, 14 Apr 2012 12:36 - 460e79416c5cb13010456794f36f89d49d25da75"
@@ -298,7 +273,7 @@ esac
 			2) IMAGE="--enable-xbd2" GFW="--enable-graphicfwdirectfb" MEDIAFW="--enable-mediafwgstreamer";;
 			*) IMAGE="--enable-xbd0" GFW="--enable-graphicfwdirectfb" MEDIAFW="--enable-mediafwgstreamer";;
 			esac
-		elif  [ "$REPLY" == 5 ]; then
+		elif  [ "$REPLY" == 4 ]; then
 		    echo -e "\nChoose VDR revisions"
 			echo "   1) VDR-1.7.22"
 			echo "   2) VDR-1.7.27"
@@ -375,8 +350,6 @@ case "$IMAGE" in
         --enable-e2pd*)
         echo "make yaud-enigma2-pli-nightly"
         echo "make yaud-enigma2-pli-nightly-full";;
-        --enable-e2d*)
-        echo "make yaud-enigma2-nightly";;
         --enable-nhd*)
         echo "make yaud-neutrino-hd-nightly";;
         --enable-xbd*)
