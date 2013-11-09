@@ -68,13 +68,11 @@ $(DEPDIR)/enigma2_plugin_extensions_mediaportal.do_compile: $(DEPDIR)/enigma2_pl
 			$(PLATFORM_CPPFLAGS)
 	touch $@
 
-$(DEPDIR)/enigma2_plugin_extensions_mediaportal: \
-$(DEPDIR)/%enigma2_plugin_extensions_mediaportal: $(DEPDIR)/enigma2_plugin_extensions_mediaportal.do_compile
+$(DEPDIR)/enigma2_plugin_extensions_mediaportal: $(DEPDIR)/enigma2_plugin_extensions_mediaportal.do_compile
 	$(start_build)
 	cd $(DIR_enigma2_plugin_extensions_mediaportal) && \
 		$(MAKE) install DESTDIR=$(PKDIR)
 	$(toflash_build)
-	$(e2extra_build)
 	touch $@
 #
 # enigma2-networkbrowser
