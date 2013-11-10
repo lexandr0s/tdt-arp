@@ -2135,7 +2135,7 @@ $(DEPDIR)/elementtree: $(DEPDIR)/elementtree.do_compile
 		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
 		$(crossprefix)/bin/python ./setup.py install --root=$(PKDIR) --prefix=/usr
 	$(tocdk_build)
-	$(remove_pyo)
+	$(remove_pyc)
 	$(toflash_build)
 	touch $@
 
@@ -2280,7 +2280,7 @@ $(DEPDIR)/lxml: $(DEPDIR)/lxml.do_compile
 		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
 		$(crossprefix)/bin/python ./setup.py install --root=$(PKDIR) --prefix=/usr
 	$(tocdk_build)
-	$(remove_pyo)
+	$(remove_pyc)
 	$(extra_build)
 	touch $@
 
@@ -2363,8 +2363,8 @@ $(DEPDIR)/gdata: $(DEPDIR)/gdata.do_compile
 		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
 		$(crossprefix)/bin/python ./setup.py install --root=$(PKDIR) --prefix=/usr
 	$(tocdk_build)
-	$(remove_pyo)
-	$(e2extra_build)
+	$(remove_pyc)
+	$(toflash_build)
 	touch $@
 #
 # twisted
@@ -2412,7 +2412,7 @@ $(DEPDIR)/twisted: $(DEPDIR)/twisted.do_compile
 		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
 		$(crossprefix)/bin/python ./setup.py install --root=$(PKDIR) --prefix=/usr
 	$(tocdk_build)
-	$(remove_pyo)
+	$(remove_pyc)
 	$(toflash_build)
 	touch $@
 
@@ -2597,7 +2597,7 @@ $(DEPDIR)/pyopenssl: $(DEPDIR)/pyopenssl.do_compile
 		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
 		$(crossprefix)/bin/python ./setup.py install --root=$(PKDIR) --prefix=/usr
 	$(tocdk_build)
-	$(remove_pyo)
+	$(remove_pyc)
 	$(toflash_build)
 	touch $@
 
@@ -2814,7 +2814,7 @@ $(DEPDIR)/zope_interface: $(DEPDIR)/zope_interface.do_compile
 		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
 		$(crossprefix)/bin/python ./setup.py install --root=$(PKDIR) --prefix=/usr
 	$(tocdk_build)
-#	$(remove_pyo)
+#	$(remove_pyc)
 	$(toflash_build)
 	touch $@
 

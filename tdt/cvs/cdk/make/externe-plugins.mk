@@ -35,7 +35,7 @@ $(DEPDIR)/enigma2-plugins-sh4-mytube \
 $(DEPDIR)/enigma2-plugins-sh4-libgisclubskin
 
 
-$(DEPDIR)/enigma2-plugins-sh4.do_prepare: $(DEPENDS_e2plugin)
+$(DEPDIR)/enigma2-plugins-sh4.do_prepare: gdata $(DEPENDS_e2plugin)
 	$(PREPARE_e2plugin)
 	touch $@
 
