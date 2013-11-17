@@ -87,3 +87,33 @@ enigma2-skins-sh4-clean:
 enigma2-skins-sh4-distclean: enigma2-skins-sh4-clean
 	rm -f $(DEPDIR)/enigma2-skins-sh4.do_prepare
 	rm -rf $(DIR_e2skin)
+
+#
+# skin-PLiHD
+#
+BEGIN[[
+e2skin_plihd
+  git
+  {PN}
+  git://github.com/littlesat/skin-PLiHD.git:b=master
+;
+]]END
+
+DESCRIPTION_e2skin_plihd := Skin PLiHD for Enigma2
+PKGR_e2skin_plihd = r2
+
+$(DEPDIR)/e2skin-plihd.do_prepare: $(DEPENDS_e2skin_plihd)
+	$(PREPARE_e2skin_plihd)
+	touch $@
+
+$(DEPDIR)/e2skin-plihd: e2skin-plihd.do_prepare
+	$(start_build)
+	cd $(DIR_e2skin_plihd) && \
+		cp -a usr $(PKDIR)
+	$(e2extra_build)
+	touch $@
+
+e2skin-plihd-distclean:
+	rm -f $(DEPDIR)/e2skin-plihd.do_prepare
+	rm -rf $(DIR_e2skin_plihd)
+
