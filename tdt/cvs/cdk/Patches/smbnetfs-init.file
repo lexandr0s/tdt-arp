@@ -1,4 +1,9 @@
-#!/bin/sh
+#! /bin/sh
+#
+# smbnetfs
+#
+# chkconfig: 3 30 0
+#
 
 MOUNTPOINT=/media/samba
 
