@@ -46,7 +46,7 @@
 
 #ifdef SUBTITLE_DEBUG
 
-static short debug_level = 10;
+static short debug_level = 0;
 
 #define subtitle_printf(level, fmt, x...) do { \
 if (debug_level >= level) printf("[%s:%s] " fmt, __FILE__, __FUNCTION__, ## x); } while (0)
@@ -227,13 +227,13 @@ int subtitle_ParseSRT (char **Line) {
     replace_all(Line, "\n\n", "\\N");
     replace_all(Line, "\n", "");
     replace_all(Line, "\\N", "\n");
-    replace_all(Line, "ö", "oe");
-    replace_all(Line, "ä", "ae");
-    replace_all(Line, "ü", "ue");
-    replace_all(Line, "Ö", "Oe");
-    replace_all(Line, "Ä", "Ae");
-    replace_all(Line, "Ü", "Ue");
-    replace_all(Line, "ß", "ss");
+    replace_all(Line, "Ã¶", "oe");
+    replace_all(Line, "Ã¤", "ae");
+    replace_all(Line, "Ã¼", "ue");
+    replace_all(Line, "Ã–", "Oe");
+    replace_all(Line, "Ã„", "Ae");
+    replace_all(Line, "Ãœ", "Ue");
+    replace_all(Line, "ÃŸ", "ss");
 
     subtitle_printf(10, "<- Text=%s\n", *Line);
 
@@ -254,13 +254,13 @@ int subtitle_ParseSSA (char **Line) {
     replace_all(Line, "\n\n", "\\N");
     replace_all(Line, "\n", "");
     replace_all(Line, "\\N", "\n");
-    replace_all(Line, "ö", "oe");
-    replace_all(Line, "ä", "ae");
-    replace_all(Line, "ü", "ue");
-    replace_all(Line, "Ö", "Oe");
-    replace_all(Line, "Ä", "Ae");
-    replace_all(Line, "Ü", "Ue");
-    replace_all(Line, "ß", "ss");
+    replace_all(Line, "Ã¶", "oe");
+    replace_all(Line, "Ã¤", "ae");
+    replace_all(Line, "Ã¼", "ue");
+    replace_all(Line, "Ã–", "Oe");
+    replace_all(Line, "Ã„", "Ae");
+    replace_all(Line, "Ãœ", "Ue");
+    replace_all(Line, "ÃŸ", "ss");
 
     subtitle_printf(10, "<- Text=%s\n", *Line);
 
@@ -526,7 +526,7 @@ static void* SubtitleThread(void* data) {
 static int Write(void* _context, void *data) {
     Context_t  * context = (Context_t  *) _context;
     char * Encoding = NULL;
-    char * Text;
+    char * Text = NULL;
     SubtitleOut_t * out;
     int DataLength;
     unsigned long long int Pts;
@@ -564,7 +564,7 @@ static int Write(void* _context, void *data) {
     if (Encoding == NULL)
     {
        subtitle_err("encoding unknown\n");
-       free(Text);
+       if (Text) free(Text);
        return cERR_SUBTITLE_ERROR;
     }
     
@@ -591,8 +591,7 @@ static int Write(void* _context, void *data) {
 
     addSub(context, Text, Pts, Duration * 1000);
     
-    free(Text);
-    free(Encoding);
+    if (Text) free(Text);
 
     subtitle_printf(10, "<\n");
 
@@ -697,7 +696,7 @@ static int subtitle_Stop(Context_t* context __attribute__((unused))) {
     
     subtitle_printf(10, "\n");
 
-		if(hasThreadStarted != 0) {
+	if(hasThreadStarted != 0) {
 	    hasThreadStarted = 2;
 	    while ( (hasThreadStarted != 0) && (--wait_time) > 0 ) {
 	        subtitle_printf(10, "Waiting for subtitle thread to terminate itself, will try another %d times\n", wait_time);

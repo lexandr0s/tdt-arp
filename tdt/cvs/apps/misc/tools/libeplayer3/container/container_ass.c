@@ -143,7 +143,6 @@ static region_t* firstRegion = NULL;
 
 void ass_msg_callback(int level __attribute__((unused)), const char *format, va_list va, void *ctx __attribute__((unused)))
 {
-		ass_printf(20, ">\n");
     int n;
     char *str;
     va_list dst;
@@ -155,7 +154,6 @@ void ass_msg_callback(int level __attribute__((unused)), const char *format, va_
         ass_printf(100, "%s\n", str);
         free(str);
     }
-    ass_printf(20, "<\n");
 }
 
 static void getMutex(int line) {
@@ -180,7 +178,6 @@ static void releaseMutex(int line) {
  */
 void releaseRegions(Writer_t* writer)
 {
-		ass_printf(20, ">\n");
     region_t* next, *old;
 
     if (firstRegion == NULL)
@@ -223,7 +220,6 @@ void releaseRegions(Writer_t* writer)
     }
 
     firstRegion = NULL;
-    ass_printf(20, "<\n");
 }
 
 /* check for regions which should be undisplayed. 
@@ -233,15 +229,12 @@ void releaseRegions(Writer_t* writer)
  */
 void checkRegions(Writer_t* writer)
 {
-	ass_printf(20, ">\n");
 #define cDeltaTime 2
     region_t* next, *old, *prev;
     time_t now = time(NULL);
     
-    if (firstRegion == NULL) {
-    		ass_printf(20, "<\n");
+    if (firstRegion == NULL)
         return;
-    }
 
     if (!writer)
     {
@@ -291,17 +284,15 @@ void checkRegions(Writer_t* writer)
             next = next->next;
         }
     }
-    ass_printf(20, "<\n");
 }
 
 /* store a display region for later release */
 void storeRegion(unsigned int x, unsigned int y, unsigned int w, unsigned int h, time_t undisplay)
 {
-		ass_printf(20, ">\n");
     region_t** new = &firstRegion;
     
     ass_printf(100, "%d %d %d %d %ld\n", x, y, w, h, undisplay);
-    
+
     while (*new)
 	new = &(*new)->next;
  
@@ -379,7 +370,7 @@ static void ASSThread(Context_t *context) {
             //FIXME: durch den sleep bleibt die cpu usage zw. 5 und 13%, ohne
             //       steigt sie bei Verwendung von subtiteln bis auf 95%.
             //       ich hoffe dadurch gehen keine subtitle verloren, wenn die playPts
-            //       durch den sleep verschlafen wird. Besser w\E4re es den n\E4chsten
+            //       durch den sleep verschlafen wird. Besser wäre es den nächsten
             //       subtitel zeitpunkt zu bestimmen und solange zu schlafen.
             usleep(1000);
 
@@ -498,7 +489,7 @@ static void ASSThread(Context_t *context) {
 
     hasPlayThreadStarted = 0;
 
-    ass_printf(10, "< terminating\n");
+    ass_printf(10, "terminating\n");
     pthread_exit(NULL);
 }
 
@@ -552,7 +543,7 @@ int container_ass_init(Context_t *context)
 
     ass_set_frame_size(ass_renderer, screen_width, screen_height);
     ass_set_margins(ass_renderer, (int)(0.03 * screen_height), (int)(0.03 * screen_height) ,
-             (int)(0.03 * screen_width ), (int)(0.03 * screen_width )  );
+                                  (int)(0.03 * screen_width ), (int)(0.03 * screen_width )  );
     
     ass_set_use_margins(ass_renderer, 0 );
     ass_set_font_scale(ass_renderer, ass_font_scale);
@@ -565,7 +556,6 @@ int container_ass_init(Context_t *context)
 
     isContainerRunning = 1;
 
-    ass_printf(20, "<\n");
     return cERR_CONTAINER_ASS_NO_ERROR;
 }
 
@@ -609,7 +599,6 @@ int container_ass_process_data(Context_t *context __attribute__((unused)), Subti
         ass_printf(30,"processing data done\n");
     }
 
-    ass_printf(20, "<\n");
     return cERR_CONTAINER_ASS_NO_ERROR;
 }
 
@@ -618,7 +607,7 @@ static int container_ass_stop(Context_t *context __attribute__((unused))) {
     int wait_time = 100;
     Writer_t* writer;
 
-    ass_printf(10, ">\n");
+    ass_printf(10, "\n");
 
     if (!isContainerRunning)
     {  
@@ -626,7 +615,7 @@ static int container_ass_stop(Context_t *context __attribute__((unused))) {
         return cERR_CONTAINER_ASS_ERROR;
     }
 
-		if(hasPlayThreadStarted != 0) {
+	if(hasPlayThreadStarted != 0) {
 	    hasPlayThreadStarted = 2;
 	    while ( (hasPlayThreadStarted != 0) && (--wait_time) > 0 ) {
 	        ass_printf(10, "Waiting for ass thread to terminate itself, will try another %d times\n", wait_time);
@@ -668,7 +657,7 @@ static int container_ass_stop(Context_t *context __attribute__((unused))) {
 
     releaseMutex(__LINE__);
 
-    ass_printf(10, "< ret %d\n", ret);
+    ass_printf(10, "ret %d\n", ret);
     return ret;
 }
 
@@ -679,7 +668,7 @@ static int container_ass_switch_subtitle(Context_t* context, int* arg __attribut
     pthread_attr_t attr;
     Writer_t* writer;
 
-    ass_printf(10, ">\n");
+    ass_printf(10, "\n");
 
     if (!isContainerRunning)
     {  
@@ -729,7 +718,7 @@ static int container_ass_switch_subtitle(Context_t* context, int* arg __attribut
 
     releaseMutex(__LINE__);
 
-    ass_printf(10, "< exiting with value %d\n", ret);
+    ass_printf(10, "exiting with value %d\n", ret);
       
     return ret;
 }
@@ -737,7 +726,6 @@ static int container_ass_switch_subtitle(Context_t* context, int* arg __attribut
 
 static int Command(void  *_context, ContainerCmd_t command, void * argument)
 {
-    ass_printf(20, ">\n");
     Context_t  *context = (Context_t*) _context;
     int ret = cERR_CONTAINER_ASS_NO_ERROR;
 
@@ -768,7 +756,7 @@ static int Command(void  *_context, ContainerCmd_t command, void * argument)
         break;
     }
 
-    ass_printf(50, "< exiting with value %d\n", ret);
+    ass_printf(50, "exiting with value %d\n", ret);
 
     return ret;
 }
