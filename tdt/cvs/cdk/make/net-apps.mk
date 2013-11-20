@@ -541,9 +541,9 @@ define postinst_smbnetfs
 if [ -f /etc/smbnetfs.user.conf.org ]; then mv /etc/smbnetfs.user.conf.org /etc/smbnetfs.user.conf; fi
 initdconfig --add smbnetfs
 endef
-define postrm_smbnetfs
+define prerm_smbnetfs
 #!/bin/sh
-initdconfig --del smbnetfs
+initdconfig smbnetfs off
 endef
 
 $(DEPDIR)/smbnetfs.do_prepare: $(DEPENDS_smbnetfs)
