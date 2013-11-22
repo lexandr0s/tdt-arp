@@ -3721,7 +3721,7 @@ $(DEPDIR)/rtmpdump: $(DEPDIR)/rtmpdump.do_compile
 #
 BEGIN[[
 libdvbsipp
-  0.3.6
+  0.3.7
   libdvbsi++-{PV}
   extract:http://www.saftware.de/libdvbsi++/libdvbsi++-{PV}.tar.bz2
   patch:file://libdvbsi++-{PV}.patch
