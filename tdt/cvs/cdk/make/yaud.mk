@@ -99,8 +99,7 @@ yaud-none: \
 		devinit \
 		ustslave \
 		stfbcontrol \
-		showiframe \
-		streamproxy
+		showiframe
 #
 # EXTRAS
 #
@@ -124,7 +123,6 @@ all-extras: \
 	enigma2-plugins-sh4 \
 	wireless_tools \
 	enigma2-skins-sh4 \
-	ntpclient \
 	udpxy \
 	package-index
 
