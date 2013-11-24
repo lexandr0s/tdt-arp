@@ -323,7 +323,7 @@ libeplayer3
 DESCRIPTION_libeplayer3 = "libeplayer3"
 SRC_URI_libeplayer3 = "https://code.google.com/p/tdt-amiko/"
 PKGR_libeplayer3 = r1
-BDEPENDS_libeplayer3 += driver libstdc++ libdvdnav libdvdcss libpng libjpeg ffmpeg expat fontconfig bzip2
+BDEPENDS_libeplayer3 += driver ffmpeg
 
 FILES_libeplayer3 = \
 /bin/eplayer3 \
