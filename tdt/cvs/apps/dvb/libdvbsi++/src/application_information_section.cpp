@@ -47,7 +47,7 @@ ApplicationInformationSection::ApplicationInformationSection(const uint8_t * con
 	uint16_t loopLength = 0;
 	uint16_t bytesLeft2 = commonDescriptorsLength;
 
-	while (bytesLeft >= bytesLeft && bytesLeft2 > 1 && bytesLeft2 >= (loopLength = 2 + buffer[pos+1])) {
+	while (bytesLeft >= bytesLeft2 && bytesLeft2 > 1 && bytesLeft2 >= (loopLength = 2 + buffer[pos+1])) {
 		descriptor(&buffer[pos], SCOPE_MHP);
 		pos += loopLength;
 		bytesLeft -= loopLength;
