@@ -295,11 +295,11 @@ $(DEPDIR)/libjpeg: $(DEPDIR)/libjpeg.do_compile
 #
 BEGIN[[
 libpng
-  1.6.2
+  1.6.6
   {PN}-{PV}
   extract:http://prdownloads.sourceforge.net/libpng/{PN}-{PV}.tar.gz
   nothing:file://{PN}.diff
-  patch:file://{PN}-{PV}-workaround_for_stmfb_alpha_error.patch
+  patch:file://{PN}-workaround_for_stmfb_alpha_error.patch
   make:install:prefix=PKDIR/usr
 ;
 ]]END

@@ -1,6 +1,6 @@
 --- libpng-1.5.6/pngrtran.c.org	2006-07-06 19:06:25.000000000 +0200
 +++ libpng-1.5.6/pngrtran.c	2006-07-06 19:08:36.000000000 +0200
-@@ -2064,6 +2064,8 @@
+@@ -2154,6 +2154,8 @@
        png_error(png_ptr, "Uninitialized row");
     }
  
@@ -9,7 +9,7 @@
  #ifdef PNG_READ_EXPAND_SUPPORTED
     if (png_ptr->transformations & PNG_EXPAND)
     {
-@@ -2840,6 +2843,33 @@
+@@ -2944,6 +2946,33 @@
  }
  #endif
  
