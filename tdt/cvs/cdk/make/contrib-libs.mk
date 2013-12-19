@@ -1455,7 +1455,7 @@ $(DEPDIR)/libdvdread: libdvdread.do_compile
 #
 BEGIN[[
 ffmpeg
-  2.0.2
+  2.1.1
   {PN}-{PV}
   extract:http://{PN}.org/releases/{PN}-{PV}.tar.gz
   patch:file://{PN}-{PV}.patch
@@ -1575,6 +1575,7 @@ $(DEPDIR)/ffmpeg.do_compile: $(DEPDIR)/ffmpeg.do_prepare
 		--disable-bsfs \
 		--enable-librtmp \
 		--pkg-config="pkg-config" \
+		--disable-parser=hevc \
 		--enable-cross-compile \
 		--cross-prefix=$(target)- \
 		--target-os=linux \
