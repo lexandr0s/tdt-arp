@@ -24,6 +24,7 @@ bare-os: \
 		$(BASE_FILES) \
 		busybox \
 		libz \
+		bzip2 \
 		$(INITSCRIPTS) \
 		$(NETBASE) \
 		$(BC) \
