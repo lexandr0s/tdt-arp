@@ -2407,6 +2407,46 @@ $(DEPDIR)/mechanize: $(DEPDIR)/mechanize.do_compile
 	touch $@
 
 #
+# bs4
+#
+BEGIN[[
+bs4
+  4.3.2
+  beautifulsoup4-{PV}
+  extract:http://www.crummy.com/software/BeautifulSoup/{PN}/download/4.3/beautifulsoup4-{PV}.tar.gz
+;
+]]END
+
+DESCRIPTION_bs4 = "Beautiful Soup is a Python library designed for quick turnaround projects like screen-scraping. Three features make it powerful"
+BDEPENDS_bs4 = python
+FILES_bs4 = \
+$(PYTHON_DIR)/site-packages/bs4/*.py \
+$(PYTHON_DIR)/site-packages/bs4/builder/*.py \
+$(PYTHON_DIR)/site-packages/bs4/tests/*.py
+
+$(DEPDIR)/bs4.do_prepare: bootstrap setuptools $(DEPENDS_bs4)
+	$(PREPARE_bs4)
+	touch $@
+
+$(DEPDIR)/bs4.do_compile: $(DEPDIR)/bs4.do_prepare
+	cd $(DIR_bs4) && \
+		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python -c "import setuptools; execfile('setup.py')" build
+	touch $@
+
+$(DEPDIR)/bs4: $(DEPDIR)/bs4.do_compile
+	$(start_build)
+	cd $(DIR_bs4) && \
+		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python ./setup.py install --root=$(PKDIR) --prefix=/usr
+	$(tocdk_build)
+	$(remove_pyc)
+	$(toflash_build)
+	touch $@
+
+#
 # twisted
 #
 BEGIN[[
