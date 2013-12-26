@@ -2367,6 +2367,45 @@ $(DEPDIR)/gdata: $(DEPDIR)/gdata.do_compile
 	$(remove_pyc)
 	$(toflash_build)
 	touch $@
+
+#
+# mechanize
+#
+BEGIN[[
+mechanize
+  0.2.5
+  {PN}-{PV}
+  extract:http://pypi.python.org/packages/source/m/{PN}/{PN}-{PV}.tar.gz
+;
+]]END
+
+DESCRIPTION_mechanize = "Stateful programmatic web browsing."
+BDEPENDS_mechanize = python
+FILES_mechanize = \
+$(PYTHON_DIR)/site-packages/mechanize/*.py
+
+$(DEPDIR)/mechanize.do_prepare: bootstrap setuptools $(DEPENDS_mechanize)
+	$(PREPARE_mechanize)
+	touch $@
+
+$(DEPDIR)/mechanize.do_compile: $(DEPDIR)/mechanize.do_prepare
+	cd $(DIR_mechanize) && \
+		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python -c "import setuptools; execfile('setup.py')" build
+	touch $@
+
+$(DEPDIR)/mechanize: $(DEPDIR)/mechanize.do_compile
+	$(start_build)
+	cd $(DIR_mechanize) && \
+		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python ./setup.py install --root=$(PKDIR) --prefix=/usr
+	$(tocdk_build)
+	$(remove_pyc)
+	$(toflash_build)
+	touch $@
+
 #
 # twisted
 #
