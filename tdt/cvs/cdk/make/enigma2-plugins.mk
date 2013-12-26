@@ -77,7 +77,7 @@ enigma2_plugin_extensions_mediaportal
 
 DESCRIPTION_enigma2_plugin_extensions_mediaportal = "Enigma2 MediaPortal"
 PKGR_enigma2_plugin_extensions_mediaportal = r0
-RDEPENDS_enigma2_plugin_extensions_mediaportal = python
+RDEPENDS_enigma2_plugin_extensions_mediaportal = python mechanize
 
 $(DEPDIR)/enigma2_plugin_extensions_mediaportal.do_prepare: bootstrap $(RDEPENDS_enigma2_plugin_extensions_mediaportal) $(DEPENDS_enigma2_plugin_extensions_mediaportal)
 	$(PREPARE_enigma2_plugin_extensions_mediaportal)
