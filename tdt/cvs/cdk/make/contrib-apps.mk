@@ -321,7 +321,7 @@ BEGIN[[
 portmap
   6.0
   {PN}_{PV}
-  extract:http://fossies.org/unix/misc/{PN}-{PV}.tgz
+  extract:http://fossies.org/unix/misc/old/{PN}-{PV}.tgz
   patch:file://{PN}_{PV}.diff
   patch:http://debian.osuosl.org/debian/pool/main/p/{PN}/{PN}_{PV}.0-2.diff.gz
   make:install:BASEDIR=PKDIR

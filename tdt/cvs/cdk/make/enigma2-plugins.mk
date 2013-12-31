@@ -1,7 +1,7 @@
 #
 # Plugins
 #
-$(DEPDIR)/enigma2-plugins: enigma2_plugin_extensions_openwebif enigma2_plugin_extensions_mediaportal enigma2_networkbrowser openpli-plugins
+$(DEPDIR)/enigma2-plugins: enigma2_plugin_systemplugins_vfd_icons enigma2_plugin_extensions_mediaportal enigma2_networkbrowser openpli-plugins
 
 #
 # enigma2-openwebif
@@ -34,6 +34,36 @@ $(DEPDIR)/%enigma2_plugin_extensions_openwebif: $(DEPDIR)/enigma2_plugin_extensi
 	touch $@
 
 #
+# VFD-Icons
+#
+BEGIN[[
+enigma2_plugin_systemplugins_vfd_icons
+  git
+  VFD-Icons
+  nothing:git://github.com/OpenAR-P/VFD-Icons.git:b=master
+  make:install:DESTDIR=PKDIR
+;
+]]END
+
+DESCRIPTION_enigma2_plugin_systemplugins_vfd_icons = "open VFD-icons plugin for enigma2 by openAR-P team"
+PKGR_enigma2_plugin_systemplugins_vfd_icons = r0
+RDEPENDS_enigma2_plugin_systemplugins_vfd_icons = python
+
+$(DEPDIR)/enigma2_plugin_systemplugins_vfd_icons.do_prepare: bootstrap $(RDEPENDS_enigma2_plugin_systemplugins_vfd_icons) $(DEPENDS_enigma2_plugin_systemplugins_vfd_icons)
+	$(PREPARE_enigma2_plugin_systemplugins_vfd_icons)
+	touch $@
+
+$(DEPDIR)/enigma2_plugin_systemplugins_vfd_icons: \
+$(DEPDIR)/%enigma2_plugin_systemplugins_vfd_icons: $(DEPDIR)/enigma2_plugin_systemplugins_vfd_icons.do_prepare
+	$(start_build)
+	cd $(DIR_enigma2_plugin_systemplugins_vfd_icons) && \
+		$(BUILDENV) \
+		mkdir -p $(PKDIR)/usr/lib/enigma2/python/Plugins/SystemPlugins && \
+		cp -a plugin $(PKDIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/VFD-Icons && \
+	$(toflash_build)
+	touch $@
+
+#
 # enigma2-mediaportal
 #
 BEGIN[[
@@ -47,7 +77,7 @@ enigma2_plugin_extensions_mediaportal
 
 DESCRIPTION_enigma2_plugin_extensions_mediaportal = "Enigma2 MediaPortal"
 PKGR_enigma2_plugin_extensions_mediaportal = r0
-RDEPENDS_enigma2_plugin_extensions_mediaportal = python
+RDEPENDS_enigma2_plugin_extensions_mediaportal = python mechanize
 
 $(DEPDIR)/enigma2_plugin_extensions_mediaportal.do_prepare: bootstrap $(RDEPENDS_enigma2_plugin_extensions_mediaportal) $(DEPENDS_enigma2_plugin_extensions_mediaportal)
 	$(PREPARE_enigma2_plugin_extensions_mediaportal)

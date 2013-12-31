@@ -30,7 +30,7 @@ GLIBC := glibc
 GLIBC_DEV := glibc-dev
 FILES_glibc = /lib
 FILES_glibc_dev = /lib /usr/lib
-GLIBC_VERSION := 2.10.2-43
+GLIBC_VERSION := 2.14.1-45
 GLIBC_RAWVERSION := $(firstword $(subst -, ,$(GLIBC_VERSION)))
 GLIBC_SPEC := stm-target-$(GLIBC).spec
 GLIBC_SPEC_PATCH :=
@@ -413,7 +413,7 @@ $(DEPDIR)/%$(BASE_PASSWD): $(BASE_FILES_ADAPTED_ETC_FILES:%=root/etc/%) \
 # MAKEDEV
 #
 MAKEDEV := makedev
-MAKEDEV_VERSION := 2.3.1-26
+MAKEDEV_VERSION := 2.3.1-27
 MAKEDEV_SPEC := stm-target-$(MAKEDEV).spec
 MAKEDEV_SPEC_PATCH :=
 MAKEDEV_PATCHES :=
@@ -554,9 +554,9 @@ $(DEPDIR)/$(LIBACL_DEV): $(DEPDIR)/%$(LIBACL_DEV): $(LIBACL_DEV_RPM)
 # USBUTILS
 #
 USBUTILS := usbutils
-USBUTILS_VERSION := 0.86-10
+USBUTILS_VERSION := 0.86-11
 USBUTILS_SPEC := stm-target-$(USBUTILS).spec
-USBUTILS_SPEC_PATCH :=
+USBUTILS_SPEC_PATCH := stm-target-$(USBUTILS).spec.diff
 USBUTILS_PATCHES :=
 USBUTILS_usbutils = libusb
 USBUTILS_RPM := RPMS/sh4/$(STLINUX)-sh4-$(USBUTILS)-$(USBUTILS_VERSION).sh4.rpm
@@ -583,7 +583,7 @@ $(DEPDIR)/$(USBUTILS): $(DEPDIR)/%$(USBUTILS): $(USBUTILS_RPM)
 
 UDEV := udev
 UDEV_DEV := udev-dev
-UDEV_VERSION := 162-34
+UDEV_VERSION := 162-35
 PKGR_udev := r0
 UDEV_SPEC := stm-target-$(UDEV).spec
 UDEV_SPEC_PATCH := stm-target-udev.spec.diff

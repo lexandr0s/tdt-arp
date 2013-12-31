@@ -295,11 +295,11 @@ $(DEPDIR)/libjpeg: $(DEPDIR)/libjpeg.do_compile
 #
 BEGIN[[
 libpng
-  1.6.2
+  1.6.6
   {PN}-{PV}
   extract:http://prdownloads.sourceforge.net/libpng/{PN}-{PV}.tar.gz
   nothing:file://{PN}.diff
-  patch:file://{PN}-{PV}-workaround_for_stmfb_alpha_error.patch
+  patch:file://{PN}-workaround_for_stmfb_alpha_error.patch
   make:install:prefix=PKDIR/usr
 ;
 ]]END
@@ -1455,7 +1455,7 @@ $(DEPDIR)/libdvdread: libdvdread.do_compile
 #
 BEGIN[[
 ffmpeg
-  2.0.2
+  2.1.1
   {PN}-{PV}
   extract:http://{PN}.org/releases/{PN}-{PV}.tar.gz
   patch:file://{PN}-{PV}.patch
@@ -1575,6 +1575,7 @@ $(DEPDIR)/ffmpeg.do_compile: $(DEPDIR)/ffmpeg.do_prepare
 		--disable-bsfs \
 		--enable-librtmp \
 		--pkg-config="pkg-config" \
+		--disable-parser=hevc \
 		--enable-cross-compile \
 		--cross-prefix=$(target)- \
 		--target-os=linux \
@@ -1599,7 +1600,7 @@ $(DEPDIR)/ffmpeg: $(DEPDIR)/ffmpeg.do_compile
 #
 BEGIN[[
 libass
-  0.10.1
+  0.10.2
   {PN}-{PV}
   extract:http://{PN}.googlecode.com/files/{PN}-{PV}.tar.gz
   make:install:DESTDIR=PKDIR
@@ -2366,6 +2367,85 @@ $(DEPDIR)/gdata: $(DEPDIR)/gdata.do_compile
 	$(remove_pyc)
 	$(toflash_build)
 	touch $@
+
+#
+# mechanize
+#
+BEGIN[[
+mechanize
+  0.2.5
+  {PN}-{PV}
+  extract:http://pypi.python.org/packages/source/m/{PN}/{PN}-{PV}.tar.gz
+;
+]]END
+
+DESCRIPTION_mechanize = "Stateful programmatic web browsing."
+BDEPENDS_mechanize = python
+FILES_mechanize = \
+$(PYTHON_DIR)/site-packages/mechanize/*.py
+
+$(DEPDIR)/mechanize.do_prepare: bootstrap setuptools $(DEPENDS_mechanize)
+	$(PREPARE_mechanize)
+	touch $@
+
+$(DEPDIR)/mechanize.do_compile: $(DEPDIR)/mechanize.do_prepare
+	cd $(DIR_mechanize) && \
+		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python -c "import setuptools; execfile('setup.py')" build
+	touch $@
+
+$(DEPDIR)/mechanize: $(DEPDIR)/mechanize.do_compile
+	$(start_build)
+	cd $(DIR_mechanize) && \
+		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python ./setup.py install --root=$(PKDIR) --prefix=/usr
+	$(tocdk_build)
+	$(remove_pyc)
+	$(toflash_build)
+	touch $@
+
+#
+# bs4
+#
+BEGIN[[
+bs4
+  4.3.2
+  beautifulsoup4-{PV}
+  extract:http://www.crummy.com/software/BeautifulSoup/{PN}/download/4.3/beautifulsoup4-{PV}.tar.gz
+;
+]]END
+
+DESCRIPTION_bs4 = "Beautiful Soup is a Python library designed for quick turnaround projects like screen-scraping. Three features make it powerful"
+BDEPENDS_bs4 = python
+FILES_bs4 = \
+$(PYTHON_DIR)/site-packages/bs4/*.py \
+$(PYTHON_DIR)/site-packages/bs4/builder/*.py \
+$(PYTHON_DIR)/site-packages/bs4/tests/*.py
+
+$(DEPDIR)/bs4.do_prepare: bootstrap setuptools $(DEPENDS_bs4)
+	$(PREPARE_bs4)
+	touch $@
+
+$(DEPDIR)/bs4.do_compile: $(DEPDIR)/bs4.do_prepare
+	cd $(DIR_bs4) && \
+		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python -c "import setuptools; execfile('setup.py')" build
+	touch $@
+
+$(DEPDIR)/bs4: $(DEPDIR)/bs4.do_compile
+	$(start_build)
+	cd $(DIR_bs4) && \
+		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python ./setup.py install --root=$(PKDIR) --prefix=/usr
+	$(tocdk_build)
+	$(remove_pyc)
+	$(toflash_build)
+	touch $@
+
 #
 # twisted
 #
@@ -3720,7 +3800,7 @@ $(DEPDIR)/rtmpdump: $(DEPDIR)/rtmpdump.do_compile
 #
 BEGIN[[
 libdvbsipp
-  0.3.6
+  0.3.7
   libdvbsi++-{PV}
   extract:http://www.saftware.de/libdvbsi++/libdvbsi++-{PV}.tar.bz2
   patch:file://libdvbsi++-{PV}.patch

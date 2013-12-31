@@ -62,6 +62,12 @@ modprobe e2_proc
    modprobe silencegen
    modprobe smartcard
    modprobe bpamem
+
+   # Load module for swap in ram
+#   mem_by_cpu=$(($(grep MemTotal /proc/meminfo | awk ' { print $2 } ')*256))
+#   modprobe zram num_devices=1
+#   echo $mem_by_cpu > /sys/block/zram0/disksize
+
    if [ ! `grep 'hdmicec.enabled=false' /etc/enigma2/settings` ]; then
     modprobe cec
    fi
@@ -70,9 +76,14 @@ modprobe e2_proc
    showiframe -p /boot/bootlogo.mvi &
    stfbcontrol a 0
 
-   major=$(awk "\$2==\"sparkid\" {print \$1}" /proc/devices)
+#   major=$(awk "\$2==\"sparkid\" {print \$1}" /proc/devices)
 #   rm -f /dev/sparkid
 #   mknod /dev/sparkid c $major 0 
 
 	stfbcontrol a 255
+
+   # Enable swap in ram
+#   mkswap /dev/zram0
+#   swapon /dev/zram0
+
 	echo " e2 "

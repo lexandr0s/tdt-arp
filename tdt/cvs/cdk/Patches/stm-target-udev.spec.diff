@@ -8,6 +8,6 @@
  BuildRequires:  %{_stm_pkg_prefix}-%{_stm_target_arch}-libattr-dev
  BuildRequires: %{_stm_pkg_prefix}-%{_stm_target_arch}-usbutils
 -BuildRequires: %{_stm_pkg_prefix}-%{_stm_target_arch}-libusb-dev
- Obsoletes:	%{_stm_pkg_prefix}-%{_stm_target_arch}-hotplug
- 
- %define _docdir		%{_stm_cross_target_dir}%{_stm_target_doc_dir}
+ %if ! %{nohostbuilddeps}
+ BuildRequires: gperf
+ %endif
