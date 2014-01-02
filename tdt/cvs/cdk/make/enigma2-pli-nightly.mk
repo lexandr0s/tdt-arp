@@ -5,7 +5,7 @@ enigma2_pli
   {PN}-nightly
 
 ifdef ENABLE_E2PD0
-  git://openpli.git.sourceforge.net/gitroot/openpli/enigma2:r=945aeb939308b3652b56bc6c577853369d54a537
+  git://openpli.git.sourceforge.net/gitroot/openpli/enigma2:r=6f2e700e797753a9c5dacef4b526128d188c73b0
   patch:file://enigma2-pli-nightly.0.diff
 endif
 
