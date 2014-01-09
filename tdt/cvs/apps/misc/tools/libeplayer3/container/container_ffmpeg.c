@@ -213,9 +213,9 @@ static char* Codec2Encoding(AVCodecContext *codec, int* version)
 			return "A_AC3";
 		case AV_CODEC_ID_DTS:
 			return "A_DTS";
-#if 0
 		case AV_CODEC_ID_AAC:
 			return "A_AAC";
+#if 0
 		case AV_CODEC_ID_WMAV1:
 		case AV_CODEC_ID_WMAV2:
 		case AV_CODEC_ID_WMAPRO:
@@ -567,25 +567,24 @@ static void FFMPEGThread(Context_t *context) {
 
 						int e;
 						if (!swr) {
-							int rates[] = { 48000, 96000, 192000, 44100, 88200, 176400, 0 };
-							int *rate = rates;
 							int in_rate = c->sample_rate;
-							while (*rate && ((*rate / in_rate) * in_rate != *rate) && (in_rate / *rate) * *rate != in_rate)
-								rate++;
-							out_sample_rate = *rate ? *rate : 44100;
+							// rates in descending order
+							int rates[] = { 192000, 176400, 96000, 88200, 48000, 44100, 0 };
+							int i=0;
+							// find the next equal or smallest rate
+							while(rates[i] && in_rate < rates[i]) i++;
+							if (rates[i]) out_sample_rate = rates[i];
 							swr = swr_alloc();
 							out_channels = c->channels;
 							if (c->channel_layout == 0) {
 								// FIXME -- need to guess, looks pretty much like a bug in the FFMPEG WMA decoder
 								c->channel_layout = AV_CH_LAYOUT_STEREO;
-							}
-
-							out_channel_layout = c->channel_layout;
 							// player2 won't play mono
-							if (out_channel_layout == AV_CH_LAYOUT_MONO) {
+							} else if (out_channel_layout == AV_CH_LAYOUT_MONO) {
 								out_channel_layout = AV_CH_LAYOUT_STEREO;
 								out_channels = 2;
 							}
+							out_channel_layout = c->channel_layout;
 
 							av_opt_set_int(swr, "in_channel_layout",	c->channel_layout,	0);
 							av_opt_set_int(swr, "out_channel_layout",	out_channel_layout,	0);
@@ -601,13 +600,15 @@ static void FFMPEGThread(Context_t *context) {
 										(int)c->channel_layout, (int)out_channel_layout, c->sample_rate, out_sample_rate, c->sample_fmt, AV_SAMPLE_FMT_S16);
 								swr_free(&swr);
 								swr = NULL;
+								continue;
 							}
 						}
 
 						uint8_t *output = NULL;
 						int in_samples = decoded_frame->nb_samples;
 						int out_samples = av_rescale_rnd(swr_get_delay(swr, c->sample_rate) + in_samples, out_sample_rate, c->sample_rate, AV_ROUND_UP);
-						e = av_samples_alloc(&output, NULL, out_channels, out_samples, AV_SAMPLE_FMT_S16, 1);
+						int out_linesize;
+						e = av_samples_alloc(&output, &out_linesize, out_channels, out_samples, AV_SAMPLE_FMT_S16, 1);
 						if (e < 0) {
 							fprintf(stderr, "av_samples_alloc: %d\n", -e);
 							continue;
@@ -620,6 +621,13 @@ static void FFMPEGThread(Context_t *context) {
 								((AVStream*) audioTrack->stream)->time_base.num * (int64_t)out_sample_rate * c->sample_rate);
 						currentAudioPts = audioTrack->pts = pts = calcPts(audioTrack->stream, next_out_pts);
 						out_samples = swr_convert(swr, &output, out_samples, (const uint8_t **) &decoded_frame->data[0], in_samples);
+						if (out_samples < 0) {
+							continue;
+						}
+						int out_buffsize = av_samples_get_buffer_size(&out_linesize, out_channels, out_samples, AV_SAMPLE_FMT_S16, 1);
+						if (out_buffsize < 0) {
+							continue;
+						} 
 
 						pcmPrivateData_t extradata;
 
@@ -629,7 +637,7 @@ static void FFMPEGThread(Context_t *context) {
 						extradata.bLittleEndian = 1;
 
 						avOut.data		 = output;
-						avOut.len		 = out_samples * sizeof(short) * out_channels;
+						avOut.len		 = out_buffsize;
 
 						avOut.pts		 = pts;
 						avOut.extradata  = (unsigned char*)&extradata;
@@ -1095,8 +1103,9 @@ int container_ffmpeg_update_tracks(Context_t *context, char *filename, int initi
 						track.duration = (double) stream->duration * av_q2d(stream->time_base) * 1000.0;
 					}
 
-					if(!strncmp(encoding, "A_IPCM", 6))
+					if(!strncmp(encoding, "A_IPCM", 6) || (!strncmp(filename, "http://", 7) && !strncmp(encoding, "A_AAC", 5)))
 					{
+						track.Encoding = "A_IPCM"; // force "A_IPCM" for http streams, aac does not work for some reason
 						track.inject_as_pcm = 1;
 						ffmpeg_printf(10, " Handle inject_as_pcm = %d\n", track.inject_as_pcm);
 
