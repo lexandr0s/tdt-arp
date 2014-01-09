@@ -9,7 +9,7 @@
    echo 31241 > /proc/cpu_frequ/pll0_ndiv_mdiv
 
    echo "init frontpanel"
-   modprobe aotom
+   modprobe proton
    modprobe simu_button
    #mknod -m 644 /dev/vfd c 147 0
    #mknod -m 644 /dev/hdmi_cec c 149 0
@@ -36,7 +36,9 @@
    modprobe avs type=stv6418
 
    modprobe mmelog
+   modprobe mpeg2hw mmeName=MPEG2_TRANSFORMER1;
    modprobe ksound
+   modprobe kreplay
    modprobe p2div64
    modprobe stm_v4l2
    modprobe pseudocard
@@ -45,7 +47,7 @@
    modprobe fe-core
 
    echo "init drivers"
-   modprobe pti
+   modprobe pti waitMS=20 videoMem=4096
    modprobe stm_monitor
    modprobe stmsysfs
    modprobe stmdvb
