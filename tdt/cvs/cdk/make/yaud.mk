@@ -119,6 +119,12 @@ all-extras: \
 	modem-scripts \
 	enigma2_plugin_cams_oscam \
 	enigma2-plugins \
+	graphlcd \
+	mediatomb \
+	djmount \
+	minidlna \
+	brofs \
+	tor \
 	xupnpd \
 	ntfs_3g \
 	enigma2-plugins-sh4 \
