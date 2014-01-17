@@ -1786,7 +1786,7 @@ $(DEPDIR)/gettext: $(DEPDIR)/gettext.do_compile
 #
 BEGIN[[
 tor
-  0.2.3.25
+  0.2.4.20
   {PN}-{PV}
   https://www.torproject.org/dist/{PN}-{PV}.tar.gz
 #  patch-0:file://tor.patch
@@ -1796,7 +1796,7 @@ tor
 ]]END
 
 DESCRIPTION_tor := Tor is a network of virtual tunnels that allows you to improve your privacy and security on the Internet.
-RDEPENDS_tor = libevent
+RDEPENDS_tor = libevent-dev
 PKGR_tor = r0
 
 $(DEPDIR)/tor.do_prepare: $(DEPENDS_tor) $(RDEPENDS_tor)
