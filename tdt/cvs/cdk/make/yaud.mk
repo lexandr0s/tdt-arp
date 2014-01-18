@@ -120,14 +120,17 @@ all-extras: \
 	enigma2_plugin_cams_oscam \
 	enigma2-plugins \
 	graphlcd \
-	mediatomb \
 	djmount \
 	minidlna \
 	brofs \
 	tor \
+	transmission \
+	smbnetfs \
+	samba \
 	xupnpd \
 	ntfs_3g \
 	enigma2-plugins-sh4 \
+	enigma2-plugin-nonfree-feed \
 	wireless_tools \
 	enigma2-skins-sh4 \
 	udpxy \
