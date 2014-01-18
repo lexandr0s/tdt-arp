@@ -232,7 +232,7 @@ $(DEPDIR)/udev-rules: $(DEPENDS_udev_rules) $(RDEPENDS_udev_rules)
 
 DESCRIPTION_boot_elf = firmware non public
 SRC_URI_boot_elf = unknown
-PKGV_boot_elf = r3
+PKGV_boot_elf = r4
 RDEPENDS_boot_elf :=
 
 
