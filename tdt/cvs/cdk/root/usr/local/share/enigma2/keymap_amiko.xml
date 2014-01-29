@@ -302,8 +302,8 @@
 		<key id="KEY_RED" mapto="red" flags="m" />
 		<key id="KEY_EPG" mapto="info" flags="m" />
 		<key id="KEY_MENU" mapto="input_date_time" flags="m" />
-		<key id="KEY_CHANNELUP" mapto="nextBouquet" flags="m" />
-		<key id="KEY_CHANNELDOWN" mapto="prevBouquet" flags="m" />
+		<key id="KEY_PAGEUP" mapto="nextBouquet" flags="m" />
+		<key id="KEY_PAGEDOWN" mapto="prevBouquet" flags="m" />
 	</map>
 
 	<map context="EventViewActions">
@@ -410,8 +410,8 @@
 		<key id="KEY_ESC" mapto="cancel" flags="m" />
 		<key id="KEY_ENTER" mapto="ok" flags="m" />
 		<key id="KEY_OK" mapto="ok" flags="m" />
-		<key id="KEY_CHANNELUP" mapto="size+" flags="mr" />
-		<key id="KEY_CHANNELDOWN" mapto="size-" flags="mr" />
+		<key id="KEY_PAGEUP" mapto="size+" flags="mr" />
+		<key id="KEY_PAGEDOWN" mapto="size-" flags="mr" />
 	</map>
 	
 	<map context="MediaPlayerActions">
