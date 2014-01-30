@@ -149,6 +149,12 @@ if test "$enable_externallcd" != "yes"  ; then
     AC_DEFINE(NO_LCD,1,[disable all lcd])
 fi
 
+AC_ARG_ENABLE(gcc48,
+    AS_HELP_STRING(--enable-gcc48, compile image stm24 using gcc 4.8),
+    ,[enable_gcc48=no])
+TDT_CONDITIONAL(GCC48,test "$enable_gcc48" = "yes")
+AC_SUBST(GCC48)
+
 if test -z "$CFLAGS" ; then
 	CFLAGS="-g -O2"
 fi
@@ -656,6 +662,7 @@ summary:
 -------------------------------------------------------------------------------
 target cpu/boxtype          : $CPU_MODEL / $BOXTYPE
 STLinux 2.4                 : $enable_stm24
+GCC 4.8.2                   : $enable_gcc48
 Patchlevel P0207            : $enable_p0207
 Patchlevel P0209            : $enable_p0209
 Patchlevel P0210            : $enable_p0210

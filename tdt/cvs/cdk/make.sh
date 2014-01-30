@@ -114,6 +114,25 @@ fi
 
 ##############################################
 
+echo -e "\nSelect GCC:"
+echo "   1) GCC 4.7.3"
+echo "   2) GCC 4.8.2"
+case $6 in
+        [1-2]) REPLY=$6
+        echo -e "\nSelected GCC: $REPLY\n"
+        ;;
+        *)
+        read -p "Select GCC (1-2)? ";;
+esac
+
+case "$REPLY" in
+	1) GCC="";;
+	2) GCC="--enable-gcc48";;
+	*) GCC="";;
+esac
+
+##############################################
+
 cd ../driver/
 echo "# Automatically generated config: don't edit" > .config
 echo "#" >> .config
@@ -321,7 +340,7 @@ if [[ "$IMAGE" == --enable-e2* ]]; then
 fi
 ##############################################
 
-CONFIGPARAM="$CONFIGPARAM $PLAYER $MULTICOM $PYTHON $MEDIAFW  $EXTERNAL_LCD $IMAGE $GFW"
+CONFIGPARAM="$CONFIGPARAM $PLAYER $MULTICOM $PYTHON $MEDIAFW  $EXTERNAL_LCD $IMAGE $GFW $GCC"
 
 ##############################################
 
