@@ -540,4 +540,50 @@ $(DEPDIR)/$(IPTABLES): $(DEPDIR)/%$(IPTABLES): $(IPTABLES_RPM)
 	$(start_build)
 	$(fromrpm_build)
 	touch $@
-	
+
+#
+# GREPFTOOLS
+#
+BEGIN[[
+gperftools
+ git
+ {PN}
+  git://code.google.com/p/gperftools.git:protocol=https
+  make:install:DESTDIR=PKDIR
+;
+]]END
+
+DESCRIPTION_gperftools = "gperftools"
+
+FILES_gperftools = \
+/usr/bin/gperftools
+
+$(DEPDIR)/gperftools.do_prepare: bootstrap $(DEPENDS_gperftools)
+	$(PREPARE_gperftools)
+	touch $@
+
+$(DEPDIR)/gperftools.do_compile: $(DEPDIR)/gperftools.do_prepare
+	export PATH=$(hostprefix)/bin:$(PATH) && \
+	cd $(DIR_gperftools) && \
+		libtoolize -f -c && \
+		autoreconf --verbose --force --install -I$(hostprefix)/share/aclocal && \
+		$(BUILDENV) \
+		./configure \
+			--build=$(build) \
+			--host=$(target) \
+			--target=$(target) \
+			--enable-maintainer-mode \
+			--enable-minimal \
+			--disable-dependency-tracking \
+			--prefix=/usr && \
+		$(MAKE)
+	touch $@
+
+$(DEPDIR)/gperftools: $(DEPDIR)/gperftools.do_compile
+	$(start_build)
+	cd $(DIR_gperftools) && \
+		$(INSTALL_gperftools)
+	$(tocdk_build)
+	$(extra_build)
+	touch $@
+
