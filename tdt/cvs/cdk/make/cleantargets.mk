@@ -31,6 +31,7 @@ cdk-clean:
 # uninstall facilities of the components allow.
 clean-local: mostlyclean-local depsclean rpmdepsclean misc-tools-clean
 	-rm -rf $(hostprefix)
+	-rm -f build.env
 	-rm -rf $(crossprefix)/
 	-rm -rf $(configprefix)/
 	-rm -rf $(devkitprefix)/
@@ -58,6 +59,7 @@ distclean-local:
 	-rm -f Makefile-archive
 	-rm -f rules-downcheck.pl
 	-rm -f linux-sh4
+	-rm -f build.env
 	-rm -rf $(DEPDIR)
 #	-rm -rf $(targetprefix)
 	-rm -rf $(hostprefix)
