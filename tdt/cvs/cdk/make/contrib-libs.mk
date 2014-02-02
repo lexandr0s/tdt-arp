@@ -2407,6 +2407,44 @@ $(DEPDIR)/mechanize: $(DEPDIR)/mechanize.do_compile
 	touch $@
 
 #
+# mutagen
+#
+BEGIN[[
+mutagen
+  1.22
+  {PN}-{PV}
+  extract:https://mutagen.googlecode.com/files/{PN}-{PV}.tar.gz
+;
+]]END
+
+DESCRIPTION_mutagen = "Mutagen is a Python module to handle audio metadata."
+BDEPENDS_mutagen = python
+FILES_mutagen = \
+$(PYTHON_DIR)/site-packages/mutagen/*.py
+
+$(DEPDIR)/mutagen.do_prepare: bootstrap setuptools $(DEPENDS_mutagen)
+	$(PREPARE_mutagen)
+	touch $@
+
+$(DEPDIR)/mutagen.do_compile: $(DEPDIR)/mutagen.do_prepare
+	cd $(DIR_mutagen) && \
+		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python -c "import setuptools; execfile('setup.py')" build
+	touch $@
+
+$(DEPDIR)/mutagen: $(DEPDIR)/mutagen.do_compile
+	$(start_build)
+	cd $(DIR_mutagen) && \
+		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python ./setup.py install --root=$(PKDIR) --prefix=/usr
+	$(tocdk_build)
+	$(remove_pyc)
+	$(toflash_build)
+	touch $@
+
+#
 # bs4
 #
 BEGIN[[
