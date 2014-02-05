@@ -30,7 +30,7 @@ GLIBC := glibc
 GLIBC_DEV := glibc-dev
 FILES_glibc = /lib
 FILES_glibc_dev = /lib /usr/lib
-GLIBC_VERSION := 2.14.1-46
+GLIBC_VERSION := 2.14.1-47
 GLIBC_RAWVERSION := $(firstword $(subst -, ,$(GLIBC_VERSION)))
 GLIBC_SPEC := stm-target-$(GLIBC).spec
 GLIBC_SPEC_PATCH :=
@@ -216,7 +216,7 @@ FILES_libstdc++-dev = \
 
 LIBGCC := libgcc
 ifdef GCC48
-GCC_VERSION := 4.8.2-133
+GCC_VERSION := 4.8.2-134
 else
 GCC_VERSION := 4.7.3-129
 endif
