@@ -1,24 +1,125 @@
-diff -r 9f04cee4c103 bfd/doc/bfd.texinfo
---- a/bfd/doc/bfd.texinfo	Wed Jun 12 01:54:49 2013 -0400
-+++ b/bfd/doc/bfd.texinfo	Wed Jun 19 13:08:01 2013 -0400
-@@ -322,7 +322,7 @@
- @printindex cp
+diff -ruN binutils-2.20.1-baseline/bfd/po/Make-in binutils-2.20.1/bfd/po/Make-in
+--- binutils-2.20.1-baseline/bfd/po/Make-in	2009-09-02 00:18:38.000000000 -0700
++++ binutils-2.20.1/bfd/po/Make-in	2010-03-15 01:05:08.404273334 -0700
+@@ -20,10 +20,10 @@
  
- @tex
--% I think something like @colophon should be in texinfo.  In the
-+% I think something like @@colophon should be in texinfo.  In the
- % meantime:
- \long\def\colophon{\hbox to0pt{}\vfill
- \centerline{The body of this manual is set in}
-@@ -333,7 +333,7 @@
- \centerline{{\sl\fontname\tensl\/}}
- \centerline{are used for emphasis.}\vfill}
- \page\colophon
--% Blame: doc@cygnus.com, 28mar91.
-+% Blame: doc@@cygnus.com, 28mar91.
- @end tex
+ prefix = @prefix@
+ exec_prefix = @exec_prefix@
+-datadir = $(prefix)/@DATADIRNAME@
++datadir = @datadir@
+ localedir = $(datadir)/locale
+-gnulocaledir = $(prefix)/share/locale
+-gettextsrcdir = $(prefix)/share/gettext/po
++gnulocaledir = $(datadir)/locale
++gettextsrcdir = $(datadir)/gettext/po
+ subdir = po
  
- @bye
+ DESTDIR =
+diff -ruN binutils-2.20.1-baseline/binutils/po/Make-in binutils-2.20.1/binutils/po/Make-in
+--- binutils-2.20.1-baseline/binutils/po/Make-in	2009-09-02 00:22:32.000000000 -0700
++++ binutils-2.20.1/binutils/po/Make-in	2010-03-15 01:05:08.404273334 -0700
+@@ -20,10 +20,10 @@
+ 
+ prefix = @prefix@
+ exec_prefix = @exec_prefix@
+-datadir = $(prefix)/@DATADIRNAME@
++datadir = @datadir@
+ localedir = $(datadir)/locale
+-gnulocaledir = $(prefix)/share/locale
+-gettextsrcdir = $(prefix)/share/gettext/po
++gnulocaledir = $(datadir)/locale
++gettextsrcdir = $(datadir)/gettext/po
+ subdir = po
+ 
+ DESTDIR =
+
+diff -ruN binutils-2.20.1-baseline/gas/po/Make-in binutils-2.20.1/gas/po/Make-in
+--- binutils-2.20.1-baseline/gas/po/Make-in	2009-09-02 00:24:21.000000000 -0700
++++ binutils-2.20.1/gas/po/Make-in	2010-03-15 01:05:08.405880796 -0700
+@@ -20,10 +20,10 @@
+ 
+ prefix = @prefix@
+ exec_prefix = @exec_prefix@
+-datadir = $(prefix)/@DATADIRNAME@
++datadir = @datadir@
+ localedir = $(datadir)/locale
+-gnulocaledir = $(prefix)/share/locale
+-gettextsrcdir = $(prefix)/share/gettext/po
++gnulocaledir = $(datadir)/locale
++gettextsrcdir = $(datadir)/gettext/po
+ subdir = po
+ 
+ DESTDIR =
+diff -ruN binutils-2.20.1-baseline/gprof/po/Make-in binutils-2.20.1/gprof/po/Make-in
+--- binutils-2.20.1-baseline/gprof/po/Make-in	2009-09-02 00:24:26.000000000 -0700
++++ binutils-2.20.1/gprof/po/Make-in	2010-03-15 01:05:08.405880796 -0700
+@@ -20,10 +20,10 @@
+ 
+ prefix = @prefix@
+ exec_prefix = @exec_prefix@
+-datadir = $(prefix)/@DATADIRNAME@
++datadir = @datadir@
+ localedir = $(datadir)/locale
+-gnulocaledir = $(prefix)/share/locale
+-gettextsrcdir = $(prefix)/share/gettext/po
++gnulocaledir = $(datadir)/locale
++gettextsrcdir = $(datadir)/gettext/po
+ subdir = po
+ 
+ DESTDIR =
+
+diff -ruN binutils-2.20.1-baseline/ld/po/Make-in binutils-2.20.1/ld/po/Make-in
+--- binutils-2.20.1-baseline/ld/po/Make-in	2009-09-02 00:25:35.000000000 -0700
++++ binutils-2.20.1/ld/po/Make-in	2010-03-15 01:05:08.409873651 -0700
+@@ -20,10 +20,10 @@
+ 
+ prefix = @prefix@
+ exec_prefix = @exec_prefix@
+-datadir = $(prefix)/@DATADIRNAME@
++datadir = @datadir@
+ localedir = $(datadir)/locale
+-gnulocaledir = $(prefix)/share/locale
+-gettextsrcdir = $(prefix)/share/gettext/po
++gnulocaledir = $(datadir)/locale
++gettextsrcdir = $(datadir)/gettext/po
+ subdir = po
+ 
+ DESTDIR =
+diff -ruN binutils-2.20.1-baseline/opcodes/po/Make-in binutils-2.20.1/opcodes/po/Make-in
+--- binutils-2.20.1-baseline/opcodes/po/Make-in	2009-09-02 00:20:30.000000000 -0700
++++ binutils-2.20.1/opcodes/po/Make-in	2010-03-15 01:05:08.409873651 -0700
+@@ -20,10 +20,10 @@
+ 
+ prefix = @prefix@
+ exec_prefix = @exec_prefix@
+-datadir = $(prefix)/@DATADIRNAME@
++datadir = @datadir@
+ localedir = $(datadir)/locale
+-gnulocaledir = $(prefix)/share/locale
+-gettextsrcdir = $(prefix)/share/gettext/po
++gnulocaledir = $(datadir)/locale
++gettextsrcdir = $(datadir)/gettext/po
+ subdir = po
+ 
+ DESTDIR =
+
+diff -ruN binutils-2.20.1-baseline/gold/po/Make-in binutils-2.20.1/gold/po/Make-in
+--- binutils-2.20.1-baseline/gold/po/Make-in	2009-09-02 00:20:30.000000000 -0700
++++ binutils-2.20.1/gold/po/Make-in	2010-03-15 01:05:08.409873651 -0700
+@@ -20,10 +20,10 @@
+
+ prefix = @prefix@
+ exec_prefix = @exec_prefix@
+-datadir = $(prefix)/@DATADIRNAME@
++datadir = @datadir@
+ localedir = $(datadir)/locale
+-gnulocaledir = $(prefix)/share/locale
+-gettextsrcdir = $(prefix)/share/gettext/po
++gnulocaledir = $(datadir)/locale
++gettextsrcdir = $(datadir)/gettext/po
+ subdir = po
+
+ DESTDIR =
 diff -r 9f04cee4c103 binutils/doc/binutils.texi
 --- a/binutils/doc/binutils.texi	Wed Jun 12 01:54:49 2013 -0400
 +++ b/binutils/doc/binutils.texi	Wed Jun 19 13:08:01 2013 -0400
@@ -429,3 +530,26 @@ diff -r 9f04cee4c103 ld/ld.texinfo
  @end tex
  
  @bye
+
+diff -Naur a/bfd/doc/bfd.texinfo b/bfd/doc/bfd.texinfo
+--- a/bfd/doc/bfd.texinfo	2010-10-28 07:40:25.000000000 -0400
++++ b/bfd/doc/bfd.texinfo	2013-10-02 15:57:07.556185659 -0400
+@@ -322,7 +322,7 @@
+ @printindex cp
+
+ @tex
+-% I think something like @colophon should be in texinfo.  In the
++% I think something like @@colophon should be in texinfo.  In the
+ % meantime:
+ \long\def\colophon{\hbox to0pt{}\vfill
+ \centerline{The body of this manual is set in}
+@@ -333,7 +333,7 @@
+ \centerline{{\sl\fontname\tensl\/}}
+ \centerline{are used for emphasis.}\vfill}
+ \page\colophon
+-% Blame: doc@cygnus.com, 28mar91.
++% Blame: doc@@cygnus.com, 28mar91.
+ @end tex
+
+ @bye
+ 
