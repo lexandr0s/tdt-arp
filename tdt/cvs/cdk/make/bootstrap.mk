@@ -428,7 +428,7 @@ CROSS_G++ = cross-sh4-g++
 CROSS_PROTOIZE = cross-sh4-protoize
 CROSS_LIBGCC = cross-sh4-libgcc
 ifdef GCC48
-CROSS_GCC_VERSION = 4.8.2-128
+CROSS_GCC_VERSION = 4.8.2-129
 else
 CROSS_GCC_VERSION = 4.7.3-124
 endif
