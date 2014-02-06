@@ -736,6 +736,7 @@ Makefile\
 :make/root-etc.mk\
 :make/busybox.mk\
 :make/contrib-libs.mk\
+:make/python.mk\
 :make/contrib-apps-specs.mk\
 :make/contrib-apps.mk\
 :make/net-apps.mk\

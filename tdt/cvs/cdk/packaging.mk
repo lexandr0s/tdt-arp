@@ -53,8 +53,9 @@ endef
 
 define tocdk_build_start
 	rm -rf $(ipkgbuilddir)/*
-	export FILES_$(PARENT_PK)="/" && \
+	export FILES_$(PARENT_PK)="/"  PACKAGES_$(PARENT_PK)=$(PARENT_PK)  DESCRIPTION_$(PARENT_PK)=$(PARENT_PK) && \
 	python split_packages.py
+	$(remove_docs)
 	$(rewrite_libtool)
 #	$(rewrite_pkgconfig)
 	$(rewrite_dependency)
@@ -71,8 +72,8 @@ define fromrpm_build
 	$(toflash_build)
 endef
 
-flash_ipkg_args = -f $(crossprefix)/etc/opkg.conf -o $(prefix)/pkgroot
-cdk_ipkg_args = -f $(crossprefix)/etc/opkg-cdk.conf -o $(targetprefix) --nodeps
+flash_ipkg_args = -f $(crossprefix)/etc/opkg.conf -o $(prefix)/pkgroot --nodeps --force-overwrite
+cdk_ipkg_args = -f $(crossprefix)/etc/opkg-cdk.conf -o $(targetprefix) --nodeps --force-overwrite
 
 define do_build_pkg
 	@echo
@@ -142,6 +143,8 @@ endef
 define remove_docs
 	rm -rf $(PKDIR)/usr/share/doc
 	rm -rf $(PKDIR)/usr/share/man
+	rm -rf $(PKDIR)/usr/share/info
+	rm -rf $(PKDIR)/usr/share/locale
 	rm -rf $(PKDIR)/usr/share/gtk-doc
 endef
 

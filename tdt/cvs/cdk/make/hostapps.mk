@@ -136,7 +136,7 @@ $(DEPDIR)/fluxcomp_host: bootstrap $(DEPENDS_fluxcomp_host)
 #
 BEGIN[[
 opkg_host
-  0.1.8
+  0.2.0
   {PN}
   dirextract:http://opkg.googlecode.com/files/opkg-{PV}.tar.gz
 ;

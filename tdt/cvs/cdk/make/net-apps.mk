@@ -389,8 +389,8 @@ wireless_tools
   make:install:INSTALL_MAN=PKDIR/usr/share/man:PREFIX=PKDIR/usr
 ;
 ]]END
-
-DESCRIPTION_wireless_tools = wireless-tools
+PKGR_wireless_tools = r1
+DESCRIPTION_wireless_tools = Tools for the Linux Standard Wireless Extension Subsystem
 RDEPENDS_wireless_tools = rfkill wpa-supplicant
 FILES_wireless_tools = \
 /usr/sbin/* \

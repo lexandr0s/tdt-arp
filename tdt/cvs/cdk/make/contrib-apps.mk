@@ -1152,7 +1152,7 @@ $(DEPDIR)/jfsutils: $(DEPDIR)/jfsutils.do_compile
 #
 BEGIN[[
 opkg
-  0.1.8
+  0.2.0
   {PN}-{PV}
   extract:http://{PN}.googlecode.com/files/{PN}-{PV}.tar.gz
   make:install:DESTDIR=PKDIR
