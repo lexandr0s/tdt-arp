@@ -80,78 +80,8 @@ $(DEPDIR)/init-scripts: $(DEPENDS_init_scripts)
 	$(toflash_build)
 	touch $@
 
-#
-# EXTRA FONTS
-#
 
-DESCRIPTION_fonts_extra = Extra fonts to beautify your box
-SRC_URI_fonts_extra = git://gitorious.org/~schpuntik/open-duckbox-project-sh4/tdt-amiko.git
-PKGV_fonts_extra = 0.1
-SRC_URI_font_valis_enigma = $(SRC_URI_fonts_extra)
-PKGV_font_valis_enigma = $(PKGV_fonts_extra)
 
-fonts_extra_file_list = $(subst .ttf,,$(shell ls root/usr/share/fonts/))
-
-# This can be used as multipackaging example
-# Remember to replace '-' with '_' in variables and package names
-
-PACKAGES_fonts_extra = $(subst -,_,$(addprefix font_,$(fonts_extra_file_list)))
-$(foreach f,$(fonts_extra_file_list), \
- $(eval DESCRIPTION_font_$(subst -,_,$f) = font $f ) \
- $(eval FILES_font_$(subst -,_,$f) = /usr/share/fonts/$f*) \
-)
-
-$(DEPDIR)/font-valis-enigma: fonts-extra
-	$(start_build)
-	$(INSTALL) -d $(PKDIR)/usr/share/fonts
-	$(INSTALL) -m 644 root/usr/share/fonts/valis_enigma.ttf $(PKDIR)/usr/share/fonts
-	$(toflash_build)
-	touch $@
-
-$(DEPDIR)/fonts-extra: $(addsuffix .ttf, $(addprefix root/usr/share/fonts/,$(fonts_extra_file_list)))
-	$(start_build)
-	$(INSTALL) -d $(PKDIR)/usr/share/fonts
-	$(INSTALL) -m 644 $^ $(PKDIR)/usr/share/fonts
-	$(extra_build)
-	touch $@
-
-#
-# 3G MODEMS
-#
-BEGIN[[
-modem_scripts
-  0.4
-  {PN}-{PV}
-  pdircreate:{PN}-{PV}
-  nothing:file://../root/etc/ppp/ip-*
-  nothing:file://../root/usr/bin/modem.sh
-  nothing:file://../root/usr/bin/modemctrl.sh
-  nothing:file://../root/etc/modem.conf
-  nothing:file://../root/etc/modem.list
-  nothing:file://../root/etc/55-modem.rules
-  nothing:file://../root/etc/30-modemswitcher.rules
-;
-]]END
-
-DESCRIPTION_modem_scripts = utils to setup 3G modems
-RDEPENDS_modem_scripts = pppd usb_modeswitch iptables iptables-dev
-
-$(DEPDIR)/modem-scripts: $(DEPENDS_modem_scripts) $(RDEPENDS_modem_scripts)
-	$(PREPARE_modem_scripts)
-	$(start_build)
-	cd $(DIR_modem_scripts) && \
-	$(INSTALL_DIR) $(PKDIR)/etc/ppp/peers && \
-	$(INSTALL_DIR) $(PKDIR)/etc/udev/rules.d/ && \
-	$(INSTALL_DIR) $(PKDIR)/usr/bin/ && \
-	$(INSTALL_BIN) ip-* $(PKDIR)/etc/ppp/ && \
-	$(INSTALL_BIN) modem.sh $(PKDIR)/usr/bin/ && \
-	$(INSTALL_BIN) modemctrl.sh $(PKDIR)/usr/bin/ && \
-	$(INSTALL_FILE) modem.conf $(PKDIR)/etc/ && \
-	$(INSTALL_FILE) modem.list $(PKDIR)/etc/ && \
-	$(INSTALL_FILE) 55-modem.rules $(PKDIR)/etc/udev/rules.d/ && \
-	$(INSTALL_FILE) 30-modemswitcher.rules $(PKDIR)/etc/udev/rules.d/
-	$(toflash_build)
-	touch $@
 
 DESCRIPTION_driver_ptinp = pti non public
 PKGV_driver_ptinp = 0.1
@@ -316,8 +246,8 @@ release_common_utils:
 	
 release_base: driver-ptinp driver-encrypt
 	rm -rf $(prefix)/release || true
-	$(INSTALL_DIR) $(prefix)/release && \
-	cp -rp $(prefix)/pkgroot/* $(prefix)/release
+	$(INSTALL_DIR) $(prefix)/release
+	#cp -rp $(prefix)/pkgroot/* $(prefix)/release
 # filesystem
 	$(INSTALL_DIR) $(prefix)/release/bin && \
 	$(INSTALL_DIR) $(prefix)/release/sbin && \
@@ -387,6 +317,7 @@ release_base: driver-ptinp driver-encrypt
 	cp -dp $(buildprefix)/root/firmware/*.bin $(prefix)/release/lib/firmware/ && \
 	cp -dp $(targetprefix)/etc/network/options $(prefix)/release/etc/network/ && \
 	ln -sf /etc/timezone.xml $(prefix)/release/etc/tuxbox/timezone.xml && \
+	mkdir -p $(prefix)/release/usr/share/keymaps && \
 	ln -sf /usr/local/share/keymaps $(prefix)/release/usr/share/keymaps
 	if [ -e $(targetprefix)/usr/share/alsa ]; then \
 	mkdir -p $(prefix)/release/usr/share/alsa/; \
@@ -440,7 +371,9 @@ release_base: driver-ptinp driver-encrypt
 	$(INSTALL_FILE) root/etc/tuxbox/terrestrial.xml $(prefix)/release/etc/tuxbox/ && \
 	$(INSTALL_FILE) root/etc/tuxbox/timezone.xml $(prefix)/release/etc/ && \
 	echo "576i50" > $(prefix)/release/etc/videomode
-
+release_opkg: release_base package-index
+	opkg update -V -f $(crossprefix)/etc/opkg.conf  -o $(prefix)/release 
+	opkg install enigma2-pli -f $(crossprefix)/etc/opkg.conf  -o $(prefix)/release --force-postinstall 
 release_spark:
 	echo "spark" > $(prefix)/release/etc/hostname && \
 	echo "src/gz AR-P http://alien.sat-universum.de" | cat - $(prefix)/release/etc/opkg/official-feed.conf > $(prefix)/release/etc/opkg/official-feed && \
