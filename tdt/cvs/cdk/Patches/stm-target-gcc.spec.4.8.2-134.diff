@@ -8,7 +8,7 @@
  Patch1: gcc-4.2.4-multilibpath.patch
  Patch3: gcc-4.5.0-autoconf.patch
  
-@@ -66,6 +67,9 @@
+@@ -67,6 +68,9 @@
  BuildRequires: %{_stm_pkg_prefix}-%{_stm_target_arch}-gmp
  BuildRequires: %{_stm_pkg_prefix}-%{_stm_target_arch}-mpc
  
@@ -18,7 +18,7 @@
  %description
  This is the GNU C compiler, a fairly portable optimizing compiler which
  supports multiple languages.  This package includes support for C, and
-@@ -162,6 +166,7 @@
+@@ -163,6 +167,7 @@
  
  %prep
  %setup -n gcc-%{version} -q
@@ -26,7 +26,7 @@
  
  # Common patches
  %if %target_cpu sh
-@@ -237,8 +242,10 @@
+@@ -239,8 +244,10 @@
  export CFLAGS="-Os"
  export CXXFLAGS="-Os"
  
@@ -37,7 +37,7 @@
  
  # When cross compiling this fails because it needs to run code
  export ac_cv_header_stdc=yes
-@@ -253,7 +260,6 @@
+@@ -255,7 +262,6 @@
  	--enable-nls \
  	--enable-c99 \
  	--enable-long-long \
@@ -45,7 +45,7 @@
  	--enable-shared \
  %if "%{_stm_target_arch}" != "armv7" && "%{_stm_target_arch}" != "armv7_uclibc"
  	--disable-libgomp \
-@@ -375,6 +381,9 @@
+@@ -377,6 +383,9 @@
  rm -r %{buildroot}%{_gccdir}/install-tools
  rm -r %{buildroot}%{_stm_cross_target_dir}%{_stm_target_libexec_dir}/gcc/%{_stm_target_config}/%{version}/install-tools
  rm -rf %{buildroot}%{_stm_cross_target_dir}%{_stm_target_libexec_dir}/gcc/%{_stm_target_config}/%{version}/plugin/gengtype
