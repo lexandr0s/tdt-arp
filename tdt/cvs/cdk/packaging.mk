@@ -72,7 +72,7 @@ define fromrpm_build
 	$(toflash_build)
 endef
 
-flash_ipkg_args = -f $(crossprefix)/etc/opkg.conf -o $(prefix)/pkgroot --nodeps --force-overwrite
+flash_ipkg_args = -f $(crossprefix)/etc/opkg.conf  -o $(prefix)/root --nodeps
 cdk_ipkg_args = -f $(crossprefix)/etc/opkg-cdk.conf -o $(targetprefix) --nodeps --force-overwrite
 
 define do_build_pkg
@@ -221,29 +221,31 @@ define git_fetch_prepare
 	fi
 endef
 
+# Прописывание списка файлов  в cdkroot
 opkgcdkl-%:
 	opkg files $(cdk_ipkg_args) $*
-
+# Прописывание списка файлов в root
 opkgl-%:
 	opkg files $(flash_ipkg_args) $*
-
+# Прописывание списка пакетов в cdkroot
 opkgcdkl:
 	opkg list-installed $(cdk_ipkg_args)
-
+# Прописывание списка пакетов в root
 opkgl:
 	opkg list-installed $(flash_ipkg_args)
 
 opkg-sanitycheck:
-	dup=`cat $(prefix)/pkgroot/usr/lib/opkg/info/*list |sort |uniq -d` && test -z $$dup \
+	dup=`cat $(prefix)/root/usr/lib/opkg/info/*list |sort |uniq -d` && test -z $$dup \
 		|| (echo "ERROR: opkg lists has duplicate files:"; echo $$dup; false)
-
+ 
 .PHONY: package-index $(ipkprefix)/Packages package-index-extras $(ipkextras)/Packages
+# Создание Packages.gz для папки ipkbox
 package-index: $(ipkprefix)/Packages
 $(ipkprefix)/Packages: $(ipkprefix)
 	cd $(ipkprefix) && \
 		/usr/bin/python $(crossprefix)/bin/ipkg-make-index . > Packages && \
 		cat Packages | gzip > Packages.gz
-
+# Создание Packages.gz для папки ipkextras
 package-index-extras: $(ipkextras)/Packages
 $(ipkextras)/Packages: $(ipkextras)
 	cd $(ipkextras) && \
