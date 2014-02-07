@@ -22,12 +22,13 @@ python
   patch:file://{PN}_{PV}-ctypes-libffi-fix-configure.diff
   patch:file://{PN}_{PV}-pgettext.diff
 endif
+make:install:prefix=/usr:DESTDIR=PKDIR
 ;
 ]]END
 
 PKGR_python = r1
-PACKAGES_python = python_core \
-		  libpython \
+PACKAGES_python = libpython \
+		  python_core \
 		  python_2to3 \
 		  python_lang \
 		  python_re \
