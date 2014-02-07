@@ -84,10 +84,13 @@ $(DEPDIR)/$(STSLAVE): $(DEPDIR)/%$(STSLAVE): linux-kernel-headers binutils-dev $
 
 OPENSSL := openssl
 OPENSSL_DEV := openssl-dev
-FILES_openssl_dev = \
-/usr/lib
-FILES_openssl = \
-/usr/lib/*.so*
+PACKAGES_openssl =  libcrypto libssl
+FILES_openssl_dev = /usr/lib
+DESCRIPTION_libcrypto = Secure Socket Layer (SSL) binary and related cryptographic tools.
+FILES_libcrypto = /usr/lib/libcrypto.so*
+DESCRIPTION_libssl = Secure Socket Layer (SSL) binary and related cryptographic tools.
+RDEPENDS_libssl = libcrypto
+FILES_libssl = /usr/lib/libssl.so*
 
 OPENSSL_VERSION := 1.0.1e-29
 OPENSSL_SPEC := stm-target-$(OPENSSL).spec
