@@ -30,7 +30,7 @@ GLIBC := glibc
 GLIBC_DEV := glibc-dev
 FILES_glibc = /lib
 FILES_glibc_dev = /lib /usr/lib
-GLIBC_VERSION := 2.14.1-47
+GLIBC_VERSION := 2.14.1-48
 GLIBC_RAWVERSION := $(firstword $(subst -, ,$(GLIBC_VERSION)))
 GLIBC_SPEC := stm-target-$(GLIBC).spec
 GLIBC_SPEC_PATCH :=
@@ -206,14 +206,11 @@ $(DEPDIR)/$(LIBELF): $(LIBELF_RPM)
 #
 GCC := gcc
 LIBSTDC := libstdc++
+RDEPENDS_libstdc++ = libgcc1
+FILES_libstdc++ = /usr/lib/libstdc++.so.*
 LIBSTDC_DEV := libstdc++-dev
-FILES_libstdc++ = \
-/usr/lib/*.so \
-/usr/lib/*.so*
-FILES_libstdc++-dev = \
-/usr/lib/*.so \
-/usr/lib/*.so*
-
+RDEPENDS_libstdc++-dev = libstdc++
+FILES_libstdc++-dev = /usr/include /usr/lib/*.*
 LIBGCC := libgcc
 ifdef GCC48
 GCC_VERSION := 4.8.2-134
@@ -311,7 +308,7 @@ $(DEPDIR)/%$(LIBTERMCAP): bootstrap $(LIBTERMCAP_RPM)
 	$(start_build)
 	$(fromrpm_build)
 	touch $@
-	
+
 
 $(DEPDIR)/$(LIBTERMCAP_DEV): \
 $(DEPDIR)/%$(LIBTERMCAP_DEV): $(DEPDIR)/%$(LIBTERMCAP) $(LIBTERMCAP_DEV_RPM)
@@ -320,14 +317,14 @@ $(DEPDIR)/%$(LIBTERMCAP_DEV): $(DEPDIR)/%$(LIBTERMCAP) $(LIBTERMCAP_DEV_RPM)
 	$(start_build)
 	$(fromrpm_build)
 	touch $@
-	
+
 
 $(DEPDIR)/$(LIBTERMCAP_DOC): \
 $(DEPDIR)/%$(LIBTERMCAP_DOC): $(LIBTERMCAP_DOC_RPM)
 	@rpm --dbpath $(prefix)/$*cdkroot-rpmdb $(DRPM) --ignorearch  -Uhv \
 		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^)
 	touch $@
-	
+
 
 #
 # NCURSES
@@ -377,7 +374,7 @@ $(DEPDIR)/%$(NCURSES_DEV): $(DEPDIR)/%$(NCURSES_BASE) $(NCURSES_DEV_RPM)
 	$(start_build)
 	$(fromrpm_build)
 	touch $@
-	
+
 
 #
 # BASE-PASSWD
@@ -411,7 +408,7 @@ $(DEPDIR)/%$(BASE_PASSWD): $(BASE_FILES_ADAPTED_ETC_FILES:%=root/etc/%) \
 	( cd $(prefix)/$*cdkroot/etc && sed -e "s|/bin/bash|/bin/sh|g" -i passwd ) && \
 	rm -f $(prefix)/$*cdkroot/etc/shadow
 	touch $@
-	
+
 
 #
 # MAKEDEV
@@ -439,7 +436,7 @@ $(DEPDIR)/%$(MAKEDEV): root/sbin/MAKEDEV $(MAKEDEV_RPM)
 		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^)
 	$(INSTALL) -m 755 root/sbin/MAKEDEV $(prefix)/$*cdkroot/sbin
 	touch $@
-	
+
 
 #
 # BASE-FILES
@@ -502,7 +499,7 @@ $(DEPDIR)/$(LIBATTR): $(DEPDIR)/%$(LIBATTR): $(LIBATTR_RPM)
 	$(start_build)
 	$(fromrpm_build)
 	touch $@
-	
+
 
 $(DEPDIR)/$(LIBATTR_DEV): $(DEPDIR)/%$(LIBATTR_DEV): $(LIBATTR_DEV_RPM)
 	@rpm --dbpath $(prefix)/$*cdkroot-rpmdb $(DRPM) --ignorearch --nodeps --noscripts -Uhv \
@@ -511,8 +508,48 @@ $(DEPDIR)/$(LIBATTR_DEV): $(DEPDIR)/%$(LIBATTR_DEV): $(LIBATTR_DEV_RPM)
 #	sed -i "/^dependency_libs/s|-L/usr/lib -L/lib ||" $(targetprefix)/usr/lib/libattr.la
 	$(REWRITE_LIBDIR)/libattr.la
 	touch $@
-	
 
+#
+# LIBAIO
+#
+LIBAIO := libaio
+LIBAIO_DEV := libaio-dev
+LIBAIO_VERSION := 0.3.109-2
+LIBAIO_SPEC := stm-target-$(LIBAIO).spec
+LIBAIO_SPEC_PATCH :=
+LIBAIO_PATCHES :=
+NAME_libaio = libaio1
+DESCRIPTION_libaio =  Asynchronous input/output library that uses the kernels native interface
+FILES_libaio = /lib
+
+LIBAIO_RPM := RPMS/sh4/$(STLINUX)-sh4-$(LIBAIO)-$(LIBAIO_VERSION).sh4.rpm
+LIBAIO_DEV_RPM := RPMS/sh4/$(STLINUX)-sh4-$(LIBAIO_DEV)-$(LIBAIO_VERSION).sh4.rpm
+
+$(LIBAIO_RPM) $(LIBAIO_DEV_RPM): \
+		$(if $(LIBAIO_SPEC_PATCH),Patches/$(LIBAIO_SPEC_PATCH)) \
+		$(if $(LIBAIO_PATCHES),$(LIBAIO_PATCHES:%=Patches/%)) \
+		$(archivedir)/$(STLINUX)-target-$(LIBAIO)-$(LIBAIO_VERSION).src.rpm
+	rpm $(DRPM) --nosignature -Uhv $(lastword $^) && \
+	$(if $(LIBAIO_SPEC_PATCH),( cd SPECS && patch -p1 $(LIBAIO_SPEC) < $(buildprefix)/Patches/$(LIBAIO_SPEC_PATCH) ) &&) \
+	$(if $(LIBAIO_PATCHES),cp $(LIBAIO_PATCHES:%=Patches/%) SOURCES/ &&) \
+	export PATH=$(hostprefix)/bin:$(PATH) && \
+	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(LIBAIO_SPEC)
+
+$(DEPDIR)/$(LIBAIO): $(DEPDIR)/%$(LIBAIO): $(LIBAIO_RPM)
+	@rpm --dbpath $(prefix)/$*cdkroot-rpmdb $(DRPM) --ignorearch --nodeps --noscripts -Uhv \
+		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^)
+	$(start_build)
+	$(fromrpm_build)
+	touch $@
+
+
+$(DEPDIR)/$(LIBAIO_DEV): $(DEPDIR)/%$(LIBAIO_DEV): $(LIBAIO_DEV_RPM)
+	@rpm --dbpath $(prefix)/$*cdkroot-rpmdb $(DRPM) --ignorearch --nodeps --noscripts -Uhv \
+		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^)
+#	sed -i "/^libdir/s|'/usr/lib'|'$(targetprefix)/usr/lib'|" $(targetprefix)/usr/lib/libaio.la
+#	sed -i "/^dependency_libs/s|-L/usr/lib -L/lib ||" $(targetprefix)/usr/lib/libaio.la
+	$(REWRITE_LIBDIR)/libaio.la
+	touch $@
 
 #
 # LIBACL
