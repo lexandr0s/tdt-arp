@@ -413,17 +413,65 @@ e2fsprogs
 ;
 ]]END
 
-DESCRIPTION_e2fsprogs = "e2fsprogs"
-FILES_e2fsprogs = \
-/sbin/e2fsck \
-/sbin/fsck \
-/sbin/fsck* \
-/sbin/mkfs* \
-/sbin/mke2fs \
-/sbin/tune2fs \
-/usr/lib/e2initrd_helper \
-/lib/*.so* \
-/usr/lib/*.so
+PACKAGES_e2fsprogs = e2fsprogs_badblocks \
+		     e2fsprogs_blkid \
+		     e2fsprogs_e2fsck \
+		     e2fsprogs_fsck \
+		     e2fsprogs_mke2fs \
+		     e2fsprogs_tune2fs \
+		     e2fsprogs
+
+DESCRIPTION_e2fsprogs_badblocks = The Ext2 Filesystem Utilities (e2fsprogs) contain all of the standard \
+ utilities for creating, fixing, configuring , and debugging ext2 filesystems.
+RDEPENDS_2fsprogs_badblocks = libcom-err2 libext2fs2
+FILES_e2fsprogs_badblocks = /sbin/badblock
+
+DESCRIPTION_e2fsprogs_blkid = The Ext2 Filesystem Utilities (e2fsprogs) contain all of the standard \
+ utilities for creating, fixing, configuring , and debugging ext2 filesystems.
+RDEPENDS_e2fsprogs_blkid = libblkid1 libext2fs2
+FILES_e2fsprogs_blkid = /sbin/blkid
+
+DESCRIPTION_e2fsprogs_e2fsck = The Ext2 Filesystem Utilities (e2fsprogs) contain all of the standard \
+ utilities for creating, fixing, configuring , and debugging ext2 filesystems.
+RDEPENDS_e2fsprogs_e2fsck = libblkid1 libcom_err2 libe2p2 libext2fs2 libuuid1
+FILES_e2fsprogs_e2fsck = /sbin/e2fsck
+
+DESCRIPTION_e2fsprogs_fsck = The Ext2 Filesystem Utilities (e2fsprogs) contain all of the standard \
+ utilities for creating, fixing, configuring , and debugging ext2 filesystems.
+RDEPENDS_e2fsprogs_fsck = libblkid1 libcom_err2 libe2p2 libext2fs2 libuuid1
+FILES_e2fsprogs_fsck = /sbin/fsck
+
+DESCRIPTION_e2fsprogs_mke2fs = The Ext2 Filesystem Utilities (e2fsprogs) contain all of the standard \
+ utilities for creating, fixing, configuring , and debugging ext2 filesystems.
+RDEPENDS_e2fsprogs_mke2fs = libblkid1 libcom_err2 libe2p2 libext2fs2 libuuid1
+FILES_e2fsprogs_mke2fs = /etc/mke2fs.conf \
+			/sbin/mkfs* \
+			/sbin/mke2fs
+
+DESCRIPTION_e2fsprogs_tune2fs = The Ext2 Filesystem Utilities (e2fsprogs) contain all of the standard \
+ utilities for creating, fixing, configuring , and debugging ext2 filesystems.
+RDEPENDS_e2fsprogs_tune2fs = libblkid1 libcom_err2 libe2p2 libext2fs2 libuuid1
+FILES_e2fsprogs_tune2fs = /sbin/tune2fs \
+			  /sbin/e2label \
+			  /sbin/findfs
+
+DESCRIPTION_e2fsprogs = The Ext2 Filesystem Utilities (e2fsprogs) contain all of the standard \
+ utilities for creating, fixing, configuring , and debugging ext2 filesystems.
+RDEPENDS_e2fsprogs = libss2 libext2fs2 libcom_err2 libe2p2 e2fsprogs_blkid e2fsprogs_badblocks libblkid1 libuuid1
+FILES_e2fsprogs = /sbin/debugfs \
+		  /sbin/dumpe2fs \
+		  /sbin/e2freefrag \
+		  /sbin/e2image \
+		  /sbin/e2undo \
+		  /sbin/e4defrag \
+		  /sbin/filefrag \
+		  /sbin/logsave \
+		  /sbin/mklost+found \
+		  /sbin/resize2fs \
+		  /usr/bin/chattr \
+		  /usr/bin/compile_et \
+		  /usr/bin/lsattr \
+		  /usr/bin/mk_cmds
 
 $(DEPDIR)/e2fsprogs.do_prepare: bootstrap $(DEPENDS_e2fsprogs)
 	$(PREPARE_e2fsprogs)
@@ -1322,7 +1370,7 @@ $(DEPDIR)/udpxy.do_compile: $(DEPDIR)/udpxy.do_prepare
 #  You could call one of the following:
 #    $(tocdk_build) - copy all $(PKDIR) contents to tufsbox/cdkroot to use them later if something depends on them.
 #    $(extra_build) - perform strip and cleanup, then make package ready to install on your box. You can find ipk in tufsbox/ipkbox
-#    $(toflash_build) - At first do exactly that $(extra_build) does. After install package to pkgroot to include it in image.
+#    $(toflash_build) - At first do exactly that $(extra_build) does. After install package to tufsbox/root to include it in image.
 #    $(e2extra_build) - same as $(extra_build) but copies ipk to tufsbox/ipkextras
 #  Tip: $(tocdk_build) and $(toflash_build) could be used simultaneously.
 
@@ -1587,9 +1635,10 @@ grab
 ;
 ]]END
 
-DESCRIPTION_grab = make enigma2 screenshots
+NAME_grab = aio_grab
+DESCRIPTION_grab = Screen grabber for Set-Top-Boxes
 PKGR_grab = r1
-RDEPENDS_grab = libpng libjpeg
+RDEPENDS_grab = libpng16 libjpeg8
 
 $(DEPDIR)/grab.do_prepare: bootstrap $(RDEPENDS_grab) $(DEPENDS_grab)
 	$(PREPARE_grab)
@@ -1617,7 +1666,7 @@ $(DEPDIR)/grab: grab.do_compile
 # enigma2-plugin-cams-oscam
 #
 BEGIN[[
-enigma2_plugin_cams_oscam
+oscam
   svn
   {PN}-{PV}
   svn://www.streamboard.tv/svn/oscam/trunk/
@@ -1625,24 +1674,25 @@ enigma2_plugin_cams_oscam
 ;
 ]]END
 
-DESCRIPTION_enigma2_plugin_cams_oscam = Open Source Conditional Access Module software
-SRC_URI_enigma2_plugin_cams_oscam = http://www.streamboard.tv/oscam/
-FILES_enigma2_plugin_cams_oscam = \
+NAME_oscam = enigma2_plugin_cams_oscam
+DESCRIPTION_oscam = Open Source Conditional Access Module software
+SRC_URI_oscam = http://www.streamboard.tv/oscam/
+FILES_oscam = \
 /usr/bin/cam/oscam
 
-$(DEPDIR)/enigma2_plugin_cams_oscam.do_prepare: bootstrap $(DEPENDS_enigma2_plugin_cams_oscam)
-	$(PREPARE_enigma2_plugin_cams_oscam)
+$(DEPDIR)/oscam.do_prepare: bootstrap $(DEPENDS_oscam)
+	$(PREPARE_oscam)
 	touch $@
 
-$(DEPDIR)/enigma2_plugin_cams_oscam.do_compile: enigma2_plugin_cams_oscam.do_prepare
-	cd $(DIR_enigma2_plugin_cams_oscam) && \
+$(DEPDIR)/oscam.do_compile: oscam.do_prepare
+	cd $(DIR_oscam) && \
 	$(BUILDENV) \
 	$(MAKE) CROSS=$(prefix)/devkit/sh4/bin/$(target)-  CONF_DIR=/var/keys
 	touch $@
 
-$(DEPDIR)/enigma2_plugin_cams_oscam: enigma2_plugin_cams_oscam.do_compile
+$(DEPDIR)/oscam: oscam.do_compile
 	$(start_build)
-	cd $(DIR_enigma2_plugin_cams_oscam)  && \
+	cd $(DIR_oscam)  && \
 		$(INSTALL_DIR) $(PKDIR)/usr/bin/cam; \
 		$(INSTALL_BIN) Distribution/oscam*-sh4-linux $(PKDIR)/usr/bin/cam/oscam
 	$(tocdk_build)
@@ -1653,7 +1703,7 @@ $(DEPDIR)/enigma2_plugin_cams_oscam: enigma2_plugin_cams_oscam.do_compile
 # enigma2-plugin-cams-oscam-config
 #
 BEGIN[[
-enigma2_plugin_cams_oscam_config
+oscamconfig
   0.1
   {PN}-{PV}
   nothing:file://../root/var/keys/oscam.conf
@@ -1666,14 +1716,14 @@ enigma2_plugin_cams_oscam_config
   nothing:file://../root/var/keys/oscam.guess
 ;
 ]]END
-
-DESCRIPTION_enigma2_plugin_cams_oscam_config = Example configs for Open Source Conditional Access Module software
-SRC_URI_enigma2_plugin_cams_oscam_config = http://www.streamboard.tv/oscam/
-FILES_enigma2_plugin_cams_oscam_config = \
+NAME_oscamconfig = enigma2_plugin_cams_oscam_config
+DESCRIPTION_oscamconfig = Example configs for Open Source Conditional Access Module software
+SRC_URI_oscamconfig = http://www.streamboard.tv/oscam/
+FILES_oscamconfig = \
 /var/keys/oscam.*
 
-$(DEPDIR)/enigma2-plugin-cams-oscam-config: $(DEPENDS_enigma2_plugin_cams_oscam_config)
-	 $(PREPARE_enigma2_plugin_cams_oscam_config)
+$(DEPDIR)/oscamconfig: $(DEPENDS_oscamconfig)
+	 $(PREPARE_oscamconfig)
 	 $(start_build)
 		$(INSTALL_DIR) $(PKDIR)/var/keys
 		$(INSTALL_FILE) $(buildprefix)/root/var/keys/oscam.conf     $(PKDIR)/var/keys/oscam.conf
@@ -1689,97 +1739,6 @@ endif
 		$(INSTALL_FILE) $(buildprefix)/root/var/keys/oscam.guess    $(PKDIR)/var/keys/oscam.guess	 
 	 $(e2extra_build)
 	touch $@
-
-
-#
-# parted
-#
-BEGIN[[
-parted
-  3.1
-  {PN}-{PV}
-  extract:http://ftp.gnu.org/gnu/{PN}/{PN}-{PV}.tar.xz
-  patch:file://{PN}_{PV}.patch
-  make:install:DESTDIR=PKDIR
-;
-]]END
-
-DESCRIPTION_parted = "parted"
-FILES_parted = \
-/usr/lib/libparted-fs-resize.s* \
-/usr/lib/libparted.s* \
-/usr/sbin/parted
-
-$(DEPDIR)/parted.do_prepare: bootstrap $(DEPENDS_parted)
-	$(PREPARE_parted)
-	touch $@
-
-$(DEPDIR)/parted.do_compile: $(DEPDIR)/parted.do_prepare
-	cd $(DIR_parted) && \
-		cp aclocal.m4 acinclude.m4 && \
-		autoconf && \
-		$(BUILDENV) \
-		./configure \
-			--build=$(build) \
-			--host=$(target) \
-			--prefix=/usr \
-			--disable-Werror \
-			--disable-device-mapper && \
-		$(MAKE) all CC=$(target)-gcc STRIP=$(target)-strip
-	touch $@
-
-$(DEPDIR)/parted: $(DEPDIR)/parted.do_compile
-	$(start_build)
-	cd $(DIR_parted) && \
-		$(INSTALL_parted)
-	$(tocdk_build)
-	$(toflash_build)
-	touch $@
-
-#
-# gettext
-#
-BEGIN[[
-gettext
-  0.18
-  {PN}-{PV}
-  extract:ftp://ftp.gnu.org/gnu/{PN}/{PN}-{PV}.tar.gz
-  make:install:DESTDIR=PKDIR
-;
-]]END
-
-DESCRIPTION_gettext = "gettext"
-FILES_gettext = \
-*
-
-$(DEPDIR)/gettext.do_prepare: bootstrap $(DEPENDS_gettext)
-	$(PREPARE_gettext)
-	touch $@
-
-$(DEPDIR)/gettext.do_compile: $(DEPDIR)/gettext.do_prepare
-	cd $(DIR_gettext) && \
-		cp aclocal.m4 acinclude.m4 && \
-		autoconf && \
-		$(BUILDENV) \
-		./configure \
-			--build=$(build) \
-			--host=$(target) \
-			--prefix=/usr \
-			--without-emacs \
-			--without-cvs \
-			--disable-java && \
-		$(MAKE) all 
-	touch $@
-
-$(DEPDIR)/gettext: $(DEPDIR)/gettext.do_compile
-	$(start_build)
-	cd $(DIR_gettext) && \
-		$(INSTALL_gettext)
-	$(tocdk_build)
-	$(toflash_build)
-	touch $@
-
-
 
 #
 # tor
