@@ -573,3 +573,41 @@ $(DEPDIR)/%smbnetfs: $(DEPDIR)/smbnetfs.do_compile
 	$(tocdk_build)
 	$(toflash_build)	
 	touch $@
+
+#
+# 3G MODEMS
+#
+BEGIN[[
+modem_scripts
+  0.4
+  {PN}-{PV}
+  pdircreate:{PN}-{PV}
+  nothing:file://../root/etc/ppp/ip-*
+  nothing:file://../root/usr/bin/modem.sh
+  nothing:file://../root/usr/bin/modemctrl.sh
+  nothing:file://../root/etc/modem.conf
+  nothing:file://../root/etc/modem.list
+  nothing:file://../root/etc/55-modem.rules
+  nothing:file://../root/etc/30-modemswitcher.rules
+;
+]]END
+
+DESCRIPTION_modem_scripts = utils to setup 3G modems
+RDEPENDS_modem_scripts = pppd usb_modeswitch iptables iptables_dev
+
+$(DEPDIR)/modem-scripts: $(DEPENDS_modem_scripts) $(RDEPENDS_modem_scripts)
+	$(PREPARE_modem_scripts)
+	$(start_build)
+	cd $(DIR_modem_scripts) && \
+	$(INSTALL_DIR) $(PKDIR)/etc/ppp/peers && \
+	$(INSTALL_DIR) $(PKDIR)/etc/udev/rules.d/ && \
+	$(INSTALL_DIR) $(PKDIR)/usr/bin/ && \
+	$(INSTALL_BIN) ip-* $(PKDIR)/etc/ppp/ && \
+	$(INSTALL_BIN) modem.sh $(PKDIR)/usr/bin/ && \
+	$(INSTALL_BIN) modemctrl.sh $(PKDIR)/usr/bin/ && \
+	$(INSTALL_FILE) modem.conf $(PKDIR)/etc/ && \
+	$(INSTALL_FILE) modem.list $(PKDIR)/etc/ && \
+	$(INSTALL_FILE) 55-modem.rules $(PKDIR)/etc/udev/rules.d/ && \
+	$(INSTALL_FILE) 30-modemswitcher.rules $(PKDIR)/etc/udev/rules.d/
+	$(toflash_build)
+	touch $@
