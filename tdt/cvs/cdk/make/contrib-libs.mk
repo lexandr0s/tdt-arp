@@ -151,11 +151,15 @@ freetype
 ;
 ]]END
 
-DESCRIPTION_freetype = "freetype"
-
-FILES_freetype = \
-/usr/lib/*.so* \
-/usr/bin/freetype-config
+NAME_freetype = libfreetype6
+DESCRIPTION_freetype = Freetype font rendering library \
+ FreeType is a software font engine that is designed to be small, \
+ efficient, highly customizable, and portable while capable of producing \
+ high-quality output (glyph images). It can be used in graphics libraries, \
+ display servers, font conversion tools, text image generation tools, and \
+ many other products as well.
+FILES_freetype = /usr/lib/*.so*
+#/usr/bin/freetype-config
 
 $(DEPDIR)/freetype.do_prepare: bootstrap $(DEPENDS_freetype)
 	$(PREPARE_freetype)
@@ -260,8 +264,9 @@ libjpeg
   make:install:DESTDIR=PKDIR
 ;
 ]]END
-
-DESCRIPTION_libjpeg = "libjpeg"
+NAME_libjpeg = libjpeg8
+DESCRIPTION_libjpeg = libjpeg contains a library for handling the JPEG (JFIF) image format, as \
+ well as related programs for accessing the libjpeg functions.
 
 FILES_libjpeg = \
 /usr/lib/*.so* 
@@ -304,13 +309,12 @@ libpng
 ;
 ]]END
 
-DESCRIPTION_libpng = "libpng"
-BDEPENDS_libpng += libz
+PACKAGES_libpng = libpng16
+DESCRIPTION_libpng16 = "libpng"
+RDEPENDS_libpng16 = libz1
+FILES_libpng16 = /usr/lib/*.so*
 
-FILES_libpng = \
-/usr/lib/*.so*
-
-$(DEPDIR)/libpng.do_prepare: bootstrap $(DEPENDS_libpng)
+$(DEPDIR)/libpng.do_prepare: bootstrap libz $(DEPENDS_libpng)
 	$(PREPARE_libpng)
 	touch $@
 
@@ -437,8 +441,8 @@ libgif
   make:install:DESTDIR=PKDIR
 ;
 ]]END
-
-DESCRIPTION_libgif = "libgif"
+NAME_libgif = libgif4
+DESCRIPTION_libgif =  shared library for GIF images
 
 FILES_libgif = \
 /usr/lib/*.so*
@@ -527,8 +531,8 @@ libfribidi
   make:install:DESTDIR=PKDIR
 ;
 ]]END
-
-DESCRIPTION_libfribidi = "libfribidi"
+NAME_libfribidi = libfribidi0
+DESCRIPTION_libfribidi = Fribidi library for bidirectional text
 
 FILES_libfribidi = \
 /usr/lib/*.so* \
@@ -563,20 +567,19 @@ $(DEPDIR)/libfribidi: $(DEPDIR)/libfribidi.do_compile
 #
 BEGIN[[
 libsigc
-  1.2.7
+  2.2.9
   {PN}++-{PV}
-  extract:http://ftp.gnome.org/pub/GNOME/sources/{PN}++/1.2/{PN}++-{PV}.tar.gz
+  extract:http://ftp.gnome.org/pub/GNOME/sources/{PN}++/2.2/{PN}++-{PV}.tar.gz
   make:install:DESTDIR=PKDIR
 ;
 ]]END
 
-DESCRIPTION_libsigc = "libsigc"
-BDEPENDS_libsigc += libstdc++
+NAME_libsigc = libsigc_2.0_0
+DESCRIPTION_libsigc =  A library for loose coupling of C++ method calls
+RDEPENDS_libsigc += libstdc++ libgcc1
+FILES_libsigc = /usr/lib/*.so*
 
-FILES_libsigc = \
-/usr/lib/*.so*
-
-$(DEPDIR)/libsigc.do_prepare: bootstrap libstdc++-dev $(DEPENDS_libsigc)
+$(DEPDIR)/libsigc.do_prepare: bootstrap libstdc++ libstdc++-dev $(DEPENDS_libsigc)
 	$(PREPARE_libsigc)
 	touch $@
 
@@ -663,12 +666,12 @@ libid3tag
 ]]END
 
 DESCRIPTION_libid3tag = "libid3tag"
-BDEPENDS_libid3tag += libz
+RDEPENDS_libid3tag = libz1
 
 FILES_libid3tag = \
 /usr/lib/*.so*
 
-$(DEPDIR)/libid3tag.do_prepare: bootstrap $(DEPENDS_libid3tag)
+$(DEPDIR)/libid3tag.do_prepare: bootstrap libz $(DEPENDS_libid3tag)
 	$(PREPARE_libid3tag)
 	touch $@
 
@@ -788,13 +791,13 @@ glib2
   make:install:DESTDIR=PKDIR
 ;
 ]]END
-
+NAME_glib2 = libglib_2.0_0
 DESCRIPTION_glib2 = "libglib2"
-BDEPENDS_glib2 = libffi libz
+RDEPENDS_glib2 = libffi libz1
 FILES_glib2 = \
 /usr/lib/*.so*
 
-$(DEPDIR)/glib2.do_prepare: bootstrap libz $(DEPENDS_glib2)
+$(DEPDIR)/glib2.do_prepare: bootstrap libz libffi $(DEPENDS_glib2)
 	$(PREPARE_glib2)
 	touch $@
 
@@ -3072,10 +3075,10 @@ libdvbsipp
 ]]END
 PKGR_libdvbsipp = r0
 
-DESCRIPTION_libdvbsipp = "libdvbsi++ is a open source C++ library for parsing DVB Service Information and MPEG-2 Program Specific Information."
-
-FILES_libdvbsipp = \
-/usr/lib/libdvbsi++*
+NAME_libdvbsipp = libdvbsi++1
+DESCRIPTION_libdvbsipp = libdvbsi++ is a open source C++ library for parsing DVB Service Information and MPEG-2 Program Specific Information.
+RDEPENDS_libdvbsipp = libgcc1 libstdc++
+FILES_libdvbsipp = /usr/lib/libdvbsi++.so.*
 
 $(DEPDIR)/libdvbsipp.do_prepare: bootstrap $(DEPENDS_libdvbsipp)
 	$(PREPARE_libdvbsipp)
