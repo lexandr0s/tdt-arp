@@ -432,6 +432,9 @@ CROSS_GCC_VERSION = 4.8.2-129
 else
 CROSS_GCC_VERSION = 4.7.3-124
 endif
+NAME_cross_sh4_libgcc = libgcc1
+DESCRIPTION_cross_sh4_libgcc =  The GNU cc and gcc C compilers.
+FILES_cross_sh4_libgcc = /lib/libgcc_s.*
 CROSS_GCC_RAWVERSION = $(firstword $(subst -, ,$(CROSS_GCC_VERSION)))
 CROSS_GCC_SPEC = stm-$(subst cross-sh4-,cross-,$(CROSS_GCC)).spec
 CROSS_GCC_SPEC_PATCH = $(CROSS_GCC_SPEC).$(CROSS_GCC_VERSION).diff
