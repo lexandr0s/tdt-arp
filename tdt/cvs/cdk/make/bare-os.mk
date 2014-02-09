@@ -632,10 +632,10 @@ UDEV_PATCHES := usbhd-automount.rules
 UDEV_RPM := RPMS/sh4/$(STLINUX)-sh4-$(UDEV)-$(UDEV_VERSION).sh4.rpm
 UDEV_DEV_RPM := RPMS/sh4/$(STLINUX)-sh4-$(UDEV_DEV)-$(UDEV_VERSION).sh4.rpm
 
-RDEPENDS_udev := libattr libacl
+RDEPENDS_udev := libattr libacl libusb2 libusb_compat 
 
 $(UDEV_RPM) $(UDEV_DEV_RPM): \
-		glib2 libacl libacl-dev libusb_compat usbutils \
+		glib2 libacl libacl-dev libusb_compat usbutils udevrules \
 		$(if $(UDEV_SPEC_PATCH),Patches/$(UDEV_SPEC_PATCH)) \
 		$(if $(UDEV_PATCHES),$(UDEV_PATCHES:%=Patches/%)) \
 		$(archivedir)/$(STLINUX)-target-$(UDEV)-$(UDEV_VERSION).src.rpm
@@ -666,3 +666,27 @@ $(DEPDIR)/$(UDEV): $(DEPDIR)/%$(UDEV): $(UDEV_RPM)
 	$(toflash_build)
 	touch $@
 	
+#
+# UDEV RULES
+#
+BEGIN[[
+udevrules
+  0.3
+  {PN}-{PV}
+  pdircreate:{PN}-{PV}
+  nothing:file://../root/etc/60-dvb-ca.rules
+;
+]]END
+
+NAME_udevrules = udev_rules
+DESCRIPTION_udevrules = custom udev rules
+RDEPENDS_udevrules = udev
+
+$(DEPDIR)/udevrules: $(DEPENDS_udevrules) $(RDEPENDS_udevrules)
+	$(PREPARE_udevrules)
+	$(start_build)
+	cd $(DIR_udevrules) && \
+	$(INSTALL_DIR) $(PKDIR)/etc/udev/rules.d/ && \
+	$(INSTALL_FILE) 60-dvb-ca.rules $(PKDIR)/etc/udev/rules.d/ && \
+	$(toflash_build)
+	touch $@
