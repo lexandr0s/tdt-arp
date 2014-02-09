@@ -26,14 +26,6 @@ $(DEPDIR)/console_data: bootstrap $(DEPENDS_console_data)
 #
 # SYSVINIT/INITSCRIPTS
 #
-BEGIN[[
-sysvinit
-  2.86
-  {PN}-{PV}
-  extract:ftp://ftp.cistron.nl/pub/people/miquels/{PN}/{PN}-{PV}.tar.gz
-  nothing:http://ftp.de.debian.org/debian/pool/main/s/{PN}/{PN}_{PV}.ds1-38.diff.gz
-;
-]]END
 
 SYSVINIT := sysvinit
 INITSCRIPTS := initscripts
@@ -473,9 +465,9 @@ PACKAGES_util_linux = util_linux_agetty \
 		      util_linux_blkid \
 		      util_linux_cfdisk \
 		      util_linux_fdisk \
-		      util_linux_fsck
-
-		      
+		      libblkid1 \
+		      libuuid1
+ 
 
 DESCRIPTION_util_linux_agetty = Util-linux includes a suite of basic system administration utilities \
  commonly found on most Linux systems.  Some of the more important \
@@ -523,24 +515,20 @@ DESCRIPTION_util_linux_fdisk = A suite of basic system administration utilities.
  filesystem creation, and system login.
 FILES_util_linux_fdisk = /sbin/fdisk
 
-DESCRIPTION_util_linux_fsck = A suite of basic system administration utilities. \
+DESCRIPTION_libblkid1 = A suite of basic system administration utilities. \
  Util-linux includes a suite of basic system administration utilities \
  commonly found on most Linux systems.  Some of the more important \
  utilities include disk partitioning, kernel message management, \
  filesystem creation, and system login.
-RDEPENDS_util_linux_fsck = libblkid1
-FILES_util_linux_fsck = /sbin/fsck \
-			/sbin/fsck.*
-define postinst_util_linux_fsck
- update-alternatives --install /sbin/fsck.cramfs fsck.cramfs 100
- update-alternatives --install /sbin/fsck.minix fsck.minix  100
- update-alternatives --install /sbin/fsck fsck 100
-endef
-define prerm_util_linux_fsck
- update-alternatives --remove fsck.cramfs fsck.cramfs
- update-alternatives --remove fsck.minix fsck.minix
- update-alternatives --remove fsck fsck
-endef
+RDEPENDS_libblkid1 = libuuid1
+FILES_libblkid1 = /usr/lib/libblkid.so.*
+
+DESCRIPTION_libuuid1 = A suite of basic system administration utilities. \
+ Util-linux includes a suite of basic system administration utilities \
+ commonly found on most Linux systems.  Some of the more important \
+ utilities include disk partitioning, kernel message management, \
+ filesystem creation, and system login.
+FILES_libuuid1 = /usr/lib/libuuid.so.*
 
 $(UTIL_LINUX_RPM): \
 		$(if $(UTIL_LINUX_SPEC_PATCH),Patches/$(UTIL_LINUX_SPEC_PATCH)) \
