@@ -567,14 +567,14 @@ $(DEPDIR)/libfribidi: $(DEPDIR)/libfribidi.do_compile
 #
 BEGIN[[
 libsigc
-  2.2.9
+  1.2.7
   {PN}++-{PV}
-  extract:http://ftp.gnome.org/pub/GNOME/sources/{PN}++/2.2/{PN}++-{PV}.tar.gz
+  extract:http://ftp.gnome.org/pub/GNOME/sources/{PN}++/1.2/{PN}++-{PV}.tar.gz
   make:install:DESTDIR=PKDIR
 ;
 ]]END
 
-NAME_libsigc = libsigc_2.0_0
+NAME_libsigc = libsigc_1.2_0
 DESCRIPTION_libsigc =  A library for loose coupling of C++ method calls
 RDEPENDS_libsigc += libstdc++ libgcc1
 FILES_libsigc = /usr/lib/*.so*
