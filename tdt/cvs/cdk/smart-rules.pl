@@ -251,7 +251,7 @@ sub process_dir ($)
 
   if ($version =~ m#^git|svn$#)
   {
-    $output .= "UPDATEPKGV_$package = [ -d \$(DIR_$package) ] && (touch \$\@ -d `cd \$(DIR_$package) && \$(git_version) && cd -`) || true" . "\n";
+    $output .= "UPDATEPKGV_$package = [ -d \$(DIR_$package) ] && (touch \$\@  `cd \$(DIR_$package) && \$(git_version) && cd -`) || true" . "\n";
     $output .= "LIST_AUTOPKGV += \$(DEPDIR)/$package.version_\$(PKGV_$package)-\$(PKGR_$package)" . "\n";
   } else {
     $output .= "UPDATEPKGV_$package = touch \$\@" . "\n";
@@ -345,7 +345,7 @@ sub process_prepare ($)
       $branch = $opts{"b"} if $opts{"b"};
       $output .= "(cd $f && git fetch && git checkout $branch && git pull --rebase origin $branch; cd -) && ";
       $output .= "(cd " . $f . "; git checkout " . $opts{"r"} . "; cd -) && " if $opts{"r"};
-      $updateversion = "[ -d $f ] && (true" . $output . "(touch \$(buildprefix)/\$\@ -d `cd $f && \$(git_version) && cd -`) ) || true";
+      $updateversion = "[ -d $f ] && (true" . $output . "(touch \$(buildprefix)/\$\@  `cd $f && \$(git_version) && cd -`) ) || true";
       $output .= "cp -a " . $f . $subdir . " " . $dir;
       $autoversion = "\$(eval export PKGV_$package = \$(shell cd $f && \$(git_version)))";
     }

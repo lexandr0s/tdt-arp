@@ -45,7 +45,6 @@ clean-local: mostlyclean-local depsclean rpmdepsclean misc-tools-clean
 	-rm -rf $(prefix)/ccache
 	-rm -rf $(DEPDIR)/u-boot-utils*
 	-rm -rf $(DEPDIR)/linux-kernel*
-	-rm -rf $(DEPDIR)/enigma2-pli-nightly.do_compile
 	-rm -rf $(DEPDIR)/enigma2-nightly.do_compile
 	-rm -rf $(DEPDIR)/xbmc-nightly.do_compile
 
@@ -72,7 +71,6 @@ distclean-local:
 	-rm -rf $(prefix)/*cdkroot/
 	-rm -rf $(prefix)/ipkcdk/
 	-rm -rf $(prefix)/ipkbox/
-	-rm -rf $(prefix)/ipkextras/
 	-rm -rf $(prefix)/pkgroot/
 	-rm -rf $(prefix)/*cdkroot-rpmdb
 	-rm -rf $(prefix)/*cdkroot-tftpboot

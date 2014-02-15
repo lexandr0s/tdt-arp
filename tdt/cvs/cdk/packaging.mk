@@ -14,7 +14,6 @@ export IPKGBUILDDIR
 
 ipkcdk := $(prefix)/ipkcdk
 ipkprefix := $(prefix)/ipkbox
-ipkextras := $(prefix)/ipkextras
 workprefix := $(prefix)/work
 
 $(ipkcdk):
@@ -23,32 +22,29 @@ $(ipkcdk):
 $(ipkprefix):
 	$(INSTALL) -d $@
 
-$(ipkextras):
-	$(INSTALL) -d $@
-
 $(workprefix):
 	$(INSTALL) -d $@
 
-define extra_build
-	rm -rf $(ipkgbuilddir)/*
-	$(flash_prebuild)
-	python split_packages.py
-	$(call do_build_pkg,none,flash)
-endef
+#define extra_build
+#	rm -rf $(ipkgbuilddir)/*
+#	$(flash_prebuild)
+#	python split_packages.py
+#	$(call do_build_pkg,none,flash)
+#endef
 
-define e2extra_build
-	rm -rf $(ipkgbuilddir)/*
-	$(flash_prebuild)
-	python split_packages.py
-	$(call do_build_pkg,none,extra)
-endef
+#define e2extra_build
+#	rm -rf $(ipkgbuilddir)/*
+#	$(flash_prebuild)
+#	python split_packages.py
+#	$(call do_build_pkg,none,extra)
+#endef
 
 
 define toflash_build
 	rm -rf $(ipkgbuilddir)/*
 	$(flash_prebuild)
 	python split_packages.py
-	$(call do_build_pkg,install,flash)
+	$(call do_build_pkg,none,flash)
 endef
 
 define tocdk_build_start
@@ -72,7 +68,7 @@ define fromrpm_build
 	$(toflash_build)
 endef
 
-flash_ipkg_args = -f $(crossprefix)/etc/opkg.conf  -o $(prefix)/root --nodeps
+flash_ipkg_args = -f $(crossprefix)/etc/opkg.conf -o $(prefix)/pkgroot --nodeps
 cdk_ipkg_args = -f $(crossprefix)/etc/opkg-cdk.conf -o $(targetprefix) --nodeps --force-overwrite
 
 define do_build_pkg
@@ -81,7 +77,6 @@ define do_build_pkg
 	for pkg in `ls $(ipkgbuilddir)`; do \
 		ipkg-build -o root -g root $(ipkgbuilddir)/$$pkg \
 		$(if $(filter cdk,$(2)),$(ipkcdk)) \
-		$(if $(filter extra,$(2)),$(ipkextras)) \
 		$(if $(filter flash,$(2)),$(ipkprefix)) |tee tmpname \
 		&& \
 			pkgn=`cat tmpname |perl -ne 'if (m/Packaged contents/) { print ((split / /)[-1])}'` && \
@@ -178,15 +173,15 @@ define remove_pyc
 endef
 
 define prepare_pkginfo_for_flash
-	export OPKG_OFFLINE_ROOT=$(flashprefix)/root/ \
-	for i in $(flashprefix)/root/usr/lib/opkg/info/*.preinst; do \
+	export OPKG_OFFLINE_ROOT=(prefix)/pkgroot/ \
+	for i in $(prefix)/pkgroot/usr/lib/opkg/info/*.preinst; do \
 		if [ -f $i ] && ! sh $i; then \
-			opkg-cl $(flash_ipkg_args) flag unpacked `basename $i .preinst` \
+			opkg-cl $(flash_ipkg_args) flag unpacked `basename $$i .preinst` \
 		fi \
 	done \
-	for i in $(flashprefix)/root/usr/lib/opkg/info/*.postinst; do \
+	for i in $(prefix)/pkgroot/usr/lib/opkg/info/*.postinst; do \
 		if [ -f $i ] && ! sh $i configure; then \
-			opkg-cl $(flash_ipkg_args) flag unpacked `basename $i .postinst` \
+			opkg-cl $(flash_ipkg_args) flag unpacked `basename $$i .postinst` \
 		fi \
 	done
 endef
@@ -235,25 +230,21 @@ opkgl:
 	opkg list-installed $(flash_ipkg_args)
 
 opkg-sanitycheck:
-	dup=`cat $(prefix)/root/usr/lib/opkg/info/*list |sort |uniq -d` && test -z $$dup \
+	dup=`cat $(prefix)/pkgroot/usr/lib/opkg/info/*list |sort |uniq -d` && test -z $$dup \
 		|| (echo "ERROR: opkg lists has duplicate files:"; echo $$dup; false)
  
-.PHONY: package-index $(ipkprefix)/Packages package-index-extras $(ipkextras)/Packages
+.PHONY: package-index $(ipkprefix)/Packages
 # Создание Packages.gz для папки ipkbox
 package-index: $(ipkprefix)/Packages
 $(ipkprefix)/Packages: $(ipkprefix)
 	cd $(ipkprefix) && \
 		/usr/bin/python $(crossprefix)/bin/ipkg-make-index . > Packages && \
 		cat Packages | gzip > Packages.gz
-# Создание Packages.gz для папки ipkextras
-package-index-extras: $(ipkextras)/Packages
-$(ipkextras)/Packages: $(ipkextras)
-	cd $(ipkextras) && \
-		/usr/bin/python $(crossprefix)/bin/ipkg-make-index . > Packages && \
-		cat Packages | gzip > Packages.gz
+
+box_arch := $(SPARK)$(SPARK7162)$(HL101)
 
 svn_version := svn info | awk '/Revision:/ { print $$2 }'
 get_svn_version = $(eval export PKGV_$(PARENT_PK) = $(shell cd $(DIR_$(PARENT_PK)) && $(svn_version)))
 
-git_version := git log -1 --format=%cd --date=short -- . |sed s/-//g
+git_version := echo git`git rev-list --count HEAD`
 get_git_version = $(eval export PKGV_$(PARENT_PK) = $(shell cd $(DIR_$(PARENT_PK)) && $(git_version)))
