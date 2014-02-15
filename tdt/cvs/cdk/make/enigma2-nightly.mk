@@ -1,59 +1,36 @@
 # tuxbox/enigma2
 BEGIN[[
-enigma2_pli
+enigma2
   git
   {PN}-nightly
 
-ifdef ENABLE_E2PD0
-  git://openpli.git.sourceforge.net/gitroot/openpli/enigma2:r=6f2e700e797753a9c5dacef4b526128d188c73b0
-  patch:file://enigma2-pli-nightly.0.diff
-endif
-
-ifdef ENABLE_E2PD1
-  git://openpli.git.sourceforge.net/gitroot/openpli/enigma2:r=945aeb939308b3652b56bc6c577853369d54a537
-  patch:file://enigma2-pli-nightly.1.diff
-  patch:file://enigma2-pli-nightly.1.gstreamer.diff
-  patch:file://enigma2-pli-nightly.1.graphlcd.diff
-endif
-
-ifdef ENABLE_E2PD2
-  git://openpli.git.sourceforge.net/gitroot/openpli/enigma2:r=839e96b79600aba73f743fd39628f32bc1628f4c
-  patch:file://enigma2-pli-nightly.2.diff
-  patch:file://enigma2-pli-nightly.2.graphlcd.diff
-endif
-
-ifdef ENABLE_E2PD3
-  git://openpli.git.sourceforge.net/gitroot/openpli/enigma2:r=51a7b9349070830b5c75feddc52e97a1109e381e
-  patch:file://enigma2-pli-nightly.3.diff
-endif
-
-ifdef ENABLE_E2PD4
-  git://github.com:schpuntik/enigma2-pli-arp.git;b=staging;protocol=ssh
-endif
-
-ifdef ENABLE_E2PD5
+ifdef ENABLE_E2D0
   git://github.com:schpuntik/enigma2-pli-arp.git;b=master;protocol=ssh
 endif
 
-ifdef ENABLE_E2PD6
-    git://github.com/OpenAR-P/amiko-e2-pli.git;b=testing
+ifdef ENABLE_E2D1
+  git://github.com:schpuntik/enigma2-pli-arp.git;b=staging;protocol=ssh
 endif
 
-ifdef ENABLE_E2PD7
+ifdef ENABLE_E2D2
   git://github.com:schpuntik/enigma2-pli-arp.git;b=last;protocol=ssh
 endif
 
-ifdef ENABLE_E2PD8
+ifdef ENABLE_E2D3
+    git://github.com/OpenAR-P/amiko-e2-pli.git;b=testing
+endif
+
+ifdef ENABLE_E2D4
   git://github.com/OpenAR-P/amiko-e2-pli.git;b=master
 endif
 ;
 ]]END
 
-DESCRIPTION_enigma2_pli := Framebuffer-based digital media application
-PKGR_enigma2_pli = r3
-SRC_URI_enigma2_pli := git://openpli.git.sourceforge.net/gitroot/openpli/enigma2
-PACKAGES_enigma2_pli = 	enigma2_pli \
-			enigma2_pli_meta \
+DESCRIPTION_enigma2 := Framebuffer-based digital media application
+PKGR_enigma2 = r3
+SRC_URI_enigma2 := git://openpli.git.sourceforge.net/gitroot/openpli/enigma2
+PACKAGES_enigma2 = 	enigma2 \
+			enigma2_meta \
 			enigma2_plugin_extensions_cutlisteditor \
 			enigma2_plugin_extensions_dvdplayer \
 			enigma2_plugin_extensions_graphmultiepg \
@@ -83,9 +60,9 @@ PACKAGES_enigma2_pli = 	enigma2_pli \
 			enigma2_plugin_skin_magic \
 			enigma2_plugin_skin_megamod
 
-RDEPENDS_enigma2_pli = fp_control evremote2 devinit ustslave stfbcontrol python_core showiframe python_twisted_core python_codecs python_ctypes python_fcntl python_netclient python_netserver libpng16 libgcc1 libfreetype6 util_linux_sfdisk libdvbsi++1 python_re libstdc++ sdparm libaio1 libglib_2.0_0 python_xml libcrypto libjpeg8 python_twisted_web libxmlccwrap python_shell python_crypt python_pickle python_zopeinterface python_lang  libgif4 util_linux_blkid libfribidi0 libsigc_2.0_0 e2fsprogs_e2fsck e2fsprogs_mke2fs #glibc-gconv-iso8859-15 libbluray3 libc6 libdlsym0
+RDEPENDS_enigma2 = fp_control evremote2 devinit ustslave stfbcontrol python_core showiframe python_twisted_core python_codecs python_ctypes python_fcntl python_netclient python_netserver libpng16 libgcc1 libfreetype6 util_linux_sfdisk libdvbsi++1 python_re libstdc++ sdparm libaio1 libglib_2.0_0 python_xml libcrypto libjpeg8 python_twisted_web libxmlccwrap python_shell python_crypt python_pickle python_zopeinterface python_lang libgif4 util_linux_blkid libfribidi0 libsigc_1.2_0# e2fsprogs_e2fsck e2fsprogs_mke2fs
 
-FILES_enigma2_pli := /usr/bin \
+FILES_enigma2 := /usr/bin \
 		     /usr/lib/libopen.* \
 		     /usr/lib/enigma2/python/Components \
 		     /usr/lib/enigma2/python/Plugins/Extensions/__init__.p* \
@@ -105,9 +82,9 @@ FILES_enigma2_pli := /usr/bin \
 		     /usr/share/fonts \
 		     /usr/share/keymaps
 
-DESCRIPTION_enigma2_pli_meta = meta files for  enigma2
-RDEPENDS_enigma2_pli_meta = enigma2_pli
-FILES_enigma2_pli_meta = /usr/share/meta
+DESCRIPTION_enigma2_meta = meta files for  enigma2
+RDEPENDS_enigma2_meta = enigma2
+FILES_enigma2_meta = /usr/share/meta
 
 DESCRIPTION_enigma2_plugin_extensions_cutlisteditor = CutListEditor allows you to edit your movies
 FILES_enigma2_plugin_extensions_cutlisteditor = /usr/lib/enigma2/python/Plugins/Extensions/CutListEditor
@@ -235,15 +212,15 @@ ifdef ENABLE_SPARK7162
 E_CONFIG_OPTS += --enable-spark7162
 endif
 
-$(DEPDIR)/enigma2-pli-nightly.do_prepare: $(DEPENDS_enigma2_pli)
-	$(PREPARE_enigma2_pli)
+$(DEPDIR)/enigma2-nightly.do_prepare: $(DEPENDS_enigma2)
+	$(PREPARE_enigma2)
 	touch $@
 
-$(DIR_enigma2_pli)/config.status: bootstrap opkg ethtool freetype expat fontconfig libpng libjpeg libgif libmme_host libmmeimage libfribidi libid3tag libmad libsigc libreadline \
-		enigma2-pli-nightly.do_prepare \
-		libdvbsipp libxml2 zopeinterface twisted pycrypto pyusb pylimaging pyopenssl pythonwifi libxmlccwrap \
+$(DIR_enigma2)/config.status: bootstrap opkg ethtool freetype expat fontconfig libpng libjpeg libgif libmme_host libmmeimage libfribidi libid3tag libmad libsigc libreadline \
+		enigma2-nightly.do_prepare \
+		libdvbsipp libxml2 zopeinterface twisted pycrypto pyusb pylimaging pyopenssl libaio pythonwifi libxmlccwrap \
 		ncurses-dev libdreamdvd2 tuxtxt32bpp sdparm hotplug_e2 $(MEDIAFW_DEP) $(EXTERNALLCD_DEP)
-	cd $(DIR_enigma2_pli) && \
+	cd $(DIR_enigma2) && \
 		$(BUILDENV) \
 		./autogen.sh && \
 		sed -e 's|#!/usr/bin/python|#!$(crossprefix)/bin/python|' -i po/xml2po.py && \
@@ -263,16 +240,16 @@ $(DIR_enigma2_pli)/config.status: bootstrap opkg ethtool freetype expat fontconf
 			$(PLATFORM_CPPFLAGS) $(E_CONFIG_OPTS)
 
 
-$(DEPDIR)/enigma2-pli-nightly.do_compile: $(DIR_enigma2_pli)/config.status
-	cd $(DIR_enigma2_pli) && \
+$(DEPDIR)/enigma2-nightly.do_compile: $(DIR_enigma2)/config.status
+	cd $(DIR_enigma2) && \
 		$(MAKE) all
 	touch $@
 
-$(DEPDIR)/enigma2-pli-nightly: enigma2-pli-nightly.do_compile
-	$(call parent_pk,enigma2_pli)
+$(DEPDIR)/enigma2-nightly: enigma2-nightly.do_compile
+	$(call parent_pk,enigma2)
 	$(start_build)
 	$(get_git_version)
-	cd $(DIR_enigma2_pli) && \
+	cd $(DIR_enigma2) && \
 		$(MAKE) install DESTDIR=$(PKDIR)
 	$(target)-strip $(PKDIR)/usr/bin/enigma2
 	cp -f $(buildprefix)/root/usr/local/share/enigma2/$(enigma2_keymap_file) $(PKDIR)/usr/share/enigma2/keymap.xml
@@ -281,12 +258,12 @@ $(DEPDIR)/enigma2-pli-nightly: enigma2-pli-nightly.do_compile
 	$(toflash_build)
 	touch $@
 
-enigma2-pli-nightly-clean:
-	rm -f $(DEPDIR)/enigma2-pli-nightly.do_compile
-	cd $(DIR_enigma2_pli) && $(MAKE) clean
+enigma2-nightly-clean:
+	rm -f $(DEPDIR)/enigma2-nightly.do_compile
+	cd $(DIR_enigma2) && $(MAKE) clean
 
-enigma2-pli-nightly-distclean:
-	rm -f $(DEPDIR)/enigma2-pli-nightly
-	rm -f $(DEPDIR)/enigma2-pli-nightly.do_compile
-	rm -f $(DEPDIR)/enigma2-pli-nightly.do_prepare
-	rm -rf $(DIR_enigma2_pli)
+enigma2-nightly-distclean:
+	rm -f $(DEPDIR)/enigma2-nightly
+	rm -f $(DEPDIR)/enigma2-nightly.do_compile
+	rm -f $(DEPDIR)/enigma2-nightly.do_prepare
+	rm -rf $(DIR_enigma2)

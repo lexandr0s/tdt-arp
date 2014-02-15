@@ -254,77 +254,45 @@ AC_ARG_ENABLE(spark7162,
 TDT_CONDITIONAL(ENABLE_SPARK7162,test "$enable_spark7162" = "yes")
 AC_SUBST(SPARK7162)
 
-AC_ARG_ENABLE(e2pd0,
-	AS_HELP_STRING(--enable-e2pd0,  enable enigma2-pli-nigthly diff0 ),
+AC_ARG_ENABLE(e2d0,
+	AS_HELP_STRING(--enable-e2d0,  enable enigma2-nigthly diff0 ),
 	[case "${enableval}" in
-		yes) E2PD0=e2pd0 ;;
-	esac], [enable_e2pd0=no])
-TDT_CONDITIONAL(ENABLE_E2PD0,test "$enable_e2pd0" = "yes")
-AC_SUBST(E2PD0)
+		yes) E2D0=e2d0 ;;
+	esac], [enable_e2d0=no])
+TDT_CONDITIONAL(ENABLE_E2D0,test "$enable_e2d0" = "yes")
+AC_SUBST(E2D0)
 
-AC_ARG_ENABLE(e2pd1,
-	AS_HELP_STRING(--enable-e2pd1,  enable enigma2-pli-nigthly diff1 ),
+AC_ARG_ENABLE(e2d1,
+	AS_HELP_STRING(--enable-e2d1,  enable enigma2-nigthly diff1 ),
 	[case "${enableval}" in
-		yes) E2PD1=e2pd1 ;;
-	esac], [enable_e2pd1=no])
-TDT_CONDITIONAL(ENABLE_E2PD1,test "$enable_e2pd1" = "yes")
-AC_SUBST(E2PD1)
+		yes) E2D1=e2d1 ;;
+	esac], [enable_e2d1=no])
+TDT_CONDITIONAL(ENABLE_E2D1,test "$enable_e2d1" = "yes")
+AC_SUBST(E2D1)
 
-AC_ARG_ENABLE(e2pd2,
-	AS_HELP_STRING(--enable-e2pd2,  enable enigma2-pli-nigthly diff2 ),
+AC_ARG_ENABLE(e2d2,
+	AS_HELP_STRING(--enable-e2d2,  enable enigma2-nigthly diff2 ),
 	[case "${enableval}" in
-		yes) E2PD2=e2pd2 ;;
-	esac], [enable_e2pd2=no])
-TDT_CONDITIONAL(ENABLE_E2PD2,test "$enable_e2pd2" = "yes")
-AC_SUBST(E2PD2)
+		yes) E2D2=e2d2 ;;
+	esac], [enable_e2d2=no])
+TDT_CONDITIONAL(ENABLE_E2D2,test "$enable_e2d2" = "yes")
+AC_SUBST(E2D2)
 
-AC_ARG_ENABLE(e2pd3,
-	AS_HELP_STRING(--enable-e2pd3,  enable enigma2-pli-nigthly diff3 ),
+AC_ARG_ENABLE(e2d3,
+	AS_HELP_STRING(--enable-e2d3,  enable enigma2-nigthly diff3 ),
 	[case "${enableval}" in
-		yes) E2PD3=e2pd3 ;;
-	esac], [enable_e2pd3=no])
-TDT_CONDITIONAL(ENABLE_E2PD3,test "$enable_e2pd3" = "yes")
-AC_SUBST(E2PD3)
+		yes) E2D3=e2d3 ;;
+	esac], [enable_e2d3=no])
+TDT_CONDITIONAL(ENABLE_E2D3,test "$enable_e2d3" = "yes")
+AC_SUBST(E2D3)
 
-AC_ARG_ENABLE(e2pd4,
-	AS_HELP_STRING(--enable-e2pd4,  enable enigma2-pli-nigthly diff4 ),
+AC_ARG_ENABLE(e2d4,
+	AS_HELP_STRING(--enable-e2d4,  enable enigma2-nigthly diff4 ),
 	[case "${enableval}" in
-		yes) E2PD4=e2pd4 ;;
-	esac], [enable_e2pd4=no])
-TDT_CONDITIONAL(ENABLE_E2PD4,test "$enable_e2pd4" = "yes")
-AC_SUBST(E2PD4)
-
-AC_ARG_ENABLE(e2pd5,
-	AS_HELP_STRING(--enable-e2pd5,  enable enigma2-pli-nigthly diff5 ),
-	[case "${enableval}" in
-		yes) E2PD5=e2pd5 ;;
-	esac], [enable_e2pd5=no])
-TDT_CONDITIONAL(ENABLE_E2PD5,test "$enable_e2pd5" = "yes")
-AC_SUBST(E2PD5)
-
-AC_ARG_ENABLE(e2pd6,
-	AS_HELP_STRING(--enable-e2pd6,  enable enigma2-pli-nigthly diff6 ),
-	[case "${enableval}" in
-		yes) E2PD6=e2pd6 ;;
-	esac], [enable_e2pd6=no])
-TDT_CONDITIONAL(ENABLE_E2PD6,test "$enable_e2pd6" = "yes")
-AC_SUBST(E2PD6)
-
-AC_ARG_ENABLE(e2pd7,
-	AS_HELP_STRING(--enable-e2pd7,  enable enigma2-pli-nigthly diff7 ),
-	[case "${enableval}" in
-		yes) E2PD7=e2pd7 ;;
-	esac], [enable_e2pd7=no])
-TDT_CONDITIONAL(ENABLE_E2PD7,test "$enable_e2pd7" = "yes")
-AC_SUBST(E2PD7)
-
-AC_ARG_ENABLE(e2pd8,
-	AS_HELP_STRING(--enable-e2pd8,  enable enigma2-pli-nigthly diff8 ),
-	[case "${enableval}" in
-		yes) E2PD8=e2pd8 ;;
-	esac], [enable_e2pd8=no])
-TDT_CONDITIONAL(ENABLE_E2PD8,test "$enable_e2pd8" = "yes")
-AC_SUBST(E2PD8)
+		yes) E2D4=e2d4 ;;
+	esac], [enable_e2d4=no])
+TDT_CONDITIONAL(ENABLE_E2D4,test "$enable_e2d4" = "yes")
+AC_SUBST(E2D4)
 
 AC_ARG_ENABLE(xbd0,
 	AS_HELP_STRING(--enable-xbd0,  enable xbmc-nigthly diff0 ),
@@ -745,15 +713,15 @@ Makefile\
 :make/externe-plugins.mk\
 :make/externe-skins.mk\
 :make/xbmc-nightly.mk\
-:make/enigma2-pli-nightly.mk\
+:make/enigma2-nightly.mk\
 :make/neutrino.mk\
-:make/neutrino_hd2.mk\
+:make/system.mk\
 :make/yaud.mk\
 :make/misc-specs.mk\
 :make/cleantargets.mk\
 :make/tags.mk\
 :make/emulators.mk\
-:make/smart_release.mk\
+:make/release.mk\
 :make/smart_release_xbmc.mk\
 :make/release_neutrino.mk\
 :make/release_neutrino_nightly.mk\

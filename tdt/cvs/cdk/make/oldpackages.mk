@@ -123,3 +123,216 @@ $(DEPDIR)/gettext: $(DEPDIR)/gettext.do_compile
 	touch $@
 
 
+
+#
+# XFSPROGS
+#
+BEGIN[[
+xfsprogs
+  2.9.4-1
+  {PN}-2.9.4
+  extract:http://pkgs.fedoraproject.org/repo/pkgs/xfsprogs/xfsprogs_2.9.4-1.tar.gz/174683e3b86b587ed59823fdbbb96ea4/{PN}_{PV}.tar.gz
+  patch:file://{PN}.diff
+  make:install:prefix=/usr:DESTDIR=PKDIR
+;
+]]END
+
+DESCRIPTION_xfsprogs = "xfsprogs"
+
+FILES_xfsprogs = \
+/bin/*
+
+$(DEPDIR)/xfsprogs.do_prepare: bootstrap $(DEPDIR)/e2fsprogs $(DEPDIR)/libreadline $(DEPENDS_xfsprogs)
+	$(PREPARE_xfsprogs)
+	touch $@
+
+$(DEPDIR)/xfsprogs.do_compile: $(DEPDIR)/xfsprogs.do_prepare
+	export PATH=$(hostprefix)/bin:$(PATH) && \
+	cd $(DIR_xfsprogs) && \
+		export DEBUG=-DNDEBUG && export OPTIMIZER=-O2 && \
+		mv -f aclocal.m4 aclocal.m4.orig && mv Makefile Makefile.sgi || true && chmod 644 Makefile.sgi && \
+		aclocal -I m4 -I $(hostprefix)/share/aclocal && \
+		autoconf && \
+		libtoolize && \
+		$(BUILDENV) \
+		./configure \
+			--build=$(build) \
+			--host=$(target) \
+			--target=$(target) \
+			--prefix= \
+			--enable-shared=yes \
+			--enable-gettext=yes \
+			--enable-readline=yes \
+			--enable-editline=no \
+			--enable-termcap=yes && \
+		cp -p Makefile.sgi Makefile && export top_builddir=`pwd` && \
+		$(MAKE) $(MAKE_OPTS)
+	touch $@
+
+$(DEPDIR)/xfsprogs: $(DEPDIR)/xfsprogs.do_compile
+	$(start_build)
+	cd $(DIR_xfsprogs) && \
+		export top_builddir=`pwd` && \
+		$(INSTALL_xfsprogs)
+	$(tocdk_build)
+	$(toflash_build)
+	touch $@
+
+
+#
+# MC
+#
+BEGIN[[
+mc
+  4.8.1.6
+  {PN}-{PV}
+  extract:http://www.midnight-commander.org/downloads/{PN}-{PV}.tar.bz2
+#nothing:file://{PN}.diff
+  make:install:DESTDIR=PKDIR
+;
+]]END
+
+DESCRIPTION_mc = "Midnight Commander"
+
+FILES_mc = \
+/usr/bin/* \
+/usr/etc/mc/* \
+/usr/libexec/mc/extfs.d/* \
+/usr/libexec/mc/fish/*
+
+$(DEPDIR)/mc.do_prepare: bootstrap glib2 $(DEPENDS_mc)
+	$(PREPARE_mc)
+	touch $@
+
+$(DEPDIR)/mc.do_compile: $(DEPDIR)/mc.do_prepare | $(NCURSES_DEV)
+	cd $(DIR_mc) && \
+		$(BUILDENV) \
+		./configure \
+			--build=$(build) \
+			--host=$(target) \
+			--prefix=/usr \
+			--without-gpm-mouse \
+			--with-screen=ncurses \
+			--without-x && \
+		$(MAKE) all
+	touch $@
+
+$(DEPDIR)/mc: glib2 $(DEPDIR)/mc.do_compile
+	$(start_build)
+	cd $(DIR_mc) && \
+		$(INSTALL_mc)
+	$(tocdk_build)
+	$(toflash_build)
+#		export top_builddir=`pwd` && \
+#		$(MAKE) install DESTDIR=$(prefix)/$*cdkroot
+	touch $@
+
+
+#
+# SG3_UTILS
+#
+BEGIN[[
+sg3_utils
+  1.24
+  sg3_utils-{PV}
+  extract:http://sg.torque.net/sg/p/sg3_utils-{PV}.tgz
+  patch:file://sg3_utils.diff
+  make:install:DESTDIR=TARGETS
+;
+]]END
+
+$(DEPDIR)/sg3_utils.do_prepare: bootstrap $(DEPENDS_sg3_utils)
+	$(PREPARE_sg3_utils)
+	touch $@
+
+$(DEPDIR)/sg3_utils.do_compile: $(DEPDIR)/sg3_utils.do_prepare
+	export PATH=$(hostprefix)/bin:$(PATH) && \
+	cd $(DIR_sg3_utils) && \
+		$(MAKE) clean || true && \
+		aclocal -I $(hostprefix)/share/aclocal && \
+		autoconf && \
+		libtoolize && \
+		automake --add-missing --foreign && \
+		$(BUILDENV) \
+		./configure \
+			--build=$(build) \
+			--host=$(target) \
+			--prefix= && \
+		$(MAKE) $(MAKE_OPTS)
+	touch $@
+
+$(DEPDIR)/sg3_utils: $(DEPDIR)/sg3_utils.do_compile
+	cd $(DIR_sg3_utils) && \
+		export PATH=$(MAKE_PATH) && \
+		$(INSTALL_sg3_utils)
+	$(INSTALL) -d $(prefix)/$*cdkroot/etc/default && \
+	$(INSTALL) -d $(prefix)/$*cdkroot/etc/init.d && \
+	$(INSTALL) -d $(prefix)/$*cdkroot/usr/sbin && \
+	touch $@
+
+#
+# ZD1211
+#
+BEGIN[[
+zd1211
+  2_15_0_0
+  ZD1211LnxDrv_2_15_0_0
+  extract:http://www.lutec.eu/treiber/{PN}lnxdrv_2_15_0_0.tar.gz
+  patch:file://{PN}.diff
+;
+]]END
+
+CONFIG_ZD1211B :=
+$(DEPDIR)/zd1211.do_prepare: bootstrap $(DEPENDS_zd1211)
+	$(PREPARE_zd1211)
+	touch $@
+
+$(DEPDIR)/zd1211.do_compile: $(DEPDIR)/zd1211.do_prepare
+	cd $(DIR_zd1211) && \
+		$(MAKE) KERNEL_LOCATION=$(buildprefix)/linux \
+			ZD1211B=$(ZD1211B) \
+			CROSS_COMPILE=$(target)- ARCH=sh
+	touch $@
+
+$(DEPDIR)/zd1211: $(DEPDIR)/zd1211.do_compile
+	cd $(DIR_zd1211) && \
+		$(MAKE) KERNEL_LOCATION=$(buildprefix)/linux \
+			BIN_DEST=$(targetprefix)/bin \
+			INSTALL_MOD_PATH=$(targetprefix) \
+			install
+	$(DEPMOD) -ae -b $(targetprefix) -r $(KERNELVERSION)
+	touch $@
+
+#
+# NANO
+#
+BEGIN[[
+nano
+  2.0.6
+  {PN}-{PV}
+  extract:http://www.{PN}-editor.org/dist/v2.0/{PN}-{PV}.tar.gz
+  make:install:DESTDIR=TARGETS
+;
+]]END
+
+$(DEPDIR)/nano.do_prepare: bootstrap ncurses ncurses-dev $(DEPENDS_nano)
+	$(PREPARE_nano)
+	touch $@
+
+$(DEPDIR)/nano.do_compile: $(DEPDIR)/nano.do_prepare
+	cd $(DIR_nano) && \
+		$(BUILDENV) \
+		./configure \
+			--build=$(build) \
+			--host=$(target) \
+			--prefix=/usr \
+			--disable-nls \
+			--enable-tiny \
+			--enable-color && \
+		$(MAKE)
+	touch $@
+
+$(DEPDIR)/nano: $(DEPDIR)/nano.do_compile
+	cd $(DIR_nano) && \
+		$(INSTALL_nano)
+	touch $@

@@ -241,32 +241,24 @@ case $8 in
         echo -e "\nSelected Image: $REPLY\n"
         ;;
         *)
-        read -p "Select Image (1-4)? ";;
+        read -p "Select Image (0-4)? ";;
 esac
 		if [ "$REPLY" == 1 ]; then
 		    echo -e "\nChoose enigma2 OpenPli revision:"
-			echo "   0) Newest (Can fail due to outdated patch)"
-			echo "   1) Sat, 17 Mar 2012 19:51 - E2 OpenPli 945aeb939308b3652b56bc6c577853369d54a537"
-			echo "   2) Sat, 18 May 2012 15:26 - E2 OpenPli 839e96b79600aba73f743fd39628f32bc1628f4c"
-			echo "   3) Mon, 20 Aug 2012 16:00 - E2 OpenPli 51a7b9349070830b5c75feddc52e97a1109e381e"
-			echo "   4) AR-P - E2 OpenPli non-public branch staging"
-			echo "   5) AR-P - E2 OpenPli non-public branch master"
-			echo "   6) AR-P - E2 OpenPli branch testing"
-			echo "   7) AR-P - E2 OpenPli non-public branch last"
-			echo "   8) AR-P - E2 OpenPli branch master"
-		    read -p "Select enigma2 OpenPli revision (0-8):"
+			echo "   0) AR-P - E2 OpenPli non-public branch master"
+			echo "   1) AR-P - E2 OpenPli non-public branch staging"
+			echo "   2) AR-P - E2 OpenPli non-public branch last"
+			echo "   3) AR-P - E2 OpenPli branch testing"
+			echo "   4) AR-P - E2 OpenPli branch master"
+		    read -p "Select enigma2 OpenPli revision (0-4):"
 			
 			case "$REPLY" in
-			0) IMAGE="--enable-e2pd0";;
-			1) IMAGE="--enable-e2pd1";;
-			2) IMAGE="--enable-e2pd2";;
-			3) IMAGE="--enable-e2pd3";;
-			4) IMAGE="--enable-e2pd4";;
-			5) IMAGE="--enable-e2pd5";;
-			6) IMAGE="--enable-e2pd6";;
-			7) IMAGE="--enable-e2pd7";;
-			8) IMAGE="--enable-e2pd8";;
-			*) IMAGE="--enable-e2pd8";;
+			0) IMAGE="--enable-e2d0";;
+			1) IMAGE="--enable-e2d1";;
+			2) IMAGE="--enable-e2d2";;
+			3) IMAGE="--enable-e2d3";;
+			4) IMAGE="--enable-e2d4";;
+			*) IMAGE="--enable-e2d0";;
 			esac
 		elif [ "$REPLY" == 2 ]; then
 		    echo -e "\nChoose Neutrino revisions:"
@@ -366,7 +358,7 @@ echo "-----------------------"
 echo "Your build enivroment is ready :-)"
 echo "Your next step could be:"
 case "$IMAGE" in
-        --enable-e2pd*)
+        --enable-e2d*)
         echo "make yaud-enigma2-pli-nightly"
         echo "make yaud-enigma2-pli-nightly-full";;
         --enable-nhd*)
