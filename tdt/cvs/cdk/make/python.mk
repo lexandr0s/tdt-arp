@@ -11,6 +11,7 @@ python
   patch:file://{PN}_{PV}.diff
   patch:file://{PN}_{PV}-ctypes-libffi-fix-configure.diff
   patch:file://{PN}_{PV}-pgettext.diff
+  patch:file://{PN}-fix-configure-Wformat.diff
 ;
 else
 python
@@ -22,7 +23,6 @@ python
   patch:file://{PN}_{PV}-ctypes-libffi-fix-configure.diff
   patch:file://{PN}_{PV}-pgettext.diff
 endif
-make:install:prefix=/usr:DESTDIR=PKDIR
 ;
 ]]END
 
@@ -388,7 +388,7 @@ FILES_python_mailbox = \
   $(PYTHON_DIR)/mailbox.*
 
 DESCRIPTION_python_math =  Python Math Support
-RDEPENDS_python_math = python_core libpython 
+RDEPENDS_python_math = python_core libpython
 FILES_python_math = \
   $(PYTHON_DIR)/lib-dynload/_random.so \
   $(PYTHON_DIR)/lib-dynload/cmath.so \
@@ -476,7 +476,7 @@ python_ xmlrpc python_email python_image python_compile python_resource python_j
 python_math python_hotshot python_unixadmin python_textutils python_tkinter python_gdbm python_elementtree \
 python_fcntl python_netclient python_pprint python_netserver python_codecs python_mime python_syslog python_html \
 python_readline python_subprocess python_pydoc python_logging python_mailbox python_xml python_terminal \
-python_sqlite3  python_sqlite3_tests python_unittest python_stringold python_robotparser python_pickle \
+python_sqlite3 python_sqlite3_tests python_unittest python_stringold python_robotparser python_pickle \
 python_multiprocessing python_pkgutil python_2to3 python_debugger python_bsddb python_numbers python_mmap \
 python_smtpd python_shell python_idle python_zlib python_db python_crypt python_tests python_lang python_audio
 FILES_python_modules = \
@@ -693,6 +693,13 @@ $(DEPDIR)/python.do_compile: $(DEPDIR)/python.do_prepare
 			PYTHON_MODULES_LIB="$(prefix)/$*cdkroot/usr/lib" \
 			CROSS_COMPILE_TARGET=yes \
 			CROSS_COMPILE=$(target) \
+			ac_sys_system=Linux \
+			ac_sys_release=2 \
+			MACHDEP=linux2 \
+			ac_cv_have_chflags=no \
+			ac_cv_have_lchflags=no \
+			ac_cv_py_format_size_t=yes \
+			ac_cv_broken_sem_getvalue=no \
 			HOSTARCH=sh4-linux \
 			CFLAGS="$(TARGET_CFLAGS) -fno-inline" \
 			LDFLAGS="$(TARGET_LDFLAGS)" \
@@ -1028,7 +1035,7 @@ DESCRIPTION_python_twisted = Twisted is an event-driven networking framework wri
  Unix sockets, a large number of protocols (including \
  HTTP, NNTP, IMAP, SSH, IRC, FTP, and others), and much more
 RDEPENDS_python_twisted = python_twisted_news python_twisted_lore python_twisted_conch python_twisted_names python_twisted_words \
-python_twisted_runner python_core python_twisted_web python_twisted_mail 
+python_twisted_runner python_core python_twisted_web python_twisted_mail
 FILES_python_twisted = \
 
 DESCRIPTION_python_twisted_conch = Twisted is an event-driven networking framework written in Python and \
@@ -1338,7 +1345,7 @@ mechanize
 PKGR_mechanize = r1
 PACKAGES_mechanize = python_mechanize
 DESCRIPTION_python_mechanize = Stateful programmatic web browsing, after Andy Lester's Perl module WWW::Mechanize.
-BDEPENDS_python_mechanize = python_core python_robotparser
+RDEPENDS_python_mechanize = python_core python_robotparser
 FILES_python_mechanize = \
 $(PYTHON_DIR)/site-packages/mechanize/*.p*
 
