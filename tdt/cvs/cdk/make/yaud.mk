@@ -22,6 +22,7 @@ bare-os: \
 		$(BASE_PASSWD) \
 		$(MAKEDEV) \
 		$(BASE_FILES) \
+		opkghost \
 		busybox \
 		libz \
 		bzip2 \
@@ -30,7 +31,6 @@ bare-os: \
 		$(BC) \
 		$(SYSVINIT) \
 		$(DISTRIBUTIONUTILS) \
-		\
 		e2fsprogs \
 		u-boot-utils
 
@@ -40,6 +40,8 @@ net-utils: \
 		$(NFSSERVER) \
 		vsftpd \
 		ethtool \
+		openssl \
+		openssl-dev \
 		opkg \
 		$(CIFS)
 
@@ -48,44 +50,44 @@ disk-utils: \
 		util-linux \
 		jfsutils \
 		$(SG3)
+3g-utils: \
+		usb_modeswitch \
+		pppd \
+		modem-scripts \
 #
 # YAUD
 #
-yaud-stock: yaud-none stock
 
 yaud-vdr: yaud-none \
 		stslave \
 		lirc \
-		openssl \
-		openssl-dev \
-		boot-elf \
-		misc-cp \
+		bootelf \
 		vdr \
 		release_vdr
 
 yaud-neutrino-hd-nightly: yaud-none \
 		lirc \
 		stslave \
-		boot-elf \
+		bootelf \
 		neutrino-hd-nightly \
 		release_neutrino
 
-yaud-enigma2-pli-nightly-base: yaud-none \
+yaud-enigma2-nightly-base: yaud-none \
 		host_python \
 		lirc \
-		boot-elf \
-		init-scripts \
-		enigma2-pli-nightly
+		bootelf \
+		initscripts \
+		enigma2-nightly
 
-yaud-enigma2-pli-nightly: yaud-enigma2-pli-nightly-base release
+yaud-enigma2-nightly: yaud-enigma2-nightly-base
 
-yaud-enigma2-pli-nightly-full: yaud-enigma2-pli-nightly-base min-extras release
+yaud-enigma2-nightly-full: yaud-enigma2-nightly-base min-extras
 
-yaud-xbmc-nightly: yaud-none host_python boot-elf xbmc-nightly init-scripts-xbmc release_xbmc
+yaud-xbmc-nightly: yaud-none host_python bootelf xbmc-nightly initscripts-xbmc release_xbmc
 
 yaud-none: \
 		bare-os \
-		opkg-host \
+		default_confs \
 		libdvdcss \
 		libdvdread \
 		libdvdnav \
@@ -94,7 +96,7 @@ yaud-none: \
 		disk-utils \
 		driver \
 		udev \
-		udev-rules \
+		udevrules \
 		fp_control \
 		evremote2 \
 		devinit \
@@ -105,20 +107,14 @@ yaud-none: \
 # EXTRAS
 #
 min-extras: \
-	usb_modeswitch \
-	pppd \
-	modem-scripts \
 	ntfs_3g \
 	enigma2-plugins \
 	wireless_tools \
 	enigma2-plugins-sh4
 	
 all-extras: \
-	usb_modeswitch \
-	pppd \
-	modem-scripts \
-	enigma2_plugin_cams_oscam \
-	enigma2-plugins \
+	min-extras \
+	oscamconfig \
 	graphlcd \
 	djmount \
 	minidlna \
@@ -129,8 +125,6 @@ all-extras: \
 	samba \
 	xupnpd \
 	ntfs_3g \
-	enigma2-plugins-sh4 \
-	enigma2-plugin-nonfree-feed \
 	wireless_tools \
 	enigma2-skins-sh4 \
 	udpxy \
@@ -140,7 +134,7 @@ all-extras: \
 # FLASH IMAGE
 #
 
-flash-enigma2-pli-nightly: yaud-enigma2-pli-nightly
+flash-enigma2-nightly:
 	echo "Create image"
 	$(if $(SPARK)$(SPARK7162), \
 	cd $(prefix)/../flash/spark && \
