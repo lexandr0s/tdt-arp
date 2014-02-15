@@ -135,7 +135,7 @@ $(DEPDIR)/fluxcomp_host: bootstrap $(DEPENDS_fluxcomp_host)
 # OPKG-HOST
 #
 BEGIN[[
-opkg_host
+opkghost
   0.2.0
   {PN}
   dirextract:http://opkg.googlecode.com/files/opkg-{PV}.tar.gz
@@ -146,11 +146,11 @@ OPKG_BIN = $(crossprefix)/bin/opkg
 OPKG_CONF = $(crossprefix)/etc/opkg.conf
 OPKG_CONFCDK = $(crossprefix)/etc/opkg-cdk.conf
 
-opkg-host: $(OPKG_BIN) $(ipkcdk) $(ipkprefix) $(ipkextras)
+opkghost: $(OPKG_BIN) $(ipkcdk) $(ipkprefix)
 
-$(crossprefix)/bin/opkg: $(DEPENDS_opkg_host)
-	$(PREPARE_opkg_host)
-	cd $(DIR_opkg_host)/opkg-$(VERSION_opkg_host) && \
+$(crossprefix)/bin/opkg: $(DEPENDS_opkghost)
+	$(PREPARE_opkghost)
+	cd $(DIR_opkghost)/opkg-$(VERSION_opkghost) && \
 		./configure \
 			--prefix=$(crossprefix) && \
 		$(MAKE) && \
@@ -160,11 +160,13 @@ $(crossprefix)/bin/opkg: $(DEPENDS_opkg_host)
 	install -d $(prefix)/pkgroot/usr/lib/opkg
 	echo "dest root /" >$(OPKG_CONF)
 	( echo "lists_dir ext /usr/lib/opkg"; \
+	  echo "arch $(box_arch) 16"; \
 	  echo "arch sh4 10"; \
 	  echo "arch all 1"; \
 	  echo "src/gz cross file://$(ipkprefix)" ) >>$(OPKG_CONF)
 	echo "dest cdkroot /" >$(OPKG_CONFCDK)
 	( echo "lists_dir ext /usr/lib/opkg"; \
+	  echo "arch $(box_arch) 16"; \
 	  echo "arch sh4 10"; \
 	  echo "arch all 1"; \
 	  echo "src/gz cross file://$(ipkcdk)" ) >>$(OPKG_CONFCDK)
