@@ -203,10 +203,24 @@ lirc
 
 DESCRIPTION_lirc ="lirc"
 PKGR_lirc = r3
+RDEPENDS_lirc = fp_control
 FILES_lirc = \
 /usr/bin/lircd \
 /usr/lib/*.so* \
 /etc/lircd*
+ifeq ($(ENABLE_SPARK)$(ENABLE_SPARK7162),yes)
+define conffiles_lirc
+/etc/lircd.conf
+/etc/lircd.conf.09_00_0B
+/etc/lircd.conf.09_00_07
+/etc/lircd.conf.09_00_08
+/etc/lircd.conf.09_00_1D
+endef
+else
+define conffiles_lirc
+/etc/lircd.conf
+endef
+endif
 
 $(DEPDIR)/lirc.do_prepare: bootstrap $(DEPENDS_lirc)
 	$(PREPARE_lirc)
@@ -239,16 +253,16 @@ $(DEPDIR)/lirc: $(DEPDIR)/lirc.do_compile
 	$(start_build)
 	cd $(DIR_lirc) && \
 		$(INSTALL_lirc)
-	$(tocdk_build)
 	$(INSTALL_DIR) $(PKDIR)/etc
 	$(INSTALL_DIR) $(PKDIR)/var/run/lirc/
-	$(INSTALL_FILE) $(buildprefix)/root/etc/lircd$(if $(SPARK),_$(SPARK))$(if $(SPARK7162),_$(SPARK7162)).conf $(PKDIR)/etc/lircd.conf
-ifdef ENABLE_SPARK
-	$(INSTALL_FILE) $(buildprefix)/root/etc/lircd$(if $(SPARK),_$(SPARK)).conf.09_00_0B $(PKDIR)/etc/lircd.conf.09_00_0B
-	$(INSTALL_FILE) $(buildprefix)/root/etc/lircd$(if $(SPARK),_$(SPARK)).conf.09_00_07 $(PKDIR)/etc/lircd.conf.09_00_07
-	$(INSTALL_FILE) $(buildprefix)/root/etc/lircd$(if $(SPARK),_$(SPARK)).conf.09_00_08 $(PKDIR)/etc/lircd.conf.09_00_08
-	$(INSTALL_FILE) $(buildprefix)/root/etc/lircd$(if $(SPARK),_$(SPARK)).conf.09_00_1D $(PKDIR)/etc/lircd.conf.09_00_1D
+	$(INSTALL_FILE) $(buildprefix)/root/etc/lircd$(if $(HL101),_$(HL101))$(if $(SPARK),_$(SPARK))$(if $(SPARK7162),_$(SPARK7162)).conf $(PKDIR)/etc/lircd.conf
+ifeq ($(ENABLE_SPARK)$(ENABLE_SPARK7162),yes)
+	$(INSTALL_FILE) $(buildprefix)/root/etc/lircd_spark.conf.09_00_0B $(PKDIR)/etc/lircd.conf.09_00_0B && \
+	$(INSTALL_FILE) $(buildprefix)/root/etc/lircd_spark.conf.09_00_07 $(PKDIR)/etc/lircd.conf.09_00_07 && \
+	$(INSTALL_FILE) $(buildprefix)/root/etc/lircd_spark.conf.09_00_08 $(PKDIR)/etc/lircd.conf.09_00_08 && \
+	$(INSTALL_FILE) $(buildprefix)/root/etc/lircd_spark.conf.09_00_1D $(PKDIR)/etc/lircd.conf.09_00_1D
 endif
+	$(tocdk_build)
 	$(toflash_build)
 	touch $@
 
@@ -576,7 +590,7 @@ libsigc
 
 NAME_libsigc = libsigc_1.2_0
 DESCRIPTION_libsigc =  A library for loose coupling of C++ method calls
-RDEPENDS_libsigc += libstdc++ libgcc1
+RDEPENDS_libsigc = libstdc++6 libgcc1
 FILES_libsigc = /usr/lib/*.so*
 
 $(DEPDIR)/libsigc.do_prepare: bootstrap libstdc++ libstdc++-dev $(DEPENDS_libsigc)
@@ -1754,7 +1768,7 @@ $(DEPDIR)/webkitdfb: $(DEPDIR)/webkitdfb.do_compile
 	cd $(DIR_webkitdfb) && \
 		$(INSTALL_webkitdfb)
 	$(tocdk_build)
-	$(e2extra_build)
+	$(toflash_build)
 	touch $@
 
 #
@@ -1810,7 +1824,7 @@ $(DEPDIR)/icu4c: $(DEPDIR)/icu4c.do_compile
 		unset TARGET && \
 		$(INSTALL_icu4c)
 	$(tocdk_build)
-	$(e2extra_build)
+	$(toflash_build)
 	touch $@
 
 #
@@ -2079,14 +2093,16 @@ $(DEPDIR)/cairo: $(DEPDIR)/cairo.do_compile
 #
 BEGIN[[
 libogg
-  1.2.2
+  1.3.0
   {PN}-{PV}
   extract:http://downloads.xiph.org/releases/ogg/{PN}-{PV}.tar.gz
   make:install:DESTDIR=PKDIR
 ;
 ]]END
 
-DESCRIPTION_libogg = "distribution includes libogg and nothing else"
+NAME_libogg = libogg0
+DESCRIPTION_libogg = libogg is the bitstream and framing library for the Ogg project.\
+It provides functions which are necessary to codec libraries like libvorbis.
 
 FILES_libogg = \
 /usr/lib/*.so*
@@ -2125,11 +2141,17 @@ libflac
 ;
 ]]END
 
-DESCRIPTION_libflac = "libflac is Open Source lossless audio codec"
+PACKAGES_libflac = libflac8 \
+		   libflacpp6
+DESCRIPTION_libflac8 = FLAC stands for Free Lossless Audio Codec, an audio format similar to MP3, but lossless.
+FILES_libflac8 = \
+/usr/lib/libFLAC.so*
 
-FILES_libflac = \
-/usr/lib/*.so* \
-/usr/bin/*
+NAME_libflacpp6 = libflac++6
+DESCRIPTION_libflacpp6 = FLAC stands for Free Lossless Audio Codec, an audio format similar to MP3, but lossless.
+RDEPENDS_libflacpp6 = libgcc1 libogg0 libflac8 libstdc
+FILES_libflacpp6 = \
+/usr/lib/libFLAC++.so*
 
 $(DEPDIR)/libflac.do_prepare: bootstrap $(DEPENDS_libflac)
 	$(PREPARE_libflac)
@@ -2140,7 +2162,7 @@ $(DEPDIR)/libflac.do_compile: $(DEPDIR)/libflac.do_prepare
 	cd $(DIR_libflac) && \
 	$(BUILDENV) \
 	./configure \
-		--host=$(target) \
+		--build=$(build) \
 		--prefix=/usr \
 		--disable-ogg \
 		--disable-oggtest \
@@ -2151,9 +2173,7 @@ $(DEPDIR)/libflac.do_compile: $(DEPDIR)/libflac.do_prepare
 		--without-xmms-prefix \
 		--without-xmms-exec-prefix \
 		--without-libiconv-prefix \
-		--without-id3lib \
-		--with-ogg-includes=. \
-		--disable-cpplibs
+		--without-id3lib
 	touch $@
 
 $(DEPDIR)/libflac: $(DEPDIR)/libflac.do_compile
@@ -3077,7 +3097,7 @@ PKGR_libdvbsipp = r0
 
 NAME_libdvbsipp = libdvbsi++1
 DESCRIPTION_libdvbsipp = libdvbsi++ is a open source C++ library for parsing DVB Service Information and MPEG-2 Program Specific Information.
-RDEPENDS_libdvbsipp = libgcc1 libstdc++
+RDEPENDS_libdvbsipp = libgcc1 libstdc++6
 FILES_libdvbsipp = /usr/lib/libdvbsi++.so.*
 
 $(DEPDIR)/libdvbsipp.do_prepare: bootstrap $(DEPENDS_libdvbsipp)
@@ -3843,7 +3863,7 @@ libexif
   make:install:prefix=/usr:DESTDIR=PKDIR
 ;
 ]]END
-
+NAME_libexif = libexif12
 DESCRIPTION_libexif = "libexif is a library for parsing, editing, and saving EXIF data."
 
 FILES_libexif = \
@@ -3884,6 +3904,7 @@ minidlna
 ]]END
 
 DESCRIPTION_minidlna = "The MiniDLNA daemon is an UPnP-A/V and DLNA service which serves multimedia content to compatible clients on the network."
+RDEPENDS_minidlna = libexif12 libid3tag libflac8 libogg0 libjpeg8
 
 FILES_minidlna = \
 /usr/lib/* \
@@ -3897,12 +3918,12 @@ $(DEPDIR)/minidlna.do_compile: $(DEPDIR)/minidlna.do_prepare
 	cd $(DIR_minidlna) && \
 	libtoolize -f -c && \
 	$(BUILDENV) \
-	DESTDIR=$(prefix)/cdkroot \
+	DESTDIR=$(targetprefix) \
 	$(MAKE) \
-	PREFIX=$(prefix)/cdkroot/usr \
-	LIBDIR=$(prefix)/cdkroot/usr/lib \
-	SBINDIR=$(prefix)/cdkroot/usr/sbin \
-	INCDIR=$(prefix)/cdkroot/usr/include \
+	PREFIX=$(targetprefix)/usr \
+	LIBDIR=$(targetprefix)/usr/lib \
+	SBINDIR=$(targetprefix)/usr/sbin \
+	INCDIR=$(targetprefix)/usr/include \
 	PAM_CAP=no \
 	LIBATTR=no
 	touch $@
