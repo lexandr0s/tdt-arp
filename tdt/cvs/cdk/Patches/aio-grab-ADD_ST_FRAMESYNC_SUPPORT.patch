@@ -1,6 +1,6 @@
 --- aio-grab-47983a78821c0fdbef3aab36113d5c6fc34bb11b/main.c.org	2013-06-04 21:57:14.000000000 +0200
 +++ aio-grab-47983a78821c0fdbef3aab36113d5c6fc34bb11b/main.c	2013-06-09 11:22:16.823333877 +0200
-@@ -747,7 +747,8 @@
+@@ -759,7 +759,8 @@
  		BPAMemMapMemData bpa_data;
  		char bpa_mem_device[30];
  		char *decode_surface;
@@ -10,7 +10,7 @@
  		fp = fopen("/proc/stb/vmpeg/0/xres", "r");
  		if (fp)
  		{
-@@ -857,17 +858,31 @@
+@@ -869,17 +870,31 @@
  		//thereby yblockoffset does also not to be rounded up
  		yblockoffset = xblock * 256/*16x16px*/ * 2/*2 block rows*/; //0xA000 for 1280
  		
@@ -45,7 +45,7 @@
  			
  			for (iyblock = even; iyblock < yblock; iyblock+=2)
  			{
-@@ -886,23 +901,23 @@
+@@ -898,23 +913,23 @@
  					offset += 0x200;
  					OUTITERoffset += 16;
  				}
@@ -75,7 +75,7 @@
  		
  		OUTITER       = 0;
  		OUTITERoffset = 0;
-@@ -913,8 +928,8 @@
+@@ -925,8 +940,8 @@
  		{
  			for(even = 0; even < 2; even++)
  			{
@@ -86,7 +86,7 @@
  			
  				for (iyblock = even; iyblock < yblock; iyblock+=2)
  				{
-@@ -933,11 +948,13 @@
+@@ -945,11 +960,13 @@
  						offset += (offset%0x100?0x180/*80->200*/:0x80/*0->80*/);
  						OUTITERoffset += 16/*OUTINC*8=16*/;
  					}
