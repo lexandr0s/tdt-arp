@@ -13,12 +13,12 @@ e2plugin
 
 DESCRIPTION_e2plugin := Additional plugins for Enigma2
 
-PKGR_e2plugin = r2
 
 NAME_e2plugin_meta := enigma2-plugins-meta
 FILES_e2plugin_meta := /usr/share/meta
 DESCRIPTION_e2plugin_meta := Enigma2 plugins metadata
 PACKAGES_e2plugin = e2plugin_meta
+
 DIST_e2plugin = enigma2_plugin_systemplugins_networkbrowser \
 enigma2_plugin_extensions_alternativesoftcammanager \
 enigma2_plugin_extensions_mytube \
@@ -88,7 +88,7 @@ $(DEPDIR)/enigma2-plugins-sh4: $(DIR_e2plugin)/config.status $(enigma2_plugins_n
 	do_finish() \n\
 	" | $(crossprefix)/bin/python
 
-	$(call do_build_pkg,none,extra)
+	$(call do_build_pkg,none,flash)
 	touch $@
 
 #$(enigma2_plugins_nontyp):
@@ -120,7 +120,7 @@ $(DEPDIR)/enigma2-plugins-sh4-%: $(DIR_e2plugin)/config.status
 	" | $(crossprefix)/bin/python
 	
 	rm -r $(ipkgbuilddir)/e2plugin_meta
-	$(call do_build_pkg,none,extra)
+	$(call do_build_pkg,none,flash)
 	touch $@
 
 enigma2-plugins-sh4-clean:
