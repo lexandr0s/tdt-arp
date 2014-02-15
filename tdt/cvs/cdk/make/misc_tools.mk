@@ -323,7 +323,7 @@ libeplayer3
 DESCRIPTION_libeplayer3 = "libeplayer3"
 SRC_URI_libeplayer3 = "https://code.google.com/p/tdt-amiko/"
 PKGR_libeplayer3 = r1
-BDEPENDS_libeplayer3 += driver ffmpeg
+RDEPENDS_libeplayer3 = kernel_module_player2 kernel_module_stgfb ffmpeg
 
 FILES_libeplayer3 = \
 /bin/eplayer3 \
@@ -342,7 +342,7 @@ define DEPSCLEANUP_libeplayer3
 	rm -f $(DEPDIR)/libeplayer3.do_compile
 endef
 
-$(DEPDIR)/libeplayer3.do_prepare: bootstrap libstdc++-dev $(DEPENDS_libeplayer3)
+$(DEPDIR)/libeplayer3.do_prepare: bootstrap libstdc++-dev driver ffmpeg $(DEPENDS_libeplayer3)
 	$(PREPARE_libeplayer3)
 	touch $@
 
