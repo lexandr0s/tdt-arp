@@ -12,8 +12,6 @@ e2skin
 
 DESCRIPTION_e2skin := Skins for Enigma2
 
-PKGR_e2skin = r2
-
 NAME_e2skin_meta := enigma2-skins-meta
 FILES_e2skin_meta := /usr/share/meta
 DESCRIPTION_e2skin_meta := Enigma2 skins metadata
@@ -78,7 +76,7 @@ $(DEPDIR)/enigma2-skins-sh4: enigma2-skins-sh4.do_compile
 	do_finish() \n\
 	" | $(crossprefix)/bin/python
 
-	$(call do_build_pkg,none,extra)
+	$(call do_build_pkg,none,flash)
 	touch $@
 
 enigma2-skins-sh4-clean:
@@ -99,6 +97,7 @@ e2skin_plihd
 ;
 ]]END
 
+NAME_e2skin_plihd = enigma2_plugin_skin_plihd
 DESCRIPTION_e2skin_plihd := Skin PLiHD for Enigma2
 PKGR_e2skin_plihd = r2
 
@@ -110,7 +109,7 @@ $(DEPDIR)/e2skin-plihd: e2skin-plihd.do_prepare
 	$(start_build)
 	cd $(DIR_e2skin_plihd) && \
 		cp -a usr $(PKDIR)
-	$(e2extra_build)
+	$(toflash_build)
 	touch $@
 
 e2skin-plihd-distclean:
@@ -128,6 +127,7 @@ e2skin_dTVHDReloaded
 ;
 ]]END
 
+NAME_e2skin_dTVHDReloaded = enigma2_plugin_skin_dtvhdreloaded
 DESCRIPTION_e2skin_dTVHDReloaded := SD skin dTV-HD-Reloaded from Taapat
 PKGR_e2skin_dTVHDReloaded = r0
 
