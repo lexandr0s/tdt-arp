@@ -1,19 +1,3 @@
-$(DEPDIR)/misc-cp:
-	cp $(buildprefix)/root/sbin/hotplug $(targetprefix)/sbin
-	cp $(buildprefix)/root/etc/$(LIRCD_CONF) $(targetprefix)/etc/lircd.conf
-	cp -rd $(buildprefix)/root/etc/hotplug $(targetprefix)/etc
-	cp -rd $(buildprefix)/root/etc/hotplug.d $(targetprefix)/etc
-	@[ "x$*" = "x" ] && touch $@ || true
-
-$(DEPDIR)/misc-e2:
-	$(INSTALL_DIR) $(targetprefix)/media/hdd
-	$(INSTALL_DIR) $(targetprefix)/media/dvd
-	$(INSTALL_DIR) $(targetprefix)/hdd
-	$(INSTALL_DIR) $(targetprefix)/hdd/music
-	$(INSTALL_DIR) $(targetprefix)/hdd/picture
-	$(INSTALL_DIR) $(targetprefix)/hdd/movie
-	@[ "x$*" = "x" ] && touch $@ || true
-
 #
 # SPLASHUTILS
 #
