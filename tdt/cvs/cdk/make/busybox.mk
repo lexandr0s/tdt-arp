@@ -2,7 +2,6 @@
 # busybox
 #
 
-PKGR_busybox = r3
 BEGIN[[
 busybox
   1.22.1
@@ -16,6 +15,8 @@ busybox
   make:install:CONFIG_PREFIX=PKDIR
 ;
 ]]END
+PKGR_busybox = r0
+DESCRIPTION_busybox = "Utilities for embedded systems"
 
 $(DEPDIR)/busybox.do_prepare: bootstrap $(DEPENDS_busybox)
 	$(PREPARE_busybox)
@@ -28,15 +29,11 @@ $(DEPDIR)/busybox.do_compile: $(DEPDIR)/busybox.do_prepare
 			CFLAGS_EXTRA="$(TARGET_CFLAGS)"
 	touch $@
 
-DESCRIPTION_busybox = "Utilities for embedded systems"
-
-$(DEPDIR)/busybox: \
-$(DEPDIR)/%busybox: $(DEPDIR)/busybox.do_compile
+$(DEPDIR)/busybox: $(DEPDIR)/busybox.do_compile
 	$(start_build)
 	cd $(DIR_busybox) && \
 		export CROSS_COMPILE=$(target)- && \
 		$(INSTALL_busybox)
-#		@CLEANUP_busybox@
 	install -m644 -D /dev/null $(PKDIR)/etc/shells
 	export HHL_CROSS_TARGET_DIR=$(PKDIR) && $(hostprefix)/bin/target-shellconfig --add /bin/ash 5
 	$(tocdk_build)
