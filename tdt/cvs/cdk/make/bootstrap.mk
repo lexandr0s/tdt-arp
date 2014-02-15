@@ -508,7 +508,7 @@ $(DEPDIR)/bootstrap-cross: | \
 	cross-sh4-gcc \
 	cross-sh4-g++ \
 	ipkg-utils \
-	opkg-host \
+	opkghost \
 	cross-sh4-libgcc
 	touch -r $(CROSS_G++_RPM) $@
 
