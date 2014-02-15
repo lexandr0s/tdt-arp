@@ -1,36 +1,36 @@
 #
 # Plugins
 #
-$(DEPDIR)/enigma2-plugins: vfdicons enigma2_plugin_extensions_mediaportal enigma2_networkbrowser openpli-plugins
+$(DEPDIR)/enigma2-plugins: vfdicons mediaportal networkbrowser openwebif# openpli-plugins
 
 #
 # enigma2-openwebif
 #
 BEGIN[[
-enigma2_plugin_extensions_openwebif
+openwebif
   git
   e2openplugin-OpenWebif
   nothing:git://github.com/OpenAR-P/e2openplugin-OpenWebif.git
   make:install:DESTDIR=PKDIR
 ;
 ]]END
+NAME_openwebif = enigma2_plugin_extensions_openwebif
+DESCRIPTION_openwebif = "open webinteface plugin for enigma2 by openpli team"
+PKGR_openwebif = r1
+RDEPENDS_openwebif =  python_cheetah aio_grab
 
-DESCRIPTION_enigma2_plugin_extensions_openwebif = "open webinteface plugin for enigma2 by openpli team"
-PKGR_enigma2_plugin_extensions_openwebif = r1
-RDEPENDS_enigma2_plugin_extensions_openwebif = python pythoncheetah grab
-
-$(DEPDIR)/enigma2_plugin_extensions_openwebif.do_prepare: bootstrap $(RDEPENDS_enigma2_plugin_extensions_openwebif) $(DEPENDS_enigma2_plugin_extensions_openwebif)
-	$(PREPARE_enigma2_plugin_extensions_openwebif)
+$(DEPDIR)/openwebif.do_prepare: bootstrap pythoncheetah $(DEPENDS_openwebif)
+	$(PREPARE_openwebif)
 	touch $@
 
-$(DEPDIR)/enigma2_plugin_extensions_openwebif: \
-$(DEPDIR)/%enigma2_plugin_extensions_openwebif: $(DEPDIR)/enigma2_plugin_extensions_openwebif.do_prepare
+$(DEPDIR)/openwebif: \
+$(DEPDIR)/%openwebif: $(DEPDIR)/openwebif.do_prepare
 	$(start_build)
-	cd $(DIR_enigma2_plugin_extensions_openwebif) && \
+	cd $(DIR_openwebif) && \
 		$(BUILDENV) \
 		mkdir -p $(PKDIR)/usr/lib/enigma2/python/Plugins/Extensions && \
 		cp -a plugin $(PKDIR)/usr/lib/enigma2/python/Plugins/Extensions/OpenWebif && \
-	$(e2extra_build)
+	$(toflash_build)
 	touch $@
 
 #
@@ -45,17 +45,17 @@ vfdicons
 ;
 ]]END
 
-PACKAGES_vfdicons = enigma2_plugin_systemplugins_vfd_icons
-DESCRIPTION_enigma2_plugin_systemplugins_vfd_icons = "open VFD-icons plugin for enigma2 by openAR-P team"
-PKGR_enigma2_plugin_systemplugins_vfd_icons = r0
-RDEPENDS_enigma2_plugin_systemplugins_vfd_icons = python
+NAME_vfdicons = enigma2_plugin_systemplugins_vfd_icons
+DESCRIPTION_vfdicons = "open VFD-icons plugin for enigma2 by openAR-P teamv full simbols for Alien²"
+RCONFLICTS_vfdicons = enigma2_plugin_systemplugins_minivfd_icons
+PKGR_vfdicons = r0
+RDEPENDS_vfdicons = python_core
 
-$(DEPDIR)/vfdicons.do_prepare: bootstrap $(RDEPENDS_vfdicons) $(DEPENDS_vfdicons)
+$(DEPDIR)/vfdicons.do_prepare: bootstrap $(DEPENDS_vfdicons)
 	$(PREPARE_vfdicons)
 	touch $@
 
-$(DEPDIR)/vfdicons: \
-$(DEPDIR)/%vfdicons: $(DEPDIR)/vfdicons.do_prepare
+$(DEPDIR)/vfdicons: $(DEPDIR)/vfdicons.do_prepare
 	$(start_build)
 	cd $(DIR_vfdicons) && \
 		$(BUILDENV) \
@@ -68,24 +68,25 @@ $(DEPDIR)/%vfdicons: $(DEPDIR)/vfdicons.do_prepare
 # enigma2-mediaportal
 #
 BEGIN[[
-enigma2_plugin_extensions_mediaportal
+mediaportal
   git
   MediaPortal
   nothing:git://github.com/OpenAR-P/MediaPortal.git
   make:install:DESTDIR=PKDIR
 ;
 ]]END
+NAME_mediaportal = enigma2_plugin_extensions_mediaportal
+DESCRIPTION_mediaportal = "Enigma2 MediaPortal"
+PKGR_mediaportal = r0
+PKGV_mediaportal = 5.0.7
+RDEPENDS_mediaportal = python_core python_mechanize
 
-DESCRIPTION_enigma2_plugin_extensions_mediaportal = "Enigma2 MediaPortal"
-PKGR_enigma2_plugin_extensions_mediaportal = r0
-RDEPENDS_enigma2_plugin_extensions_mediaportal = python mechanize
-
-$(DEPDIR)/enigma2_plugin_extensions_mediaportal.do_prepare: bootstrap $(RDEPENDS_enigma2_plugin_extensions_mediaportal) $(DEPENDS_enigma2_plugin_extensions_mediaportal)
-	$(PREPARE_enigma2_plugin_extensions_mediaportal)
+$(DEPDIR)/mediaportal.do_prepare: bootstrap python  mechanize $(DEPENDS_mediaportal)
+	$(PREPARE_mediaportal)
 	touch $@
 
-$(DEPDIR)/enigma2_plugin_extensions_mediaportal.do_compile: $(DEPDIR)/enigma2_plugin_extensions_mediaportal.do_prepare
-	cd $(DIR_enigma2_plugin_extensions_mediaportal) && \
+$(DEPDIR)/mediaportal.do_compile: $(DEPDIR)/mediaportal.do_prepare
+	cd $(DIR_mediaportal) && \
 		./autogen.sh && \
 		$(BUILDENV) \
 		./configure \
@@ -99,17 +100,17 @@ $(DEPDIR)/enigma2_plugin_extensions_mediaportal.do_compile: $(DEPDIR)/enigma2_pl
 			$(PLATFORM_CPPFLAGS)
 	touch $@
 
-$(DEPDIR)/enigma2_plugin_extensions_mediaportal: $(DEPDIR)/enigma2_plugin_extensions_mediaportal.do_compile
+$(DEPDIR)/mediaportal: $(DEPDIR)/mediaportal.do_compile
 	$(start_build)
-	cd $(DIR_enigma2_plugin_extensions_mediaportal) && \
+	cd $(DIR_mediaportal) && \
 		$(MAKE) install DESTDIR=$(PKDIR)
 	$(toflash_build)
 	touch $@
 #
-# enigma2-networkbrowser
+# enigma2-pli-networkbrowser
 #
 BEGIN[[
-enigma2_networkbrowser
+networkbrowser
   git
   {PN}-{PV}
   nothing:git://git.code.sf.net/p/openpli/plugins-enigma2:sub=networkbrowser
@@ -117,18 +118,17 @@ enigma2_networkbrowser
   make:install:DESTDIR=PKDIR
 ;
 ]]END
+NAME_networkbrowser = enigma2_plugin_extensions_pli_networkbrowser
+DESCRIPTION_networkbrowser = "networkbrowser plugin for enigma2"
+PKGR_networkbrowser = r1
 
-DESCRIPTION_enigma2_networkbrowser = "networkbrowser plugin for enigma2"
-PKGR_enigma2_networkbrowser = r1
-
-$(DEPDIR)/enigma2_networkbrowser.do_prepare: $(DEPENDS_enigma2_networkbrowser)
-	$(PREPARE_enigma2_networkbrowser)
+$(DEPDIR)/networkbrowser.do_prepare: $(DEPENDS_networkbrowser)
+	$(PREPARE_networkbrowser)
 	touch $@
 
-$(DEPDIR)/enigma2_networkbrowser: \
-$(DEPDIR)/%enigma2_networkbrowser: $(DEPDIR)/enigma2_networkbrowser.do_prepare
+$(DEPDIR)/networkbrowser: $(DEPDIR)/networkbrowser.do_prepare
 	$(start_build)
-	cd $(DIR_enigma2_networkbrowser)/src/lib && \
+	cd $(DIR_networkbrowser)/src/lib && \
 		$(BUILDENV) \
 		sh4-linux-gcc -shared -o netscan.so \
 			-I $(targetprefix)/usr/include/python$(PYTHON_VERSION) \
@@ -149,14 +149,14 @@ $(DEPDIR)/%enigma2_networkbrowser: $(DEPDIR)/enigma2_networkbrowser.do_prepare
 			statusq.c \
 			statusq.h \
 			time_compat.h
-	cd $(DIR_enigma2_networkbrowser) && \
+	cd $(DIR_networkbrowser) && \
 		mkdir -p $(PKDIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/NetworkBrowser && \
 		cp -a po $(PKDIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/NetworkBrowser/ && \
 		cp -a meta $(PKDIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/NetworkBrowser/ && \
 		cp -a src/* $(PKDIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/NetworkBrowser/ && \
 		cp -a src/lib/netscan.so $(PKDIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/NetworkBrowser/ && \
 		rm -rf $(PKDIR)/usr/lib/enigma2/python/Plugins/SystemPlugins/NetworkBrowser/lib
-	$(e2extra_build)
+	$(toflash_build)
 	touch $@
 
 $(DEPDIR)/%-openpli:
@@ -168,7 +168,7 @@ $(DEPDIR)/%-openpli:
 	cd $(DIR_$*_openpli) && \
 		$(python) setup.py install --root=$(PKDIR) --install-lib=/usr/lib/enigma2/python/Plugins
 	$(remove_pyc)
-	$(e2extra_build)
+	$(toflash_build)
 	touch $@
 
 DESCRIPTION_NewsReader_openpli = RSS reader
