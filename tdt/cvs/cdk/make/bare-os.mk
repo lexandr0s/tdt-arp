@@ -1,8 +1,7 @@
 #
 # FILESYSTEM
 #
-$(DEPDIR)/filesystem: \
-$(DEPDIR)/%filesystem: bootstrap-cross
+$(DEPDIR)/filesystem: bootstrap-cross
 	$(INSTALL) -d $(targetprefix)/{bin,boot,dev,dev.static,etc,lib,mnt,opt,proc,root,sbin,sys,tmp,usr,var}
 	$(INSTALL) -d $(targetprefix)/etc/{default,opt}
 	$(INSTALL) -d $(targetprefix)/usr/{bin,include,lib,local,sbin,share,src}
