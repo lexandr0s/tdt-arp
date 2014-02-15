@@ -1,14 +1,11 @@
---- grab-git/main.c.org	2013-10-16 18:37:08.827800327 +0300
-+++ grab-git/main.c	2013-10-16 18:35:01.435168629 +0300
-@@ -37,6 +37,7 @@
+--- grab-git/main.c.org	2014-02-15 23:51:53.133378382 +0200
++++ grab-git/main.c	2014-02-15 23:56:12.242663238 +0200
+@@ -37,10 +37,48 @@
  #include <sys/mman.h>
  #include <linux/types.h>
  #include <linux/fb.h>
 +#include "../../../cvs/driver/bpamem/bpamem.h"
  
- /* HACK: jpeglib.h redefines our VERSION variable */
- const char *GRABVERSION = VERSION;
-@@ -44,6 +45,43 @@
  #include "png.h"
  #include "jpeglib.h"
  
@@ -52,16 +49,16 @@
  #define CLAMP(x)    ((x < 0) ? 0 : ((x > 255) ? 255 : x))
  #define SWAP(x,y)	{ x ^= y; y ^= x; x ^= y; }
  
-@@ -86,7 +124,7 @@
+@@ -83,7 +121,7 @@
  void (*resize)(const unsigned char *source, unsigned char *dest, int xsource, int ysource, int xdest, int ydest, int colors);
  void combine(unsigned char *output, const unsigned char *video, const unsigned char *osd, int vleft, int vtop, int vwidth, int vheight, int xres, int yres);
  
--static enum {UNKNOWN, PALLAS, VULCAN, XILLEON, BRCM7400, BRCM7401, BRCM7405, BRCM7325, BRCM7335, BRCM7358, BRCM7356, BRCM7424, BRCM7425} stb_type = UNKNOWN;
-+static enum {UNKNOWN, PALLAS, VULCAN, XILLEON, BRCM7400, BRCM7401, BRCM7405, BRCM7325, BRCM7335, BRCM7358, BRCM7356, BRCM7424, BRCM7425, ST} stb_type = UNKNOWN;
+-static enum {UNKNOWN, PALLAS, VULCAN, XILLEON, BRCM7400, BRCM7401, BRCM7405, BRCM7325, BRCM7335, BRCM7358, BRCM7241, BRCM7356, BRCM7424, BRCM7425} stb_type = UNKNOWN;
++static enum {UNKNOWN, PALLAS, VULCAN, XILLEON, BRCM7400, BRCM7401, BRCM7405, BRCM7325, BRCM7335, BRCM7358, BRCM7241, BRCM7356, BRCM7424, BRCM7425, ST} stb_type = UNKNOWN;
  
  static int chr_luma_stride = 0x40;
  static int chr_luma_register_offset = 0;
-@@ -131,6 +169,7 @@
+@@ -125,6 +163,7 @@
  		if (strcasestr(buf,"VULCAN")) stb_type=VULCAN;
  		if (strcasestr(buf,"PALLAS")) stb_type=PALLAS;
  		if (strcasestr(buf,"XILLEON")) stb_type=XILLEON;
@@ -69,7 +66,7 @@
  	}
  	fclose(fp);
  
-@@ -697,7 +736,221 @@
+@@ -709,7 +748,221 @@
  	char buf[256];
  	FILE *fp;
  
@@ -292,7 +289,7 @@
  	{
  		// grab bcm pic from decoder memory
  		const unsigned char* data = (unsigned char*)mmap(0, 100, PROT_READ, MAP_SHARED, mem_fd, registeroffset);
-@@ -1099,12 +1369,14 @@
+@@ -1110,12 +1363,14 @@
  			// now we do 4 pixels on each iteration this is more code but much faster
  			int Y=yuv2rgbtable_y[luma[pos]];
  
@@ -307,7 +304,7 @@
  			video[out1+rgbstride]=CLAMP((Y + RU)>>16);
  			video[out1+1+rgbstride]=CLAMP((Y - GV - GU)>>16);
  			video[out1+2+rgbstride]=CLAMP((Y + BV)>>16);
-@@ -1114,12 +1386,14 @@
+@@ -1125,12 +1380,14 @@
  
  			Y=yuv2rgbtable_y[luma[pos]];
  
