@@ -254,6 +254,7 @@ $(DEPDIR)/linux-kernel.%.do_compile: \
 	touch $@
 
 DESCRIPTION_linux_kernel = "The Linux Kernel and modules"
+PACKAGE_ARCH_linux_kernel = $(box_arch)
 PKGV_linux_kernel = $(KERNELVERSION)
 PKGR_linux_kernel = r4
 SRC_URI_linux_kernel = stlinux.com
@@ -267,11 +268,10 @@ define postinst_linux_kernel
 flash_eraseall /dev/mtd5
 nandwrite -p /dev/mtd5 /boot/uImage
 rm /boot/uImage
-depmod
+depmod --basedir $$OPKG_OFFLINE_ROOT/ --all $(KERNELVERSION)
 endef
 
-$(DEPDIR)/linux-kernel: \
-$(DEPDIR)/%linux-kernel: bootstrap $(DEPDIR)/linux-kernel.do_compile
+$(DEPDIR)/linux-kernel: bootstrap $(DEPDIR)/linux-kernel.do_compile
 	$(start_build)
 	@$(INSTALL) -d $(PKDIR)/boot && \
 	$(INSTALL) -d $(prefix)/$*$(notdir $(bootprefix)) && \
@@ -303,31 +303,118 @@ driver
   plink:$(driverdir):{PN}-{PV}
 ;
 ]]END
+
 DESCRIPTION_driver = Drivers for stm box
-PKGR_driver = r3
-PACKAGES_driver = driver_pti driver
-FILES_driver = /lib/modules/$(KERNELVERSION)/extra
+RDEPENDS_driver = linux_kernel
 SRC_URI_driver = "http://gitorious.org/~schpuntik/open-duckbox-project-sh4/tdt-amiko"
-DESCRIPTION_driver_pti = open source st-pti kernel module
-RCONFLICTS_driver_pti = driver_ptinp
-FILES_driver_pti = /lib/modules/$(KERNELVERSION)/extra/pti
-EXTRA_driver = driver_pti
 
 define postinst_driver
 #!/bin/sh
-depmod
+	depmod --basedir $$OPKG_OFFLINE_ROOT/ --all $(KERNELVERSION) || true
 endef
 
-$(DEPDIR)/driver: $(DEPENDS_driver) $(driverdir)/Makefile glibc-dev linux-kernel.do_compile
+PACKAGE_ARCH_driver = $(box_arch)
+PACKAGES_driver = kernel_module_avs \
+		  kernel_module_bpamem \
+		  kernel_module_cec \
+		  kernel_module_compcache \
+		  kernel_module_cpu_frequ \
+		  kernel_module_e2_proc \
+		  kernel_module_encrypt \
+		  kernel_module_frontcontroller \
+		  kernel_module_frontends \
+		  kernel_module_multicom \
+		  kernel_module_player2 \
+		  kernel_module_pti \
+		  kernel_module_ptinp \
+		  kernel_module_simu_button \
+		  kernel_module_smartcard \
+		  kernel_module_stgfb \
+		  kernel_module_rt2870sta \
+		  kernel_module_rt3070sta \
+		  kernel_module_rt5370sta \
+		  kernel_module_rtl8192cu \
+		  kernel_module_rtl871x
+
+DESCRIPTION_kernel_module_avs = For av receiver without av switch. the e2_core in stmdvb need some functions \
+from avs module but fake_avs is not a real fake because it sets pio pins.
+FILES_kernel_module_avs = /lib/modules/$(KERNELVERSION)/extra/avs
+
+DESCRIPTION_kernel_module_bpamem = bpamem driver
+FILES_kernel_module_bpamem = /lib/modules/$(KERNELVERSION)/extra/bpamem
+
+DESCRIPTION_kernel_module_cec = HdmiCEC  driver for multimedia devices control
+FILES_kernel_module_cec = /lib/modules/$(KERNELVERSION)/extra/cec
+
+DESCRIPTION_kernel_module_compcache = The zram module creates RAM based block devices named /dev/zram<id>
+FILES_kernel_module_compcache = /lib/modules/$(KERNELVERSION)/extra/compcache
+
+DESCRIPTION_kernel_module_cpu_frequ = CPU overclocking driver
+FILES_kernel_module_cpu_frequ = /lib/modules/$(KERNELVERSION)/extra/cpu_frequ
+
+DESCRIPTION_kernel_module_e2_proc = /proc driver for control  devices
+FILES_kernel_module_e2_proc = /lib/modules/$(KERNELVERSION)/extra/e2_proc
+
+DESCRIPTION_kernel_module_encrypt = driver encrypt
+FILES_kernel_module_encrypt = /lib/modules/$(KERNELVERSION)/extra/encrypt
+
+DESCRIPTION_kernel_module_frontcontroller = frontcontroller driver for control  devices
+FILES_kernel_module_frontcontroller = /lib/modules/$(KERNELVERSION)/extra/frontcontroller
+
+DESCRIPTION_kernel_module_frontends = frontends driver for control  devices
+FILES_kernel_module_frontends = /lib/modules/$(KERNELVERSION)/extra/frontends
+
+DESCRIPTION_kernel_module_multicom = stm-multicom driver for control  devices
+FILES_kernel_module_multicom = /lib/modules/$(KERNELVERSION)/extra/multicom
+
+DESCRIPTION_kernel_module_player2 = frontends driver for control  devices
+FILES_kernel_module_player2 = /lib/modules/$(KERNELVERSION)/extra/player2
+
+DESCRIPTION_kernel_module_pti = open source st-pti kernel module
+RCONFLICTS_kernel_module_pti = kernel_module_ptinp
+FILES_kernel_module_pti = /lib/modules/$(KERNELVERSION)/extra/pti
+
+DESCRIPTION_kernel_module_ptinp = pti non public
+RCONFLICTS_kernel_module_ptinp = kernel_module_pti
+FILES_kernel_module_ptinp = lib/modules/$(KERNELVERSION)/extra/pti_np
+
+DESCRIPTION_kernel_module_simu_button = simu-button driver for control  devices
+FILES_kernel_module_simu_button = /lib/modules/$(KERNELVERSION)/extra/simu_button
+
+DESCRIPTION_kernel_module_smartcard = smartcard driver for control  devices
+FILES_kernel_module_smartcard = /lib/modules/$(KERNELVERSION)/extra/smartcard
+
+DESCRIPTION_kernel_module_stgfb = stgfb driver for control  devices
+FILES_kernel_module_stgfb = /lib/modules/$(KERNELVERSION)/extra/stgfb
+
+DESCRIPTION_kernel_module_rt2870sta = rt2870sta frontends driver for control wireless devices
+FILES_kernel_module_rt2870sta = /lib/modules/$(KERNELVERSION)/extra/wireless/rt2870sta
+RDEPENDS_kernel_module_rt2870sta = wlan_firmware
+
+DESCRIPTION_kernel_module_rt3070sta = rt3070sta driver for control wireless devices
+FILES_kernel_module_rt3070sta = /lib/modules/$(KERNELVERSION)/extra/wireless/rt3070sta
+RDEPENDS_kernel_module_rt3070sta = wlan_firmware
+
+DESCRIPTION_kernel_module_rt5370sta = rt5370sta driver for control wireless devices
+FILES_kernel_module_rt5370sta = /lib/modules/$(KERNELVERSION)/extra/wireless/rt5370sta
+RDEPENDS_kernel_module_rt5370sta = wlan_firmware
+
+DESCRIPTION_kernel_module_rtl8192cu = rtl8192cu driver for control wireless devices
+FILES_kernel_module_rtl8192cu = /lib/modules/$(KERNELVERSION)/extra/wireless/rtl8192cu
+
+DESCRIPTION_kernel_module_rtl871x = rtl871x driver for control  devices
+FILES_kernel_module_rtl871x = /lib/modules/$(KERNELVERSION)/extra/wireless/rtl871x
+
+$(DEPDIR)/driver: $(DEPENDS_driver) $(driverdir)/Makefile glibc-dev wlanfirmware linux-kernel.do_compile
 	$(PREPARE_driver)
 #	$(MAKE) -C $(KERNEL_DIR) $(MAKE_OPTS) ARCH=sh modules_prepare
 	$(start_build)
 	$(get_git_version)
-	$(eval export PKGV_driver = $(PKGV_driver)$(KERNELSTMLABEL))
+	$(eval export PKGV_driver = $(KERNELLABEL)_$(PKGV_driver))
 	$(if $(PLAYER179),cp $(driverdir)/stgfb/stmfb/linux/drivers/video/stmfb.h $(targetprefix)/usr/include/linux)
 	$(if $(PLAYER191),cp $(driverdir)/stgfb/stmfb/linux/drivers/video/stmfb.h $(targetprefix)/usr/include/linux)
 	cp $(driverdir)/player2/linux/include/linux/dvb/stm_ioctls.h $(targetprefix)/usr/include/linux/dvb
-	$(LN_SF) $(driverdir)/wireless/rtl8192cu/autoconf_rtl8192c_usb_linux.h $(buildprefix)/
+	#$(LN_SF) $(driverdir)/wireless/rtl8192cu/autoconf_rtl8192c_usb_linux.h $(buildprefix)/
 	$(MAKE) -C $(driverdir) ARCH=sh \
 		CONFIG_MODULES_PATH=$(targetprefix) \
 		KERNEL_LOCATION=$(buildprefix)/$(KERNEL_DIR) \
@@ -353,6 +440,45 @@ $(DEPDIR)/driver: $(DEPENDS_driver) $(driverdir)/Makefile glibc-dev linux-kernel
 		install
 	$(DEPMOD) -ae -b $(PKDIR) -F $(buildprefix)/$(KERNEL_DIR)/System.map -r $(KERNELVERSION)
 	$(tocdk_build)
+# required := for following ifdef checks
+ifeq (,$(wildcard $(DRIVER_TOPDIR)/pti_np ))
+	$(INSTALL_DIR) $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti
+ifdef ENABLE_HL101
+	$(if $(P0210),cp -dp $(archivedir)/ptinp/ptif_210.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti/pti.ko) \
+	$(if $(P0211),cp -dp $(archivedir)/ptinp/ptif_211.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti/pti.ko)
+endif	
+ifdef ENABLE_SPARK
+	$(if $(P0210),cp -dp $(archivedir)/ptinp/ptif_210.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti/pti.ko) \
+	$(if $(P0211),cp -dp $(archivedir)/ptinp/ptif_211.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti/pti.ko)
+endif
+ifdef ENABLE_SPARK7162
+	$(if $(P0210),cp -dp $(archivedir)/ptinp/pti_210s2.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti/pti.ko) \
+	$(if $(P0211),cp -dp $(archivedir)/ptinp/ptif_211s2.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti/pti.ko)
+endif
+else
+	$(INSTALL_DIR) $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti_np
+ifdef ENABLE_HL101
+	$(if $(P0210),cp -dp $(archivedir)/ptinp/pti_210.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti_np/pti.ko) \
+	$(if $(P0211),cp -dp $(archivedir)/ptinp/pti_211.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti_np/pti.ko)
+endif	
+ifdef ENABLE_SPARK
+	$(if $(P0210),cp -dp $(archivedir)/ptinp/pti_210.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti_np/pti.ko) \
+	$(if $(P0211),cp -dp $(archivedir)/ptinp/pti_211.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti_np/pti.ko)
+endif
+ifdef ENABLE_SPARK7162
+	$(if $(P0210),cp -dp $(archivedir)/ptinp/pti_210s2.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti_np/pti.ko) \
+	$(if $(P0211),cp -dp $(archivedir)/ptinp/pti_211s2.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti_np/pti.ko)
+endif
+endif
+	$(INSTALL_DIR) $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/encrypt
+ifdef ENABLE_SPARK
+	$(if $(P0210), cp -dp $(buildprefix)/root/release/encrypt_spark_stm24_0210.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/encrypt/encrypt.ko) \
+	$(if $(P0211), cp -dp $(buildprefix)/root/release/encrypt_spark_stm24_0211.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/encrypt/encrypt.ko)
+endif
+ifdef ENABLE_SPARK7162
+	$(if $(P0210), cp -dp $(buildprefix)/root/release/encrypt_spark7162_stm24_0210.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/encrypt/encrypt.ko) \
+	$(if $(P0211), cp -dp $(buildprefix)/root/release/encrypt_spark7162_stm24_0211.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/encrypt/encrypt.ko)
+endif
 	$(toflash_build)
 	touch $@
 
@@ -383,3 +509,128 @@ linux-kernel.%:
 	diff $(KERNEL_DIR)/.config.old $(KERNEL_DIR)/.config
 	@echo ""
 #-------------------
+
+#
+# boot-elf
+#
+BEGIN[[
+bootelf
+  0.4
+  {PN}-{PV}
+;
+]]END
+
+NAME_bootelf = boot-elf
+PACKAGE_ARCH_bootelf = $(box_arch)
+DESCRIPTION_bootelf = firmware non public
+SRC_URI_bootelf = unknown
+RDEPENDS_bootelf = filesystem
+
+
+$(DEPDIR)/bootelf: firmware filesystemtarget $(DEPENDS_bootelf)
+	$(start_build)
+	$(INSTALL_DIR) $(PKDIR)/lib/firmware/
+	$(INSTALL_DIR) $(PKDIR)/boot/
+ifdef ENABLE_SPARK
+	$(INSTALL_FILE) $(archivedir)/boot/video_7111.elf $(PKDIR)/boot/video.elf
+	$(INSTALL_FILE) $(archivedir)/boot/audio_7111.elf $(PKDIR)/boot/audio.elf
+	ln -sf /boot/video.elf $(PKDIR)/lib/firmware/video.elf
+	ln -sf /boot/audio.elf $(PKDIR)/lib/firmware/audio.elf
+endif
+ifdef ENABLE_SPARK7162
+	$(INSTALL_FILE) $(archivedir)/boot/video_7111.elf $(PKDIR)/boot/video.elf
+	$(INSTALL_FILE) $(archivedir)/boot/audio_7111.elf $(PKDIR)/boot/audio.elf
+	ln -sf /boot/video.elf $(PKDIR)/lib/firmware/video.elf
+	ln -sf /boot/audio.elf $(PKDIR)/lib/firmware/audio.elf
+endif
+ifdef ENABLE_HL101
+	$(INSTALL_FILE) $(archivedir)/boot/video_7109.elf $(PKDIR)/boot/video.elf
+	$(INSTALL_FILE) $(archivedir)/boot/audio_7109.elf $(PKDIR)/boot/audio.elf
+	ln -sf /boot/video.elf $(PKDIR)/lib/firmware/video.elf
+	ln -sf /boot/audio.elf $(PKDIR)/lib/firmware/audio.elf
+endif
+	$(toflash_build)
+	touch $@
+
+#
+# firmware
+#
+BEGIN[[
+firmware
+ 0.1
+  {PN}-{PV}
+  pdircreate:{PN}-{PV}
+  nothing:file://../root/firmware/component_7111_mb618.fw
+  nothing:file://../root/firmware/component_7105_pdk7105.fw
+  nothing:file://../root/firmware/dvb-fe-avl2108.fw
+  nothing:file://../root/firmware/dvb-fe-stv6306.fw
+  nothing:file://../root/release/fstab_hl101
+;
+]]END
+
+DESCRIPTION_firmware = firmware non public
+PACKAGE_ARCH_firmware = $(box_arch)
+SRC_URI_firmware = stlinux.com
+RDEPENDS_firmware := filesystem
+FILES_firmware = /lib/firmware/component.fw \
+		 /etc/hostname \
+		 /etc/fstab
+
+$(DEPDIR)/firmware:  $(DEPENDS_firmware)
+	$(PREPARE_firmware)
+	$(start_build)
+ifdef ENABLE_SPARK
+	cd $(DIR_firmware) && \
+	$(INSTALL_DIR) $(PKDIR)/etc/ && \
+	echo $(box_arch) > $(PKDIR)/etc/hostname && \
+	$(INSTALL_DIR) $(PKDIR)/lib/firmware/ && \
+	$(INSTALL_FILE) component_7111_mb618.fw $(PKDIR)/lib/firmware/component.fw
+endif
+ifdef ENABLE_SPARK7162
+	cd $(DIR_firmware) && \
+	$(INSTALL_DIR) $(PKDIR)/etc/ && \
+	echo $(box_arch) > $(PKDIR)/etc/hostname && \
+	$(INSTALL_DIR) $(PKDIR)/lib/firmware/ && \
+	$(INSTALL_FILE) component_7105_pdk7105.fw $(PKDIR)/lib/firmware/component.fw
+endif
+ifdef ENABLE_HL101
+	cd $(DIR_firmware) && \
+	$(INSTALL_DIR) $(PKDIR)/etc/ && \
+	echo $(box_arch) > $(prefix)/release/etc/hostname && \
+	$(INSTALL_DIR) $(PKDIR)/lib/firmware/ && \
+	$(INSTALL_FILE) fstab_hl101 $(PKDIR)/etc/fstab && \
+	$(INSTALL_FILE) dvb-fe-avl2108.fw $(PKDIR)/lib/firmware/ && \
+	&(INSTALL_FILE) dvb-fe-stv6306.fw $(PKDIR)/lib/firmware/
+endif
+	$(toflash_build)
+	touch $@
+
+#
+#  wlan-firmware
+#
+BEGIN[[
+wlanfirmware
+ 0.1
+  {PN}-{PV}
+  pdircreate:{PN}-{PV}
+  nothing:file://../root/etc/Wireless/RT2870STA/RT2870STA.dat
+  nothing:file://../root/etc/Wireless/RT3070STA/RT3070STA.dat
+  nothing:file://../root/firmware/rt2870.bin
+;
+]]END
+
+NAME_wlanfirmware = wlan-firmware
+DESCRIPTION_wlanfirmware = Wlan firmware  for  rt2870sta rt3070sta rt5370sta
+
+$(DEPDIR)/wlanfirmware: $(DEPENDS_wlanfirmware)
+	$(PREPARE_wlanfirmware)
+	$(start_build)
+	cd $(DIR_wlanfirmware) && \
+	$(INSTALL_DIR) $(PKDIR)/lib/firmware/ && \
+	$(INSTALL_DIR) $(PKDIR)/etc/Wireless/RT2870STA/ && \
+	$(INSTALL_DIR) $(PKDIR)/etc/Wireless/RT3070STA/ && \
+	$(INSTALL_FILE) RT2870STA.dat $(PKDIR)/etc/Wireless/RT2870STA/ && \
+	$(INSTALL_FILE) RT3070STA.dat $(PKDIR)/etc/Wireless/RT3070STA/ && \
+	$(INSTALL_FILE) rt2870.bin $(PKDIR)/lib/firmware/
+	$(toflash_build)
+	touch $@
