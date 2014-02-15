@@ -1016,11 +1016,17 @@ opkg
 ;
 ]]END
 
-
+PACKAGE_ARCH_opkg = $(box_arch)
+OPKG_ARCH_CONF = /etc/opkg/arch.conf
 DESCRIPTION_opkg = "lightweight package management system"
 FILES_opkg = \
+/etc/opkg \
 /usr/bin \
 /usr/lib
+
+define conffiles_opkg
+/etc/opkg/arch.conf
+endef
 
 $(DEPDIR)/opkg.do_prepare: bootstrap $(DEPENDS_opkg)
 	$(PREPARE_opkg)
@@ -1043,10 +1049,14 @@ $(DEPDIR)/opkg: $(DEPDIR)/opkg.do_compile
 	$(start_build)
 	cd $(DIR_opkg) && \
 		$(INSTALL_opkg)
-	$(tocdk_build)
+	$(INSTALL_DIR) $(PKDIR)/etc/opkg && \
+	( echo "arch all 1" ; \
+	  echo "arch sh4 10"; \
+	  echo "arch $(box_arch) 16" ) >>$(PKDIR)$(OPKG_ARCH_CONF) && \
 	ln -sf /usr/bin/opkg-cl  $(PKDIR)/usr/bin/ipkg-cl && \
 	ln -sf /usr/bin/opkg-cl  $(PKDIR)/usr/bin/opkg && \
 	ln -sf /usr/bin/opkg-cl  $(PKDIR)/usr/bin/ipkg
+	$(tocdk_build)
 	$(toflash_build)
 	touch $@
 
@@ -1116,7 +1126,7 @@ $(DEPDIR)/ntpclient: $(DEPDIR)/ntpclient.do_compile
 		install -D -m 0755 adjtimex $(PKDIR)/sbin/adjtimex; \
 		install -D -m 0755 rate.awk $(PKDIR)/sbin/ntpclient-drift-rate.awk
 	install -D -m 0755 Patches/ntpclient-init.file $(PKDIR)/etc/init.d/ntpclient
-	$(extra_build)
+	$(toflash_build)
 	touch $@
 
 #
@@ -1180,9 +1190,7 @@ $(DEPDIR)/udpxy.do_compile: $(DEPDIR)/udpxy.do_prepare
 #  If you fill $(PKDIR) correctly then our scripts could proceed.
 #  You could call one of the following:
 #    $(tocdk_build) - copy all $(PKDIR) contents to tufsbox/cdkroot to use them later if something depends on them.
-#    $(extra_build) - perform strip and cleanup, then make package ready to install on your box. You can find ipk in tufsbox/ipkbox
-#    $(toflash_build) - At first do exactly that $(extra_build) does. After install package to tufsbox/root to include it in image.
-#    $(e2extra_build) - same as $(extra_build) but copies ipk to tufsbox/ipkextras
+#    $(toflash_build) - At first do exactly that $(toflash_build) does. After install package to tufsbox/root to include it in image.
 #  Tip: $(tocdk_build) and $(toflash_build) could be used simultaneously.
 
 $(DEPDIR)/udpxy: $(DEPDIR)/udpxy.do_compile
@@ -1190,7 +1198,7 @@ $(DEPDIR)/udpxy: $(DEPDIR)/udpxy.do_compile
 	cd $(DIR_udpxy)  && \
 		export INSTALLROOT=$(PKDIR)/usr && \
 		$(MAKE) install
-	$(extra_build)
+	$(toflash_build)
 	touch $@
 
 # Note: all above defined variables has suffix 'udpxy' same as make-target name '$(DEPDIR)/udpxy'
@@ -1480,7 +1488,7 @@ BEGIN[[
 oscam
   svn
   {PN}-{PV}
-  svn://www.streamboard.tv/svn/oscam/trunk/
+  svn://www.oscam.cc/svn/oscam-mirror/trunk/
   make:install:DESTDIR=PKDIR:OSCAM_BIN = OSCAM_BIN
 ;
 ]]END
@@ -1530,10 +1538,21 @@ oscamconfig
 NAME_oscamconfig = enigma2_plugin_cams_oscam_config
 DESCRIPTION_oscamconfig = Example configs for Open Source Conditional Access Module software
 SRC_URI_oscamconfig = http://www.streamboard.tv/oscam/
+RDEPENDS_oscamconfig = enigma2-plugin-cams-oscam
 FILES_oscamconfig = \
 /var/keys/oscam.*
 
-$(DEPDIR)/oscamconfig: $(DEPENDS_oscamconfig)
+define conffiles_oscamconfig
+/var/keys/oscam.conf
+/var/keys/oscam.dvbapi
+/var/keys/oscam.services
+/var/keys/oscam.srvid
+/var/keys/oscam.user
+/var/keys/oscam.server
+/var/keys/oscam.guess
+endef
+
+$(DEPDIR)/oscamconfig: oscam $(DEPENDS_oscamconfig)
 	 $(PREPARE_oscamconfig)
 	 $(start_build)
 		$(INSTALL_DIR) $(PKDIR)/var/keys
@@ -1547,8 +1566,8 @@ ifdef ENABLE_SPARK7162
 else
 		$(INSTALL_FILE) $(buildprefix)/root/var/keys/oscam.server   $(PKDIR)/var/keys/oscam.server
 endif
-		$(INSTALL_FILE) $(buildprefix)/root/var/keys/oscam.guess    $(PKDIR)/var/keys/oscam.guess	 
-	 $(e2extra_build)
+		$(INSTALL_FILE) $(buildprefix)/root/var/keys/oscam.guess    $(PKDIR)/var/keys/oscam.guess
+	 $(toflash_build)
 	touch $@
 
 #
@@ -1590,5 +1609,5 @@ $(DEPDIR)/tor: $(DEPDIR)/tor.do_compile
 	$(start_build)
 	cd $(DIR_tor)  && \
 		$(INSTALL_tor)
-	$(extra_build)
+	$(toflash_build)
 	touch $@
