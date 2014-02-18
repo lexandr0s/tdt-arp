@@ -69,7 +69,7 @@ $(DEPDIR)/%$(GLIBC_DEV): $(DEPDIR)/%$(GLIBC) $(GLIBC_DEV_RPM)
 #
 BINUTILS := binutils
 BINUTILS_DEV := binutils-dev
-BINUTILS_VERSION := 2.23.2-75
+BINUTILS_VERSION := 2.23.2-76
 BINUTILS_SPEC := stm-target-$(BINUTILS).spec
 BINUTILS_SPEC_PATCH := $(BINUTILS_SPEC).$(BINUTILS_VERSION).diff
 BINUTILS_PATCHES := stm-target-$(BINUTILS).$(BINUTILS_VERSION).diff
@@ -98,7 +98,7 @@ $(DEPDIR)/$(BINUTILS_DEV): $(BINUTILS_DEV_RPM)
 # GMP
 #
 GMP := gmp
-GMP_VERSION := 5.1.0-8
+GMP_VERSION := 5.1.0-9
 GMP_SPEC := stm-target-$(GMP).spec
 GMP_SPEC_PATCH :=
 GMP_PATCHES :=
@@ -212,7 +212,7 @@ RDEPENDS_libstdc++-dev = libstdc++
 FILES_libstdc++-dev = /usr/include /usr/lib/*.*
 LIBGCC := libgcc
 ifdef GCC48
-GCC_VERSION := 4.8.2-134
+GCC_VERSION := 4.8.2-135
 else
 GCC_VERSION := 4.7.3-129
 endif
