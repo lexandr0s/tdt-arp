@@ -1,0 +1,20 @@
+#!/bin/sh
+
+case "$1" in
+  start)
+        /usr/sbin/minidlna -f /etc/minidlna.conf
+	;;
+  stop)
+        killall -9 minidlna
+	;;
+  restart)
+        killall -9 minidlna
+        sleep 2
+        /usr/sbin/minidlna -f /etc/minidlna.conf
+	;;
+  *)
+	echo "Usage: minidlna {start|stop|restart}"
+	exit 1
+	;;
+esac
+exit 0 

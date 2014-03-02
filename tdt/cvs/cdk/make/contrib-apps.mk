@@ -10,6 +10,8 @@ bzip2
   make:install:PREFIX=PKDIR/usr
 ;
 ]]END
+
+NAME_bzip2 = libbz2
 DESCRIPTION_bzip2 = "bzip2"
 
 FILES_bzip2 = \
@@ -174,13 +176,13 @@ usb_modeswitch
 ]]END
 
 DESCRIPTION_usb_modeswitch = usb_modeswitch
-RDEPENDS_usb_modeswitch = libusb2 libusb_compat usb_modeswitch_data
+RDEPENDS_usb_modeswitch = libusb-0.1 libusb-1.0 usb_modeswitch_data
 FILES_usb_modeswitch = \
 /etc/* \
 /lib/udev/* \
 /usr/sbin/*
 
-$(DEPDIR)/usb_modeswitch.do_prepare: $(DEPENDS_usb_modeswitch) $(RDEPENDS_usb_modeswitch)
+$(DEPDIR)/usb_modeswitch.do_prepare: libusb2 libusb_compat usb_modeswitch_data $(DEPENDS_usb_modeswitch)
 	$(PREPARE_usb_modeswitch)
 	touch $@
 $(DEPDIR)/usb_modeswitch.do_compile: $(DEPDIR)/usb_modeswitch.do_prepare
@@ -239,7 +241,7 @@ $(DEPDIR)/usb_modeswitch_data: $(DEPDIR)/usb_modeswitch_data.do_compile
 # NTFS-3G
 #
 BEGIN[[
-ntfs_3g
+ntfs3g
   2013.1.13
   ntfs-3g_ntfsprogs-{PV}
   extract:http://tuxera.com/opensource/ntfs-3g_ntfsprogs-{PV}.tgz
@@ -247,36 +249,70 @@ ntfs_3g
 ;
 ]]END
 
-DESCRIPTION_ntfs_3g = ntfs-3g
-#RDEPENDS_ntfs_3g = fuse
-FILES_ntfs_3g = \
-/bin/ntfs-3g \
-/sbin/mount.ntfs-3g \
-/usr/lib/* \
-/lib/*
+PACKAGES_ntfs3g = ntfs_3g \
+		  libntfs_3g84 \
+		  ntfsprogs
 
-$(DEPDIR)/ntfs_3g.do_prepare: $(DEPENDS_ntfs_3g)
-	$(PREPARE_ntfs_3g)
+DESCRIPTION_ntfs_3g = The NTFS-3G driver is an open source, freely available NTFS driver for \
+ Linux with read and write support.
+RDEPENDS_ntfs_3g = libc6 libfuse2 libntfs_3g84
+FILES_ntfs_3g = /sbin/mount.n* \
+               /usr/bin/ntfs-3*
+
+DESCRIPTION_ntfsprogs = The NTFS-3G driver is an open source, freely available NTFS driver for \
+ Linux with read and write support.
+RDEPENDS_ntfsprogs = libc6 libntfs_3g84
+FILES_ntfsprogs = /sbin/mount.lowntfs-3g \
+		  /sbin/mkfs.ntfs \
+		  /usr/bin/lowntfs-3g \
+		  /usr/bin/ntfscat \
+		  /usr/bin/ntfscluster \
+		  /usr/bin/ntfscmp \
+		  /usr/bin/ntfsfix \
+		  /usr/bin/ntfsinfo \
+		  /usr/bin/ntfsls \
+		  /usr/sbin/mkntfs \
+		  /usr/sbin/ntfsclone \
+		  /usr/sbin/ntfscp \
+		  /usr/sbin/ntfslabel \
+		  /usr/sbin/ntfsresize \
+		  /usr/sbin/ntfsundelete
+
+DESCRIPTION_libntfs_3g84 = The NTFS-3G driver is an open source, freely available NTFS driver for \
+ Linux with read and write support.
+RDEPENDS_libntfs_3g84 = libc6
+define postinst_libntfs_3g84
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libntfs_3g84 = /usr/lib/libntfs-3g.so.*
+
+$(DEPDIR)/ntfs3g.do_prepare: $(DEPENDS_ntfs3g)
+	$(PREPARE_ntfs3g)
 	touch $@
 
-$(DEPDIR)/ntfs_3g.do_compile: bootstrap fuse $(DEPDIR)/ntfs_3g.do_prepare
+$(DEPDIR)/ntfs3g.do_compile: bootstrap fuse $(DEPDIR)/ntfs3g.do_prepare
 	export PATH=$(hostprefix)/bin:$(PATH) && \
 	LDCONFIG=$(prefix)/cdkroot/sbin/ldconfig \
-	cd $(DIR_ntfs_3g)  && \
+	cd $(DIR_ntfs3g)  && \
 		$(BUILDENV) \
 		PKG_CONFIG=$(hostprefix)/bin/pkg-config \
 		./configure \
 			--build=$(build) \
-			--disable-ldconfig \
 			--host=$(target) \
-			--prefix=/usr
-		$(MAKE) $(MAKE_OPTS)
+			--disable-ldconfig \
+			--enable-shared \
+			--exec-prefix=/usr \
+			--prefix=/usr && \
+		$(MAKE)
 	touch $@
 
-$(DEPDIR)/ntfs_3g: $(DEPDIR)/ntfs_3g.do_compile
+$(DEPDIR)/ntfs3g: $(DEPDIR)/ntfs3g.do_compile
 	$(start_build)
-	cd $(DIR_ntfs_3g)  && \
-		$(INSTALL_ntfs_3g)
+	cd $(DIR_ntfs3g)  && \
+		$(INSTALL_ntfs3g)
 	$(tocdk_build)	
 	$(toflash_build)
 	touch $@
@@ -330,16 +366,26 @@ portmap
 ]]END
 
 DESCRIPTION_portmap = "the program supports access control in the style of the tcp wrapper (log_tcp) packag"
+RDEPENDS_portmap = lsb
 FILES_portmap = \
 /sbin/* \
 /etc/init.d/
+
+define postinst_portmap
+#!/bin/sh
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ portmap start 41 S . stop 10 0 6 .
+endef
+
+define prerm_portmap
+#!/bin/sh
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ portmap remove
+endef
 
 $(DEPDIR)/portmap.do_prepare: bootstrap $(DEPENDS_portmap)
 	$(PREPARE_portmap)
 	cd $(DIR_portmap) && \
 		gunzip -cd $(lastword $^) | cat > debian.patch && \
-		patch -p1 <debian.patch && \
-		sed -e 's/### BEGIN INIT INFO/# chkconfig: S 41 10\n### BEGIN INIT INFO/g' -i debian/init.d
+		patch -p1 <debian.patch
 	touch $@
 
 $(DEPDIR)/portmap.do_compile: $(DEPDIR)/portmap.do_prepare
@@ -426,7 +472,7 @@ PACKAGES_e2fsprogs = e2fsprogs_badblocks \
 
 DESCRIPTION_e2fsprogs_badblocks = The Ext2 Filesystem Utilities (e2fsprogs) contain all of the standard \
  utilities for creating, fixing, configuring , and debugging ext2 filesystems.
-RDEPENDS_2fsprogs_badblocks = libcom-err2 libext2fs2
+RDEPENDS_2fsprogs_badblocks = libcom-err2 libext2fs2 libc6
 FILES_e2fsprogs_badblocks = /sbin/badblock
 
 DESCRIPTION_e2fsprogs_blkid = The Ext2 Filesystem Utilities (e2fsprogs) contain all of the standard \
@@ -436,26 +482,26 @@ FILES_e2fsprogs_blkid = /sbin/blkid
 
 DESCRIPTION_e2fsprogs_e2fsck = The Ext2 Filesystem Utilities (e2fsprogs) contain all of the standard \
  utilities for creating, fixing, configuring , and debugging ext2 filesystems.
-RDEPENDS_e2fsprogs_e2fsck = libblkid1 libcom_err2 libe2p2 libext2fs2 libuuid1
+RDEPENDS_e2fsprogs_e2fsck = libblkid1 libcom_err2 libe2p2 libc6 libext2fs2 libuuid1
 FILES_e2fsprogs_e2fsck = /sbin/e2fsck
 
 DESCRIPTION_e2fsprogs_mke2fs = The Ext2 Filesystem Utilities (e2fsprogs) contain all of the standard \
  utilities for creating, fixing, configuring , and debugging ext2 filesystems.
-RDEPENDS_e2fsprogs_mke2fs = libblkid1 libcom_err2 libe2p2 libext2fs2 libuuid1
+RDEPENDS_e2fsprogs_mke2fs = libblkid1 libcom_err2 libe2p2 libc6 libext2fs2 libuuid1
 FILES_e2fsprogs_mke2fs = /etc/mke2fs.conf \
 			/sbin/mkfs* \
 			/sbin/mke2fs
 
 DESCRIPTION_e2fsprogs_tune2fs = The Ext2 Filesystem Utilities (e2fsprogs) contain all of the standard \
  utilities for creating, fixing, configuring , and debugging ext2 filesystems.
-RDEPENDS_e2fsprogs_tune2fs = libblkid1 libcom_err2 libe2p2 libext2fs2 libuuid1
+RDEPENDS_e2fsprogs_tune2fs = libblkid1 libcom_err2 libe2p2 libc6 libext2fs2 libuuid1
 FILES_e2fsprogs_tune2fs = /sbin/tune2fs \
 			  /sbin/e2label \
 			  /sbin/findfs
 
 DESCRIPTION_e2fsprogs_core = The Ext2 Filesystem Utilities (e2fsprogs) contain all of the standard \
  utilities for creating, fixing, configuring , and debugging ext2 filesystems.
-RDEPENDS_e2fsprogs_core = libss2 libext2fs2 libcom_err2 libe2p2 e2fsprogs_blkid e2fsprogs_badblocks libblkid1 libuuid1
+RDEPENDS_e2fsprogs_core = libss2 libext2fs2 libcom_err2 libe2p2 libc6 e2fsprogs_badblocks libblkid1 libuuid1
 FILES_e2fsprogs_core = /sbin/debugfs \
 		  /sbin/dumpe2fs \
 		  /sbin/e2freefrag \
@@ -550,7 +596,7 @@ sdparm
 ]]END
 
 DESCRIPTION_sdparm = "sdparm"
-
+RDEPENDS_sdparm =libc6
 FILES_sdparm = \
 /sbin/sdparm
 
@@ -624,12 +670,21 @@ $(DEPDIR)/ipkg: $(DEPDIR)/ipkg.do_compile
 #
 BEGIN[[
 rsync
-  2.6.9
+  3.1.0
   {PN}-{PV}
-  extract:http://samba.anu.edu.au/ftp/{PN}/{PN}-{PV}.tar.gz
+  extract:http://rsync.samba.org/ftp/{PN}/src/{PN}-{PV}.tar.gz
+  nothing:file://../root/etc/rsyncd.conf
   make:install:DESTDIR=TARGETS
 ;
 ]]END
+
+DESCRIPTION_rsync = File synchronization tool
+RDEPENDS_rsync = libpopt0 libc6
+define conffiles_rsync
+/etc/rsyncd.conf
+endef
+FILES_rsync = /etc/rsyncd.conf \
+	      /usr/bin/rsync
 
 $(DEPDIR)/rsync.do_prepare: bootstrap $(DEPENDS_rsync)
 	$(PREPARE_rsync)
@@ -641,15 +696,23 @@ $(DEPDIR)/rsync.do_compile: $(DEPDIR)/rsync.do_prepare
 		./configure \
 			--build=$(build) \
 			--host=$(target) \
+			--exec-prefix=/usr \
 			--prefix=/usr \
-			--disable-debug \
-			--disable-locale && \
+			--disable-xattr-support \
+			--disable-acl-support && \
 		$(MAKE)
 	touch $@
 
 $(DEPDIR)/rsync: $(DEPDIR)/rsync.do_compile
+	$(start_build)
 	cd $(DIR_rsync) && \
 		$(INSTALL_rsync)
+	$(INSTALL_DIR) $(PKDIR)/etc && \
+	$(INSTALL_DIR) $(PKDIR)/usr/bin && \
+	$(INSTALL_BIN) $(DIR_rsync)/rsync $(PKDIR)/usr/bin && \
+	$(INSTALL_FILE) $(DIR_rsync)/rsyncd.conf $(PKDIR)/etc && \
+	$(tocdk_build)
+	$(toflash_build)
 	touch $@
 
 #
@@ -734,7 +797,7 @@ $(DEPDIR)/lm_sensors: $(DEPDIR)/lm_sensors.do_compile
 #
 BEGIN[[
 fuse
-  2.9.2
+  2.9.3
   {PN}-{PV}
   extract:http://dfn.dl.sourceforge.net/sourceforge/{PN}/{PN}-{PV}.tar.gz
   patch:file://{PN}.diff
@@ -742,13 +805,58 @@ fuse
 ;
 ]]END
 
-DESCRIPTION_fuse = With FUSE it is possible to implement a fully functional filesystem in a userspace program.  Features include
+PACKAGES_fuse = libfuse2 \
+		libulockmgr1 \
+		fuse_utils
 
-FILES_fuse = \
-/usr/lib/*.so* \
-/etc/init.d/* \
-/etc/udev/* \
-/usr/bin/*
+DESCRIPTION_libfuse2 = With FUSE it is possible to implement a fully functional filesystem in a \
+ userspace program  FUSE (Filesystem in Userspace) is a simple interface \
+ for userspace   programs to export a virtual filesystem to the Linux \
+ kernel.  FUSE also   aims to provide a secure method for non privileged \
+ users to create and   mount their own filesystem implementations.
+RDEPENDS_libfuse2 = libc6
+define postinst_libfuse2
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libfuse2 = /usr/lib/libfuse.so.*
+
+DESCRIPTION_libulockmgr1 = With FUSE it is possible to implement a fully functional filesystem in a \
+ userspace program  FUSE (Filesystem in Userspace) is a simple interface \
+ for userspace   programs to export a virtual filesystem to the Linux \
+ kernel.  FUSE also   aims to provide a secure method for non privileged \
+ users to create and   mount their own filesystem implementations.
+RDEPENDS_libulockmgr1 = libc6
+define postinst_libulockmgr1
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libulockmgr1 = /usr/lib/libulockmgr.so.*
+
+DESCRIPTION_fuse_utils = With FUSE it is possible to implement a fully functional filesystem in a \
+ userspace program  FUSE (Filesystem in Userspace) is a simple interface \
+ for userspace   programs to export a virtual filesystem to the Linux \
+ kernel.  FUSE also   aims to provide a secure method for non privileged \
+ users to create and   mount their own filesystem implementations.
+RDEPENDS_fuse_utils = libc6
+FILES_fuse_utils = /etc/init.d/fuse \
+		   /etc/udev/* \
+		   /sbin/mount.fuse \
+		   /usr/bin/*
+
+define postinst_fuse_utils
+#!/bin/sh
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ fuse start 34 S .
+endef
+
+define prerm_fuse_utils
+#!/bin/sh
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ fuse remove
+endef
 
 $(DEPDIR)/fuse.do_prepare: bootstrap curl glib2 $(DEPENDS_fuse)
 	$(PREPARE_fuse)
@@ -773,10 +881,6 @@ $(DEPDIR)/fuse: curl glib2 $(DEPDIR)/fuse.do_compile
 	rm -R $(PKDIR)/dev
 	$(LN_SF) sh4-linux-fusermount $(PKDIR)/usr/bin/fusermount
 	$(LN_SF) sh4-linux-ulockmgr_server $(PKDIR)/usr/bin/ulockmgr_server
-	( export HHL_CROSS_TARGET_DIR=$(prefix)/release && $(prefix)/release/etc/init.d && \
-		for s in fuse ; do \
-			$(hostprefix)/bin/target-initdconfig --add $$s || \
-			echo "Unable to enable initd service: $$s" ; done && rm *rpmsave 2>/dev/null || true )
 	$(tocdk_build)
 	$(toflash_build)
 	touch $@
@@ -1017,7 +1121,7 @@ opkg
 ]]END
 
 PACKAGE_ARCH_opkg = $(box_arch)
-OPKG_ARCH_CONF = /etc/opkg/arch.conf
+OPKG_ARCH_CONF = /etc/opkg/opkg.conf
 DESCRIPTION_opkg = "lightweight package management system"
 FILES_opkg = \
 /etc/opkg \
@@ -1025,7 +1129,7 @@ FILES_opkg = \
 /usr/lib
 
 define conffiles_opkg
-/etc/opkg/arch.conf
+/etc/opkg/opkg.conf
 endef
 
 $(DEPDIR)/opkg.do_prepare: bootstrap $(DEPENDS_opkg)
@@ -1101,11 +1205,11 @@ PKGR_ntpclient = r1
 # moreover line breaks are also correctly exported to python, enjoy!
 define postinst_ntpclient
 #!/bin/sh
-initdconfig --add ntpclient
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ ntpclient start 
 endef
 define postrm_ntpclient
 #!/bin/sh
-initdconfig --del ntpclient
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ ntpclient remove
 endef
 
 $(DEPDIR)/ntpclient.do_prepare: $(DEPENDS_ntpclient)
@@ -1242,11 +1346,11 @@ $(DEPDIR)/udpxy: $(DEPDIR)/udpxy.do_compile
 
 define postinst_foo
 #!/bin/sh
-initdconfig --add foo
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ foo start 99 S .
 endef
 
 # This is all about scripts
-# Note: init.d script starting and stopping is handled by initdconfig
+# Note: init.d script starting and stopping is handled by update-rc.d
 
 # Multi-Packaging
 # When you whant to split files from one target to different packages you should set PACKAGES_parentfoo value.
@@ -1304,7 +1408,9 @@ hotplug_e2
 ;
 ]]END
 
+NAME_hotplug_e2 = hotplug_e2_helper
 DESCRIPTION_hotplug_e2 = "hotplug_e2"
+RDEPENDS_hotplug_e2 = libc6
 PKGR_hotplug_e2 = r1
 FILES_hotplug_e2 = \
 /sbin/bdpoll \
@@ -1343,24 +1449,63 @@ autofs
   4.1.4
   {PN}-{PV}
   extract:http://kernel.org/pub/linux/daemons/{PN}/v4/{PN}-{PV}.tar.gz
-  patch:file://{PN}-{PV}-misc-fixes.patch
-  patch:file://{PN}-{PV}-multi-parse-fix.patch
-  patch:file://{PN}-{PV}-non-replicated-ping.patch
-  patch:file://{PN}-{PV}-locking-fix-1.patch
-  patch:file://{PN}-{PV}-cross.patch
-  patch:file://{PN}-{PV}-Makefile.rules-cross.patch
-  patch:file://{PN}-{PV}-install.patch
-  patch:file://{PN}-{PV}-auto.net-sort-option-fix.patch
-  patch:file://{PN}-{PV}-{PN}-additional-distros.patch
-  patch:file://{PN}-{PV}-no-bash.patch
-  patch:file://{PN}-{PV}-{PN}-add-hotplug.patch
-  patch:file://{PN}-{PV}-no_man.patch
+  patch:file://{PN}-{PV}.patch
   make:install:INSTALLROOT=PKDIR
 ;
 ]]END
 
-DESCRIPTION_autofs = "autofs"
+DESCRIPTION_autofs = Kernel based automounter for linux. \
+ Kernel based automounter for linux..
+RDEPENDS_autofs = libc6
+
+define postinst_autofs
+#!/bin/sh
+if type update-rc.d >/dev/null 2>/dev/null; then
+	if [ -n "$$D" ]; then
+		OPT="-r $$D"
+	else
+		OPT="-s"
+	fi
+	update-rc.d $OPT autofs defaults
+fi
+endef
+
+define postrm_autofs
+#!/bin/sh
+if type update-rc.d >/dev/null 2>/dev/null; then
+	if [ -n "$$D" ]; then
+		OPT="-r $$D"
+	else
+		OPT=""
+	fi
+	update-rc.d $OPT autofs remove
+fi
+endef
+
+define preinst_autofs
+#!/bin/sh
+if [ -z "$$D" -a -f "/etc/init.d/autofs" ]; then
+	/etc/init.d/autofs stop
+fi
+if type update-rc.d >/dev/null 2>/dev/null; then
+	if [ -n "$$D" ]; then
+		OPT="-f -r $$D"
+	else
+		OPT="-f"
+	fi
+	update-rc.d $OPT autofs remove
+fi
+endef
+
+define prerm_autofs
+#!/bin/sh
+if [ -z "$D" ]; then
+	/etc/init.d/autofs stop
+fi
+endef
+
 FILES_autofs = \
+/etc/* \
 /usr/*
 
 $(DEPDIR)/autofs.do_prepare: bootstrap $(DEPENDS_autofs)
@@ -1457,7 +1602,7 @@ grab
 NAME_grab = aio_grab
 DESCRIPTION_grab = Screen grabber for Set-Top-Boxes
 PKGR_grab = r1
-RDEPENDS_grab = libpng16 libjpeg8
+RDEPENDS_grab = libpng16 libjpeg8 libc6
 
 $(DEPDIR)/grab.do_prepare: bootstrap $(RDEPENDS_grab) $(DEPENDS_grab)
 	$(PREPARE_grab)
@@ -1495,6 +1640,7 @@ oscam
 
 NAME_oscam = enigma2_plugin_cams_oscam
 DESCRIPTION_oscam = Open Source Conditional Access Module software
+RDEPENDS_oscam = libssl1 libcrypto1
 SRC_URI_oscam = http://www.streamboard.tv/oscam/
 FILES_oscam = \
 /usr/bin/cam/oscam
@@ -1561,11 +1707,7 @@ $(DEPDIR)/oscamconfig: oscam $(DEPENDS_oscamconfig)
 		$(INSTALL_FILE) $(buildprefix)/root/var/keys/oscam.services $(PKDIR)/var/keys/oscam.services
 		$(INSTALL_FILE) $(buildprefix)/root/var/keys/oscam.srvid    $(PKDIR)/var/keys/oscam.srvid
 		$(INSTALL_FILE) $(buildprefix)/root/var/keys/oscam.user     $(PKDIR)/var/keys/oscam.user
-ifdef ENABLE_SPARK7162
 		$(INSTALL_FILE) $(buildprefix)/root/var/keys/oscam.server2  $(PKDIR)/var/keys/oscam.server
-else
-		$(INSTALL_FILE) $(buildprefix)/root/var/keys/oscam.server   $(PKDIR)/var/keys/oscam.server
-endif
 		$(INSTALL_FILE) $(buildprefix)/root/var/keys/oscam.guess    $(PKDIR)/var/keys/oscam.guess
 	 $(toflash_build)
 	touch $@

@@ -30,9 +30,10 @@ libz
   make:install:DESTDIR=PKDIR
 ;
 ]]END
-PACKAGES_libz = libz1
-DESCRIPTION_libz1 = "Compression library implementing the deflate compression method found in gzip and PKZIP"
-FILES_libz1 = \
+NAME_libz = libz1
+DESCRIPTION_libz = Zlib Compression Library Zlib is a general-purpose, patent-free, lossless data compression library \
+which is used by many different programs.
+FILES_libz = \
 /usr/lib/*
 
 LIBZ_ORDER = binutils-dev
@@ -70,12 +71,25 @@ libreadline
 ;
 ]]END
 
-DESCRIPTION_libreadline = GNU readline library
-BDEPENDS_libreadline += ncurses
+NAME_libreadline = libreadline6
+DESCRIPTION_libreadline = Library for editing typed command lines \
+ The GNU Readline library provides a set of functions for use by \
+ applications that allow users to edit command lines as they are typed in. \
+ Both Emacs and vi editing modes are available. The Readline library \
+ includes  additional functions to maintain a list of previously-entered \
+ command lines, to recall and perhaps reedit those   lines, and perform \
+ csh-like history expansion on previous commands.
+RDEPENDS_libreadline += libncurses5 libc6
+define postinst_libreadline
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
 FILES_libreadline = \
 /usr/lib
 
-$(DEPDIR)/libreadline.do_prepare: bootstrap ncurses-dev $(DEPENDS_libreadline)
+$(DEPDIR)/libreadline.do_prepare: bootstrap ncurses ncurses-dev $(DEPENDS_libreadline)
 	$(PREPARE_libreadline)
 	touch $@
 
@@ -158,6 +172,7 @@ DESCRIPTION_freetype = Freetype font rendering library \
  high-quality output (glyph images). It can be used in graphics libraries, \
  display servers, font conversion tools, text image generation tools, and \
  many other products as well.
+RDEPENDS_freetype = libc6
 FILES_freetype = /usr/lib/*.so*
 #/usr/bin/freetype-config
 
@@ -203,7 +218,6 @@ lirc
 
 DESCRIPTION_lirc ="lirc"
 PKGR_lirc = r3
-RDEPENDS_lirc = fp_control
 FILES_lirc = \
 /usr/bin/lircd \
 /usr/lib/*.so* \
@@ -281,7 +295,7 @@ libjpeg
 NAME_libjpeg = libjpeg8
 DESCRIPTION_libjpeg = libjpeg contains a library for handling the JPEG (JFIF) image format, as \
  well as related programs for accessing the libjpeg functions.
-
+RDEPENDS_libjpeg = libc6
 FILES_libjpeg = \
 /usr/lib/*.so* 
 
@@ -325,7 +339,7 @@ libpng
 
 PACKAGES_libpng = libpng16
 DESCRIPTION_libpng16 = "libpng"
-RDEPENDS_libpng16 = libz1
+RDEPENDS_libpng16 = libz1 libc6
 FILES_libpng16 = /usr/lib/*.so*
 
 $(DEPDIR)/libpng.do_prepare: bootstrap libz $(DEPENDS_libpng)
@@ -370,7 +384,7 @@ libpng12
 ]]END
 
 DESCRIPTION_libpng12 = "libpng12"
-BDEPENDS_libpng12 += libz
+RDEPENDS_libpng12 += libz1 libc6
 
 FILES_libpng12 = \
 /usr/lib/libpng12.so*
@@ -417,7 +431,8 @@ libungif
 ]]END
 
 DESCRIPTION_libungif = "libungif"
-
+NAME_libungif = libungif4
+RDEPENDS_libungif = libc6
 FILES_libungif = \
 /usr/lib/*.so*
 
@@ -496,13 +511,25 @@ curl
 ;
 ]]END
 
-DESCRIPTION_curl = "Curl is a command line tool for transferring data specified with URL syntax"
+DESCRIPTION_curl = Command line tool and library for client-side URL transfers
+PACKAGES_curl = libcurl4 \
+		curl
 
-FILES_curl = \
-/usr/lib/*.so* \
-/usr/bin/curl
+DESCRIPTION_libcurl4 = Command line tool and library for client-side URL transfers
+RDEPENDS_libcurl4 = libcap2 libz1 librtmp1 libc6
+define postinst_libcurl4
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libcurl4 = /usr/lib/*.so*
 
-$(DEPDIR)/curl.do_prepare: bootstrap openssl rtmpdump libz $(DEPENDS_curl)
+DESCRIPTION_curl = Command line tool and library for client-side URL transfers
+RDEPENDS_curl = libcurl4 libz1 libc6
+FILES_curl = /usr/bin/curl
+
+$(DEPDIR)/curl.do_prepare: bootstrap openssl rtmpdump libcap libz $(DEPENDS_curl)
 	$(PREPARE_curl)
 	touch $@
 
@@ -545,12 +572,15 @@ libfribidi
   make:install:DESTDIR=PKDIR
 ;
 ]]END
-NAME_libfribidi = libfribidi0
-DESCRIPTION_libfribidi = Fribidi library for bidirectional text
+PACKAGES_libfribidi = libfribidi0 \
+		      libfribidi_bin
+DESCRIPTION_libfribidi0 = Fribidi library for bidirectional text
+RDEPENDS_libfribidi0 = libc6
+FILES_libfribidi0 = /usr/lib/*.so*
 
-FILES_libfribidi = \
-/usr/lib/*.so* \
-/usr/bin/*
+DESCRIPTION_libfribidi_bin = Fribidi library for bidirectional text
+RDEPENDS_libfribidi_bin = libfribidi0 libc6
+FILES_libfribidi_bin = /usr/bin/*
 
 $(DEPDIR)/libfribidi.do_prepare: bootstrap $(DEPENDS_libfribidi)
 	$(PREPARE_libfribidi)
@@ -588,7 +618,7 @@ libsigc
 ;
 ]]END
 
-NAME_libsigc = libsigc_1.2_0
+NAME_libsigc = libsigc_1.2
 DESCRIPTION_libsigc =  A library for loose coupling of C++ method calls
 RDEPENDS_libsigc = libstdc++6 libgcc1
 FILES_libsigc = /usr/lib/*.so*
@@ -630,7 +660,8 @@ libmad
 ]]END
 
 DESCRIPTION_libmad = "libmad - MPEG audio decoder library"
-
+NAME_libmad = libmad0
+RDEPENDS_libmad = libc6
 FILES_libmad = \
 /usr/lib/*.so*
 
@@ -679,8 +710,10 @@ libid3tag
 ;
 ]]END
 
-DESCRIPTION_libid3tag = "libid3tag"
-RDEPENDS_libid3tag = libz1
+DESCRIPTION_libid3tag = Library for interacting with ID3 tags in MP3 files  Library for \
+ interacting with ID3 tags in MP3 files.
+NAME_libid3tag = libid3tag0
+RDEPENDS_libid3tag = libz1 libc6
 
 FILES_libid3tag = \
 /usr/lib/*.so*
@@ -721,8 +754,10 @@ libvorbisidec
   make:install:DESTDIR=PKDIR
 ;
 ]]END
-DESCRIPTION_libvorbisidec = "libvorbisidec"
-
+DESCRIPTION_libvorbisidec = Fixed-point decoder - Development files (Static Libraries)  tremor is a \
+ fixed point implementation of the vorbis codec.  This package contains static libraries for software development.
+NAME_libvorbisidec = libvorbisidec1
+RDEPENDS_libvorbisidec = libogg0 libc6
 FILES_libvorbisidec = \
 /usr/lib/*.so*
 
@@ -760,10 +795,21 @@ libffi
   make:install:DESTDIR=PKDIR
 ;
 ]]END
-DESCRIPTION_libffi = libffi
 
+NAME_libffi = libffi6
+DESCRIPTION_libffi = A portable foreign function interface library \
+ The `libffi' library provides a portable, high level programming \
+ interface to various calling conventions.  This allows a programmer to \
+ call any function specified by a call interface description at run time. \
+ FFI stands for Foreign Function Interface.  A foreign function interface \
+ is the popular name for the interface that allows code written in one \
+ language to call code written in another language.  The `libffi' library \
+ really only provides the lowest, machine dependent layer of a fully \
+ featured foreign function interface.  A layer must exist above `libffi' \
+ that handles type conversions for values passed between the two languages.
+RDEPENDS_libffi = libc6
 FILES_libffi = \
-/usr/lib/*.so*
+/usr/lib/libffi.so*
 
 $(DEPDIR)/libffi.do_prepare: bootstrap libjpeg lcms $(DEPENDS_libffi)
 	$(PREPARE_libffi)
@@ -805,11 +851,20 @@ glib2
   make:install:DESTDIR=PKDIR
 ;
 ]]END
-NAME_glib2 = libglib_2.0_0
-DESCRIPTION_glib2 = "libglib2"
-RDEPENDS_glib2 = libffi libz1
-FILES_glib2 = \
-/usr/lib/*.so*
+
+NAME_glib2 = libglib
+
+DESCRIPTION_glib2 = A general-purpose utility library GLib is a general-purpose \
+utility library, which provides many useful data types, macros, type conversions, \
+string utilities, file utilities, a main loop abstraction, and so on
+RDEPENDS_glib2 = libffi6 libz1 libc6
+FILES_glib2 = /usr/lib/libgio-2.0.so.* \
+	      /usr/lib/libglib-2.0.so.* \
+	      /usr/lib/libgmodule-2.0.so.* \
+	      /usr/lib/libgobject-2.0.so.* \
+	      /usr/lib/libgthread-2.0.so.* \
+	      /usr/lib/gio/modules \
+	      /usr/share/glib-2.0/schemas/gschema.dtd
 
 $(DEPDIR)/glib2.do_prepare: bootstrap libz libffi $(DEPENDS_glib2)
 	$(PREPARE_glib2)
@@ -1160,11 +1215,24 @@ expat
 ;
 ]]END
 
-DESCRIPTION_expat = "Expat is an XML parser library written in C. It is a stream-oriented parser in which an application registers handlers for things the parser might find in the XML document"
+PACKAGES_expat = libexpat1 \
+		 libexpat_bin
 
-FILES_expat = \
-/usr/lib/libexpat.so* \
-/usr/bin/xmlwf
+DESCRIPTION_libexpat1 = Expat is an XML parser library written in C. It is a stream-oriented parser \
+in which an application registers handlers for things the parser might find in the XML document
+RDEPENDS_libexpat1 = libc6
+define postinst_libexpat1
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libexpat1 = /usr/lib/libexpat.so*
+
+DESCRIPTION_libexpat_bin = Expat is an XML parser library written in C. It is a stream-oriented parser \
+in which an application registers handlers for things the parser might find in the XML document
+RDEPENDS_libexpat_bin = libexpat1 libc6
+FILES_libexpat_bin = /usr/bin/xmlwf
 
 $(DEPDIR)/expat.do_prepare: bootstrap $(DEPENDS_expat)
 	$(PREPARE_expat)
@@ -1200,11 +1268,41 @@ fontconfig
   make:install:DESTDIR=PKDIR
 ;
 ]]END
-DESCRIPTION_fontconfig = "Fontconfig is a library for configuring and customizing font access."
 
-FILES_fontconfig = \
-/etc \
-/usr/lib/*
+PACKAGES_fontconfig = libfontconfig1 \
+		      fontconfig_utils
+
+DESCRIPTION_libfontconfig1 = Generic font configuration library \
+ Fontconfig is a font configuration and customization library, which does \
+ not depend on the X Window System. It is designed to locate fonts within \
+ the system and select them according to requirements specified by \
+ applications. Fontconfig is not a rasterization library, nor does it \
+ impose a particular rasterization library on the application. The \
+ X-specific library 'Xft' uses fontconfig along with freetype to specify \
+ and rasterize fonts.
+RDEPENDS_libfontconfig1 = libexpat1 libfreetype6 libc6
+define postinst_libfontconfig1
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libfontconfig1 = \
+	/etc/fonts/* \
+	/usr/lib/* \
+	/usr/share/* \
+	/var/cache/*
+
+DESCRIPTION_fontconfig_utils = Generic font configuration library \
+ Fontconfig is a font configuration and customization library, which does \
+ not depend on the X Window System. It is designed to locate fonts within \
+ the system and select them according to requirements specified by \
+ applications. Fontconfig is not a rasterization library, nor does it \
+ impose a particular rasterization library on the application. The \
+ X-specific library 'Xft' uses fontconfig along with freetype to specify \
+ and rasterize fonts.
+RDEPENDS_fontconfig_utils = libfreetype6 libc6 libfontconfig1
+FILES_fontconfig_utils = /usr/bin/*
 
 $(DEPDIR)/fontconfig.do_prepare: bootstrap libz libxml2 freetype expat $(DEPENDS_fontconfig)
 	$(PREPARE_fontconfig)
@@ -1261,8 +1359,14 @@ DESCRIPTION_libxml2 = XML C Parser Library and Toolkit \
  with an arbitrary DTD.  Libxml2 includes complete XPath, XPointer and \
  Xinclude implementations.  It also has a SAX like interface, which is \
  designed to be compatible with Expat.
-RDEPENDS_libxml2 = libz1
-FILES_libxml2 = /usr/bin/xml* /usr/lib/libxml2.so.*
+RDEPENDS_libxml2 = libz1 libc6
+define postinst_libxml2
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libxml2 = /usr/bin/xmlcatalog   /usr/bin/xmllint /usr/lib/libxml2.*
 
 $(DEPDIR)/libxml2.do_prepare: bootstrap libz $(DEPENDS_libxml2)
 	$(PREPARE_libxml2)
@@ -1309,12 +1413,18 @@ libxmlccwrap
 ]]END
 
 DESCRIPTION_libxmlccwrap = "libxmlccwrap is a small C++ wrapper around libxml2 and libxslt "
-BDEPENDS_libxmlccwrap += libxslt
+RDEPENDS_libxmlccwrap += libgcc1 libxml2 libz1 libstdc++6 libc6 libxslt
+define postinst_libxmlccwrap
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
 
 FILES_libxmlccwrap = \
 /usr/lib/*.so*
 
-$(DEPDIR)/libxmlccwrap.do_prepare: bootstrap $(DEPENDS_libxmlccwrap)
+$(DEPDIR)/libxmlccwrap.do_prepare: bootstrap libxslt $(DEPENDS_libxmlccwrap)
 	$(PREPARE_libxmlccwrap)
 	touch $@
 
@@ -1351,10 +1461,22 @@ a52dec
 ;
 ]]END
 
-DESCRIPTION_a52dec = "liba52 is a free library for decoding ATSC A/52 streams. It is released under the terms of the GPL license"
+PACKAGES_a52dec = liba52 \
+		  a52dec
 
-FILES_a52dec = \
-/usr/lib/*
+DESCRIPTION_liba52 = "liba52 is a free library for decoding ATSC A/52 streams. It is released under the terms of the GPL license"
+RDEPENDS_liba52 = libc6
+define postinst_liba52
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_liba52 = /usr/lib/liba52.*
+
+DESCRIPTION_a52dec = "liba52 is a free library for decoding ATSC A/52 streams. It is released under the terms of the GPL license"
+RDEPENDS_a52dec = liba52 libc6
+FILES_a52dec = /usr/bin/*
 
 $(DEPDIR)/a52dec.do_prepare: bootstrap $(DEPENDS_a52dec)
 	$(PREPARE_a52dec)
@@ -1366,6 +1488,7 @@ $(DEPDIR)/a52dec.do_compile: $(DEPDIR)/a52dec.do_prepare
 		./configure \
 			--build=$(build) \
 			--host=$(target) \
+			--enable-shared \
 			--prefix=/usr && \
 		$(MAKE) all
 	touch $@
@@ -1390,8 +1513,16 @@ libdvdcss
 ;
 ]]END
 
-DESCRIPTION_libdvdcss = "libdvdcss"
-
+NAME_libdvdcss = libdvdcss2
+DESCRIPTION_libdvdcss = libdvdcss is a simple library designed for accessing DVDs like a block \
+ device without having to bother about the decryption.
+RDEPENDS_libdvdcss = libc6
+define postinst_libdvdcss
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
 FILES_libdvdcss = \
 /usr/lib/libdvdcss.so*
 
@@ -1433,14 +1564,33 @@ libdvdnav
 ;
 ]]END
 
-DESCRIPTION_libdvdnav = "libdvdnav"
-BDEPENDS_libdvdnav = libdvdread
+PACKAGES_libdvdnav = libdvdnav4 \
+		     libdvdnavmini4
+DESCRIPTION_libdvdnav4 = DVD navigation multimeda library - Development files  DVD navigation \
+ multimeda library.  This package contains symbolic links,   header files, \
+ and related items necessary for software development.
+RDEPENDS_libdvdnav4 = libdvdread4 libc6
+define postinst_libdvdnav4
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libdvdnav4 = /usr/lib/libdvdnav.so*
 
-FILES_libdvdnav = \
-/usr/lib/*.so* \
-/usr/bin/dvdnav-config
+DESCRIPTION_libdvdnavmini4 = DVD navigation multimeda library - Development files  DVD navigation \
+ multimeda library.  This package contains symbolic links,   header files, \
+ and related items necessary for software development.
+RDEPENDS_libdvdnavmini4 = libc6
+define postinst_libdvdnavmini4
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libdvdnavmini4 = /usr/lib/libdvdnavmini.so*
 
-$(DEPDIR)/libdvdnav.do_prepare: bootstrap $(DEPENDS_libdvdnav)
+$(DEPDIR)/libdvdnav.do_prepare: bootstrap libdvdread $(DEPENDS_libdvdnav)
 	$(PREPARE_libdvdnav)
 	touch $@
 
@@ -1485,11 +1635,16 @@ libdvdread
 ;
 ]]END
 
+NAME_libdvdread = libdvdread4
 DESCRIPTION_libdvdread = "libdvdread"
-
-FILES_libdvdread = \
-/usr/lib/*.so* \
-/usr/bin/dvdread-config
+RDEPENDS_libdvdread = libc6
+define postinst_libdvdread
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libdvdread = /usr/lib/*.so*
 
 $(DEPDIR)/libdvdread.do_prepare: bootstrap $(DEPENDS_libdvdread)
 	$(PREPARE_libdvdread)
@@ -1537,7 +1692,7 @@ ffmpeg
 ]]END
 
 DESCRIPTION_ffmpeg = "ffmpeg"
-
+RDEPENDS_ffmpeg = libass librtmp1
 FILES_ffmpeg = \
 /usr/lib/*.so* \
 /sbin/ffmpeg
@@ -1681,12 +1836,12 @@ libass
 ]]END
 
 DESCRIPTION_libass = "libass"
-BDEPENDS_libass += freetype libfribidi
+RDEPENDS_libass += libfreetype6 libfribidi0
 
 FILES_libass = \
 /usr/lib/*.so*
 
-$(DEPDIR)/libass.do_prepare: bootstrap $(DEPENDS_libass)
+$(DEPDIR)/libass.do_prepare: bootstrap freetype libfribidi $(DEPENDS_libass)
 	$(PREPARE_libass)
 	touch $@
 
@@ -1929,11 +2084,17 @@ sqlite
 ;
 ]]END
 
-DESCRIPTION_sqlite = "sqlite"
-
-FILES_sqlite = \
-/usr/lib/*.so* \
-/usr/bin/sqlite3
+NAME_sqlite = libsqlite3
+DESCRIPTION_sqlite = Embeddable SQL database engine \
+ Embeddable SQL database engine.
+RDEPENDS_sqlite = libc6
+define postinst_sqlite
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_sqlite = /usr/lib/*.so*
 
 $(DEPDIR)/sqlite.do_prepare: bootstrap $(DEPENDS_sqlite)
 	$(PREPARE_sqlite)
@@ -1972,12 +2133,17 @@ libsoup
 ;
 ]]END
 
-DESCRIPTION_libsoup = "libsoup is an HTTP client/server library"
+DESCRIPTION_libsoup = An HTTP library implementation in C
+RDEPENDS_libsoup = libz1 libxml2 libffi6 libsqlite3 libc6 libglib2
+define postinst_libsoup
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libsoup = /usr/lib/*.so*
 
-FILES_libsoup = \
-/usr/lib/*.so*
-
-$(DEPDIR)/libsoup.do_prepare: bootstrap $(DEPENDS_libsoup)
+$(DEPDIR)/libsoup.do_prepare: bootstrap sqlite glib2 libffi libz $(DEPENDS_libsoup)
 	$(PREPARE_libsoup)
 	touch $@
 
@@ -2012,10 +2178,19 @@ pixman
 ;
 ]]END
 
-DESCRIPTION_pixman = "pixman is a library that provides low-level pixel manipulation"
-
-FILES_pixman = \
-/usr/lib/*.so*
+NAME_pixman = libpixman
+DESCRIPTION_pixman =  Pixman provides a library for manipulating pixel regions -- a set of Y-X \
+ banded rectangles, image compositing using the Porter/Duff model and \
+ implicit mask generation for geometric primitives including trapezoids, \
+ triangles, and rectangles.
+RDEPENDS_pixman = libc6
+define postinst_pixman
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_pixman = /usr/lib/*.so*
 
 $(DEPDIR)/pixman.do_prepare: bootstrap $(DEPENDS_pixman)
 	$(PREPARE_pixman)
@@ -2163,6 +2338,7 @@ $(DEPDIR)/libflac.do_compile: $(DEPDIR)/libflac.do_prepare
 	$(BUILDENV) \
 	./configure \
 		--build=$(build) \
+		--host=$(target) \
 		--prefix=/usr \
 		--disable-ogg \
 		--disable-oggtest \
@@ -2185,495 +2361,6 @@ $(DEPDIR)/libflac: $(DEPDIR)/libflac.do_compile
 	touch $@
 
 
-##############################   GSTREAMER + PLUGINS   #########################
-
-#
-# GSTREAMER
-#
-BEGIN[[
-gstreamer
-  0.10.36
-  {PN}-{PV}
-  extract:http://{PN}.freedesktop.org/src/{PN}/{PN}-{PV}.tar.bz2
-  make:install:DESTDIR=PKDIR
-;
-]]END
-
-DESCRIPTION_gstreamer = "GStreamer Multimedia Framework"
-
-FILES_gstreamer = \
-/usr/bin/gst-* \
-/usr/lib/libgst* \
-/usr/lib/gstreamer-0.10/libgstcoreelements.so \
-/usr/lib/gstreamer-0.10/libgstcoreindexers.so
-
-$(DEPDIR)/gstreamer.do_prepare: bootstrap glib2 libxml2 $(DEPENDS_gstreamer)
-	$(PREPARE_gstreamer)
-	touch $@
-
-$(DEPDIR)/gstreamer.do_compile: $(DEPDIR)/gstreamer.do_prepare
-	export PATH=$(hostprefix)/bin:$(PATH) && \
-	cd $(DIR_gstreamer) && \
-	autoreconf --verbose --force --install -I$(hostprefix)/share/aclocal && \
-	$(BUILDENV) \
-	./configure \
-		--host=$(target) \
-		--prefix=/usr \
-		--disable-docs-build \
-		--disable-dependency-tracking \
-		--disable-check \
-		ac_cv_func_register_printf_function=no && \
-	$(MAKE)
-	touch $@
-
-$(DEPDIR)/gstreamer: $(DEPDIR)/gstreamer.do_compile
-	$(start_build)
-	$(BUILDENV) \
-	cd $(DIR_gstreamer) && \
-		$(INSTALL_gstreamer)
-	$(tocdk_build)
-	sh4-linux-strip --strip-unneeded $(PKDIR)/usr/bin/gst-launch*
-	$(toflash_build)
-	touch $@
-	
-
-#
-# GST-PLUGINS-BASE
-#
-BEGIN[[
-gst_plugins_base
-  0.10.36
-  {PN}-{PV}
-  extract:http://gstreamer.freedesktop.org/src/{PN}/{PN}-{PV}.tar.bz2
-  make:install:DESTDIR=PKDIR
-;
-]]END
-
-DESCRIPTION_gst_plugins_base = "GStreamer Multimedia Framework base plugins"
-
-FILES_gst_plugins_base = \
-/usr/lib/libgst* \
-/usr/lib/gstreamer-0.10/libgstalsa.so \
-/usr/lib/gstreamer-0.10/libgstapp.so \
-/usr/lib/gstreamer-0.10/libgstaudioconvert.so \
-/usr/lib/gstreamer-0.10/libgstaudioresample.so \
-/usr/lib/gstreamer-0.10/libgstdecodebin.so \
-/usr/lib/gstreamer-0.10/libgstdecodebin2.so \
-/usr/lib/gstreamer-0.10/libgstogg.so \
-/usr/lib/gstreamer-0.10/libgstplaybin.so \
-/usr/lib/gstreamer-0.10/libgstsubparse.so \
-/usr/lib/gstreamer-0.10/libgsttypefindfunctions.so
-
-$(DEPDIR)/gst_plugins_base.do_prepare: bootstrap glib2 gstreamer libogg libalsa libvorbis $(DEPENDS_gst_plugins_base)
-	$(PREPARE_gst_plugins_base)
-	touch $@
-
-$(DEPDIR)/gst_plugins_base.do_compile: $(DEPDIR)/gst_plugins_base.do_prepare
-	export PATH=$(hostprefix)/bin:$(PATH) && \
-	cd $(DIR_gst_plugins_base) && \
-	autoreconf --verbose --force --install -I$(hostprefix)/share/aclocal && \
-	$(BUILDENV) \
-	./configure \
-		--host=$(target) \
-		--prefix=/usr \
-		--disable-theora \
-		--disable-gnome_vfs \
-		--disable-pango \
-		--disable-x \
-		--disable-examples \
-		--with-audioresample-format=int && \
-	$(MAKE)
-	touch $@
-
-$(DEPDIR)/gst_plugins_base: $(DEPDIR)/gst_plugins_base.do_compile
-	$(start_build)
-	cd $(DIR_gst_plugins_base) && \
-		$(BUILDENV) \
-		$(INSTALL_gst_plugins_base)
-	$(tocdk_build)
-	$(toflash_build)
-	touch $@
-
-#
-# GST-PLUGINS-GOOD
-#
-BEGIN[[
-gst_plugins_good
-  0.10.31
-  {PN}-{PV}
-  extract:http://gstreamer.freedesktop.org/src/{PN}/{PN}-{PV}.tar.bz2
-  patch:file://{PN}-0.10.29_avidemux_only_send_pts_on_keyframe.patch
-  make:install:DESTDIR=PKDIR
-;
-]]END
-
-DESCRIPTION_gst_plugins_good = "GStreamer Multimedia Framework good plugins"
-
-FILES_gst_plugins_good = \
-/usr/lib/libgst* \
-/usr/lib/gstreamer-0.10/libgstaudioparsers.so \
-/usr/lib/gstreamer-0.10/libgstautodetect.so \
-/usr/lib/gstreamer-0.10/libgstavi.so \
-/usr/lib/gstreamer-0.10/libgstflac.so \
-/usr/lib/gstreamer-0.10/libgstflv.so \
-/usr/lib/gstreamer-0.10/libgsticydemux.so \
-/usr/lib/gstreamer-0.10/libgstid3demux.so \
-/usr/lib/gstreamer-0.10/libgstmatroska.so \
-/usr/lib/gstreamer-0.10/libgstrtp.so \
-/usr/lib/gstreamer-0.10/libgstrtpmanager.so \
-/usr/lib/gstreamer-0.10/libgstrtsp.so \
-/usr/lib/gstreamer-0.10/libgstsouphttpsrc.so \
-/usr/lib/gstreamer-0.10/libgstudp.so \
-/usr/lib/gstreamer-0.10/libgstapetag.so \
-/usr/lib/gstreamer-0.10/libgstsouphttpsrc.so \
-/usr/lib/gstreamer-0.10/libgstisomp4.so \
-/usr/lib/gstreamer-0.10/libgstwavparse.so
-
-$(DEPDIR)/gst_plugins_good.do_prepare: bootstrap gstreamer gst_plugins_base libsoup libflac $(DEPENDS_gst_plugins_good)
-	$(PREPARE_gst_plugins_good)
-	touch $@
-
-$(DEPDIR)/gst_plugins_good.do_compile: $(DEPDIR)/gst_plugins_good.do_prepare
-	export PATH=$(hostprefix)/bin:$(PATH) && \
-	cd $(DIR_gst_plugins_good) && \
-	$(BUILDENV) \
-	./configure \
-		--host=$(target) \
-		--prefix=/usr \
-		--disable-esd \
-		--disable-aalib \
-		--disable-esdtest \
-		--disable-aalib \
-		--disable-shout2 \
-		--disable-shout2test \
-		--disable-x  && \
-	$(MAKE)
-	touch $@
-
-$(DEPDIR)/gst_plugins_good: $(DEPDIR)/gst_plugins_good.do_compile
-	$(start_build)
-	cd $(DIR_gst_plugins_good) && \
-		$(INSTALL_gst_plugins_good)
-	$(tocdk_build)
-	$(toflash_build)
-	touch $@
-
-#
-# GST-PLUGINS-BAD
-#
-BEGIN[[
-gst_plugins_bad
-  0.10.23
-  {PN}-{PV}
-  extract:http://gstreamer.freedesktop.org/src/{PN}/{PN}-{PV}.tar.bz2
-  patch:file://{PN}-0.10.22-mpegtsdemux_remove_bluray_pgs_detection.diff
-  patch:file://{PN}-0.10.22-mpegtsdemux_speedup.diff
-  make:install:DESTDIR=PKDIR
-;
-]]END
-
-DESCRIPTION_gst_plugins_bad = "GStreamer Multimedia Framework bad plugins"
-
-FILES_gst_plugins_bad = \
-/usr/lib/libgst* \
-/usr/lib/gstreamer-0.10/libgstassrender.so \
-/usr/lib/gstreamer-0.10/libgstcdxaparse.so \
-/usr/lib/gstreamer-0.10/libgstfragmented.so \
-/usr/lib/gstreamer-0.10/libgstmpegdemux.so \
-/usr/lib/gstreamer-0.10/libgstvcdsrc.so \
-/usr/lib/gstreamer-0.10/libgstmpeg4videoparse.so \
-/usr/lib/gstreamer-0.10/libgsth264parse.so \
-/usr/lib/gstreamer-0.10/libgstneonhttpsrc.so \
-/usr/lib/gstreamer-0.10/libgstrtmp.so
-
-$(DEPDIR)/gst_plugins_bad.do_prepare: bootstrap gstreamer gst_plugins_base libmodplug $(DEPENDS_gst_plugins_bad)
-	$(PREPARE_gst_plugins_bad)
-	touch $@
-
-$(DEPDIR)/gst_plugins_bad.do_compile: $(DEPDIR)/gst_plugins_bad.do_prepare
-	export PATH=$(hostprefix)/bin:$(PATH) && \
-	cd $(DIR_gst_plugins_bad) && \
-	$(BUILDENV) \
-	./configure \
-		--host=$(target) \
-		--prefix=/usr \
-		--with-check=no \
-		--disable-sdl \
-		--disable-modplug \
-		ac_cv_openssldir=no && \
-	$(MAKE)
-	touch $@
-
-$(DEPDIR)/gst_plugins_bad: $(DEPDIR)/gst_plugins_bad.do_compile
-	$(start_build)
-	cd $(DIR_gst_plugins_bad) && \
-		$(INSTALL_gst_plugins_bad)
-	$(tocdk_build)
-	$(toflash_build)
-	touch $@
-
-#
-# GST-PLUGINS-UGLY
-#
-BEGIN[[
-gst_plugins_ugly
-  0.10.19
-  {PN}-{PV}
-  extract:http://gstreamer.freedesktop.org/src/{PN}/{PN}-{PV}.tar.bz2
-  make:install:DESTDIR=PKDIR
-;
-]]END
-
-DESCRIPTION_gst_plugins_ugly = "GStreamer Multimedia Framework ugly plugins"
-
-FILES_gst_plugins_ugly = \
-/usr/lib/gstreamer-0.10/libgstasf.so \
-/usr/lib/gstreamer-0.10/libgstdvdsub.so \
-/usr/lib/gstreamer-0.10/libgstmad.so \
-/usr/lib/gstreamer-0.10/libgstmpegaudioparse.so \
-/usr/lib/gstreamer-0.10/libgstmpegstream.so
-
-$(DEPDIR)/gst_plugins_ugly.do_prepare: bootstrap gstreamer gst_plugins_base $(DEPENDS_gst_plugins_ugly)
-	$(PREPARE_gst_plugins_ugly)
-	touch $@
-
-$(DEPDIR)/gst_plugins_ugly.do_compile: $(DEPDIR)/gst_plugins_ugly.do_prepare
-	export PATH=$(hostprefix)/bin:$(PATH) && \
-	cd $(DIR_gst_plugins_ugly) && \
-	$(BUILDENV) \
-	./configure \
-		--host=$(target) \
-		--prefix=/usr \
-		--disable-mpeg2dec && \
-	$(MAKE)
-	touch $@
-
-$(DEPDIR)/gst_plugins_ugly: $(DEPDIR)/gst_plugins_ugly.do_compile
-	$(start_build)
-	cd $(DIR_gst_plugins_ugly) && \
-		$(INSTALL_gst_plugins_ugly)
-	$(tocdk_build)
-	$(toflash_build)
-	touch $@
-
-#
-# GST-FFMPEG
-#
-BEGIN[[
-gst_ffmpeg
-  0.10.13
-  {PN}-{PV}
-  extract:http://gstreamer.freedesktop.org/src/{PN}/{PN}-{PV}.tar.bz2
-  patch:file://{PN}-0.10.12_lower_rank.patch
-  make:install:DESTDIR=PKDIR
-;
-]]END
-
-DESCRIPTION_gst_ffmpeg = "GStreamer Multimedia Framework ffmpeg module"
-
-FILES_gst_ffmpeg = \
-/usr/lib/gstreamer-0.10/libgstffmpeg.so \
-/usr/lib/gstreamer-0.10/libgstffmpegscale.so \
-/usr/lib/gstreamer-0.10/libgstpostproc.so
-
-$(DEPDIR)/gst_ffmpeg.do_prepare: bootstrap gstreamer gst_plugins_base $(DEPENDS_gst_ffmpeg)
-	$(PREPARE_gst_ffmpeg)
-	touch $@
-
-$(DEPDIR)/gst_ffmpeg.do_compile: $(DEPDIR)/gst_ffmpeg.do_prepare
-	export PATH=$(hostprefix)/bin:$(PATH) && \
-	cd $(DIR_gst_ffmpeg) && \
-	$(BUILDENV) \
-	./configure \
-		--host=$(target) \
-		--prefix=/usr \
-		\
-		--with-ffmpeg-extra-configure=" \
-		--disable-ffserver \
-		--disable-ffplay \
-		--disable-ffmpeg \
-		--disable-ffprobe \
-		--enable-postproc \
-		--enable-gpl \
-		--enable-static \
-		--enable-pic \
-		--disable-protocols \
-		--disable-devices \
-		--disable-network \
-		--disable-hwaccels \
-		--disable-filters \
-		--disable-doc \
-		--enable-optimizations \
-		--enable-cross-compile \
-		--target-os=linux \
-		--arch=sh4 \
-		--cross-prefix=$(target)- \
-		\
-		--disable-muxers \
-		--disable-encoders \
-		--disable-decoders \
-		--enable-decoder=ogg \
-		--enable-decoder=vorbis \
-		--enable-decoder=flac \
-		--enable-decoder=vp6 \
-		--enable-decoder=vp6a \
-		--enable-decoder=vp6f \
-		\
-		--disable-demuxers \
-		--enable-demuxer=ogg \
-		--enable-demuxer=vorbis \
-		--enable-demuxer=flac \
-		--enable-demuxer=mpegts \
-		\
-		--disable-bsfs \
-		--enable-pthreads \
-		--enable-bzlib"
-	touch $@
-
-$(DEPDIR)/gst_ffmpeg: $(DEPDIR)/gst_ffmpeg.do_compile
-	$(start_build)
-	cd $(DIR_gst_ffmpeg) && \
-		$(INSTALL_gst_ffmpeg)
-	$(tocdk_build)
-	$(toflash_build)
-	touch $@
-
-#
-# GST-PLUGINS-FLUENDO-MPEGDEMUX
-#
-BEGIN[[
-gst_plugins_fluendo_mpegdemux
-  0.10.71
-  gst-fluendo-mpegdemux-{PV}
-  extract:http://core.fluendo.com/gstreamer/src/gst-fluendo-mpegdemux/gst-fluendo-mpegdemux-{PV}.tar.gz
-  patch:file://{PN}-0.10.69-add_dts_hd_detection.diff
-  make:install:DESTDIR=PKDIR
-;
-]]END
-
-DESCRIPTION_gst_plugins_fluendo_mpegdemux = "GStreamer Multimedia Framework fluendo"
-FILES_gst_plugins_fluendo_mpegdemux = \
-/usr/lib/gstreamer-0.10/*.so
-
-
-$(DEPDIR)/gst_plugins_fluendo_mpegdemux.do_prepare: bootstrap gstreamer gst_plugins_base $(DEPENDS_gst_plugins_fluendo_mpegdemux)
-	$(PREPARE_gst_plugins_fluendo_mpegdemux)
-	touch $@
-
-$(DEPDIR)/gst_plugins_fluendo_mpegdemux.do_compile: $(DEPDIR)/gst_plugins_fluendo_mpegdemux.do_prepare
-	export PATH=$(hostprefix)/bin:$(PATH) && \
-	cd $(DIR_gst_plugins_fluendo_mpegdemux) && \
-	$(BUILDENV) \
-	./configure \
-		--host=$(target) \
-		--prefix=/usr \
-		--with-check=no && \
-	$(MAKE)
-	touch $@
-
-$(DEPDIR)/gst_plugins_fluendo_mpegdemux: $(DEPDIR)/gst_plugins_fluendo_mpegdemux.do_compile
-	$(start_build)
-	cd $(DIR_gst_plugins_fluendo_mpegdemux) && \
-		$(INSTALL_gst_plugins_fluendo_mpegdemux)
-	$(tocdk_build)
-	$(toflash_build)
-	touch $@
-
-#
-# GST-PLUGIN-SUBSINK
-#
-BEGIN[[
-gst_plugin_subsink
-  git
-  {PN}
-  nothing:git://openpli.git.sourceforge.net/gitroot/openpli/gstsubsink:r=8182abe751364f6eb1ed45377b0625102aeb68d5
-  make:install:DESTDIR=PKDIR
-;
-]]END
-
-DESCRIPTION_gst_plugin_subsink = GStreamer Multimedia Framework gstsubsink
-PKGR_gst_plugin_subsink = r1
-FILES_gst_plugin_subsink = \
-/usr/lib/gstreamer-0.10/*.so
-
-$(DEPDIR)/gst_plugin_subsink.do_prepare: bootstrap gstreamer gst_ffmpeg gst_plugins_base gst_plugins_good gst_plugins_bad gst_plugins_ugly gst_plugins_fluendo_mpegdemux $(DEPENDS_gst_plugin_subsink)
-	$(PREPARE_gst_plugin_subsink)
-	touch $@
-
-$(DEPDIR)/gst_plugin_subsink.do_compile: $(DEPDIR)/gst_plugin_subsink.do_prepare
-	export PATH=$(hostprefix)/bin:$(PATH) && \
-	cd $(DIR_gst_plugin_subsink) && \
-	touch NEWS README AUTHORS ChangeLog && \
-	aclocal -I $(hostprefix)/share/aclocal -I m4 && \
-	cp $(hostprefix)/share/libtool/config/ltmain.sh . && \
-	autoheader && \
-	autoconf && \
-	automake --add-missing && \
-	libtoolize --force && \
-	$(BUILDENV) \
-	./configure \
-		--host=$(target) \
-		--prefix=/usr && \
-	$(MAKE)
-	touch $@
-
-$(DEPDIR)/gst_plugin_subsink: $(DEPDIR)/gst_plugin_subsink.do_compile
-	$(start_build)
-	cd $(DIR_gst_plugin_subsink) && \
-		$(INSTALL_gst_plugin_subsink)
-	$(tocdk_build)
-	$(toflash_build)
-	touch $@
-
-#
-# GST-PLUGINS-DVBMEDIASINK
-#
-BEGIN[[
-gst_plugins_dvbmediasink
-  git
-  {PN}-{PV}
-  plink:$(appsdir)/misc/tools/{PN}:{PN}-{PV}
-  make:install:DESTDIR=PKDIR
-;
-]]END
-
-DESCRIPTION_gst_plugins_dvbmediasink = "GStreamer Multimedia Framework dvbmediasink"
-SRC_URI_gst_plugins_dvbmediasink = "https://code.google.com/p/tdt-amiko/"
-
-FILES_gst_plugins_dvbmediasink = \
-/usr/lib/gstreamer-0.10/libgstdvbaudiosink.so \
-/usr/lib/gstreamer-0.10/libgstdvbvideosink.so
-
-$(DEPDIR)/gst_plugins_dvbmediasink.do_prepare: bootstrap gstreamer gst_plugins_base gst_plugins_good gst_plugins_bad gst_plugins_ugly gst_plugin_subsink $(DEPENDS_gst_plugins_dvbmediasink)
-	$(PREPARE_gst_plugins_dvbmediasink)
-	touch $@
-
-$(DEPDIR)/gst_plugins_dvbmediasink.do_compile: $(DEPDIR)/gst_plugins_dvbmediasink.do_prepare
-	export PATH=$(hostprefix)/bin:$(PATH) && \
-	cd $(DIR_gst_plugins_dvbmediasink) && \
-	aclocal -I $(hostprefix)/share/aclocal -I m4 && \
-	autoheader && \
-	autoconf && \
-	automake --foreign --add-missing && \
-	libtoolize --force && \
-	$(BUILDENV) \
-	./configure \
-		--host=$(target) \
-		--prefix=/usr && \
-	$(MAKE)
-	touch $@
-
-$(DEPDIR)/gst_plugins_dvbmediasink: $(DEPDIR)/gst_plugins_dvbmediasink.do_compile
-	$(start_build)
-	$(get_git_version)
-	cd $(DIR_gst_plugins_dvbmediasink) && \
-		$(INSTALL_gst_plugins_dvbmediasink)
-	$(tocdk_build)
-	$(toflash_build)
-	touch $@
-
-
-
 ##############################   EXTERNAL_LCD   ################################
 
 
@@ -2693,6 +2380,7 @@ graphlcd
 ]]END
 
 DESCRIPTION_graphlcd = "Driver and Tools for LCD4LINUX"
+RDEPENDS_graphlcd = libusb-1.0
 PKGR_graphlcd =r1
 FILES_graphlcd = \
 /usr/bin/* \
@@ -2779,9 +2467,17 @@ libusb2
 ;
 ]]END
 
-DESCRIPTION_libusb2 = "libusb2"
+NAME_libusb2 = libusb-1.0
+DESCRIPTION_libusb2 = Userspace library to access USB (version 1.0)
+RDEPENDS_libusb2 = libc6
+define postinst_libusb2
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
 FILES_libusb2 = \
-/usr/lib/*.so*
+/usr/lib/libusb-1.0.so.*
 
 $(DEPDIR)/libusb2.do_prepare: bootstrap $(DEPENDS_libusb2)
 	$(PREPARE_libusb2)
@@ -2818,12 +2514,20 @@ libusb_compat
 ;
 ]]END
 
-DESCRIPTION_libusb_compat = "A compatibility layer allowing applications written for libusb-0.1 to work with libusb-1.0"
-BDEPENDS_libusb_compat = libusb2
+NAME_libusb_compat = libusb-0.1
+DESCRIPTION_libusb_compat = libusb-0.1 compatible layer for libusb1, a drop-in replacement that aims \
+ to look, feel and behave exactly like libusb-0.1
+RDEPENDS_libusb_compat = libusb-1.0 libc6
+define postinst_libusb_compat
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
 FILES_libusb_compat = \
-/usr/lib/*.so*
+/usr/lib/libusb-0.1.so.*
 
-$(DEPDIR)/libusb_compat.do_prepare: bootstrap $(DEPENDS_libusb_compat)
+$(DEPDIR)/libusb_compat.do_prepare: bootstrap libusb2 $(DEPENDS_libusb_compat)
 	$(PREPARE_libusb_compat)
 	touch $@
 
@@ -2950,12 +2654,24 @@ libcap
   make:install:DESTDIR=PKDIR
 ;
 ]]END
-DESCRIPTION_libcap = "This is a library for getting and setting POSIX"
-FILES_libcap = \
-/usr/lib/*.so* \
-/usr/sbin/*
+PACKAGES_libcap = libcap2 \
+		  libcap_bin
 
-$(DEPDIR)/libcap.do_prepare: bootstrap $(DEPENDS_libcap)
+DESCRIPTION_libcap2 = Library for getting/setting POSIX.1e capabilities
+RDEPENDS_libcap2 = libc6
+define postinst_libcap2
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libcap2 = /lib/*.so*
+
+DESCRIPTION_libcap_bin = Library for getting/setting POSIX.1e capabilities
+RDEPENDS_libcap_bin = libc6 libcap2
+FILES_libcap_bin = /usr/sbin/*
+
+$(DEPDIR)/libcap.do_prepare: bootstrap libattr $(DEPENDS_libcap)
 	$(PREPARE_libcap)
 	touch $@
 
@@ -2963,30 +2679,31 @@ $(DEPDIR)/libcap.do_compile: $(DEPDIR)/libcap.do_prepare
 	export PATH=$(hostprefix)/bin:$(PATH) && \
 	cd $(DIR_libcap) && \
 	$(MAKE) \
-	DESTDIR=$(PKDIR) \
+	DESTDIR=$(PKDIR)/ \
 	PREFIX=$(PKDIR)/usr \
-	LIBDIR=$(PKDIR)/usr/lib \
+	LIBDIR=$(PKDIR)/lib \
 	SBINDIR=$(PKDIR)/usr/sbin \
 	INCDIR=$(PKDIR)/usr/include \
 	BUILD_CC=gcc \
 	PAM_CAP=no \
-	LIBATTR=no \
+	LIBATTR=yes \
+	RAISE_SETFCAP=no \
 	CC=sh4-linux-gcc
 	touch $@
 
 $(DEPDIR)/libcap: $(DEPDIR)/libcap.do_compile
-	@[ "x$*" = "x" ] && touch $@ || true
 	$(start_build)
 	cd $(DIR_libcap) && \
 		$(INSTALL_libcap) \
 		DESTDIR=$(PKDIR)/ \
 		PREFIX=$(PKDIR)/usr \
-		LIBDIR=$(PKDIR)/usr/lib \
+		LIBDIR=$(PKDIR)/lib \
 		SBINDIR=$(PKDIR)/usr/sbin \
 		INCDIR=$(PKDIR)/usr/include \
 		BUILD_CC=gcc \
 		PAM_CAP=no \
-		LIBATTR=no \
+		LIBATTR=yes \
+		RAISE_SETFCAP=no \
 		CC=sh4-linux-gcc
 	$(tocdk_build)
 	$(toflash_build)
@@ -3045,22 +2762,25 @@ $(DEPDIR)/libalsa: $(DEPDIR)/libalsa.do_compile
 #
 BEGIN[[
 rtmpdump
-  2.4
+  git
   {PN}-{PV}
-  extract:http://{PN}.mplayerhq.hu/download/{PN}-{PV}.tar.gz
-  pmove:{PN}:{PN}-{PV}
+  git://git.ffmpeg.org/{PN}.git
   make:install:prefix=/usr:DESTDIR=PKDIR
 ;
 ]]END
-DESCRIPTION_rtmpdump = "rtmpdump is a tool for dumping media content streamed over RTMP."
-BDEPENDS_rtmpdump = openssl libz
 
-FILES_rtmpdump = \
-/usr/bin/rtmpdump \
-/usr/lib/librtmp* \
-/usr/sbin/rtmpgw
+NAME_rtmpdump = librtmp1
+DESCRIPTION_rtmpdump = librtmp Real-Time Messaging Protocol API
+RDEPENDS_rtmpdump = libssl1 libz1 libc6 libcrypto1
+define postinst_rtmpdump
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_rtmpdump = /usr/lib/librtmp.*
 
-$(DEPDIR)/rtmpdump.do_prepare: bootstrap openssl-dev $(DEPENDS_rtmpdump)
+$(DEPDIR)/rtmpdump.do_prepare: bootstrap openssl-dev openssl libz $(DEPENDS_rtmpdump)
 	$(PREPARE_rtmpdump)
 	touch $@
 
@@ -3140,7 +2860,9 @@ tuxtxtlib
 ;
 ]]END
 
-DESCRIPTION_tuxtxtlib = "tuxtxt library"
+NAME_tuxtxtlib = libtuxtxt0
+DESCRIPTION_tuxtxtlib = tuxbox libtuxtxt
+RDEPENDS_tuxtxtlib = libfreetype6 libz1
 PKGR_tuxtxtlib = r1
 FILES_tuxtxtlib = \
 /usr/lib/libtuxtxt*
@@ -3192,7 +2914,9 @@ tuxtxt32bpp
 ;
 ]]END
 
-DESCRIPTION_tuxtxt32bpp = "tuxtxt plugin"
+NAME_tuxtxt32bpp = libtuxtxt32bpp0
+DESCRIPTION_tuxtxt32bpp = tuxbox tuxtxt for 32bit framebuffer
+RDEPENDS_tuxtxt32bpp = libtuxtxt0 libfreetype6 libz1
 PKGR_tuxtxt32bpp = r2
 FILES_tuxtxt32bpp = \
 /usr/lib/libtuxtxt32bpp* \
@@ -3232,52 +2956,6 @@ $(DEPDIR)/tuxtxt32bpp: $(DEPDIR)/tuxtxt32bpp.do_compile
 	touch $@
 
 #
-# libdreamdvd
-#
-BEGIN[[
-libdreamdvd
-  git
-  {PN}
-  plink:../apps/misc/tools/{PN}:{PN}
-  make:install:prefix=/usr:DESTDIR=PKDIR
-;
-]]END
-
-DESCRIPTION_libdreamdvd = "libdreamdvd"
-PKGR_libdreamdvd = r1
-FILES_libdreamdvd = \
-/usr/lib/libdreamdvd*
-
-SRC_URI_libdreamdvd = "libdreamdvd"
-
-$(DEPDIR)/libdreamdvd.do_prepare: bootstrap $(DEPENDS_libdreamdvd)
-	$(PREPARE_libdreamdvd)
-	touch $@
-
-$(DEPDIR)/libdreamdvd.do_compile: $(DEPDIR)/libdreamdvd.do_prepare
-	export PATH=$(hostprefix)/bin:$(PATH) && \
-	cd $(DIR_libdreamdvd) && \
-	aclocal -I $(hostprefix)/share/aclocal && \
-	autoheader && \
-	autoconf && \
-	automake --foreign && \
-	libtoolize --force && \
-	$(BUILDENV) \
-	./configure \
-		--host=$(target) \
-		--prefix=/usr && \
-	$(MAKE) all
-	touch $@
-
-$(DEPDIR)/libdreamdvd: $(DEPDIR)/libdreamdvd.do_compile
-	$(start_build)
-	cd $(DIR_libdreamdvd) && \
-		$(INSTALL_libdreamdvd)
-	$(tocdk_build)
-	$(toflash_build)
-	touch $@
-
-#
 # libdreamdvd2
 #
 BEGIN[[
@@ -3289,12 +2967,20 @@ libdreamdvd2
   make:install:prefix=/usr:DESTDIR=PKDIR
 ;
 ]]END
-DESCRIPTION_libdreamdvd2 = ""
-PKGR_libdreamdvd2 = r1
-FILES_libdreamdvd2 = \
-/usr/lib/*
 
-$(DEPDIR)/libdreamdvd2.do_prepare: bootstrap $(DEPENDS_libdreamdvd2)
+NAME_libdreamdvd2 = libdreamdvd0
+DESCRIPTION_libdreamdvd2 = libdvdnav wrapper for enigma2 based stbs.
+RDEPENDS_libdreamdvd2 = libdvdread4 libdvdnav4 libc6
+define postinst_libdreamdvd2
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+PKGR_libdreamdvd2 = r1
+FILES_libdreamdvd2 = /usr/lib/*
+
+$(DEPDIR)/libdreamdvd2.do_prepare: bootstrap libdvdread libdvdnav $(DEPENDS_libdreamdvd2)
 	$(PREPARE_libdreamdvd2)
 	touch $@
 
@@ -3329,13 +3015,33 @@ libmpeg2
   make:install:prefix=/usr:DESTDIR=PKDIR
 ;
 ]]END
+PACKAGES_libmpeg2 = libmpeg2 \
+		    libmpeg2convert0 \
+		    mpeg2dec
 
-DESCRIPTION_libmpeg2 = "libmpeg2 is a free library for decoding mpeg-2 and mpeg-1 video streams. It is released under the terms of the GPL license."
+DESCRIPTION_libmpeg2 = Library and test program for decoding MPEG-2 and MPEG-1 video streams
+RDEPENDS_libmpeg2 = libc6
+define postinst_libmpeg2
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libmpeg2 = /usr/lib/libmpeg2.*
 
-FILES_libmpeg2 = \
-/usr/lib/libmpeg2.* \
-/usr/lib/libmpeg2convert.* \
-/usr/bin/*
+DESCRIPTION_libmpeg2convert0 =  Library and test program for decoding MPEG-2 and MPEG-1 video streams
+RDEPENDS_libmpeg2convert0 = libc6
+define postinst_libmpeg2convert0
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libmpeg2convert0 = /usr/lib/libmpeg2convert.*
+
+DESCRIPTION_mpeg2dec =  Library and test program for decoding MPEG-2 and MPEG-1 video streams
+RDEPENDS_mpeg2dec = libmpeg2 libmpeg2convert0 libc6
+FILES_mpeg2dec = /usr/bin/*
 
 $(DEPDIR)/libmpeg2.do_prepare: bootstrap $(DEPENDS_libmpeg2)
 	$(PREPARE_libmpeg2)
@@ -3377,11 +3083,16 @@ libsamplerate
 ;
 ]]END
 
-DESCRIPTION_libsamplerate = "libsamplerate (also known as Secret Rabbit Code) is a library for perfroming sample rate conversion of audio data."
-
-FILES_libsamplerate = \
-/usr/bin/sndfile-resample \
-/usr/lib/libsamplerate.*
+NAME_libsamplerate = libsamplerate0
+DESCRIPTION_libsamplerate = Audio Sample Rate Conversion library
+RDEPENDS_libsamplerate = libsndfile1 libc6
+define postinst_libsamplerate
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libsamplerate = /usr/lib/libsamplerate.* /usr/bin/sndfile*
 
 $(DEPDIR)/libsamplerate.do_prepare: bootstrap $(DEPENDS_libsamplerate)
 	$(PREPARE_libsamplerate)
@@ -3410,16 +3121,22 @@ $(DEPDIR)/libsamplerate: $(DEPDIR)/libsamplerate.do_compile
 #
 BEGIN[[
 libvorbis
-  1.3.2
+  1.3.3
   {PN}-{PV}
-  extract:http://downloads.xiph.org/releases/vorbis/{PN}-{PV}.tar.bz2
+  extract:http://downloads.xiph.org/releases/vorbis/{PN}-{PV}.tar.gz
   make:install:prefix=/usr:DESTDIR=PKDIR
 ;
 ]]END
-DESCRIPTION_libvorbis = "The libvorbis reference implementation provides both a standard encoder and decoder"
 
-FILES_libvorbis = \
-/usr/lib/libvorbis*
+DESCRIPTION_libvorbis = "The libvorbis reference implementation provides both a standard encoder and decoder"
+RDEPENDS_libvorbis = libogg0 libc6
+define postinst_libvorbis
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libvorbis = /usr/lib/libvorbis*
 
 $(DEPDIR)/libvorbis.do_prepare: bootstrap $(DEPENDS_libvorbis)
 	$(PREPARE_libvorbis)
@@ -3443,62 +3160,46 @@ $(DEPDIR)/libvorbis: $(DEPDIR)/libvorbis.do_compile
 	$(toflash_build)
 	touch $@
 
-#
-# libmodplug
-#
-BEGIN[[
-libmodplug
-  0.8.8.4
-  {PN}-{PV}
-  extract:http://downloads.sourceforge.net/project/modplug-xmms/{PN}/{PV}/{PN}-{PV}.tar.gz
-  make:install:prefix=/usr:DESTDIR=PKDIR
-;
-]]END
-
-DESCRIPTION_libmodplug = "the library for decoding mod-like music formats"
-
-FILES_libmodplug = \
-/usr/lib/lib*
-
-$(DEPDIR)/libmodplug.do_prepare: bootstrap $(DEPENDS_libmodplug)
-	$(PREPARE_libmodplug)
-	touch $@
-
-$(DEPDIR)/libmodplug.do_compile: $(DEPDIR)/libmodplug.do_prepare
-	export PATH=$(hostprefix)/bin:$(PATH) && \
-	cd $(DIR_libmodplug) && \
-	$(BUILDENV) \
-	./configure \
-		--host=$(target) \
-		--prefix=/usr && \
-	$(MAKE) all
-	touch $@
-
-$(DEPDIR)/libmodplug: $(DEPDIR)/libmodplug.do_compile
-	$(start_build)
-	cd $(DIR_libmodplug) && \
-		$(INSTALL_libmodplug)
-	$(tocdk_build)
-	$(toflash_build)
-	touch $@
 
 #
 # tiff
 #
 BEGIN[[
 tiff
-  4.0.1
+  4.0.3
   {PN}-{PV}
   extract:ftp://ftp.remotesensing.org/pub/lib{PN}/{PN}-{PV}.tar.gz
   make:install:prefix=/usr:DESTDIR=PKDIR
 ;
 ]]END
 
-DESCRIPTION_tiff = "TIFF Software Distribution"
+PACKAGES_tiff = libtiff5 \
+		libtiffxx5 \
+		libtiff_utils
 
-FILES_tiff = \
-/usr/lib/libtiff* \
-/usr/bin/*
+DESCRIPTION_libtiff5 =  Provides support for the Tag Image File Format (TIFF).
+RDEPENDS_libtiff5 = liblzma5 libz1 libjpeg8 libc6
+define postinst_libtiff5
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libtiff5 = /usr/lib/libtiff.*
+
+DESCRIPTION_libtiffxx5 =  Provides support for the Tag Image File Format (TIFF).
+RDEPENDS_libtiffxx5 = libgcc1 libstdc++6 liblzma5 libtiff5 libz1 libjpeg8 libc6
+define postinst_libtiffxx5
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libtiffxx5 = /usr/lib/libtiffxx.*
+
+DESCRIPTION_libtiff_utils =  Provides support for the Tag Image File Format (TIFF).
+RDEPENDS_libtiff_utils = libtiff5 libc6
+FILES_libtiff_utils = /usr/bin/*
 
 $(DEPDIR)/tiff.do_prepare: bootstrap $(DEPENDS_tiff)
 	$(PREPARE_tiff)
@@ -3534,10 +3235,16 @@ lzo
 ;
 ]]END
 
-DESCRIPTION_lzo = "LZO -- a real-time data compression library"
-
-FILES_lzo = \
-/usr/lib/*
+NAME_lzo = liblzo2-2
+DESCRIPTION_lzo = Lossless data compression library
+RDEPENDS_lzo = libc6
+define postinst_lzo
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_lzo = /usr/lib/liblzo2.*
 
 $(DEPDIR)/lzo.do_prepare: $(DEPENDS_lzo)
 	$(PREPARE_lzo)
@@ -3549,6 +3256,7 @@ $(DEPDIR)/lzo.do_compile: $(DEPDIR)/lzo.do_prepare
 	$(BUILDENV) \
 	./configure \
 		--host=$(target) \
+		--enable-shared \
 		--prefix=/usr && \
 	$(MAKE) all
 	touch $@
@@ -3658,11 +3366,56 @@ libcdio
 ;
 ]]END
 
-DESCRIPTION_libcdio = "The libcdio package contains a library for CD-ROM and CD image access"
+PACKAGES_libcdio = libcdio_cdda0 \
+		   libcdioxx0 \
+		   libcdio_paranoia0 \
+		   libcdio_utils \
+		   libcdio12
 
-FILES_libcdio = \
-/usr/lib/* \
-/usr/bin/*
+DESCRIPTION_libcdio_cdda0 = gstreamer cdio-cdda library
+RDEPENDS_libcdio_cdda0 = libcdio12 libc6
+define postinst_libcdio_cdda0
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libcdio_cdda0 = /usr/lib/libcdio_cdda.so.*
+
+NAME_libcdioxx0 = libcdio++0
+DESCRIPTION_libcdioxx0 =gstreamer cdio++ library
+RDEPENDS_libcdioxx0 = libcdio12 libc6 libgcc1 libstdc++6
+define postinst_libcdioxx0
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libcdioxx0 = /usr/lib/libcdio++.so.*
+
+DESCRIPTION_libcdio_paranoia0 = gstreamer cdio-paranoia library
+RDEPENDS_libcdio_paranoia0 = libcdio12 libc6 libcdio_cdda0
+define postinst_libcdio_paranoia0
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libcdio_paranoia0 = /usr/lib/libcdio_paranoia.so.*
+
+DESCRIPTION_libcdio_utils = libcdio version
+RDEPENDS_libcdio_utils = libcdio12 libc6 libcdio_cdda0 libcdio_paranoia0 libncurses5
+FILES_libcdio_utils = /usr/bin/*
+
+DESCRIPTION_libcdio12 = gstreamer cdio-cdda library
+RDEPENDS_libcdio12 = libc6
+define postinst_libcdio12
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libcdio12 = /usr/lib/libcdio.so.*
 
 $(DEPDIR)/libcdio.do_prepare: bootstrap $(DEPENDS_libcdio)
 	$(PREPARE_libcdio)
@@ -3863,11 +3616,11 @@ libexif
   make:install:prefix=/usr:DESTDIR=PKDIR
 ;
 ]]END
+
 NAME_libexif = libexif12
 DESCRIPTION_libexif = "libexif is a library for parsing, editing, and saving EXIF data."
-
-FILES_libexif = \
-/usr/lib/libexif.*
+RDEPENDS_libexif = libc6
+FILES_libexif = /usr/lib/libexif.*
 
 $(DEPDIR)/libexif.do_prepare: bootstrap $(DEPENDS_libexif)
 	$(PREPARE_libexif)
@@ -3899,17 +3652,67 @@ minidlna
   {PN}-{PV}
   extract:http://netcologne.dl.sourceforge.net/project/{PN}/{PN}/{PV}/{PN}_{PV}_src.tar.gz
   patch:file://{PN}-{PV}.patch
+  nothing:file://../root/etc/init.d/minidlna-init
   make:install:prefix=/usr:DESTDIR=PKDIR
 ;
 ]]END
 
 DESCRIPTION_minidlna = "The MiniDLNA daemon is an UPnP-A/V and DLNA service which serves multimedia content to compatible clients on the network."
-RDEPENDS_minidlna = libexif12 libid3tag libflac8 libogg0 libjpeg8
+RDEPENDS_minidlna = libexif12 libid3tag libflac8 libogg0 libjpeg8 libvorbis
+define conffiles_minidlna
+/etc/minidlna.conf
+endef
+define postinst_minidlna
+#!/bin/sh
+if type update-rc.d >/dev/null 2>/dev/null; then
+	if [ -n "$$D" ]; then
+		OPT="-r $$D"
+	else
+		OPT="-s"
+	fi
+	update-rc.d $$OPT $$OPKG_OFFLINE_ROOT/ minidlna start 98 S .
+fi
+endef
 
-FILES_minidlna = \
-/usr/lib/* \
-/usr/sbin/*
-$(DEPDIR)/minidlna.do_prepare: bootstrap ffmpeg libflac libogg libvorbis libid3tag sqlite libexif libjpeg $(DEPENDS_minidlna)
+define postrm_minidlna
+#!/bin/sh
+if type update-rc.d >/dev/null 2>/dev/null; then
+	if [ -n "$$D" ]; then
+		OPT="-r $$D"
+	else
+		OPT="-s"
+	fi
+	update-rc.d $$OPT $$OPKG_OFFLINE_ROOT/ minidlna remove
+fi
+endef
+
+define preinst_minidlna
+#!/bin/sh
+if [ -z "$$D" -a -f "/etc/init.d/minidlna" ]; then
+	/etc/init.d/minidlna stop
+fi
+if type update-rc.d >/dev/null 2>/dev/null; then
+	if [ -n "$$D" ]; then
+		OPT="-f -r $$D"
+	else
+		OPT="-f"
+	fi
+	update-rc.d $$OPT $$OPKG_OFFLINE_ROOT/ minidlna remove
+fi
+endef
+
+define prerm_minidlna
+#!/bin/sh
+if [ -z "$ $$D" ]; then
+	/etc/init.d/minidlna stop
+fi
+endef
+FILES_minidlna = /usr/lib/* \
+		 /usr/sbin/* \
+		 /etc/init.d/minidlna \
+		 /etc/minidlna.conf
+
+$(DEPDIR)/minidlna.do_prepare: bootstrap libflac libogg libid3tag libvorbis libexif libjpeg $(DEPENDS_minidlna)
 	$(PREPARE_minidlna)
 	touch $@
 
@@ -3932,6 +3735,9 @@ $(DEPDIR)/minidlna: $(DEPDIR)/minidlna.do_compile
 	$(start_build)
 	cd $(DIR_minidlna) && \
 		$(INSTALL_minidlna)
+	$(INSTALL_DIR) $(PKDIR)/etc/init.d && \
+	$(INSTALL_FILE) $(DIR_minidlna)/minidlna.conf $(PKDIR)/etc/ && \
+	$(INSTALL_BIN) $(DIR_minidlna)/minidlna-init $(PKDIR)/etc/init.d/minidlna && \
 	$(tocdk_build)
 	$(toflash_build)
 	touch $@
@@ -4020,17 +3826,61 @@ djmount
   0.71
   {PN}-{PV}
   extract:http://sourceforge.net/projects/{PN}/files/{PN}/{PV}/{PN}-{PV}.tar.gz
+  nothing:file://../root/etc/init.d/djmount-init
   make:install:DESTDIR=PKDIR
 ;
 ]]END
 
-DESCRIPTION_djmount = djmount is a UPnP AV client. It mounts as a Linux filesystem the media content of compatible UPnP AV devices.
-RDEPENDS_djmount = fuse
-FILES_djmount = \
-/usr/bin/* \
-/usr/lib/*
+DESCRIPTION_djmount =  mount UPnP server content as a linux filesystem
+RDEPENDS_djmount = libfuse2 libc6 libupnp3
+define postinst_djmount
+#!/bin/sh
+if type update-rc.d >/dev/null 2>/dev/null; then
+	if [ -n "$$D" ]; then
+		OPT="-r $$D"
+	else
+		OPT="-s"
+	fi
+	update-rc.d $$OPT $$OPKG_OFFLINE_ROOT/ djmount start 97 S .
+fi
+endef
 
-$(DEPDIR)/djmount.do_prepare: bootstrap fuse $(DEPENDS_djmount)
+define postrm_djmount
+#!/bin/sh
+if type update-rc.d >/dev/null 2>/dev/null; then
+	if [ -n "$$D" ]; then
+		OPT="-r $$D"
+	else
+		OPT="-s"
+	fi
+	update-rc.d $$OPT $$OPKG_OFFLINE_ROOT/ djmount remove
+fi
+endef
+
+define preinst_djmount
+#!/bin/sh
+if [ -z "$$D" -a -f "/etc/init.d/djmount" ]; then
+	/etc/init.d/djmount stop
+fi
+if type update-rc.d >/dev/null 2>/dev/null; then
+	if [ -n "$$D" ]; then
+		OPT="-f -r $$D"
+	else
+		OPT="-f"
+	fi
+	update-rc.d $$OPT $$OPKG_OFFLINE_ROOT/ djmount remove
+fi
+endef
+
+define prerm_djmount
+#!/bin/sh
+if [ -z "$ $$D" ]; then
+	/etc/init.d/djmount stop
+fi
+endef
+FILES_djmount = /usr/bin/* /etc/init.d/djmount
+
+$(DEPDIR)/djmount.do_prepare: bootstrap fuse curl $(DEPENDS_djmount)
 	$(PREPARE_djmount)
 	touch $@
 
@@ -4049,6 +3899,8 @@ $(DEPDIR)/djmount: $(DEPDIR)/djmount.do_compile
 	cd $(DIR_djmount) && \
 		$(INSTALL_djmount)
 	$(tocdk_build)
+	$(INSTALL_DIR) $(PKDIR)/etc/init.d && \
+	$(INSTALL_BIN) $(DIR_djmount)/djmount-init $(PKDIR)/etc/init.d/djmount && \
 	$(toflash_build)
 	touch $@
 
@@ -4057,15 +3909,25 @@ $(DEPDIR)/djmount: $(DEPDIR)/djmount.do_compile
 #
 BEGIN[[
 libupnp
-  1.6.17
+  1.6.19
   {PN}-{PV}
-  extract:http://sourceforge.net/projects/upnp/files/latest/download/{PN}-{PV}.tar.gz
+  extract:http://sourceforge.net/projects/pupnp/files/latest/download/{PN}-{PV}.tar.bz2
   make:install:DESTDIR=PKDIR
 ;
 ]]END
 
-DESCRIPTION_libupnp = "The portable SDK for UPnP™ Devices (libupnp) provides developers with an API and open source code for building control points"
-
+NAME_libupnp = libupnp3
+DESCRIPTION_libupnp = The portable SDK for UPnP* Devices (libupnp) provides developers with an \
+ API and open source code for building control points, devices, and \
+ bridges that are compliant with Version 1.0 of the Universal Plug and \
+ Play Device Architecture Specification.
+RDEPENDS_libupnp = libc6
+define postinst_libupnp
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
 FILES_libupnp = \
 /usr/lib/*.so*
 
