@@ -6,7 +6,7 @@ image: package-index
 	export HHL_CROSS_TARGET_DIR=$(prefix)/release && \
 	export OPKG_OFFLINE_ROOT=$(prefix)/release && \
 	opkg update -f $(crossprefix)/etc/opkg.conf  -o $(prefix)/release && \
-	opkg install $(opkg_system) $(opkg_os) $(opkg_enigma2) $(opkg_wireless) -f $(crossprefix)/etc/opkg.conf -o $(prefix)/release --force-postinstall
+	opkg install $(opkg_system) $(opkg_os) $(opkg_enigma2) $(opkg_wireless) $(opkg_net_utils) -f $(crossprefix)/etc/opkg.conf -o $(prefix)/release --force-postinstall
 # add version
 	echo "version=OpenAR-P_`date +%d-%m-%y-%T`_git-`git rev-list --count HEAD`" > $(prefix)/release/etc/image-version
 	echo ---------------------------------------------------------- >> $(prefix)/release/etc/image-version
@@ -21,13 +21,32 @@ opkg_system := boot-elf \
 	       firmware \
 	       init-scripts \
 	       bootlogo  \
-	       default-configs \
+	       update-rc.d \
+	       base-files \
 	       default-bins
 
 opkg_os := linux-kernel \
 		busybox \
 		opkg \
-		lirc \
+		ntfs-3g \
+		evremote2 \
+		libdvdcss2 \
+		libdvdread4 \
+		libdvdnav4 \
+		libtermcap \
+		libz1 \
+		libbz2 \
+		e2fsprogs-mke2fs \
+		e2fsprogs-e2fsck \
+		util-linux-sfdisk \
+		libncurses5 \
+		libreadline6 \
+		curl \
+		mpc \
+		mpfr \
+		libgmpxx4 \
+		sysvinit \
+		showiframe \
 		kernel-module-avs \
 		kernel-module-bpamem \
 		kernel-module-cec \
@@ -43,6 +62,7 @@ opkg_os := linux-kernel \
 		kernel-module-simu-button \
 		kernel-module-smartcard \
 		kernel-module-stgfb \
+		distro-feed-configs \
 		udev-rules \
 		libeplayer3
 
@@ -54,6 +74,7 @@ opkg_enigma2 := enigma2 \
 		enigma2-plugin-extensions-dvdplayer \
 		enigma2-plugin-extensions-graphmultiepg \
 		enigma2-plugin-extensions-mediascanner \
+		enigma2-plugin-extensions-mediaplayer \
 		enigma2-plugin-extensions-modemsettings \
 		enigma2-plugin-extensions-pictureplayer \
 		enigma2-plugin-systemplugins-cablescan \
@@ -75,7 +96,8 @@ opkg_enigma2 := enigma2 \
 		enigma2-plugin-systemplugins-videoenhancement \
 		enigma2-plugin-systemplugins-videotune \
 		enigma2-plugin-systemplugins-videomode \
-		enigma2-plugin-systemplugins-wirelesslan
+		enigma2-plugin-systemplugins-wirelesslan \
+		enigma2-plugin-skin-magic
 
 opkg_enigma2_full := enigma2-plugin-skin-megamod \
 		     enigma2-plugin-systemplugins-libgisclubskin
@@ -85,7 +107,12 @@ opkg_wireless := wireless-tools \
 		kernel-module-rt3070sta \
 		kernel-module-rt5370sta \
 		kernel-module-rtl8192cu \
-		kernel-module-rtl871x
+		kernel-module-rtl871x \
+		kernel-module-rtl8188eu
+
+opkg_net_utils:= portmap \
+		 vsftpd \
+		 ethtool
 
 opkg_3g := modem-scripts
 

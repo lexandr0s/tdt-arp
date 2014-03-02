@@ -53,6 +53,7 @@ disk-utils: \
 3g-utils: \
 		usb_modeswitch \
 		pppd \
+		iptables \
 		modem-scripts \
 #
 # YAUD
@@ -107,9 +108,10 @@ yaud-none: \
 # EXTRAS
 #
 min-extras: \
-	ntfs_3g \
+	ntfs3g \
 	enigma2-plugins \
 	wireless_tools \
+	modem_scripts \
 	enigma2-plugins-sh4
 	
 all-extras: \
@@ -124,11 +126,9 @@ all-extras: \
 	smbnetfs \
 	samba \
 	xupnpd \
-	ntfs_3g \
 	wireless_tools \
 	enigma2-skins-sh4 \
-	udpxy \
-	package-index
+	udpxy
 
 #
 # FLASH IMAGE
