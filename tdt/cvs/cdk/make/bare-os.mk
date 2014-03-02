@@ -27,8 +27,32 @@ $(DEPDIR)/filesystem: bootstrap-cross
 #
 GLIBC := glibc
 GLIBC_DEV := glibc-dev
-FILES_glibc = /lib
-FILES_glibc_dev = /lib /usr/lib
+PACKAGES_glibc = libc6
+
+DESCRIPTION_libc6 = Embedded GLIBC (GNU C Library) Embedded GLIBC (EGLIBC) \
+is a variant of the GNU C Library (GLIBC) that is designed to work well on \
+embedded systems. EGLIBC strives to be source and binary compatible with GLIBC.\
+EGLIBC's goals include reduced footprint, configurable components, better \
+support for cross-compilation and cross-testing.
+define postinst_libc6
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libc6 = /etc/ld.so.conf \
+	      /lib/* \
+	      /sbin/ldconfig
+
+NAME_glibc_dev = libc6_dev
+DESCRIPTION_glibc_dev = Embedded GLIBC (GNU C Library) Embedded GLIBC (EGLIBC) \
+is a variant of the GNU C Library (GLIBC) that is designed to work well on \
+embedded systems. EGLIBC strives to be source and binary compatible with GLIBC.\
+EGLIBC's goals include reduced footprint, configurable components, better \
+support for cross-compilation and cross-testing.
+FILES_glibc_dev = /usr/lib \
+		  /usr/include
+
 GLIBC_VERSION := 2.14.1-48
 GLIBC_RAWVERSION := $(firstword $(subst -, ,$(GLIBC_VERSION)))
 GLIBC_SPEC := stm-target-$(GLIBC).spec
@@ -52,6 +76,7 @@ $(DEPDIR)/$(GLIBC): \
 $(DEPDIR)/%$(GLIBC): $(GLIBC_RPM) | $(DEPDIR)/%filesystem
 	@rpm --dbpath $(prefix)/$*cdkroot-rpmdb $(DRPM) --ignorearch --nodeps  -Uhv \
 		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^)
+	$(call parent_pk,glibc)
 	$(start_build)
 	$(fromrpm_build)
 	touch $@
@@ -98,11 +123,36 @@ $(DEPDIR)/$(BINUTILS_DEV): $(BINUTILS_DEV_RPM)
 # GMP
 #
 GMP := gmp
-GMP_VERSION := 5.1.0-9
+GMP_VERSION := 5.1.3-10
 GMP_SPEC := stm-target-$(GMP).spec
 GMP_SPEC_PATCH :=
 GMP_PATCHES :=
 GMP_RPM := RPMS/sh4/$(STLINUX)-sh4-$(GMP)-$(GMP_VERSION).sh4.rpm
+PACKAGES_gmp = libgmp10 \
+		libgmpxx4
+DESCRIPTION_libgmp10 =  GNU multiprecision arithmetic library  GMP is a free library for \
+ arbitrary precision arithmetic, operating on   signed integers, rational \
+ numbers, and floating point numbers
+RDEPENDS_libgmp10 = libc6
+define postinst_libgmp10
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libgmp10 = /usr/lib/libgmp.so.*
+
+DESCRIPTION_libgmpxx4 =  GNU multiprecision arithmetic library  GMP is a free library for \
+ arbitrary precision arithmetic, operating on   signed integers, rational \
+ numbers, and floating point numbers
+RDEPENDS_libgmpxx4 = libc6 libgcc1 libstdc++6 libgmp10
+define postinst_libgmpxx4
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+FILES_libgmpxx4 = /usr/lib/libgmpxx.so.*
 
 $(GMP_RPM): \
 		$(addprefix Patches/,$(GMP_SPEC_PATCH) $(GMP_PATCHES)) \
@@ -117,6 +167,7 @@ $(DEPDIR)/$(GMP): $(GMP_RPM)
 	@rpm $(DRPM) --ignorearch --nodeps -Uhv $(lastword $^) && \
 	sed -i "/^libdir/s|'/usr/lib'|'$(targetprefix)/usr/lib'|" $(targetprefix)/usr/lib/libgmp.la
 	sed -i "/^dependency_libs/s|-L/usr/lib -L/lib ||" $(targetprefix)/usr/lib/libgmp.la
+	$(call parent_pk,gmp)
 	$(start_build)
 	$(fromrpm_build)
 	touch $@
@@ -125,7 +176,7 @@ $(DEPDIR)/$(GMP): $(GMP_RPM)
 # MPFR
 #
 MPFR := mpfr
-MPFR_VERSION := 3.1.2-9
+MPFR_VERSION := 3.1.2-10
 MPFR_SPEC := stm-target-$(MPFR).spec
 MPFR_SPEC_PATCH :=
 MPFR_PATCHES :=
@@ -205,11 +256,15 @@ $(DEPDIR)/$(LIBELF): $(LIBELF_RPM)
 #
 GCC := gcc
 LIBSTDC := libstdc++
-RDEPENDS_libstdc++ = libgcc1
-FILES_libstdc++ = /usr/lib/libstdc++.so.*
+NAME_libstdcxx = libstdc++6
+DESCRIPTION_libstdcxx = libstdc++
+RDEPENDS_libstdcxx = libgcc1
+FILES_libstdcxx = /usr/lib/libstdc++.so.*
 LIBSTDC_DEV := libstdc++-dev
-RDEPENDS_libstdc++-dev = libstdc++
-FILES_libstdc++-dev = /usr/include /usr/lib/*.*
+NAME_libstdcxxdev = libstdc++6-dev
+DESCRIPTION_libstdcxxdev = libstdc++
+RDEPENDS_libstdcxxdev = libstdc++6
+FILES_libstdcxxdev = /usr/include /usr/lib/*.*
 LIBGCC := libgcc
 ifdef GCC48
 GCC_VERSION := 4.8.2-135
@@ -243,6 +298,7 @@ $(DEPDIR)/$(GCC): $(DEPDIR)/%$(GCC): $(DEPDIR)/%$(GLIBC_DEV) $(GCC_RPM)
 $(DEPDIR)/$(LIBSTDC): $(DEPDIR)/%$(LIBSTDC): $(LIBSTDC_RPM)
 	@rpm --dbpath $(prefix)/$*cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
 		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^)
+	$(call parent_pk,libstdcxx)
 	$(start_build)
 	$(fromrpm_build)
 	touch $@
@@ -250,6 +306,7 @@ $(DEPDIR)/$(LIBSTDC): $(DEPDIR)/%$(LIBSTDC): $(LIBSTDC_RPM)
 $(DEPDIR)/$(LIBSTDC_DEV): $(DEPDIR)/%$(LIBSTDC_DEV): $(DEPDIR)/%$(LIBSTDC) $(LIBSTDC_DEV_RPM)
 	@rpm --dbpath $(prefix)/$*cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
 		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^)
+	$(call parent_pk,libstdcxxdev)
 	$(start_build)
 	$(fromrpm_build)
 	touch $@
@@ -328,6 +385,51 @@ $(DEPDIR)/%$(LIBTERMCAP_DOC): $(LIBTERMCAP_DOC_RPM)
 #
 # NCURSES
 #
+PACKAGES_ncurses = libncurses5 \
+		  libpanel5 \
+		  libmenu5 \
+		  libform5
+
+DESCRIPTION_libncurses5 =  ncurses panel library  ncurses panel library
+RDEPENDS_libncurses5 = libc6
+FILES_libncurses5 = /lib/*
+define postinst_libncurses5
+#!/bin/sh
+if [ x"$$OPKG_OFFLINE_ROOT/" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+
+DESCRIPTION_libpanel5 =  ncurses panel library  ncurses panel library
+RDEPENDS_libpanel5 = libncurses5 libc6
+FILES_libpanel5 = /usr/lib/libpanel.so.*
+define postinst_libpanel5
+#!/bin/sh
+if [ x"$$OPKG_OFFLINE_ROOT/" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+
+DESCRIPTION_libmenu5 =  ncurses panel library  ncurses panel library
+RDEPENDS_libmenu5 = libncurses5 libc6
+FILES_libmenu5 = /usr/lib/libpanel.so.*
+define postinst_libmenu5
+#!/bin/sh
+if [ x"$$OPKG_OFFLINE_ROOT/" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+
+DESCRIPTION_libform5 =  ncurses panel library  ncurses panel library
+RDEPENDS_libform5 = libncurses5 libc6
+FILES_libform5 = /usr/lib/libpanel.so.*
+define postinst_libform5
+#!/bin/sh
+if [ x"$$OPKG_OFFLINE_ROOT/" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+
 NCURSES := ncurses
 NCURSES_BASE := ncurses-base
 NCURSES_DEV := ncurses-dev
@@ -362,6 +464,7 @@ $(DEPDIR)/$(NCURSES): \
 $(DEPDIR)/%$(NCURSES): $(DEPDIR)/%$(NCURSES_BASE) $(NCURSES_RPM)
 	@rpm --dbpath $(prefix)/$*cdkroot-rpmdb $(DRPM) --ignorearch  -Uhv \
 		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^)
+	$(call parent_pk,ncurses)
 	$(start_build)
 	$(fromrpm_build)
 	touch $@
@@ -473,6 +576,24 @@ $(DEPDIR)/$(BASE_FILES): $(DEPDIR)/%$(BASE_FILES): $(BASE_FILES_ADAPTED_ETC_FILE
 # LIBATTR
 #
 LIBATTR := libattr
+PACKAGES_libattr = attr \
+		   libattr1
+DESCRIPTION_attr = Utilities for manipulating filesystem extended attributes \
+ Utilities for manipulating filesystem extended attributes.
+RDEPENDS_attr = libattr1 libc6
+FILES_attr = /usr/bin
+
+DESCRIPTION_libattr1 = Utilities for manipulating filesystem extended attributes \
+ Utilities for manipulating filesystem extended attributes.
+RDEPENDS_libattr1 = libc6
+FILES_libattr1 = /usr/lib/*
+define postinst_libattr1
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+
 LIBATTR_DEV := libattr-dev
 LIBATTR_VERSION := 2.4.47-5
 LIBATTR_SPEC := stm-target-$(LIBATTR).spec
@@ -495,6 +616,7 @@ $(LIBATTR_RPM) $(LIBATTR_DEV_RPM): \
 $(DEPDIR)/$(LIBATTR): $(DEPDIR)/%$(LIBATTR): $(LIBATTR_RPM)
 	@rpm --dbpath $(prefix)/$*cdkroot-rpmdb $(DRPM) --ignorearch --nodeps --noscripts -Uhv \
 		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^)
+	$(call parent_pk,libattr)
 	$(start_build)
 	$(fromrpm_build)
 	touch $@
@@ -623,7 +745,7 @@ $(DEPDIR)/$(USBUTILS): $(DEPDIR)/%$(USBUTILS): $(USBUTILS_RPM)
 
 UDEV := udev
 UDEV_DEV := udev-dev
-UDEV_VERSION := 162-35
+UDEV_VERSION := 162-36
 PKGR_udev := r0
 UDEV_SPEC := stm-target-$(UDEV).spec
 UDEV_SPEC_PATCH := stm-target-udev.spec.diff
@@ -631,7 +753,17 @@ UDEV_PATCHES := usbhd-automount.rules
 UDEV_RPM := RPMS/sh4/$(STLINUX)-sh4-$(UDEV)-$(UDEV_VERSION).sh4.rpm
 UDEV_DEV_RPM := RPMS/sh4/$(STLINUX)-sh4-$(UDEV_DEV)-$(UDEV_VERSION).sh4.rpm
 
-RDEPENDS_udev := libattr libacl libusb2 libusb_compat 
+RDEPENDS_udev := libattr1 libacl libusb_1.0 libusb_0.1
+define postinst_udev
+#!/bin/sh
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ udev start 5 S . stop 99 0 6 .
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ udevadm start 6 S . stop 99 0 6 .
+endef
+
+define prerm_udev
+#!/bin/sh
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ udev remove
+endef
 
 $(UDEV_RPM) $(UDEV_DEV_RPM): \
 		glib2 libacl libacl-dev libusb_compat usbutils udevrules \
@@ -652,15 +784,10 @@ $(DEPDIR)/$(UDEV_DEV): $(DEPDIR)/%$(UDEV_DEV): $(UDEV_DEV_RPM)
 
 $(DEPDIR)/$(UDEV): $(DEPDIR)/%$(UDEV): $(UDEV_RPM)
 	@rpm --dbpath $(prefix)/$*cdkroot-rpmdb $(DRPM) --ignorearch --nodeps --noscripts -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^) && \
-	( export HHL_CROSS_TARGET_DIR=$(prefix)/$*cdkroot && cd $(prefix)/$*cdkroot/etc/init.d && \
-		for s in sysfs udev ; do \
-			$(hostprefix)/bin/target-initdconfig --add $$s || \
-			echo "Unable to enable initd service: $$s" ; done && rm *rpmsave 2>/dev/null || true )
+		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^)
 	$(start_build)
+	$(remove_docs)
 	$(fromrpm_get)
-# start udevadm earlier
-	sed -i 's/# chkconfig: S 99 0/# chkconfig: S 6 0/' $(PKDIR)/etc/init.d/udevadm
 	$(INSTALL_udev)
 	$(toflash_build)
 	touch $@
