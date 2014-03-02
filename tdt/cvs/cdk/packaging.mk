@@ -143,6 +143,13 @@ define remove_docs
 	rm -rf $(PKDIR)/usr/share/gtk-doc
 endef
 
+define strip_all
+	export PATH=$(MAKE_PATH) && \
+	find $(PKDIR) -type f \
+		-exec echo strip {} \; \
+		-exec sh4-linux-strip --strip-unneeded {} \;
+endef
+
 define strip_libs
 	find $(PKDIR) -type f -regex '.*/lib/.*\.so\(\.[0-9]+\)*' \
 		-exec echo strip {} \; \
@@ -246,5 +253,6 @@ box_arch := $(SPARK)$(SPARK7162)$(HL101)
 svn_version := svn info | awk '/Revision:/ { print $$2 }'
 get_svn_version = $(eval export PKGV_$(PARENT_PK) = $(shell cd $(DIR_$(PARENT_PK)) && $(svn_version)))
 
+git_date := git log -1 --format=%cd --date=short -- . |sed s/-//g
 git_version := echo git`git rev-list --count HEAD`
 get_git_version = $(eval export PKGV_$(PARENT_PK) = $(shell cd $(DIR_$(PARENT_PK)) && $(git_version)))
