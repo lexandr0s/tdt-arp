@@ -11,7 +11,6 @@ python
   patch:file://{PN}_{PV}.diff
   patch:file://{PN}_{PV}-ctypes-libffi-fix-configure.diff
   patch:file://{PN}_{PV}-pgettext.diff
-  patch:file://{PN}-fix-configure-Wformat.diff
 ;
 else
 python
@@ -87,6 +86,7 @@ PACKAGES_python = libpython \
 		  python_terminal \
 		  python_tests \
 		  python_textutils \
+		  python_tkinter \
 		  python_threading \
 		  python_unittest \
 		  python_unixadmin \
@@ -95,7 +95,7 @@ PACKAGES_python = libpython \
 		  python_zlib
 
 DESCRIPTION_python_core = Python Interpreter and core modules
-RDEPENDS_python_core = python_re libpython python_lang
+RDEPENDS_python_core = python_re libpython$(PYTHON_VERSION) python_lang libz1 libc6
 FILES_python_core = \
   /usr/bin/python* \
   /usr/include/python$(PYTHON_VERSION)/pyconfig.h \
@@ -128,7 +128,9 @@ FILES_python_core = \
   $(PYTHON_DIR)/types.* \
   $(PYTHON_DIR)/warnings.*
 
+NAME_libpython = libpython$(PYTHON_VERSION)
 DESCRIPTION_libpython = The Python Programming Language
+RDEPENDS_libpython = libc6
 FILES_libpython = \
   /usr/lib/libpython$(PYTHON_VERSION).*
 
@@ -139,7 +141,7 @@ FILES_python_2to3 = \
   $(PYTHON_DIR)/lib2to3 \
 
 DESCRIPTION_python_lang =  Python Low-Level Language Support
-RDEPENDS_python_lang = python_core libpython
+RDEPENDS_python_lang = python_core libpython$(PYTHON_VERSION) libc6
 FILES_python_lang = \
   $(PYTHON_DIR)/lib-dynload/_bisect.so \
   $(PYTHON_DIR)/lib-dynload/_collections.so \
@@ -177,7 +179,7 @@ FILES_python_re = \
   $(PYTHON_DIR)/sre_parse.*
 
 DESCRIPTION_python_audio = Python Audio Handling
-RDEPENDS_python_audio = python_core libpython
+RDEPENDS_python_audio = python_core libpython$(PYTHON_VERSION) libc6
 FILES_python_audio = \
   $(PYTHON_DIR)/lib-dynload/audioop.so \
   $(PYTHON_DIR)/lib-dynload/ossaudiodev.so \
@@ -190,12 +192,12 @@ FILES_python_audio = \
   $(PYTHON_DIR)/wave.*
 
 DESCRIPTION_python_bsddb = Python Berkeley Database Bindings
-RDEPENDS_python_bsddb = python_core
+RDEPENDS_python_bsddb = python_core db libc6
 FILES_python_bsddb = \
   $(PYTHON_DIR)/bsddb
 
 DESCRIPTION_python_codecs = Python Codecs, Encodings & i18n Support
-RDEPENDS_python_codecs = python_core python_lang libpython
+RDEPENDS_python_codecs = python_core python_lang libpython$(PYTHON_VERSION) libc6
 FILES_python_codecs = \
   $(PYTHON_DIR)/encodings \
   $(PYTHON_DIR)/lib-dynload/_codecs_cn.so \
@@ -225,7 +227,7 @@ FILES_python_compiler = \
   $(PYTHON_DIR)/compiler
 
 DESCRIPTION_python_compression = Python High Level Compression Support
-RDEPENDS_python_compression = python_core libpython libbz2_0 python_zlib
+RDEPENDS_python_compression = python_core libpython$(PYTHON_VERSION) libbz2 python_zlib libc6
 FILES_python_compression = \
   $(PYTHON_DIR)/lib-dynload/bz2.so \
   $(PYTHON_DIR)/gzip.* \
@@ -233,7 +235,7 @@ FILES_python_compression = \
   $(PYTHON_DIR)/zipfile.*
 
 DESCRIPTION_python_crypt = Python Basic Cryptographic and Hashing Support
-RDEPENDS_python_crypt = libssl python_core libpython libcrypto
+RDEPENDS_python_crypt = libssl1 python_core libpython$(PYTHON_VERSION) libcrypto1 libc6
 FILES_python_crypt = \
   $(PYTHON_DIR)/lib-dynload/_hashlib.so \
   $(PYTHON_DIR)/lib-dynload/crypt.so \
@@ -242,21 +244,21 @@ FILES_python_crypt = \
   $(PYTHON_DIR)/sha.*
 
 DESCRIPTION_python_ctypes = python ctypes module
-RDEPENDS_python_ctypes = python_core libpython
+RDEPENDS_python_ctypes = python_core libpython$(PYTHON_VERSION) libc6
 FILES_python_ctypes = \
   $(PYTHON_DIR)/lib-dynload/_ctypes.so \
   $(PYTHON_DIR)/lib-dynload/_ctypes_test.so \
   $(PYTHON_DIR)/ctypes
 
 DESCRIPTION_python_curses =  Python Curses Support
-RDEPENDS_python_curses = libpython python_core libcursesw5 libtinfo5 libpanelw5
+RDEPENDS_python_curses = libpython$(PYTHON_VERSION) python_core libncurses5 libpanel5 libc6
 FILES_python_curses = \
   $(PYTHON_DIR)/lib-dynload/_curses.so \
   $(PYTHON_DIR)/lib-dynload/_curses_panel.so \
   $(PYTHON_DIR)/curses
 
 DESCRIPTION_python_datetime = Python Calendar and Time support
-RDEPENDS_python_datetime =python_core libpython python_codecs
+RDEPENDS_python_datetime =python_core libpython$(PYTHON_VERSION) python_codecs libc6
 FILES_python_datetime = \
   $(PYTHON_DIR)/lib-dynload/datetime.so \
   $(PYTHON_DIR)/_strptime.* \
@@ -276,7 +278,7 @@ FILES_python_debugger = \
   $(PYTHON_DIR)/pdb.*
 
 DESCRIPTION_python_dev = Python Development Package
-RDEPENDS_python_dev = python_core libpython
+RDEPENDS_python_dev = python_core libpython$(PYTHON_VERSION)
 FILES_python_dev = \
   /usr/lib/libpython$(PYTHON_VERSION).so.* \
   /usr/include/python$(PYTHON_VERSION)
@@ -305,7 +307,7 @@ FILES_python_doctest = \
   $(PYTHON_DIR)/doctest.*
 
 DESCRIPTION_python_elementtree = Python elementree
-RDEPENDS_python_elementtree = python_core libpython
+RDEPENDS_python_elementtree = python_core libpython$(PYTHON_VERSION) libc6
 FILES_python_elementtree = \
   $(PYTHON_DIR)/lib-dynload/_elementtree.so
 
@@ -316,17 +318,17 @@ FILES_python_email = \
   $(PYTHON_DIR)/imaplib.*
 
 DESCRIPTION_python_fcntl = Python's fcntl Interfaces
-RDEPENDS_python_fcntl = python_core libpython
+RDEPENDS_python_fcntl = python_core libpython$(PYTHON_VERSION) libc6
 FILES_python_fcntl = \
   $(PYTHON_DIR)/lib-dynload/fcntl.so
 
 DESCRIPTION_python_gdbm = Python GNU Database Support
-RDEPENDS_python_gdbm = python_core libpython libgdbm4
+RDEPENDS_python_gdbm = python_core libpython$(PYTHON_VERSION) libgdbm4 libc6
 FILES_python_gdbm = \
   $(PYTHON_DIR)/lib-dynload/gdbm.so
 
 DESCRIPTION_python_hotshot = Python Hotshot Profile
-RDEPENDS_python_hotshot = python_core libpython
+RDEPENDS_python_hotshot = python_core libpython$(PYTHON_VERSION) libc6
 FILES_python_hotshot = \
   $(PYTHON_DIR)/lib-dynload/_hotshot.so \
   $(PYTHON_DIR)/hotshot
@@ -348,14 +350,14 @@ FILES_python_idle = \
   $(PYTHON_DIR)/idlelib
 
 DESCRIPTION_python_image = Python Graphical Image Handling
-RDEPENDS_python_image = python_core libpython
+RDEPENDS_python_image = python_core libpython$(PYTHON_VERSION) libc6
 FILES_python_image = \
   $(PYTHON_DIR)/lib-dynload/imageop.so \
   $(PYTHON_DIR)/colorsys.* \
   $(PYTHON_DIR)/imghdr.*
 
 DESCRIPTION_python_io =  Python Low-Level I/O
-RDEPENDS_python_io = libpython libcrypto python_math python_core libssl
+RDEPENDS_python_io = libpython$(PYTHON_VERSION) libcrypto1 python_math python_core libssl1 python_textutils libc6
 FILES_python_io = \
   $(PYTHON_DIR)/lib-dynload/_io.so \
   $(PYTHON_DIR)/lib-dynload/_socket.so \
@@ -372,7 +374,7 @@ FILES_python_io = \
   $(PYTHON_DIR)/tempfile.*
 
 DESCRIPTION_python_json = Python JSON Support
-RDEPENDS_python_json = python_core libpython python_re python_math
+RDEPENDS_python_json = python_core libpython$(PYTHON_VERSION) python_re python_math libc6
 FILES_python_json = \
   $(PYTHON_DIR)/json \
   $(PYTHON_DIR)/lib-dynload/_json.so
@@ -388,7 +390,7 @@ FILES_python_mailbox = \
   $(PYTHON_DIR)/mailbox.*
 
 DESCRIPTION_python_math =  Python Math Support
-RDEPENDS_python_math = python_core libpython
+RDEPENDS_python_math = python_core libpython$(PYTHON_VERSION) libc6 python_crypt
 FILES_python_math = \
   $(PYTHON_DIR)/lib-dynload/_random.so \
   $(PYTHON_DIR)/lib-dynload/cmath.so \
@@ -406,7 +408,7 @@ FILES_python_mime = \
   $(PYTHON_DIR)/uu.*
 
 DESCRIPTION_python_misc = The Python Programming Language
-RDEPENDS_python_misc = libpython
+RDEPENDS_python_misc = libpython$(PYTHON_VERSION) libc6
 FILES_python_misc = \
   $(PYTHON_DIR)/importlib \
   $(PYTHON_DIR)/lib-dynload/Python-* \
@@ -465,7 +467,7 @@ FILES_python_misc = \
   $(PYTHON_DIR)/wsgiref.egg-info
 
 DESCRIPTION_python_mmap = Python Memory-Mapped-File Support
-RDEPENDS_python_mmap = python_core python_io libpython
+RDEPENDS_python_mmap = python_core python_io libpython$(PYTHON_VERSION) libc6
 FILES_python_mmap = \
   $(PYTHON_DIR)/lib-dynload/mmap.so
 
@@ -482,7 +484,7 @@ python_smtpd python_shell python_idle python_zlib python_db python_crypt python_
 FILES_python_modules = \
 
 DESCRIPTION_python_multiprocessing = Python Multiprocessing Support
-RDEPENDS_python_multiprocessing = python_core python_io python_lang libpython
+RDEPENDS_python_multiprocessing = python_core python_io python_lang libpython$(PYTHON_VERSION) python_pickle python_threading python_ctypes libc6
 FILES_python_multiprocessing = \
   $(PYTHON_DIR)/multiprocessing \
   $(PYTHON_DIR)/lib-dynload/_multiprocessing.so
@@ -524,7 +526,7 @@ FILES_python_numbers = \
   $(PYTHON_DIR)/numbers.*
 
 DESCRIPTION_python_pickle = Python Persistence Support
-RDEPENDS_python_pickle = libpython python_codecs python_core python_io python_re
+RDEPENDS_python_pickle = libpython$(PYTHON_VERSION) python_codecs python_core python_io python_re libc6
 FILES_python_pickle = \
   $(PYTHON_DIR)/pickle.* \
   $(PYTHON_DIR)/pickletools.* \
@@ -536,11 +538,11 @@ RDEPENDS_python_pkgutil = python_core
 FILES_python_pkgutil = $(PYTHON_DIR)/pkgutil.*
 
 DESCRIPTION_python_pprint = Python Pretty-Print Support
-RDEPENDS_python_pprint = python_core
+RDEPENDS_python_pprint = python_core python_io
 FILES_python_pprint = $(PYTHON_DIR)/pprint.*
 
 DESCRIPTION_python_profile = Python Basic Profiling Support
-RDEPENDS_python_profile = python_core python_textutils libpython
+RDEPENDS_python_profile = python_core python_textutils libpython$(PYTHON_VERSION) libc6
 FILES_python_profile = \
   $(PYTHON_DIR)/cProfile.* \
   $(PYTHON_DIR)/profile.* \
@@ -555,13 +557,13 @@ FILES_python_pydoc = \
   $(PYTHON_DIR)/pydoc.*
 
 DESCRIPTION_python_readline = Python Readline Support
-RDEPENDS_python_readline = python_core libpython libreadline libncursesw
+RDEPENDS_python_readline = python_core libpython$(PYTHON_VERSION) libreadline6 libncurses5 libc6
 FILES_python_readline = \
   $(PYTHON_DIR)/rlcompleter.* \
   $(PYTHON_DIR)/lib-dynload/readline.so
 
 DESCRIPTION_python_resource = Python Resource Control Interfaces
-RDEPENDS_python_resource = python_core libpython
+RDEPENDS_python_resource = python_core libpython$(PYTHON_VERSION) libc6
 FILES_python_resource = $(PYTHON_DIR)/lib-dynload/resource.so
 
 DESCRIPTION_python_robotparser = Python robots.txt parser
@@ -589,11 +591,11 @@ RDEPENDS_python_sqlite3_tests = python_sqlite3 python_core
 FILES_python_sqlite3_tests = $(PYTHON_DIR)/sqlite3/test
 
 DESCRIPTION_python_sqlite3 = Python Sqlite3 Database Support
-RDEPENDS_python_sqlite3 = libpython python_threading python_zlib python_datetime python_core python_io libsqlite3 python_crypt python_lang
+RDEPENDS_python_sqlite3 = libpython$(PYTHON_VERSION) python_threading python_zlib python_datetime python_core python_io libsqlite3 python_crypt python_lang libc6
 FILES_python_sqlite3 = $(PYTHON_DIR)/sqlite3/*.* $(PYTHON_DIR)/lib-dynload/_sqlite3.so
 
 DESCRIPTION_python_stringold = Python String APIs [deprecated]
-RDEPENDS_python_stringold = python_core libpython python_re
+RDEPENDS_python_stringold = python_core libpython$(PYTHON_VERSION) python_re libc6
 FILES_python_stringold = \
   $(PYTHON_DIR)/lib-dynload/strop.so \
   $(PYTHON_DIR)/string.* \
@@ -604,7 +606,7 @@ RDEPENDS_python_subprocess = python_core python_io python_fcntl python_pickle py
 FILES_python_subprocess = $(PYTHON_DIR)/subprocess.*
 
 DESCRIPTION_python_syslog = Python Syslog Interfaces
-RDEPENDS_python_syslog = python_core libpython
+RDEPENDS_python_syslog = python_core libpython$(PYTHON_VERSION) libc6
 FILES_python_syslog = $(PYTHON_DIR)/lib-dynload/syslog.so
 
 DESCRIPTION_python_terminal = Python Terminal Controlling Support
@@ -616,8 +618,13 @@ RDEPENDS_python_tests = python_core
 FILES_python_tests = $(PYTHON_DIR)/test
 
 DESCRIPTION_python_textutils =  Python Option Parsing, Text Wrapping and Comma-Separated-Value Support
-RDEPENDS_python_textutils = libpython python_core python_io python_re python_stringold
+RDEPENDS_python_textutils = libpython$(PYTHON_VERSION) python_core python_io python_re python_stringold libc6
 FILES_python_textutils = $(PYTHON_DIR)/lib-dynload/_csv.so $(PYTHON_DIR)/csv.* $(PYTHON_DIR)/optparse.* $(PYTHON_DIR)/textwrap.*
+
+DESCRIPTION_python_tkinter = Python Tcl/Tk bindings
+RDEPENDS_python_tkinter = python_core
+FILES_python_tkinter = \
+  $(PYTHON_DIR)/lib-tk/*.*
 
 DESCRIPTION_python_threading = Python Threading & Synchronization Support
 RDEPENDS_python_threading = python_core python_lang
@@ -630,18 +637,18 @@ FILES_python_threading = \
   $(PYTHON_DIR)/threading.*
 
 DESCRIPTION_python_unittest = Python Unit Testing Framework
-RDEPENDS_python_unittest = python_core python_lang python_stringold
+RDEPENDS_python_unittest = python_core python_lang python_stringold python_shell python_difflib python_io python_pprint
 FILES_python_unittest = $(PYTHON_DIR)/unittest
 
 DESCRIPTION_python_unixadmin = Python Unix Administration Support
-RDEPENDS_python_unixadmin = python_core libpython
+RDEPENDS_python_unixadmin = python_core libpython$(PYTHON_VERSION) libc6
 FILES_python_unixadmin = \
   $(PYTHON_DIR)/lib-dynload/grp.so \
   $(PYTHON_DIR)/lib-dynload/nis.so \
   $(PYTHON_DIR)/getpass.*
 
 DESCRIPTION_python_xml =  Python basic XML support.
-RDEPENDS_python_xml = python_core libpython
+RDEPENDS_python_xml = python_core libpython$(PYTHON_VERSION) python_elementtree python_re libc6
 FILES_python_xml = \
   $(PYTHON_DIR)/lib-dynload/pyexpat.so \
   $(PYTHON_DIR)/xml \
@@ -655,14 +662,13 @@ FILES_python_xmlrpc = \
   $(PYTHON_DIR)/xmlrpclib.*
 
 DESCRIPTION_python_zlib = Python zlib Support.
-RDEPENDS_python_zlin = python_core libpython libz1
+RDEPENDS_python_zlin = python_core libpython$(PYTHON_VERSION) libz1 libc6
 FILES_python_zlib = $(PYTHON_DIR)/lib-dynload/zlib.so
 
-#$(PYTHON_DIR)/lib-tk \
 #$(PYTHON_DIR)/plat-linux3
 
 
-$(DEPDIR)/python.do_prepare: bootstrap host_python openssl-dev sqlite ncurses libreadline libz $(DEPENDS_python)
+$(DEPDIR)/python.do_prepare: bootstrap host_python openssl-dev sqlite ncurses libreadline libelf libz bzip2 $(DEPENDS_python)
 	$(PREPARE_python)
 	touch $@
 
@@ -670,7 +676,7 @@ $(DEPDIR)/python.do_compile: $(DEPDIR)/python.do_prepare
 	( cd $(DIR_python) && \
 		CONFIG_SITE= \
 		$(BUILDENV) \
-		autoreconf -Wcross --verbose --install --force Modules/_ctypes/libffi && \
+		autoreconf --verbose --install --force Modules/_ctypes/libffi && \
 		autoconf && \
 		./configure \
 			--build=$(build) \
@@ -680,32 +686,36 @@ $(DEPDIR)/python.do_compile: $(DEPDIR)/python.do_prepare
 			--sysconfdir=/etc \
 			--enable-shared \
 			--disable-ipv6 \
-			--without-cxx-main \
 			--with-threads \
 			--with-pymalloc \
 			--with-signal-module \
 			--with-wctype-functions \
-			HOSTPYTHON=$(crossprefix)/bin/python \
-			OPT="$(TARGET_CFLAGS)" && \
+			HOSTPYTHON=$(crossprefix)/bin/python && \
 		$(MAKE) $(MAKE_ARGS) \
-			TARGET_OS=$(target) \
-			PYTHON_MODULES_INCLUDE="$(prefix)/$*cdkroot/usr/include" \
-			PYTHON_MODULES_LIB="$(prefix)/$*cdkroot/usr/lib" \
-			CROSS_COMPILE_TARGET=yes \
+			HOSTPYTHON=$(crossprefix)/bin/python \
+			HOSTPGEN=$(crossprefix)/bin/pgen \
 			CROSS_COMPILE=$(target) \
+			CROSS_COMPILE_TARGET=yes \
 			ac_sys_system=Linux \
 			ac_sys_release=2 \
-			MACHDEP=linux2 \
+			ac_cv_file__dev_ptmx=yes \
+			ac_cv_file__dev_ptc=no \
+			ac_cv_no_strict_aliasing_ok=yes \
+			ac_cv_pthread=yes \
+			ac_cv_cxx_thread=yes \
+			ac_cv_sizeof_off_t=8 \
 			ac_cv_have_chflags=no \
 			ac_cv_have_lchflags=no \
 			ac_cv_py_format_size_t=yes \
 			ac_cv_broken_sem_getvalue=no \
-			HOSTARCH=sh4-linux \
-			CFLAGS="$(TARGET_CFLAGS) -fno-inline" \
+			MACHDEP=linux2 \
+			HOSTARCH=$(target) \
+			BUILDARCH=$(build) \
+			PYTHON_MODULES_INCLUDE="$(targetprefix)/usr/include" \
+			PYTHON_MODULES_LIB="$(targetprefix)/usr/lib" \
+			CFLAGS="$(TARGET_CFLAGS)" \
 			LDFLAGS="$(TARGET_LDFLAGS)" \
 			LD="$(target)-gcc" \
-			HOSTPYTHON=$(crossprefix)/bin/python \
-			HOSTPGEN=$(crossprefix)/bin/pgen \
 			all ) && \
 	touch $@
 
@@ -715,10 +725,11 @@ $(DEPDIR)/python: $(DEPDIR)/python.do_compile
 		$(MAKE) $(MAKE_ARGS) \
 			TARGET_OS=$(target) \
 			HOSTPYTHON=$(crossprefix)/bin/python \
-			HOSTPGEN=$(crossprefix)/bin/pgen \
+			CROSS_COMPILE=$(target) \
+			CROSS_COMPILE_TARGET=yes \
 			install DESTDIR=$(PKDIR) ) && \
-	$(LN_SF) ../../libpython$(PYTHON_VERSION).so.1.0 $(PKDIR)$(PYTHON_DIR)/config/libpython$(PYTHON_VERSION).so
-	$(LN_SF) $(PKDIR)$(PYTHON_INCLUDE_DIR) $(PKDIR)/usr/include/python
+	$(LN_SF) ../../libpython$(PYTHON_VERSION).so.1.0 $(PKDIR)$(PYTHON_DIR)/config/libpython$(PYTHON_VERSION).so && \
+	$(LN_SF) python$(PYTHON_VERSION) $(PKDIR)/usr/include/python
 	$(tocdk_build)
 	$(remove_pyc)
 	$(toflash_build)
@@ -773,7 +784,7 @@ pythoncheetah
 ]]END
 PACKAGES_pythoncheetah = python_cheetah
 DESCRIPTION_python_cheetah = Python template engine and code generation tool
-RDEPENDS_python_cheetah = python_pickle python_pprint
+RDEPENDS_python_cheetah = libc6 python_pprint python_pickle
 FILES_python_cheetah = /usr/bin/cheetah* $(PYTHON_DIR)/site-packages/Cheetah
 
 $(DEPDIR)/pythoncheetah.do_prepare: bootstrap setuptools $(DEPENDS_pythoncheetah)
@@ -809,10 +820,9 @@ zopeinterface
 ]]END
 PACKAGES_zopeinterface = python_zopeinterface
 DESCRIPTION_python_zopeinterface =  Interface definitions for Zope products
-RDEPENDS_python_zopeinterface = python_core
+RDEPENDS_python_zopeinterface = python_core libc6
 FILES_python_zopeinterface = \
-  $(PYTHON_DIR)/site-packages/zope/interface/common \
-  $(PYTHON_DIR)/site-packages/zope/interface/tests \
+  $(PYTHON_DIR)/site-packages/zope/interface/common/*.* \
   $(PYTHON_DIR)/site-packages/zope/interface/__init__.* \
   $(PYTHON_DIR)/site-packages/zope/interface/_flatten.* \
   $(PYTHON_DIR)/site-packages/zope/interface/_zope_interface_coptimizations.so \
@@ -824,7 +834,8 @@ FILES_python_zopeinterface = \
   $(PYTHON_DIR)/site-packages/zope/interface/interface.* \
   $(PYTHON_DIR)/site-packages/zope/interface/interfaces.* \
   $(PYTHON_DIR)/site-packages/zope/interface/ro.p* \
-  $(PYTHON_DIR)/site-packages/zope/interface/verify.p*
+  $(PYTHON_DIR)/site-packages/zope/interface/verify.p* \
+  $(PYTHON_DIR)/site-packages/zope.interface-3.5.1-py2.7-nspkg.pth
 
 $(DEPDIR)/zopeinterface.do_prepare: bootstrap python setuptools $(DEPENDS_zopeinterface)
 	$(PREPARE_zopeinterface)
@@ -858,10 +869,10 @@ pylimaging
   patch:file://pilimaging-fix-search-paths.patch
 ;
 ]]END
-PACKAGES_pylimaging = python_imaging
-DESCRIPTION_python_imaging =  Python Imaging Library
-RDEPENDS_python_imaging = libz1 libfreetype6 python_core python_lang libjpeg8 python_stringold
-FILES_python_imaging = $(PYTHON_DIR)/site-packages /usr/bin/*
+NAME_pylimaging = python_imaging
+DESCRIPTION_pylimaging =  Python Imaging Library
+RDEPENDS_pylimaging = libz1 libfreetype6 python_core libc6 python_lang libjpeg8 python_stringold
+FILES_pylimaging = $(PYTHON_DIR)/site-packages /usr/bin/*
 
 $(DEPDIR)/pylimaging: bootstrap python setuptools $(DEPENDS_pylimaging)
 	$(PREPARE_pylimaging)
@@ -891,10 +902,10 @@ pycrypto
 ;
 ]]END
 
-PACKAGES_pycrypto = python_pycrypto
-DESCRIPTION_python_pycrypto =  A collection of cryptographic algorithms and protocols
-RDEPENDS_python_pycrypto = python_core libgmp10
-FILES_python_pycrypto = \
+NAME_pycrypto = python_pycrypto
+DESCRIPTION_pycrypto =  A collection of cryptographic algorithms and protocols
+RDEPENDS_pycrypto = python_core libgmp10 libc6
+FILES_pycrypto = \
 $(PYTHON_DIR)/site-packages/Crypto/*
 
 
@@ -932,10 +943,10 @@ pyusb
   extract:http://pypi.python.org/packages/source/p/{PN}/{PN}-{PV}.tar.gz
 ;
 ]]END
-PACKAGES_pyusb = python_pyusb
-DESCRIPTION_python_pyusb =  PyUSB provides USB access on the Python language
-RDEPENDS_python_pyusb = python_core
-FILES_python_pyusb = \
+NAME_pyusb = python_pyusb
+DESCRIPTION_pyusb =  PyUSB provides USB access on the Python language
+RDEPENDS_pyusb = python_core
+FILES_pyusb = \
 $(PYTHON_DIR)/site-packages/usb/*
 
 $(DEPDIR)/pyusb.do_prepare: bootstrap setuptools $(DEPENDS_pyusb)
@@ -972,7 +983,7 @@ pyopenssl
 
 PACKAGES_pyopenssl = python_pyopenssl python_pyopenssl_tests
 DESCRIPTION_python_pyopenssl = Simple Python wrapper around the OpenSSL library
-RDEPENDS_python_pyopenssl = python_threading libssl libcrypto
+RDEPENDS_python_pyopenssl = python_threading libssl1 libcrypto1 libc6
 FILES_python_pyopenssl = \
   $(PYTHON_DIR)/site-packages/OpenSSL/*p* \
   $(PYTHON_DIR)/site-packages/OpenSSL/*so
@@ -1061,7 +1072,7 @@ FILES_python_twisted_conch = \
 DESCRIPTION_python_twisted_core = Twisted is an event-driven networking framework written in Python and \
  licensed under the LGPL. Twisted supports TCP, UDP, SSL/TLS, multicast,\
  Unix sockets, a large number of protocols (including HTTP, NNTP, IMAP, SSH, IRC, FTP, and others), and much more.
-RDEPENDS_python_twisted_core = python_core python_zopeinterface
+RDEPENDS_python_twisted_core = python_core python_zopeinterface libc6
 FILES_python_twisted_core = \
   /usr/bin/manhole \
   /usr/bin/pyhtmlizer \
@@ -1155,7 +1166,6 @@ FILES_python_twisted_pair = \
 DESCRIPTION_python_twisted_protocols = Twisted is an event-driven networking framework written in Python and \
  licensed under the LGPL. Twisted supports TCP, UDP, SSL/TLS, multicast,\
  Unix sockets, a large number of protocols (including HTTP, NNTP, IMAP, SSH, IRC, FTP, and others), and much more.
-RDEPENDS_python_twisted_protocols = python_twisted_core
 FILES_python_twisted_protocols = \
   $(PYTHON_DIR)/site-packages/twisted/protocols/*.p* \
   $(PYTHON_DIR)/site-packages/twisted/protocols/mice \
@@ -1164,7 +1174,7 @@ FILES_python_twisted_protocols = \
 DESCRIPTION_python_twisted_runner = Twisted is an event-driven networking framework written in Python and \
  licensed under the LGPL. Twisted supports TCP, UDP, SSL/TLS, multicast,\
  Unix sockets, a large number of protocols (including HTTP, NNTP, IMAP, SSH, IRC, FTP, and others), and much more.
-RDEPENDS_python_twisted_runner = python_twisted_core python_twisted_protocols
+RDEPENDS_python_twisted_runner = python_twisted_core python_twisted_protocols libc6
 FILES_python_twisted_runner = \
   $(PYTHON_DIR)/site-packages/twisted/runner/*.* \
   $(PYTHON_DIR)/site-packages/twisted/runner/topfiles
@@ -1172,7 +1182,7 @@ FILES_python_twisted_runner = \
 DESCRIPTION_python_twisted_test = Twisted is an event-driven networking framework written in Python and \
  licensed under the LGPL. Twisted supports TCP, UDP, SSL/TLS, multicast,\
  Unix sockets, a large number of protocols (including HTTP, NNTP, IMAP, SSH, IRC, FTP, and others), and much more.
-RDEPENDS_python_twisted_test = python_twisted
+RDEPENDS_python_twisted_test = python_twisted libc6
 FILES_python_twisted_test = \
   $(PYTHON_DIR)/site-packages/twisted/application/test \
   $(PYTHON_DIR)/site-packages/twisted/conch/test \
@@ -1218,7 +1228,6 @@ FILES_python_twisted_words = \
 DESCRIPTION_python_twisted_zsh = Twisted is an event-driven networking framework written in Python and \
  licensed under the LGPL. Twisted supports TCP, UDP, SSL/TLS, multicast,\
  Unix sockets, a large number of protocols (including HTTP, NNTP, IMAP, SSH, IRC, FTP, and others), and much more.
-RDEPENDS_python_twisted_zsh = python_twisted_core
 FILES_python_twisted_zsh = \
   $(PYTHON_DIR)/site-packages/twisted/python/zshc* \
   $(PYTHON_DIR)/site-packages/twisted/python/zsh
@@ -1257,10 +1266,10 @@ mutagen
   extract:https://mutagen.googlecode.com/files/{PN}-{PV}.tar.gz
 ;
 ]]END
-PACKAGES_mutagen = python_mutagen
-DESCRIPTION_python_mutagen = Module for manipulating ID3 (v1 + v2) tags in Python
-BDEPENDS_python_mutagen = python_core python_shell
-FILES_python_mutagen = \
+NAME_mutagen = python_mutagen
+DESCRIPTION_mutagen = Module for manipulating ID3 (v1 + v2) tags in Python
+RDEPENDS_mutagen = python_core python_shell
+FILES_mutagen = \
   $(PYTHON_DIR)/site-packages/mutagen \
   /usr/bin
 
@@ -1298,11 +1307,10 @@ gdata
 ;
 ]]END
 
-PACKAGES_gdata = python_gdata
-
-DESCRIPTION_python_gdata = Google Data APIs Python Client Library
-RDEPENDS_python_gdata = python_core python_elementtree
-FILES_python_gdata = \
+NAME_gdata = python_gdata
+DESCRIPTION_gdata = Google Data APIs Python Client Library
+RDEPENDS_gdata = python_core python_elementtree
+FILES_gdata = \
   $(PYTHON_DIR)/site-packages/atom/*.* \
   $(PYTHON_DIR)/site-packages/gdata/*.* \
   $(PYTHON_DIR)/site-packages/gdata/
@@ -1343,10 +1351,10 @@ mechanize
 ]]END
 
 PKGR_mechanize = r1
-PACKAGES_mechanize = python_mechanize
-DESCRIPTION_python_mechanize = Stateful programmatic web browsing, after Andy Lester's Perl module WWW::Mechanize.
-RDEPENDS_python_mechanize = python_core python_robotparser
-FILES_python_mechanize = \
+NAME_mechanize = python_mechanize
+DESCRIPTION_mechanize = Stateful programmatic web browsing, after Andy Lester's Perl module WWW::Mechanize.
+RDEPENDS_mechanize = python_core python_robotparser
+FILES_mechanize = \
 $(PYTHON_DIR)/site-packages/mechanize/*.p*
 
 $(DEPDIR)/mechanize.do_prepare: bootstrap python setuptools $(DEPENDS_mechanize)
