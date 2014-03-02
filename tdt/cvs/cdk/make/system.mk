@@ -82,7 +82,7 @@ $(DEPDIR)/filesystemtarget: $(DEPENDS_filesystemtarget)
 # INIT-SCRIPTS customized
 #
 BEGIN[[
-initscripten
+init_scripts
   0.12
   {PN}-{PV}
   pdircreate:{PN}-{PV}
@@ -100,19 +100,16 @@ initscripten
   nothing:file://../root/release/sendsigs
   nothing:file://../root/release/telnetd
   nothing:file://../root/release/syslogd
-  nothing:file://../root/release/crond
   nothing:file://../root/release/umountfs
   nothing:file://../root/release/lircd
   nothing:file://../root/etc/init.d/avahi-daemon
-  nothing:file://../root/etc/init.d/busybox-cron
   nothing:file://../root/etc/init.d/rdate
 ;
 ]]END
 
-NAME_initscripten = init_scripts
-DESCRIPTION_initscripten = init scripts and rules for system start
-RDEPENDS_initscripten = filesystem
-initscripten_initd_files = \
+DESCRIPTION_init_scripts = init scripts and rules for system start
+RDEPENDS_init_scripts = filesystem
+init_scripts_initd_files = \
 halt \
 hostname \
 inetd \
@@ -124,41 +121,65 @@ reboot \
 sendsigs \
 syslogd \
 telnetd \
-crond \
 lircd \
 umountfs \
 avahi-daemon \
-busybox-cron \
 rdate 
 
-define postinst_initscripten
+define postinst_init_scripts
 #!/bin/sh
-$(foreach f,$(initscripten_initd_files),  initdconfig --add $f
-)
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ halt start 90 0 .
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ hostname start 40 S 0 .
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ inetd start 43 2 3 4 5 . stop 20 0 1 6 .
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ initmodules start 9 S .
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ mountall start 35 S .
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ mountsysfs start 02 S .
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ networking start 40 S . stop 40 0 6 .
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ reboot start 90 6 .
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ sendsigs start 20 0 6 .
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ syslogd start 03 S .
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ telnetd start 43 S . stop 30 0 6 .
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ lircd start 36 S . stop 80 0 6 .
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ umountfs start 40 0 6 .
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ avahi-daemon stop 20 0 6 .
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ rdate start 99 S .
 endef
 
-define prerm_initscripten
+define prerm_init_scripts
 #!/bin/sh
-$(foreach f,$(initscripten_initd_files),  initdconfig --del $f
-)
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ halt remove
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ hostname remove
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ inetd remove
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ initmodules remove
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ mountall remove
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ mountsysfs remove
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ networking remove
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ reboot remove
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ sendsigs remove
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ syslogd remove
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ telnetd remove
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ lircd remove
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ umountfs remove
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ avahi-daemon remove
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ rdate remove
 endef
 
-$(DEPDIR)/initscripten: filesystemtarget $(DEPENDS_initscripten)
-	$(PREPARE_initscripten)
+$(DEPDIR)/init_scripts: filesystemtarget $(DEPENDS_init_scripts)
+	$(PREPARE_init_scripts)
 	$(start_build)
 	$(INSTALL_DIR) $(PKDIR)/etc/init.d
 
 # select initmodules
-	cd $(DIR_initscripten) && \
+	cd $(DIR_init_scripts) && \
 	mv initmodules$(if $(SPARK),_$(SPARK))$(if $(SPARK7162),_$(SPARK7162))$(if $(HL101),_$(HL101)) initmodules
 # select halt
-	cd $(DIR_initscripten) && \
+	cd $(DIR_init_scripts) && \
 	mv halt$(if $(HL101),_$(HL101))$(if $(SPARK),_$(SPARK))$(if $(SPARK7162),_$(SPARK7162)) halt
 # init.d scripts
-	cd $(DIR_initscripten) && \
+	cd $(DIR_init_scripts) && \
 		$(INSTALL) inittab $(PKDIR)/etc/ && \
 		$(INSTALL) -m 755 rc $(PKDIR)/etc/init.d/rc && \
-		$(foreach f,$(initscripten_initd_files), $(INSTALL) -m 755 $f $(PKDIR)/etc/init.d && ) true
+		$(foreach f,$(init_scripts_initd_files), $(INSTALL) -m 755 $f $(PKDIR)/etc/init.d && ) true
 	$(toflash_build)
 	touch $@
 #
@@ -197,7 +218,7 @@ PACKAGES_default_confs = bootlogo \
 			 config_satellites \
 			 config_cables \
 			 config_terrestrial \
-			 default_configs \
+			 base_files \
 			 default_bins
 
 DESCRIPTION_bootlogo = Enigma2 bootlogo
@@ -228,9 +249,9 @@ FILES_default_bins = /bin/autologin \
 		    /bin/setspark.sh \
 		    /bin/fw_*
 
-DESCRIPTION_default_configs = default configs
-RDEPENDS_default_configs = filesystem
-FILES_default_configs = /etc/network/interfaces \
+DESCRIPTION_base_files = default configs
+RDEPENDS_base_files = filesystem
+FILES_base_files = /etc/network/interfaces \
 		       /etc/motd \
 		       /etc/fstab \
 		       /etc/image-version \
@@ -239,7 +260,7 @@ FILES_default_configs = /etc/network/interfaces \
 		       /etc/profile \
 		       /etc/resolv.conf \
 		       /etc/videomode \
-		       /etc/tuxbox/timezone.xml
+		       /etc/timezone.xml
 
 DESCRIPTION_config_satellites = satellites.xml config
 PKGV_config_satellites = 0.1
@@ -247,7 +268,7 @@ PACKAGE_ARCH_config_satellites = all
 RDEPENDS_config_satellites = filesystem
 FILES_config_satellites = /etc/tuxbox/satellites.xml
 
-$(DEPDIR)/default_confs: initscripten distrofeed $(DEPENDS_default_confs)
+$(DEPDIR)/default_confs: init_scripts distrofeed $(DEPENDS_default_confs)
 	$(PREPARE_default_confs)
 	$(start_build)
 	cd $(DIR_default_confs) && \
@@ -277,8 +298,9 @@ $(DEPDIR)/default_confs: initscripten distrofeed $(DEPENDS_default_confs)
 		$(INSTALL_FILE) satellites.xml $(PKDIR)/etc/tuxbox && \
 		$(INSTALL_FILE) cables.xml $(PKDIR)/etc/tuxbox && \
 		$(INSTALL_FILE) terrestrial.xml $(PKDIR)/etc/tuxbox && \
-		$(INSTALL_FILE) timezone.xml $(PKDIR)/etc/tuxbox && \
+		$(INSTALL_FILE) timezone.xml $(PKDIR)/etc && \
 		$(INSTALL_BIN) udhcpc $(PKDIR)/etc/init.d && \
+		$(INSTALL_BIN) default.script $(PKDIR)/usr/share/udhcpc && \
 		echo "576i50" > $(PKDIR)/etc/videomode
 		ln -sfv /etc/timezone.xml $(PKDIR)/etc/tuxbox/timezone.xml
 	$(toflash_build)
@@ -301,7 +323,8 @@ endef
 $(DEPDIR)/distrofeed: $(DEPENDS_distrofeed)
 	$(start_build)
 	$(INSTALL_DIR) $(PKDIR)/etc/opkg && \
-	echo "src/gz official-all http://amiko.sat-universum.de" > $(PKDIR)/etc/opkg/all-feed.conf && \
+	echo "src/gz openpli-all http://downloads.pli-images.org/feeds/openpli-4/all" > $(PKDIR)/etc/opkg/all-pli-feed.conf && \
+	echo "src/gz spark-all http://amiko.sat-universum.de" > $(PKDIR)/etc/opkg/all-spark-feed.conf && \
 	echo "src/gz non-free-feed http://softanet.net/feed" > $(PKDIR)/etc/opkg/nonfree-feed.conf
 	$(toflash_build)
 	touch $@
