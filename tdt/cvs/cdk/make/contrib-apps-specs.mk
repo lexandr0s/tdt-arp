@@ -505,7 +505,7 @@ DESCRIPTION_util_linux_cfdisk = A suite of basic system administration utilities
  commonly found on most Linux systems.  Some of the more important \
  utilities include disk partitioning, kernel message management, \
  filesystem creation, and system login.
-RDEPENDS_util_linux_cfdisk = libblkid1 libncursesw5 libtinfo5
+RDEPENDS_util_linux_cfdisk = libblkid1 libncurses5
 FILES_util_linux_cfdisk = /sbin/cfdisk
 
 DESCRIPTION_util_linux_fdisk = A suite of basic system administration utilities. \
@@ -554,6 +554,16 @@ $(DEPDIR)/$(UTIL_LINUX): $(UTIL_LINUX_RPM)
 # IPTABLES
 # 
 IPTABLES := iptables
+
+define postinst_iptables
+#!/bin/sh
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ iptables start 20 2 3 4 5 . stop 20 6 .
+endef
+
+define prerm_iptables
+#!/bin/sh
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ iptables remove
+endef
 IPTABLES_DEV := iptables-dev
 IPTABLES_VERSION := 1.4.10-15
 PKGR_dev := r0
