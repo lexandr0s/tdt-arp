@@ -298,6 +298,38 @@ $(DEPDIR)/$(CROSS_DISTRIBUTIONUTILS): $(CROSS_DISTRIBUTIONUTILS_RPM)
 	touch $@
 
 #
+# update-rc.d
+#
+BEGIN[[
+updatercd
+  0.7
+  {PN}-{PV}
+  nothing:git://github.com/philb/update-rc.d
+  patch:file://update-rc-add-verbose.patch
+  patch:file://update-rc-check-if-symlinks-are-valid.patch
+;
+]]END
+
+DESCRIPTION_updatercd = update-rc.d is a utilities that allows the management of symlinks to the initscript's in the /etc/rcN.d directory structure.
+NAME_updatercd = update-rc.d
+PACKAGE_ARCH_updatercd = all
+FILES_updatercd = /usr/sbin/update-rc.d
+
+$(DEPDIR)/updatercd.do_prepare: $(DEPENDS_updatercd)
+	$(PREPARE_updatercd)
+	touch $@
+$(DEPDIR)/updatercd: $(DEPDIR)/updatercd.do_prepare
+	$(start_build)
+	cd $(DIR_updatercd) && \
+		$(INSTALL_DIR) $(PKDIR)/usr/sbin/ && \
+		$(INSTALL_BIN) update-rc.d $(PKDIR)/usr/sbin/update-rc.d && \
+		$(INSTALL_BIN) update-rc.d $(hostprefix)/bin/update-rc.d
+	$(tocdk_build)
+	$(toflash_build)
+	touch $@
+
+################
+#
 # CROSS BINUTILS
 #
 CROSS_BINUTILS = cross-sh4-binutils
@@ -331,7 +363,7 @@ $(DEPDIR)/$(CROSS_BINUTILS_DEV): $(CROSS_BINUTILS_DEV_RPM)
 # CROSS GMP
 #
 CROSS_GMP = cross-sh4-gmp
-CROSS_GMP_VERSION = 5.1.0-12
+CROSS_GMP_VERSION = 5.1.3-13
 CROSS_GMP_SPEC = stm-$(subst cross-sh4,cross,$(CROSS_GMP)).spec
 CROSS_GMP_SPEC_PATCH = #$(CROSS_GMP_SPEC).$(CROSS_GMP_VERSION).diff
 CROSS_GMP_PATCHES =
@@ -377,7 +409,7 @@ $(DEPDIR)/$(CROSS_MPFR): $(CROSS_GMP) $(CROSS_MPFR_RPM)
 # CROSS MPC
 #
 CROSS_MPC = cross-sh4-mpc
-CROSS_MPC_VERSION = 1.0.1-6
+CROSS_MPC_VERSION = 1.0.2-7
 CROSS_MPC_SPEC = stm-$(subst cross-sh4,cross,$(CROSS_MPC)).spec
 CROSS_MPC_SPEC_PATCH = #$(CROSS_MPC_SPEC).$(CROSS_MPC_VERSION).diff
 CROSS_MPC_PATCHES =
@@ -434,7 +466,7 @@ CROSS_GCC_VERSION = 4.7.3-124
 endif
 NAME_cross_sh4_libgcc = libgcc1
 DESCRIPTION_cross_sh4_libgcc =  The GNU cc and gcc C compilers.
-FILES_cross_sh4_libgcc = /lib/libgcc_s.*
+FILES_cross_sh4_libgcc = /lib/libgcc_s*
 CROSS_GCC_RAWVERSION = $(firstword $(subst -, ,$(CROSS_GCC_VERSION)))
 CROSS_GCC_SPEC = stm-$(subst cross-sh4-,cross-,$(CROSS_GCC)).spec
 CROSS_GCC_SPEC_PATCH = $(CROSS_GCC_SPEC).$(CROSS_GCC_VERSION).diff
@@ -509,6 +541,7 @@ $(DEPDIR)/bootstrap-cross: | \
 	cross-sh4-g++ \
 	ipkg-utils \
 	opkghost \
+	updatercd \
 	cross-sh4-libgcc
 	touch -r $(CROSS_G++_RPM) $@
 
@@ -550,8 +583,7 @@ $(DEPDIR)/libtool.do_compile: $(DEPDIR)/libtool.do_prepare
 	$(MAKE)
 	touch $@
 
-$(DEPDIR)/libtool: \
-$(DEPDIR)/%libtool: $(DEPDIR)/libtool.do_compile
+$(DEPDIR)/libtool: $(DEPDIR)/libtool.do_compile
 	cd $(DIR_libtool) && \
 	$(INSTALL_libtool)
 		ln -sf $(hostprefix)/share/aclocal $(hostprefix)/share/aclocal-1.11
