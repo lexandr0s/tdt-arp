@@ -79,14 +79,28 @@ FILES_vsftpd = \
 /etc/* \
 /usr/bin/*
 
+define preinst_vsftpd
+#!/bin/sh
+if [ -z "$$D" -a -f "/etc/init.d/vsftpd" ]; then
+	/etc/init.d/vsftpd stop
+fi
+endef
+
 define postinst_vsftpd
 #!/bin/sh
-initdconfig --add vsftpd
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ vsftpd start 20 3 .
 endef
 
 define prerm_vsftpd
 #!/bin/sh
-initdconfig --del vsftpd
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ vsftpd remove
+endef
+
+define postrm_vsftpd
+#!/bin/sh
+if [ -z "$$D" -a -f "/etc/init.d/vsftpd" ]; then
+	/etc/init.d/vsftpd start
+fi
 endef
 
 $(DEPDIR)/vsftpd.do_prepare: $(DEPENDS_vsftpd)
@@ -101,10 +115,10 @@ $(DEPDIR)/vsftpd.do_compile: bootstrap $(DEPDIR)/vsftpd.do_prepare
 
 $(DEPDIR)/vsftpd: $(DEPDIR)/vsftpd.do_compile
 	$(start_build)
-	mkdir -p $(PKDIR)/etc/
-	mkdir -p $(PKDIR)/usr/bin/
-	mkdir -p $(PKDIR)/usr/share/man/man8/
-	mkdir -p $(PKDIR)/usr/share/man/man5/
+	$(INSTALL_DIR) $(PKDIR)/usr/bin/
+	$(INSTALL_DIR) $(PKDIR)/etc/
+	$(INSTALL_DIR) $(PKDIR)/usr/share/man/man8/
+	$(INSTALL_DIR) $(PKDIR)/usr/share/man/man5/
 	cd $(DIR_vsftpd) && \
 		$(INSTALL_vsftpd)
 	$(tocdk_build)
@@ -472,13 +486,11 @@ FILES_transmission = \
 
 define postinst_transmission
 #!/bin/sh
-
-initdconfig --add transmission
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ transmission start 100 S . stop 2 6 .
 endef
 define postrm_transmission
 #!/bin/sh
-
-initdconfig --del transmission
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ transmission remove
 endef
 
 $(DEPDIR)/transmission.do_prepare: $(DEPENDS_transmission)
@@ -539,11 +551,11 @@ endef
 define postinst_smbnetfs
 #!/bin/sh
 if [ -f /etc/smbnetfs.user.conf.org ]; then mv /etc/smbnetfs.user.conf.org /etc/smbnetfs.user.conf; fi
-initdconfig --add smbnetfs
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ smbnetfs start 30 3 . stop 30 0 .
 endef
 define prerm_smbnetfs
 #!/bin/sh
-initdconfig smbnetfs off
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ smbnetfs remove
 endef
 
 $(DEPDIR)/smbnetfs.do_prepare: $(DEPENDS_smbnetfs)
@@ -595,7 +607,7 @@ modem_scripts
 DESCRIPTION_modem_scripts = utils to setup 3G modems
 RDEPENDS_modem_scripts = pppd usb_modeswitch iptables iptables_dev
 
-$(DEPDIR)/modem-scripts: $(DEPENDS_modem_scripts) $(RDEPENDS_modem_scripts)
+$(DEPDIR)/modem_scripts: pppd usb_modeswitch iptables iptables-dev $(DEPENDS_modem_scripts)
 	$(PREPARE_modem_scripts)
 	$(start_build)
 	cd $(DIR_modem_scripts) && \
