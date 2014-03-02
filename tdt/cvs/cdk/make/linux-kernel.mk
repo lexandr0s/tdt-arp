@@ -257,6 +257,7 @@ DESCRIPTION_linux_kernel = "The Linux Kernel and modules"
 PACKAGE_ARCH_linux_kernel = $(box_arch)
 PKGV_linux_kernel = $(KERNELVERSION)
 PKGR_linux_kernel = r4
+RDEPENDS_linux_kernel = devinit ustslave
 SRC_URI_linux_kernel = stlinux.com
 FILES_linux_kernel = \
 /lib/modules/$(KERNELVERSION)/kernel \
@@ -334,7 +335,8 @@ PACKAGES_driver = kernel_module_avs \
 		  kernel_module_rt3070sta \
 		  kernel_module_rt5370sta \
 		  kernel_module_rtl8192cu \
-		  kernel_module_rtl871x
+		  kernel_module_rtl871x \
+		  kernel_module_rtl8188eu
 
 DESCRIPTION_kernel_module_avs = For av receiver without av switch. the e2_core in stmdvb need some functions \
 from avs module but fake_avs is not a real fake because it sets pio pins.
@@ -359,15 +361,18 @@ DESCRIPTION_kernel_module_encrypt = driver encrypt
 FILES_kernel_module_encrypt = /lib/modules/$(KERNELVERSION)/extra/encrypt
 
 DESCRIPTION_kernel_module_frontcontroller = frontcontroller driver for control  devices
+RDEPENDS_kernel_module_frontcontroller = fp_control
 FILES_kernel_module_frontcontroller = /lib/modules/$(KERNELVERSION)/extra/frontcontroller
 
 DESCRIPTION_kernel_module_frontends = frontends driver for control  devices
 FILES_kernel_module_frontends = /lib/modules/$(KERNELVERSION)/extra/frontends
 
 DESCRIPTION_kernel_module_multicom = stm-multicom driver for control  devices
+RDEPENDS_kernel_module_multicom = libmme-host libmmeimage
 FILES_kernel_module_multicom = /lib/modules/$(KERNELVERSION)/extra/multicom
 
 DESCRIPTION_kernel_module_player2 = frontends driver for control  devices
+RDEPENDS_kernel_module_player2 = libmmeimage
 FILES_kernel_module_player2 = /lib/modules/$(KERNELVERSION)/extra/player2
 
 DESCRIPTION_kernel_module_pti = open source st-pti kernel module
@@ -385,15 +390,16 @@ DESCRIPTION_kernel_module_smartcard = smartcard driver for control  devices
 FILES_kernel_module_smartcard = /lib/modules/$(KERNELVERSION)/extra/smartcard
 
 DESCRIPTION_kernel_module_stgfb = stgfb driver for control  devices
+RDEPENDS_kernel_module_stgfb = stfbcontrol
 FILES_kernel_module_stgfb = /lib/modules/$(KERNELVERSION)/extra/stgfb
 
 DESCRIPTION_kernel_module_rt2870sta = rt2870sta frontends driver for control wireless devices
 FILES_kernel_module_rt2870sta = /lib/modules/$(KERNELVERSION)/extra/wireless/rt2870sta
-RDEPENDS_kernel_module_rt2870sta = wlan_firmware
+RDEPENDS_kernel_module_rt2870sta = wlan_firmware firmware-rt2870
 
 DESCRIPTION_kernel_module_rt3070sta = rt3070sta driver for control wireless devices
 FILES_kernel_module_rt3070sta = /lib/modules/$(KERNELVERSION)/extra/wireless/rt3070sta
-RDEPENDS_kernel_module_rt3070sta = wlan_firmware
+RDEPENDS_kernel_module_rt3070sta = wlan_firmware firmware-rt3070
 
 DESCRIPTION_kernel_module_rt5370sta = rt5370sta driver for control wireless devices
 FILES_kernel_module_rt5370sta = /lib/modules/$(KERNELVERSION)/extra/wireless/rt5370sta
@@ -401,16 +407,22 @@ RDEPENDS_kernel_module_rt5370sta = wlan_firmware
 
 DESCRIPTION_kernel_module_rtl8192cu = rtl8192cu driver for control wireless devices
 FILES_kernel_module_rtl8192cu = /lib/modules/$(KERNELVERSION)/extra/wireless/rtl8192cu
+RDEPENDS_kernel_module_rtl8192cu = firmware-rtl8192cu
 
-DESCRIPTION_kernel_module_rtl871x = rtl871x driver for control  devices
+DESCRIPTION_kernel_module_rtl871x = rtl871x driver for control wifi devices
 FILES_kernel_module_rtl871x = /lib/modules/$(KERNELVERSION)/extra/wireless/rtl871x
+RDEPENDS_kernel_module_rtl871x = firmware-rtl8712u
+
+DESCRIPTION_kernel_module_rtl8188eu = rtl8188eu driver for control wifi  devices
+FILES_kernel_module_rtl8188eu = /lib/modules/$(KERNELVERSION)/extra/wireless/rtl8188eu
+RDEPENDS_kernel_module_rtl8188eu = firmware-rtl8188eu
 
 $(DEPDIR)/driver: $(DEPENDS_driver) $(driverdir)/Makefile glibc-dev wlanfirmware linux-kernel.do_compile
 	$(PREPARE_driver)
 #	$(MAKE) -C $(KERNEL_DIR) $(MAKE_OPTS) ARCH=sh modules_prepare
 	$(start_build)
 	$(get_git_version)
-	$(eval export PKGV_driver = $(KERNELLABEL)_$(PKGV_driver))
+	$(eval export PKGV_driver = $(KERNELLABEL)-$(PKGV_driver))
 	$(if $(PLAYER179),cp $(driverdir)/stgfb/stmfb/linux/drivers/video/stmfb.h $(targetprefix)/usr/include/linux)
 	$(if $(PLAYER191),cp $(driverdir)/stgfb/stmfb/linux/drivers/video/stmfb.h $(targetprefix)/usr/include/linux)
 	cp $(driverdir)/player2/linux/include/linux/dvb/stm_ioctls.h $(targetprefix)/usr/include/linux/dvb
@@ -600,7 +612,7 @@ ifdef ENABLE_HL101
 	$(INSTALL_DIR) $(PKDIR)/lib/firmware/ && \
 	$(INSTALL_FILE) fstab_hl101 $(PKDIR)/etc/fstab && \
 	$(INSTALL_FILE) dvb-fe-avl2108.fw $(PKDIR)/lib/firmware/ && \
-	&(INSTALL_FILE) dvb-fe-stv6306.fw $(PKDIR)/lib/firmware/
+	$(INSTALL_FILE) dvb-fe-stv6306.fw $(PKDIR)/lib/firmware/
 endif
 	$(toflash_build)
 	touch $@
@@ -615,7 +627,6 @@ wlanfirmware
   pdircreate:{PN}-{PV}
   nothing:file://../root/etc/Wireless/RT2870STA/RT2870STA.dat
   nothing:file://../root/etc/Wireless/RT3070STA/RT3070STA.dat
-  nothing:file://../root/firmware/rt2870.bin
 ;
 ]]END
 
@@ -630,7 +641,31 @@ $(DEPDIR)/wlanfirmware: $(DEPENDS_wlanfirmware)
 	$(INSTALL_DIR) $(PKDIR)/etc/Wireless/RT2870STA/ && \
 	$(INSTALL_DIR) $(PKDIR)/etc/Wireless/RT3070STA/ && \
 	$(INSTALL_FILE) RT2870STA.dat $(PKDIR)/etc/Wireless/RT2870STA/ && \
-	$(INSTALL_FILE) RT3070STA.dat $(PKDIR)/etc/Wireless/RT3070STA/ && \
-	$(INSTALL_FILE) rt2870.bin $(PKDIR)/lib/firmware/
+	$(INSTALL_FILE) RT3070STA.dat $(PKDIR)/etc/Wireless/RT3070STA/
+	$(toflash_build)
+	touch $@
+
+#
+#  firmware-rtl8188eu
+#
+BEGIN[[
+firmware_rtl8188eu
+ 0.1
+  {PN}-{PV}
+  pdircreate:{PN}-{PV}
+  nothing:file://../../driver/wireless/rtl8188eu/rtl8188eufw.bin
+;
+]]END
+
+NAME_firmware_rtl8188eu = firmware-rtl8188eu
+PACKAGE_ARCH_irmware_rtl8188eu = all
+DESCRIPTION_firmware_rtl8188eu = Wlan firmware  for  rtl8188eu
+
+$(DEPDIR)/firmware_rtl8188eu: $(DEPENDS_firmware_rtl8188eu)
+	$(PREPARE_firmware_rtl8188eu)
+	$(start_build)
+	cd $(DIR_firmware_rtl8188eu) && \
+	$(INSTALL_DIR) $(PKDIR)/lib/firmware/rtlwifi && \
+	$(INSTALL_FILE) rtl8188eufw.bin $(PKDIR)/lib/firmware/rtlwifi/
 	$(toflash_build)
 	touch $@
