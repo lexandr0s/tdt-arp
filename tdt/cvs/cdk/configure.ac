@@ -701,9 +701,9 @@ Makefile\
 :make/linux-kernel.mk\
 :make/bare-os.mk\
 :make/bootstrap.mk\
-:make/root-etc.mk\
 :make/busybox.mk\
 :make/contrib-libs.mk\
+:make/gstreamer.mk\
 :make/python.mk\
 :make/contrib-apps-specs.mk\
 :make/contrib-apps.mk\
