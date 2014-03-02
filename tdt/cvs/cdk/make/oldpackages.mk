@@ -336,3 +336,89 @@ $(DEPDIR)/nano: $(DEPDIR)/nano.do_compile
 	cd $(DIR_nano) && \
 		$(INSTALL_nano)
 	touch $@
+
+#
+# libdreamdvd
+#
+BEGIN[[
+libdreamdvd
+  git
+  {PN}
+  plink:../apps/misc/tools/{PN}:{PN}
+  make:install:prefix=/usr:DESTDIR=PKDIR
+;
+]]END
+
+
+DESCRIPTION_libdreamdvd = libdvdnav wrapper for enigma2 based stbs.
+PKGR_libdreamdvd = r1
+FILES_libdreamdvd = \
+/usr/lib/libdreamdvd*
+
+SRC_URI_libdreamdvd = "libdreamdvd"
+
+$(DEPDIR)/libdreamdvd.do_prepare: bootstrap $(DEPENDS_libdreamdvd)
+	$(PREPARE_libdreamdvd)
+	touch $@
+
+$(DEPDIR)/libdreamdvd.do_compile: $(DEPDIR)/libdreamdvd.do_prepare
+	export PATH=$(hostprefix)/bin:$(PATH) && \
+	cd $(DIR_libdreamdvd) && \
+	aclocal -I $(hostprefix)/share/aclocal && \
+	autoheader && \
+	autoconf && \
+	automake --foreign && \
+	libtoolize --force && \
+	$(BUILDENV) \
+	./configure \
+		--host=$(target) \
+		--prefix=/usr && \
+	$(MAKE) all
+	touch $@
+
+$(DEPDIR)/libdreamdvd: $(DEPDIR)/libdreamdvd.do_compile
+	$(start_build)
+	cd $(DIR_libdreamdvd) && \
+		$(INSTALL_libdreamdvd)
+	$(tocdk_build)
+	$(toflash_build)
+	touch $@
+
+#
+# libmodplug
+#
+BEGIN[[
+libmodplug
+  0.8.8.4
+  {PN}-{PV}
+  extract:http://downloads.sourceforge.net/project/modplug-xmms/{PN}/{PV}/{PN}-{PV}.tar.gz
+  make:install:prefix=/usr:DESTDIR=PKDIR
+;
+]]END
+
+DESCRIPTION_libmodplug = "the library for decoding mod-like music formats"
+
+FILES_libmodplug = \
+/usr/lib/lib*
+
+$(DEPDIR)/libmodplug.do_prepare: bootstrap $(DEPENDS_libmodplug)
+	$(PREPARE_libmodplug)
+	touch $@
+
+$(DEPDIR)/libmodplug.do_compile: $(DEPDIR)/libmodplug.do_prepare
+	export PATH=$(hostprefix)/bin:$(PATH) && \
+	cd $(DIR_libmodplug) && \
+	$(BUILDENV) \
+	./configure \
+		--host=$(target) \
+		--prefix=/usr && \
+	$(MAKE) all
+	touch $@
+
+$(DEPDIR)/libmodplug: $(DEPDIR)/libmodplug.do_compile
+	$(start_build)
+	cd $(DIR_libmodplug) && \
+		$(INSTALL_libmodplug)
+	$(tocdk_build)
+	$(toflash_build)
+	touch $@
