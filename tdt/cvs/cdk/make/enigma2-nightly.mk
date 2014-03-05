@@ -266,7 +266,7 @@ $(DEPDIR)/enigma2-nightly.do_prepare: $(DEPENDS_enigma2_pli)
 	$(PREPARE_enigma2_pli)
 	touch $@
 
-$(DIR_enigma2_pli)/config.status: bootstrap opkg ethtool freetype expat fontconfig libpng libjpeg libungif libgif libmmehost libmmeimage libfribidi libid3tag libmad libsigc libreadline \
+$(DIR_enigma2_pli)/config.status: bootstrap opkg ethtool freetype expat fontconfig libpng libjpeg libungif libgif libmme_host libmmeimage libfribidi libid3tag libmad libsigc libreadline \
 		enigma2-nightly.do_prepare \
 		libdvbsipp libxml2 zopeinterface twisted pycrypto pyusb pylimaging pyopenssl libaio pythonwifi libxmlccwrap \
 		ncurses-dev libdreamdvd2 tuxtxt32bpp sdparm hotplug_e2 $(MEDIAFW_DEP) $(EXTERNALLCD_DEP)
