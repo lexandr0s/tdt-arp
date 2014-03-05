@@ -677,7 +677,7 @@ $(DEPDIR)/$(LIBAIO_DEV): $(DEPDIR)/%$(LIBAIO_DEV): $(LIBAIO_DEV_RPM)
 #
 LIBACL := libacl
 LIBACL_DEV := libacl-dev
-LIBACL_VERSION := 2.2.47-5
+LIBACL_VERSION := 2.2.47-6
 LIBACL_SPEC := stm-target-$(LIBACL).spec
 LIBACL_SPEC_PATCH :=
 LIBACL_PATCHES :=
@@ -745,7 +745,7 @@ $(DEPDIR)/$(USBUTILS): $(DEPDIR)/%$(USBUTILS): $(USBUTILS_RPM)
 
 UDEV := udev
 UDEV_DEV := udev-dev
-UDEV_VERSION := 162-36
+UDEV_VERSION := 162-37
 PKGR_udev := r0
 UDEV_SPEC := stm-target-$(UDEV).spec
 UDEV_SPEC_PATCH := stm-target-udev.spec.diff
