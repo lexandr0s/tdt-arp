@@ -11,9 +11,14 @@ modprobe simu_button
 #mknod -m 644 /dev/vfd c 147 0
 #mknod -m 644 /dev/hdmi_cec c 149 0
 modprobe e2_proc
+MODEL=`cat /proc/stb/info/model`
 
    echo "init stmfb"
-   modprobe stmcore-display-sti7111 hdmiin=1
+   if [ $MODEL = spark ]; then
+    modprobe stmcore-display-sti7111 hdmiin=1
+   elif [ $MODEL = spark7162 ]; then
+   modprobe stmcore-display-sti7105
+   fi
    modprobe stmfb display0=1280x720-32@50:15m:pal:yuv:yuv
 
    echo "LOADING MODULES"   
@@ -51,7 +56,12 @@ modprobe e2_proc
    modprobe p2div64
    modprobe stm_v4l2
    modprobe pseudocard
-   modprobe stv090x
+   echo "starting frontend-spark"
+   if [ $MODEL = spark ]; then
+    modprobe stv090x
+   elif [ $MODEL = spark7162 ]; then
+    modprobe spark7162
+   fi
    modprobe pti waitMS=20 videoMem=4096
    modprobe stmdvb
    modprobe stm_monitor
