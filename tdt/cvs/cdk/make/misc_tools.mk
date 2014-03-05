@@ -148,6 +148,7 @@ fp_control
 
 DESCRIPTION_fp_control = "fp_control"
 SRC_URI_fp_control = "https://code.google.com/p/tdt-amiko/"
+RDEPENDS_fp_control = lirc
 PKGR_fp_control = r1
 FILES_fp_control = \
 /bin/fp_control
