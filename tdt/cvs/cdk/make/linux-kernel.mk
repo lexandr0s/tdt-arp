@@ -417,7 +417,7 @@ DESCRIPTION_kernel_module_rtl8188eu = rtl8188eu driver for control wifi  devices
 FILES_kernel_module_rtl8188eu = /lib/modules/$(KERNELVERSION)/extra/wireless/rtl8188eu
 RDEPENDS_kernel_module_rtl8188eu = firmware-rtl8188eu
 
-$(DEPDIR)/driver: $(DEPENDS_driver) $(driverdir)/Makefile glibc-dev wlanfirmware linux-kernel.do_compile
+$(DEPDIR)/driver: $(DEPENDS_driver) $(driverdir)/Makefile glibc-dev wlanfirmware firmware_rtl8188eu linux-kernel.do_compile
 	$(PREPARE_driver)
 #	$(MAKE) -C $(KERNEL_DIR) $(MAKE_OPTS) ARCH=sh modules_prepare
 	$(start_build)
