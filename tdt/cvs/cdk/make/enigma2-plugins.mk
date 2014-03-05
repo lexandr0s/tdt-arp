@@ -78,7 +78,7 @@ mediaportal
 NAME_mediaportal = enigma2_plugin_extensions_mediaportal
 DESCRIPTION_mediaportal = "Enigma2 MediaPortal"
 PKGR_mediaportal = r0
-PKGV_mediaportal = 5.0.7
+PKGV_mediaportal = 5.1.2
 RDEPENDS_mediaportal = python_core python_json python_xml python_html python_misc python_twisted_core python_twisted_web python_compression python_robotparser python_mechanize librtmp0
 
 $(DEPDIR)/mediaportal.do_prepare: bootstrap python  mechanize $(DEPENDS_mediaportal)
