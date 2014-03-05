@@ -11,7 +11,7 @@
    echo "init frontpanel"
    modprobe proton
    modprobe simu_button
-   #mknod -m 644 /dev/vfd c 147 0
+   mknod -m 644 /dev/vfd c 147 0
    #mknod -m 644 /dev/hdmi_cec c 149 0
    modprobe e2_proc
 
@@ -44,7 +44,16 @@
    modprobe pseudocard
 
    echo "init frontends"
-   modprobe fe-core
+   if [ "ST" = `sed 's/.*STB=//;s/ .*//;//!d;s/:/_/g' /proc/cmdline` ]; then
+       modprobe fe-core demod=stb090x tuner=stb6110x
+       echo "stb090x"
+   elif [ "sharp" = `sed 's/.*STB=//;s/ .*//;//!d;s/:/_/g' /proc/cmdline` ]; then
+       modprobe fe-core demod=stv090x tuner=sharp7306 
+       echo "sharp"
+   else
+       modprobe fe-core
+       echo "stb0899"
+   fi
 
    echo "init drivers"
    modprobe pti waitMS=20 videoMem=4096
