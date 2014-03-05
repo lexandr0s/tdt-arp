@@ -1,8 +1,8 @@
-diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c
-*** linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c	2012-09-14 12:32:11.000000000 +0200
---- linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c	2012-09-14 15:22:09.000000000 +0200
+diff -crp linux-sh4-2.6.32.59_stm24_0212/arch/sh/boards/mach-hdk7105/setup.c linux-sh4-2.6.32.59_stm24_0212/arch/sh/boards/mach-hdk7105/setup.c
+*** linux-sh4-2.6.32.59_stm24_0212/arch/sh/boards/mach-hdk7105/setup.c	2012-09-14 12:32:11.000000000 +0200
+--- linux-sh4-2.6.32.59_stm24_0212/arch/sh/boards/mach-hdk7105/setup.c	2012-09-14 15:22:09.000000000 +0200
 ***************
-*** 27,36 ****
+*** 29,38 ****
   #include <linux/mtd/physmap.h>
   #include <linux/mtd/nand.h>
   #include <linux/mtd/partitions.h>
@@ -13,7 +13,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   /*
    * Flash setup depends on boot-device:
    *
---- 27,97 ----
+--- 29,99 ----
   #include <linux/mtd/physmap.h>
   #include <linux/mtd/nand.h>
   #include <linux/mtd/partitions.h>
@@ -86,7 +86,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
    * Flash setup depends on boot-device:
    *
 ***************
-*** 47,56 ****
+*** 49,58 ****
    * [Jumper settings based on board v1.2-011]
    */
   
@@ -97,7 +97,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   
   
   
---- 108,118 ----
+--- 110,120 ----
    * [Jumper settings based on board v1.2-011]
    */
   
@@ -110,7 +110,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   
   
 *************** static void __init hdk7105_setup(char **
-*** 68,75 ****
+*** 70,77 ****
   	stx7105_configure_asc(3, &(struct stx7105_asc_config) {
   			.hw_flow_control = 1,
   			.is_console = 0, });
@@ -119,7 +119,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   /* PCI configuration */
   static struct stm_plat_pci_config hdk7105_pci_config = {
   	.pci_irq = {
---- 130,138 ----
+--- 132,140 ----
   	stx7105_configure_asc(3, &(struct stx7105_asc_config) {
   			.hw_flow_control = 1,
   			.is_console = 0, });
@@ -130,7 +130,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   static struct stm_plat_pci_config hdk7105_pci_config = {
   	.pci_irq = {
 *************** int pcibios_map_platform_irq(struct pci_
-*** 96,102 ****
+*** 98,104 ****
           /* We can use the standard function on this board */
   	return stx7105_pcibios_map_platform_irq(&hdk7105_pci_config, pin);
   }
@@ -138,7 +138,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   static struct platform_device hdk7105_leds = {
   	.name = "leds-gpio",
   	.id = 0,
---- 159,165 ----
+--- 161,167 ----
           /* We can use the standard function on this board */
   	return stx7105_pcibios_map_platform_irq(&hdk7105_pci_config, pin);
   }
@@ -147,7 +147,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   	.name = "leds-gpio",
   	.id = 0,
 *************** static struct platform_device hdk7105_fr
-*** 160,166 ****
+*** 162,168 ****
   static int hdk7105_phy_reset(void *bus)
   {
   	gpio_set_value(HDK7105_PIO_PHY_RESET, 0);
@@ -155,7 +155,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   	gpio_set_value(HDK7105_PIO_PHY_RESET, 1);
   
   	return 1;
---- 223,229 ----
+--- 225,231 ----
   static int hdk7105_phy_reset(void *bus)
   {
   	gpio_set_value(HDK7105_PIO_PHY_RESET, 0);
@@ -164,7 +164,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   
   	return 1;
 *************** static struct platform_device hdk7105_no
-*** 210,217 ****
+*** 212,219 ****
   struct stm_nand_bank_data hdk7105_nand_flash = {
   	.csn		= 1,
   	.options	= NAND_NO_AUTOINCR | NAND_USE_FLASH_BBT,
@@ -173,7 +173,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   		{
   			.name	= "NAND Flash 1",
   			.offset	= 0,
---- 273,282 ----
+--- 275,284 ----
   struct stm_nand_bank_data hdk7105_nand_flash = {
   	.csn		= 1,
   	.options	= NAND_NO_AUTOINCR | NAND_USE_FLASH_BBT,
@@ -185,8 +185,8 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   			.name	= "NAND Flash 1",
   			.offset	= 0,
 *************** struct stm_nand_bank_data hdk7105_nand_f
-*** 221,226 ****
---- 286,333 ----
+*** 223,228 ****
+--- 288,335 ----
   			.offset = MTDPART_OFS_NXTBLK,
   			.size	= MTDPART_SIZ_FULL
   		},
@@ -233,14 +233,14 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
 +  	},
 +  
   	},
-  	.timing_data		= &(struct stm_nand_timing_data) {
-  		.sig_setup	= 50,		/* times in ns */
+  	.timing_spec	= &NAND_TSPEC_HYNIX_HY27UH08AG5B,
+  };
 *************** static struct spi_board_info hdk7105_ser
-*** 240,252 ****
+*** 232,244 ****
   	.modalias       = "m25p80",
   	.bus_num        = 0,
   	.chip_select    = stm_gpio(2, 4),
-! 	.max_speed_hz   = 7000000,
+! 	.max_speed_hz   = 3000000,
   	.mode           = SPI_MODE_3,
   	.platform_data  = &(struct flash_platform_data) {
   		.name = "m25p80",
@@ -250,34 +250,34 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   			{
   				.name = "Serial Flash 1",
   				.size = 0x00080000,
---- 347,371 ----
+--- 339,363 ----
   	.modalias       = "m25p80",
   	.bus_num        = 0,
   	.chip_select    = stm_gpio(2, 4),
-! 	.max_speed_hz   = 500000,
+! 	.max_speed_hz   = 5000000,
   	.mode           = SPI_MODE_3,
   	.platform_data  = &(struct flash_platform_data) {
   		.name = "m25p80",
-+  		#ifdef SPI_FLASH_BOOT
-+  		//.type = "en25f16",
-+  		.nr_parts	= 1,
-+  		#else
++ 		#ifdef SPI_FLASH_BOOT
++   		//.type = "en25f16",
++   		.nr_parts	= 1,
++   		#else
   		.type = "m25p32",
   		.nr_parts	= 2,
 + #endif
   		.parts = (struct mtd_partition []) {
-+  			#ifdef SPI_FLASH_BOOT
-+  			{
-+  				.name = "uboot",
-+  				.size = 0x00100000,
-+  				.offset = 0,
-+  			},
-+  			#else
++ 			#ifdef SPI_FLASH_BOOT
++ 			{
++ 				.name = "uboot",
++ 				.size = 0x00100000,
++ 				.offset = 0,
++ 			},
++ 			#else
   			{
   				.name = "Serial Flash 1",
   				.size = 0x00080000,
 *************** static struct spi_board_info hdk7105_ser
-*** 256,271 ****
+*** 248,263 ****
   				.size = MTDPART_SIZ_FULL,
   				.offset = MTDPART_OFS_NXTBLK,
   			},
@@ -294,7 +294,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   static int __init hdk7105_device_init(void)
   {
   	struct sysconf_field *sc;
---- 375,417 ----
+--- 367,409 ----
   				.size = MTDPART_SIZ_FULL,
   				.offset = MTDPART_OFS_NXTBLK,
   			},
@@ -339,8 +339,8 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   {
   	struct sysconf_field *sc;
 *************** static int __init hdk7105_device_init(vo
-*** 296,302 ****
---- 442,452 ----
+*** 288,294 ****
+--- 434,444 ----
   		/* NOR mapped to EMIB, with physical offset of 0x06000000! */
   		nor_bank_base = emi_bank_base(1);
   		nor_bank_size = emi_bank_base(2) - nor_bank_base;
@@ -353,7 +353,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   	default:
   		BUG();
 *************** static int __init hdk7105_device_init(vo
-*** 311,317 ****
+*** 303,309 ****
   	/*     - update resource parameters */
   	hdk7105_nor_flash.resource[0].start += nor_bank_base;
   	hdk7105_nor_flash.resource[0].end += nor_bank_base;
@@ -361,7 +361,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   	/* Setup the PCI_SERR# PIO */
   	if (gpio_request(HDK7105_PIO_PCI_SERR, "PCI_SERR#") == 0) {
   		gpio_direction_input(HDK7105_PIO_PCI_SERR);
---- 461,467 ----
+--- 453,459 ----
   	/*     - update resource parameters */
   	hdk7105_nor_flash.resource[0].start += nor_bank_base;
   	hdk7105_nor_flash.resource[0].end += nor_bank_base;
@@ -370,7 +370,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   	if (gpio_request(HDK7105_PIO_PCI_SERR, "PCI_SERR#") == 0) {
   		gpio_direction_input(HDK7105_PIO_PCI_SERR);
 *************** static int __init hdk7105_device_init(vo
-*** 322,334 ****
+*** 314,326 ****
   		printk(KERN_WARNING "hdk7105: Failed to claim PCI SERR PIO!\n");
   	}
   	stx7105_configure_pci(&hdk7105_pci_config);
@@ -384,7 +384,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   	/* Set SPI Boot pads as inputs to avoid contention with SSC1 */
   	gpio_request(stm_gpio(15, 0), "SPI Boot CLK");
   	gpio_direction_input(stm_gpio(15, 0));
---- 472,484 ----
+--- 464,476 ----
   		printk(KERN_WARNING "hdk7105: Failed to claim PCI SERR PIO!\n");
   	}
   	stx7105_configure_pci(&hdk7105_pci_config);
@@ -399,8 +399,8 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   	gpio_request(stm_gpio(15, 0), "SPI Boot CLK");
   	gpio_direction_input(stm_gpio(15, 0));
 *************** static int __init hdk7105_device_init(vo
-*** 353,362 ****
---- 503,517 ----
+*** 345,354 ****
+--- 495,509 ----
   			.routing.ssc0.sclk = stx7105_ssc0_sclk_pio2_2,
   			.routing.ssc0.mtsr = stx7105_ssc0_mtsr_pio2_3, });
   	/* SPI - SerialFLASH */
@@ -417,7 +417,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   	stx7105_configure_ssc_i2c(2, &(struct stx7105_ssc_config) {
   			.routing.ssc2.sclk = stx7105_ssc2_sclk_pio3_4,
 *************** static int __init hdk7105_device_init(vo
-*** 365,381 ****
+*** 357,373 ****
   	stx7105_configure_ssc_i2c(3, &(struct stx7105_ssc_config) {
   			.routing.ssc3.sclk = stx7105_ssc3_sclk_pio3_6,
   			.routing.ssc3.mtsr = stx7105_ssc3_mtsr_pio3_7, });
@@ -435,7 +435,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   
   	gpio_request(HDK7105_PIO_PHY_RESET, "eth_phy_reset");
   	gpio_direction_output(HDK7105_PIO_PHY_RESET, 1);
---- 520,535 ----
+--- 512,527 ----
   	stx7105_configure_ssc_i2c(3, &(struct stx7105_ssc_config) {
   			.routing.ssc3.sclk = stx7105_ssc3_sclk_pio3_6,
   			.routing.ssc3.mtsr = stx7105_ssc3_mtsr_pio3_7, });
@@ -453,7 +453,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   	gpio_request(HDK7105_PIO_PHY_RESET, "eth_phy_reset");
   	gpio_direction_output(HDK7105_PIO_PHY_RESET, 1);
 *************** static int __init hdk7105_device_init(vo
-*** 405,412 ****
+*** 397,404 ****
   	 * since NAND MTD has no concept of write-protect, we permanently
   	 * disable WP.
   	 */
@@ -462,7 +462,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   
   	stx7105_configure_nand(&(struct stm_nand_config) {
   			.driver = stm_nand_flex,
---- 559,566 ----
+--- 551,558 ----
   	 * since NAND MTD has no concept of write-protect, we permanently
   	 * disable WP.
   	 */
@@ -471,9 +471,9 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/boards/mach-hdk7105/setup.c lin
   
   	stx7105_configure_nand(&(struct stm_nand_config) {
   			.driver = stm_nand_flex,
-diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/kernel/setup.c linux-sh4-2.6.32.59_stm24_0211/arch/sh/kernel/setup.c
-*** linux-sh4-2.6.32.59_stm24_0211/arch/sh/kernel/setup.c	2012-09-14 12:37:42.000000000 +0200
---- linux-sh4-2.6.32.59_stm24_0211/arch/sh/kernel/setup.c	2012-09-14 13:22:11.000000000 +0200
+diff -crp linux-sh4-2.6.32.59_stm24_0212/arch/sh/kernel/setup.c linux-sh4-2.6.32.59_stm24_0212/arch/sh/kernel/setup.c
+*** linux-sh4-2.6.32.59_stm24_0212/arch/sh/kernel/setup.c	2012-09-14 12:37:42.000000000 +0200
+--- linux-sh4-2.6.32.59_stm24_0212/arch/sh/kernel/setup.c	2012-09-14 13:22:11.000000000 +0200
 *************** void __init setup_arch(char **cmdline_p)
 *** 389,394 ****
 --- 389,418 ----
@@ -507,9 +507,9 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/arch/sh/kernel/setup.c linux-sh4-2.6.32
   	/* Save unparsed command line copy for /proc/cmdline */
   	memcpy(boot_command_line, command_line, COMMAND_LINE_SIZE);
   	*cmdline_p = command_line;
-diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/devices/m25p80.c linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/devices/m25p80.c
-*** linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/devices/m25p80.c	2012-09-14 12:32:12.000000000 +0200
---- linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/devices/m25p80.c	2012-09-14 13:22:11.000000000 +0200
+diff -crp linux-sh4-2.6.32.59_stm24_0212/drivers/mtd/devices/m25p80.c linux-sh4-2.6.32.59_stm24_0212/drivers/mtd/devices/m25p80.c
+*** linux-sh4-2.6.32.59_stm24_0212/drivers/mtd/devices/m25p80.c	2012-09-14 12:32:12.000000000 +0200
+--- linux-sh4-2.6.32.59_stm24_0212/drivers/mtd/devices/m25p80.c	2012-09-14 13:22:11.000000000 +0200
 ***************
 *** 28,33 ****
 --- 28,41 ----
@@ -608,7 +608,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/devices/m25p80.c linux-sh4-
   /*
    * Erase the whole flash memory
    *
-*************** static int m25p80_erase(struct mtd_info 
+*************** static int m25p80_erase(struct mtd_info
 *** 260,269 ****
 --- 331,357 ----
   
@@ -638,7 +638,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/devices/m25p80.c linux-sh4-
   			mutex_unlock(&flash->lock);
   			return -EIO;
   		}
-*************** static int m25p80_erase(struct mtd_info 
+*************** static int m25p80_erase(struct mtd_info
 *** 278,283 ****
 --- 366,380 ----
   		while (len) {
@@ -656,7 +656,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/devices/m25p80.c linux-sh4-
   				mutex_unlock(&flash->lock);
   				return -EIO;
   			}
-*************** static int m25p80_erase(struct mtd_info 
+*************** static int m25p80_erase(struct mtd_info
 *** 287,292 ****
 --- 384,397 ----
   		}
@@ -673,7 +673,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/devices/m25p80.c linux-sh4-
   	mutex_unlock(&flash->lock);
   
   	instr->state = MTD_ERASE_DONE;
-*************** static int m25p80_write(struct mtd_info 
+*************** static int m25p80_write(struct mtd_info
 *** 410,415 ****
 --- 515,528 ----
   		return 1;
@@ -690,7 +690,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/devices/m25p80.c linux-sh4-
   	write_enable(flash);
   
   	/* Set up the opcode in the write buffer. */
-*************** static int m25p80_write(struct mtd_info 
+*************** static int m25p80_write(struct mtd_info
 *** 464,469 ****
 --- 577,590 ----
   		}
@@ -758,8 +758,8 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/devices/m25p80.c linux-sh4-
   
   	/* Macronix */
 *************** static struct flash_info __devinitdata m
-*** 680,685 ****
---- 824,840 ----
+*** 681,686 ****
+--- 825,841 ----
   	{ "w25x16", 0xef3015, 0, 64 * 1024, 32, SECT_4K, },
   	{ "w25x32", 0xef3016, 0, 64 * 1024, 64, SECT_4K, },
   	{ "w25x64", 0xef3017, 0, 64 * 1024, 128, SECT_4K, },
@@ -778,8 +778,8 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/devices/m25p80.c linux-sh4-
   
   static struct flash_info *__devinit jedec_probe(struct spi_device *spi)
 *************** static int __devinit m25p_probe(struct s
-*** 776,781 ****
---- 931,949 ----
+*** 777,782 ****
+--- 932,950 ----
   	if (!flash)
   		return -ENOMEM;
   
@@ -799,11 +799,11 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/devices/m25p80.c linux-sh4-
   	flash->spi = spi;
   	mutex_init(&flash->lock);
   	dev_set_drvdata(&spi->dev, flash);
-diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/nand/nand_base.c linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/nand/nand_base.c
-*** linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/nand/nand_base.c	2012-09-14 12:32:12.000000000 +0200
---- linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/nand/nand_base.c	2012-09-14 13:22:11.000000000 +0200
+diff -crp linux-sh4-2.6.32.59_stm24_0212/drivers/mtd/nand/nand_base.c linux-sh4-2.6.32.59_stm24_0212/drivers/mtd/nand/nand_base.c
+*** linux-sh4-2.6.32.59_stm24_0212/drivers/mtd/nand/nand_base.c	2012-09-14 12:32:12.000000000 +0200
+--- linux-sh4-2.6.32.59_stm24_0212/drivers/mtd/nand/nand_base.c	2012-09-14 13:22:11.000000000 +0200
 *************** int nand_do_read_ops(struct mtd_info *mt
-*** 1379,1398 ****
+*** 1386,1405 ****
   
   			/* Now read the page into the buffer */
   			if (unlikely(ops->mode == MTD_OOB_RAW))
@@ -824,7 +824,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/nand/nand_base.c linux-sh4-
   				memcpy(buf, chip->buffers->databuf + col, bytes);
   			}
   
---- 1379,1393 ----
+--- 1386,1400 ----
   
   			/* Now read the page into the buffer */
   			if (unlikely(ops->mode == MTD_OOB_RAW))
@@ -841,7 +841,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/nand/nand_base.c linux-sh4-
   			}
   
 *************** static struct nand_flash_dev *nand_get_f
-*** 2906,2913 ****
+*** 2911,2918 ****
   	/* Decode ID string */
   	if (nand_decode_id(mtd, chip, type, id_data, 8) != 0) {
   		printk(KERN_INFO "Failed to decode NAND READID "
@@ -850,7 +850,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/nand/nand_base.c linux-sh4-
   		return ERR_PTR(-EINVAL);
   	}
   
---- 2901,2908 ----
+--- 2906,2913 ----
   	/* Decode ID string */
   	if (nand_decode_id(mtd, chip, type, id_data, 8) != 0) {
   		printk(KERN_INFO "Failed to decode NAND READID "
@@ -859,9 +859,9 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/nand/nand_base.c linux-sh4-
   		return ERR_PTR(-EINVAL);
   	}
   
-diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/nand/nand_ecc.c linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/nand/nand_ecc.c
-*** linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/nand/nand_ecc.c	2012-09-14 12:32:12.000000000 +0200
---- linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/nand/nand_ecc.c	2012-09-14 13:22:11.000000000 +0200
+diff -crp linux-sh4-2.6.32.59_stm24_0212/drivers/mtd/nand/nand_ecc.c linux-sh4-2.6.32.59_stm24_0212/drivers/mtd/nand/nand_ecc.c
+*** linux-sh4-2.6.32.59_stm24_0212/drivers/mtd/nand/nand_ecc.c	2012-09-14 12:32:12.000000000 +0200
+--- linux-sh4-2.6.32.59_stm24_0212/drivers/mtd/nand/nand_ecc.c	2012-09-14 13:22:11.000000000 +0200
 *************** int __nand_correct_data(unsigned char *b
 *** 492,503 ****
   	}
@@ -889,12 +889,12 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/nand/nand_ecc.c linux-sh4-2
   	return -1;
   }
   EXPORT_SYMBOL(__nand_correct_data);
-diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/nand/stm_nand_flex.c linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/nand/stm_nand_flex.c
-*** linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/nand/stm_nand_flex.c	2012-09-14 12:32:12.000000000 +0200
---- linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/nand/stm_nand_flex.c	2012-09-14 13:22:11.000000000 +0200
+diff -crp linux-sh4-2.6.32.59_stm24_0212/drivers/mtd/nand/stm_nand_flex.c linux-sh4-2.6.32.59_stm24_0212/drivers/mtd/nand/stm_nand_flex.c
+*** linux-sh4-2.6.32.59_stm24_0212/drivers/mtd/nand/stm_nand_flex.c	2012-09-14 12:32:12.000000000 +0200
+--- linux-sh4-2.6.32.59_stm24_0212/drivers/mtd/nand/stm_nand_flex.c	2012-09-14 13:22:11.000000000 +0200
 *************** static void __exit stm_nand_flex_exit(vo
-*** 1285,1291 ****
---- 1285,1300 ----
+*** 1449,1455 ****
+--- 1449,1464 ----
   	platform_driver_unregister(&stm_nand_flex_driver);
   }
   
@@ -911,11 +911,11 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/mtd/nand/stm_nand_flex.c linux-
   module_exit(stm_nand_flex_exit);
   
   MODULE_LICENSE("GPL");
-diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/net/phy/phy_device.c linux-sh4-2.6.32.59_stm24_0211/drivers/net/phy/phy_device.c
-*** linux-sh4-2.6.32.59_stm24_0211/drivers/net/phy/phy_device.c	2012-09-14 12:32:12.000000000 +0200
---- linux-sh4-2.6.32.59_stm24_0211/drivers/net/phy/phy_device.c	2012-09-14 13:22:11.000000000 +0200
+diff -crp linux-sh4-2.6.32.59_stm24_0212/drivers/net/phy/phy_device.c linux-sh4-2.6.32.59_stm24_0212/drivers/net/phy/phy_device.c
+*** linux-sh4-2.6.32.59_stm24_0212/drivers/net/phy/phy_device.c	2012-09-14 12:32:12.000000000 +0200
+--- linux-sh4-2.6.32.59_stm24_0212/drivers/net/phy/phy_device.c	2012-09-14 13:22:11.000000000 +0200
 *************** int phy_driver_register(struct phy_drive
-*** 1098,1104 ****
+*** 1104,1110 ****
   		return retval;
   	}
   
@@ -923,7 +923,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/net/phy/phy_device.c linux-sh4-
   
   	return 0;
   }
---- 1098,1104 ----
+--- 1104,1110 ----
   		return retval;
   	}
   
@@ -931,9 +931,9 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/net/phy/phy_device.c linux-sh4-
   
   	return 0;
   }
-diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/net/stmmac/stmmac_mdio.c linux-sh4-2.6.32.59_stm24_0211/drivers/net/stmmac/stmmac_mdio.c
-*** linux-sh4-2.6.32.59_stm24_0211/drivers/net/stmmac/stmmac_mdio.c	2012-09-14 12:32:12.000000000 +0200
---- linux-sh4-2.6.32.59_stm24_0211/drivers/net/stmmac/stmmac_mdio.c	2012-09-14 13:22:11.000000000 +0200
+diff -crp linux-sh4-2.6.32.59_stm24_0212/drivers/net/stmmac/stmmac_mdio.c linux-sh4-2.6.32.59_stm24_0212/drivers/net/stmmac/stmmac_mdio.c
+*** linux-sh4-2.6.32.59_stm24_0212/drivers/net/stmmac/stmmac_mdio.c	2012-09-14 12:32:12.000000000 +0200
+--- linux-sh4-2.6.32.59_stm24_0212/drivers/net/stmmac/stmmac_mdio.c	2012-09-14 13:22:11.000000000 +0200
 *************** int stmmac_mdio_register(struct net_devi
 *** 170,175 ****
 --- 170,176 ----
@@ -981,9 +981,9 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/net/stmmac/stmmac_mdio.c linux-
   			switch (phydev->irq) {
   			case PHY_POLL:
   				irq_str = "POLL";
-diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/spi/spi_stm.c linux-sh4-2.6.32.59_stm24_0211/drivers/spi/spi_stm.c
-*** linux-sh4-2.6.32.59_stm24_0211/drivers/spi/spi_stm.c	2012-09-14 12:32:12.000000000 +0200
---- linux-sh4-2.6.32.59_stm24_0211/drivers/spi/spi_stm.c	2012-09-14 13:22:11.000000000 +0200
+diff -crp linux-sh4-2.6.32.59_stm24_0212/drivers/spi/spi_stm.c linux-sh4-2.6.32.59_stm24_0212/drivers/spi/spi_stm.c
+*** linux-sh4-2.6.32.59_stm24_0212/drivers/spi/spi_stm.c	2012-09-14 12:32:12.000000000 +0200
+--- linux-sh4-2.6.32.59_stm24_0212/drivers/spi/spi_stm.c	2012-09-14 13:22:11.000000000 +0200
 *************** static int spi_stm_txrx_bufs(struct spi_
 *** 338,344 ****
   
@@ -1001,9 +1001,9 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/spi/spi_stm.c linux-sh4-2.6.32.
   {
   	struct stm_plat_ssc_data *plat_data = pdev->dev.platform_data;
   	struct spi_master *master;
-diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/stm/gpio.c linux-sh4-2.6.32.59_stm24_0211/drivers/stm/gpio.c
-*** linux-sh4-2.6.32.59_stm24_0211/drivers/stm/gpio.c	2012-09-14 12:32:12.000000000 +0200
---- linux-sh4-2.6.32.59_stm24_0211/drivers/stm/gpio.c	2012-09-14 13:22:11.000000000 +0200
+diff -crp linux-sh4-2.6.32.59_stm24_0212/drivers/stm/gpio.c linux-sh4-2.6.32.59_stm24_0212/drivers/stm/gpio.c
+*** linux-sh4-2.6.32.59_stm24_0212/drivers/stm/gpio.c	2012-09-14 12:32:12.000000000 +0200
+--- linux-sh4-2.6.32.59_stm24_0212/drivers/stm/gpio.c	2012-09-14 13:22:11.000000000 +0200
 ***************
 *** 28,39 ****
 --- 28,44 ----
@@ -1247,9 +1247,9 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/stm/gpio.c linux-sh4-2.6.32.59_
   	ret = platform_driver_register(&stm_gpio_driver);
   	if (ret)
   		return ret;
-diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/stm/miphy365x.c linux-sh4-2.6.32.59_stm24_0211/drivers/stm/miphy365x.c
-*** linux-sh4-2.6.32.59_stm24_0211/drivers/stm/miphy365x.c	2012-09-14 12:32:13.000000000 +0200
---- linux-sh4-2.6.32.59_stm24_0211/drivers/stm/miphy365x.c	2012-09-14 15:49:43.000000000 +0200
+diff -crp linux-sh4-2.6.32.59_stm24_0212/drivers/stm/miphy365x.c linux-sh4-2.6.32.59_stm24_0212/drivers/stm/miphy365x.c
+*** linux-sh4-2.6.32.59_stm24_0212/drivers/stm/miphy365x.c	2012-09-14 12:32:13.000000000 +0200
+--- linux-sh4-2.6.32.59_stm24_0212/drivers/stm/miphy365x.c	2012-09-14 15:49:43.000000000 +0200
 *************** void stm_miphy_dump_registers(struct stm
 *** 99,104 ****
 --- 99,105 ----
@@ -1285,9 +1285,9 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/stm/miphy365x.c linux-sh4-2.6.3
   
   	/* Enable macro1 to use rx_lspd  & tx_lspd from link interface */
   	reg_write(0, 0x10, 0x00);
-diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/stm/stx7105_comms.c linux-sh4-2.6.32.59_stm24_0211/drivers/stm/stx7105_comms.c
-*** linux-sh4-2.6.32.59_stm24_0211/drivers/stm/stx7105_comms.c	2012-09-14 12:32:13.000000000 +0200
---- linux-sh4-2.6.32.59_stm24_0211/drivers/stm/stx7105_comms.c	2012-09-14 13:22:11.000000000 +0200
+diff -crp linux-sh4-2.6.32.59_stm24_0212/drivers/stm/stx7105_comms.c linux-sh4-2.6.32.59_stm24_0212/drivers/stm/stx7105_comms.c
+*** linux-sh4-2.6.32.59_stm24_0212/drivers/stm/stx7105_comms.c	2012-09-14 12:32:13.000000000 +0200
+--- linux-sh4-2.6.32.59_stm24_0212/drivers/stm/stx7105_comms.c	2012-09-14 13:22:11.000000000 +0200
 *************** static struct platform_device stx7105_ss
 *** 344,354 ****
   			/* .pad_config_* set in stx7105_configure_ssc_*() */
@@ -1562,9 +1562,9 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/stm/stx7105_comms.c linux-sh4-2
   	case 2:
   		pad_config = stm_pad_config_alloc(3, 2);
   
-diff -crp linux-sh4-2.6.32.59_stm24_0211/include/linux/stm/stx7105.h linux-sh4-2.6.32.59_stm24_0211/include/linux/stm/stx7105.h
-*** linux-sh4-2.6.32.59_stm24_0211/include/linux/stm/stx7105.h	2012-09-14 12:32:13.000000000 +0200
---- linux-sh4-2.6.32.59_stm24_0211/include/linux/stm/stx7105.h	2012-09-14 13:22:11.000000000 +0200
+diff -crp linux-sh4-2.6.32.59_stm24_0212/include/linux/stm/stx7105.h linux-sh4-2.6.32.59_stm24_0212/include/linux/stm/stx7105.h
+*** linux-sh4-2.6.32.59_stm24_0212/include/linux/stm/stx7105.h	2012-09-14 12:32:13.000000000 +0200
+--- linux-sh4-2.6.32.59_stm24_0212/include/linux/stm/stx7105.h	2012-09-14 13:22:11.000000000 +0200
 *************** struct stx7105_ssc_config {
 *** 113,118 ****
 --- 113,119 ----
@@ -1575,9 +1575,9 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/include/linux/stm/stx7105.h linux-sh4-2
   int stx7105_configure_ssc_spi(int ssc, struct stx7105_ssc_config *config);
 
 
-diff -crp linux-sh4-2.6.32.59_stm24_0211/include/linux/dvb/frontend.h linux-sh4-2.6.32.59_stm24_0211.i2s/include/linux/dvb/frontend.h
-*** linux-sh4-2.6.32.59_stm24_0211/include/linux/dvb/frontend.h	2011-08-09 09:35:36.000000000 +0800
---- linux-sh4-2.6.32.59_stm24_0211.i2s/include/linux/dvb/frontend.h	2011-12-07 11:02:08.856831910 +0800
+diff -crp linux-sh4-2.6.32.59_stm24_0212/include/linux/dvb/frontend.h linux-sh4-2.6.32.59_stm24_0212.i2s/include/linux/dvb/frontend.h
+*** linux-sh4-2.6.32.59_stm24_0212/include/linux/dvb/frontend.h	2011-08-09 09:35:36.000000000 +0800
+--- linux-sh4-2.6.32.59_stm24_0212.i2s/include/linux/dvb/frontend.h	2011-12-07 11:02:08.856831910 +0800
 *************** typedef enum fe_caps {
 *** 62,67 ****
 --- 62,69 ----
@@ -1684,9 +1684,9 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/include/linux/dvb/frontend.h linux-sh4-
   struct dtv_cmds_h {
   	char	*name;		/* A display name for debugging purposes */
   
-diff -crp linux-sh4-2.6.32.59_stm24_0211/include/linux/dvb/version.h linux-sh4-2.6.32.59_stm24_0211.i2s/include/linux/dvb/version.h
-*** linux-sh4-2.6.32.59_stm24_0211/include/linux/dvb/version.h	2011-08-09 09:35:36.000000000 +0800
---- linux-sh4-2.6.32.59_stm24_0211.i2s/include/linux/dvb/version.h	2011-12-07 11:02:08.856831910 +0800
+diff -crp linux-sh4-2.6.32.59_stm24_0212/include/linux/dvb/version.h linux-sh4-2.6.32.59_stm24_0212.i2s/include/linux/dvb/version.h
+*** linux-sh4-2.6.32.59_stm24_0212/include/linux/dvb/version.h	2011-08-09 09:35:36.000000000 +0800
+--- linux-sh4-2.6.32.59_stm24_0212.i2s/include/linux/dvb/version.h	2011-12-07 11:02:08.856831910 +0800
 ***************
 *** 24,29 ****
   #define _DVBVERSION_H_
@@ -1702,9 +1702,9 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/include/linux/dvb/version.h linux-sh4-2
 ! #define DVB_API_VERSION_MINOR 3
   
   #endif /*_DVBVERSION_H_*/
-diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/media/dvb/dvb-core/dvb_frontend.h linux-sh4-2.6.32.59_stm24_0211.i2s/drivers/media/dvb/dvb-core/dvb_frontend.h
-*** linux-sh4-2.6.32.59_stm24_0211/drivers/media/dvb/dvb-core/dvb_frontend.h	2011-08-09 09:35:36.000000000 +0800
---- linux-sh4-2.6.32.59_stm24_0211.i2s/drivers/media/dvb/dvb-core/dvb_frontend.h	2011-12-07 11:02:08.856831910 +0800
+diff -crp linux-sh4-2.6.32.59_stm24_0212/drivers/media/dvb/dvb-core/dvb_frontend.h linux-sh4-2.6.32.59_stm24_0212.i2s/drivers/media/dvb/dvb-core/dvb_frontend.h
+*** linux-sh4-2.6.32.59_stm24_0212/drivers/media/dvb/dvb-core/dvb_frontend.h	2011-08-09 09:35:36.000000000 +0800
+--- linux-sh4-2.6.32.59_stm24_0212.i2s/drivers/media/dvb/dvb-core/dvb_frontend.h	2011-12-07 11:02:08.856831910 +0800
 *************** struct dtv_frontend_properties {
 *** 356,363 ****
   	    u8			interleaving;
@@ -1724,9 +1724,9 @@ diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/media/dvb/dvb-core/dvb_frontend
   };
   
   struct dvb_frontend {
-diff -crp linux-sh4-2.6.32.59_stm24_0211/drivers/media/dvb/dvb-core/dvb_frontend.c linux-sh4-2.6.32.59_stm24_0211.i2s/drivers/media/dvb/dvb-core/dvb_frontend.c
-*** linux-sh4-2.6.32.59_stm24_0211/drivers/media/dvb/dvb-core/dvb_frontend.c	2011-08-09 09:35:36.000000000 +0800
---- linux-sh4-2.6.32.59_stm24_0211.i2s/drivers/media/dvb/dvb-core/dvb_frontend.c	2011-12-07 11:02:08.856831910 +0800
+diff -crp linux-sh4-2.6.32.59_stm24_0212/drivers/media/dvb/dvb-core/dvb_frontend.c linux-sh4-2.6.32.59_stm24_0212.i2s/drivers/media/dvb/dvb-core/dvb_frontend.c
+*** linux-sh4-2.6.32.59_stm24_0212/drivers/media/dvb/dvb-core/dvb_frontend.c	2011-08-09 09:35:36.000000000 +0800
+--- linux-sh4-2.6.32.59_stm24_0212.i2s/drivers/media/dvb/dvb-core/dvb_frontend.c	2011-12-07 11:02:08.856831910 +0800
 *************** static int dvb_frontend_clear_cache(stru
 *** 883,888 ****
 --- 883,890 ----
