@@ -361,8 +361,8 @@ echo "Your build enivroment is ready :-)"
 echo "Your next step could be:"
 case "$IMAGE" in
         --enable-e2d*)
-        echo "make yaud-enigma2-pli-nightly"
-        echo "make yaud-enigma2-pli-nightly-full";;
+        echo "make yaud-enigma2-nightly"
+        echo "make yaud-enigma2-nightly-full";;
         --enable-nhd*)
         echo "make yaud-neutrino-hd-nightly";;
         --enable-xbd*)
