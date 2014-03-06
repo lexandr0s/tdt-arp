@@ -163,6 +163,7 @@ $(crossprefix)/bin/opkg: $(DEPENDS_opkghost)
 	  echo "arch $(box_arch) 16"; \
 	  echo "arch sh4 10"; \
 	  echo "arch all 1"; \
+	  echo "src/gz openpli-all http://downloads.pli-images.org/feeds/openpli-4/all"; \
 	  echo "src/gz cross file://$(ipkprefix)" ) >>$(OPKG_CONF)
 	echo "dest cdkroot /" >$(OPKG_CONFCDK)
 	( echo "lists_dir ext /usr/lib/opkg"; \
