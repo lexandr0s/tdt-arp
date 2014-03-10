@@ -23,15 +23,15 @@ $(SPLASHUTILS_RPM): \
 	export PKG_CONFIG_PATH=$(targetprefix)/usr/lib/pkgconfig && \
 	rpmbuild $(DRPMBUILD) -bb -v --clean --nodeps --target=sh4-linux SPECS/$(SPLASHUTILS_SPEC)
 
-$(DEPDIR)/$(SPLASHUTILS): $(DEPDIR)/%$(SPLASHUTILS): $(SPLASHUTILS_RPM)
-	@rpm --dbpath $(prefix)/$*cdkroot-rpmdb $(DRPM) --ignorearch -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^) && \
+$(DEPDIR)/$(SPLASHUTILS): $(SPLASHUTILS_RPM)
+	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch -Uhv \
+		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
 	cp root/etc/splash/luxisri.ttf $(targetprefix)/etc/splash/ && \
 	cp -rd root/etc/splash/{vdr,liquid,together}_theme $(targetprefix)/etc/splash/ && \
 	$(LN_SF) liquid_theme $(targetprefix)/etc/splash/default && \
 	$(INSTALL_DIR) $(targetprefix)/lib/lsb && \
 	cp root/lib/lsb/splash-functions $(targetprefix)/lib/lsb/ && \
-	[ "x$*" = "x" ] && touch -r $(lastword $^) $@ || true
+	[ "x" = "x" ] && touch -r $(lastword $^) $@ || true
 
 #
 # STSLAVE
@@ -56,10 +56,10 @@ $(STSLAVE_RPM): \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
 	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(STSLAVE_SPEC)
 
-$(DEPDIR)/$(STSLAVE): $(DEPDIR)/%$(STSLAVE): linux-kernel-headers binutils-dev $(STSLAVE_RPM)
-	@rpm --dbpath $(prefix)/$*cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^) && \
-	[ "x$*" = "x" ] && touch -r $(lastword $^) $@ || true
+$(DEPDIR)/$(STSLAVE): linux-kernel-headers binutils-dev $(STSLAVE_RPM)
+	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
+		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
+	[ "x" = "x" ] && touch -r $(lastword $^) $@ || true
 
 
 #
@@ -93,16 +93,16 @@ $(OPENSSL_RPM) $(OPENSSL_DEV_RPM): \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
 	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(OPENSSL_SPEC)
 
-$(DEPDIR)/$(OPENSSL): $(DEPDIR)/%$(OPENSSL): $(OPENSSL_RPM)
-	@rpm --dbpath $(prefix)/$*cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^) && \
+$(DEPDIR)/$(OPENSSL): $(OPENSSL_RPM)
+	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
+		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
 	touch $@ || true
 	$(start_build)
 	$(fromrpm_build)
 
-$(DEPDIR)/$(OPENSSL_DEV): $(DEPDIR)/%$(OPENSSL_DEV): %$(OPENSSL) $(OPENSSL_DEV_RPM)
-	@rpm --dbpath $(prefix)/$*cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^) && \
+$(DEPDIR)/$(OPENSSL_DEV): $(OPENSSL) $(OPENSSL_DEV_RPM)
+	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
+		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
 	touch $@ || true
 	$(start_build)
 	$(fromrpm_build)
@@ -132,14 +132,14 @@ $(ALSALIB_RPM) $(ALSALIB_DEV_RPM): \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
 	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(ALSALIB_SPEC)
 
-$(DEPDIR)/$(ALSALIB): $(DEPDIR)/%$(ALSALIB): $(ALSALIB_RPM)
-	@rpm --dbpath $(prefix)/$*cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^) && \
+$(DEPDIR)/$(ALSALIB): $(ALSALIB_RPM)
+	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
+		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
 	touch $@ || true
 
-$(DEPDIR)/$(ALSALIB_DEV): $(DEPDIR)/%$(ALSALIB_DEV): %$(ALSALIB) $(ALSALIB_DEV_RPM)
-	@rpm --dbpath $(prefix)/$*cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^) && \
+$(DEPDIR)/$(ALSALIB_DEV): $(ALSALIB) $(ALSALIB_DEV_RPM)
+	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
+		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
 	touch $@ || true
 
 #
@@ -166,9 +166,9 @@ $(ALSAUTILS_RPM): \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
 	rpmbuild $(DRPMBUILD) -bb -v --clean --nodeps --target=sh4-linux SPECS/$(ALSAUTILS_SPEC)
 
-$(DEPDIR)/$(ALSAUTILS): $(DEPDIR)/%$(ALSAUTILS): $(ALSAUTILS_RPM)
-	@rpm --dbpath $(prefix)/$*cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^) && \
+$(DEPDIR)/$(ALSAUTILS): $(ALSAUTILS_RPM)
+	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
+		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
 	touch $@ || true
 
 #
@@ -196,14 +196,14 @@ $(ALSAPLAYER_RPM) $(ALSAPLAYER_DEV_RPM): \
 	export PKG_CONFIG_PATH=$(targetprefix)/usr/include/pkgconfig && \
 	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(ALSAPLAYER_SPEC)
 
-$(DEPDIR)/$(ALSAPLAYER): $(DEPDIR)/%$(ALSAPLAYER): $(ALSAPLAYER_RPM)
-	@rpm --dbpath $(prefix)/$*cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^) && \
+$(DEPDIR)/$(ALSAPLAYER): $(ALSAPLAYER_RPM)
+	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
+		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
 	touch $@ || true
 
-$(DEPDIR)/$(ALSAPLAYER_DEV): $(DEPDIR)/%$(ALSAPLAYER_DEV): $(ALSAPLAYER_DEV_RPM)
-	@rpm --dbpath $(prefix)/$*cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^) && \
+$(DEPDIR)/$(ALSAPLAYER_DEV): $(ALSAPLAYER_DEV_RPM)
+	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
+		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
 	touch $@ || true
 
 
@@ -235,16 +235,16 @@ $(LIBEVENT_RPM) $(LIBEVENT_DEV_RPM): \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
 	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(LIBEVENT_SPEC)
 
-$(DEPDIR)/$(LIBEVENT): $(DEPDIR)/%$(LIBEVENT): $(LIBEVENT_RPM)
-	@rpm --dbpath $(prefix)/$*cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^) && \
+$(DEPDIR)/$(LIBEVENT): $(LIBEVENT_RPM)
+	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
+		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
 	touch $@ || true
 	$(start_build)
 	$(fromrpm_build)
 
-$(DEPDIR)/$(LIBEVENT_DEV): $(DEPDIR)/%$(LIBEVENT_DEV): %$(LIBEVENT) $(LIBEVENT_DEV_RPM)
-	@rpm --dbpath $(prefix)/$*cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^) && \
+$(DEPDIR)/$(LIBEVENT_DEV): $(LIBEVENT) $(LIBEVENT_DEV_RPM)
+	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
+		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
 	touch $@ || true
 	$(start_build)
 	$(fromrpm_build)

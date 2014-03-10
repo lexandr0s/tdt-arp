@@ -256,7 +256,7 @@ $(DEPDIR)/bootstrap-host: | \
 		$(CCACHE_BIN) host-rpmconfig host-base-passwd host-distributionutils \
 		host-filesystem host-autotools $(HOST_AUTOMAKE) $(HOST_AUTOCONF) $(HOST_PKGCONFIG) \
 		$(HOST_MTD_UTILS) $(HOST_MODINIT)
-	$(if $(HOST_MTD_UTILS_RPM),[ "x$*" = "x" ] && touch -r $(HOST_MTD_UTILS_RPM) $@ || true)
+	$(if $(HOST_MTD_UTILS_RPM),[ "x" = "x" ] && touch -r $(HOST_MTD_UTILS_RPM) $@ || true)
 
 ########################################   BOOTSTRAP-CROSS   ########################################
 #
@@ -515,10 +515,9 @@ $(DEPDIR)/$(CROSS_G++): $(CROSS_G++_RPM)
 	@rpm  $(DRPM) --ignorearch --nodeps -Uhv $< && \
 	touch $@
 
-$(DEPDIR)/$(CROSS_LIBGCC): \
-$(DEPDIR)/%$(CROSS_LIBGCC): $(CROSS_LIBGCC_RPM) | $(DEPDIR)/%$(GLIBC)
-	@rpm --dbpath $(prefix)/$*cdkroot-rpmdb  $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/$*cdkroot $(lastword $^) && \
+$(DEPDIR)/$(CROSS_LIBGCC): $(CROSS_LIBGCC_RPM) | $(DEPDIR)/$(GLIBC)
+	@rpm --dbpath $(prefix)/cdkroot-rpmdb  $(DRPM) --ignorearch --nodeps -Uhv \
+		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
 	touch $@
 	$(start_build)
 	$(fromrpm_build)

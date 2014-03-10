@@ -33,14 +33,13 @@ $(DEPDIR)/u-boot-utils.do_compile: bootstrap $(DEPDIR)/u-boot-utils.do_prepare
 #		$(MAKE) -C tools/env TOPDIR=$(buildprefix)/$(HOST_U_BOOT_DIR) ARCH=sh4 CROSS_COMPILE=$(target)- all TARGETS=fw_printenv TARGETDIR=$(targetprefix)
 	touch $@
 
-$(DEPDIR)/u-boot-utils: \
-$(DEPDIR)/%u-boot-utils: $(DEPDIR)/u-boot-utils.do_compile
-#	$(INSTALL) -d $(prefix)/$*cdkroot/{etc,usr/sbin} && \
+$(DEPDIR)/u-boot-utils: $(DEPDIR)/u-boot-utils.do_compile
+#	$(INSTALL) -d $(prefix)/cdkroot/{etc,usr/sbin} && \
 #	cd $(HOST_U_BOOT_DIR) && \
 #		$(INSTALL) -m 755 tools/env/fw_printenv $(prefix)/$*cdkroot/usr/sbin && \
-#		$(LN_SF) fw_printenv $(prefix)/$*cdkroot/usr/sbin/fw_setenv
-#	$(INSTALL) -m 644 $(buildprefix)/root/etc/fw_env.config $(prefix)/$*cdkroot/etc/
-	[ "x$*" = "x" ] && touch $@ || true
+#		$(LN_SF) fw_printenv $(prefix)/cdkroot/usr/sbin/fw_setenv
+#	$(INSTALL) -m 644 $(buildprefix)/root/etc/fw_env.config $(prefix)/cdkroot/etc/
+	[ "x" = "x" ] && touch $@ || true
 
 
 $(DEPDIR)/u-boot-utils: $(DEPDIR)/u-boot-utils.do_compile
