@@ -70,19 +70,17 @@ $(GLIBC_RPM) $(GLIBC_DEV_RPM): \
 	$(if $(GLIBC_SPEC_PATCH),( cd SPECS && patch -p1 $(GLIBC_SPEC) < $(buildprefix)/Patches/$(GLIBC_SPEC_PATCH) ) &&) \
 	$(if $(GLIBC_PATCHES),cp $(GLIBC_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --nodeps --target=sh4-linux SPECS/$(GLIBC_SPEC)
+	$(rpm_build) SPECS/$(GLIBC_SPEC)
 
-$(DEPDIR)/$(GLIBC): $(GLIBC_RPM) | $(DEPDIR)/%filesystem
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps  -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^)
+$(DEPDIR)/$(GLIBC): $(GLIBC_RPM) | $(DEPDIR)/filesystem
+	$(rpm_install) $(lastword $^)
 	$(call parent_pk,glibc)
 	$(start_build)
 	$(fromrpm_build)
 	touch $@
 
 $(DEPDIR)/$(GLIBC_DEV): $(DEPDIR)/$(GLIBC) $(GLIBC_DEV_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^)
+	$(rpm_install) $(lastword $^)
 	$(start_build)
 	$(fromrpm_build)
 	touch $@
@@ -107,14 +105,14 @@ $(BINUTILS_RPM) $(BINUTILS_DEV_RPM): \
 	$(if $(BINUTILS_SPEC_PATCH),( cd SPECS && patch -p1 $(BINUTILS_SPEC) < $(buildprefix)/Patches/$(BINUTILS_SPEC_PATCH) ) &&) \
 	$(if $(BINUTILS_PATCHES),cp $(BINUTILS_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(BINUTILS_SPEC)
+	$(rpm_build) SPECS/$(BINUTILS_SPEC)
 
 $(DEPDIR)/$(BINUTILS): $(BINUTILS_RPM)
-	@rpm $(DRPM) --ignorearch --nodeps -Uhv $< && \
+	$(rpm_install) $(lastword $^)
 	touch $@
 
 $(DEPDIR)/$(BINUTILS_DEV): $(BINUTILS_DEV_RPM)
-	@rpm $(DRPM) --ignorearch --nodeps --noscripts -Uhv $< && \
+	$(rpm_install) --noscripts $(lastword $^)
 	touch $@
 
 #
@@ -159,10 +157,10 @@ $(GMP_RPM): \
 	$(if $(GMP_SPEC_PATCH),( cd SPECS && patch -p1 $(GMP_SPEC) < $(buildprefix)/Patches/$(GMP_SPEC_PATCH) ) &&) \
 	$(if $(GMP_PATCHES),cp $(addprefix Patches/,$(GMP_PATCHES)) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(GMP_SPEC)
+	$(rpm_build) SPECS/$(GMP_SPEC)
 
 $(DEPDIR)/$(GMP): $(GMP_RPM)
-	@rpm $(DRPM) --ignorearch --nodeps -Uhv $(lastword $^) && \
+	$(rpm_install) $(lastword $^)
 	sed -i "/^libdir/s|'/usr/lib'|'$(targetprefix)/usr/lib'|" $(targetprefix)/usr/lib/libgmp.la
 	sed -i "/^dependency_libs/s|-L/usr/lib -L/lib ||" $(targetprefix)/usr/lib/libgmp.la
 	$(call parent_pk,gmp)
@@ -188,10 +186,10 @@ $(MPFR_RPM): \
 	$(if $(MPFR_SPEC_PATCH),( cd SPECS && patch -p1 $(MPFR_SPEC) < $(buildprefix)/Patches/$(MPFR_SPEC_PATCH) ) &&) \
 	$(if $(MPFR_PATCHES),cp $(addprefix Patches/,$(MPFR_PATCHES)) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(MPFR_SPEC)
+	$(rpm_build) SPECS/$(MPFR_SPEC)
 
 $(DEPDIR)/$(MPFR): $(MPFR_RPM)
-	@rpm $(DRPM) --ignorearch --nodeps -Uhv $(lastword $^) && \
+	$(rpm_install) $(lastword $^)
 	sed -i "/^libdir/s|'/usr/lib'|'$(targetprefix)/usr/lib'|" $(targetprefix)/usr/lib/libmpfr.la
 	sed -i "/^dependency_libs/s|-L/usr/lib -L/lib ||" $(targetprefix)/usr/lib/libmpfr.la
 	$(start_build)
@@ -216,10 +214,10 @@ $(MPC_RPM): \
 	$(if $(MPC_SPEC_PATCH),( cd SPECS && patch -p1 $(MPC_SPEC) < $(buildprefix)/Patches/$(MPC_SPEC_PATCH) ) &&) \
 	$(if $(MPC_PATCHES),cp $(addprefix Patches/,$(MPC_PATCHES)) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(MPC_SPEC)
+	$(rpm_build) SPECS/$(MPC_SPEC)
 
 $(DEPDIR)/$(MPC): $(MPC_RPM)
-	@rpm $(DRPM) --ignorearch --nodeps -Uhv $(lastword $^) && \
+	$(rpm_install) $(lastword $^)
 	sed -i "/^libdir/s|'/usr/lib'|'$(targetprefix)/usr/lib'|" $(targetprefix)/usr/lib/libmpc.la
 	sed -i "/^dependency_libs/s|-L/usr/lib -L/lib ||" $(targetprefix)/usr/lib/libmpc.la
 	$(start_build)
@@ -243,10 +241,10 @@ $(LIBELF_RPM): \
 	$(if $(LIBELF_SPEC_PATCH),( cd SPECS && patch -p1 $(LIBELF_SPEC) < $(buildprefix)/Patches/$(LIBELF_SPEC_PATCH) ) &&) \
 	$(if $(LIBELF_PATCHES),cp $(addprefix Patches/,$(LIBELF_PATCHES)) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(LIBELF_SPEC)
+	$(rpm_build) SPECS/$(LIBELF_SPEC)
 
 $(DEPDIR)/$(LIBELF): $(LIBELF_RPM)
-	@rpm $(DRPM) --ignorearch --nodeps -Uhv $(lastword $^) && \
+	$(rpm_install) $(lastword $^)
 	touch $@
 
 #
@@ -286,24 +284,21 @@ $(GCC_RPM) $(LIBSTDC_RPM) $(LIBSTDC_DEV_RPM) $(LIBGCC_RPM): \
 	$(if $(GCC_SPEC_PATCH),( cd SPECS && patch -p1 $(GCC_SPEC) < $(buildprefix)/Patches/$(GCC_SPEC_PATCH) ) &&) \
 	$(if $(GCC_PATCHES),cp $(addprefix Patches/,$(GCC_PATCHES)) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb --clean --target=sh4-linux SPECS/$(GCC_SPEC)
+	$(rpm_build) SPECS/$(GCC_SPEC)
 
 $(DEPDIR)/$(GCC): $(DEPDIR)/$(GLIBC_DEV) $(GCC_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^)
+	$(rpm_install) $(lastword $^)
 	touch $@
 
 $(DEPDIR)/$(LIBSTDC): $(LIBSTDC_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^)
+	$(rpm_install) $(lastword $^)
 	$(call parent_pk,libstdcxx)
 	$(start_build)
 	$(fromrpm_build)
 	touch $@
 
 $(DEPDIR)/$(LIBSTDC_DEV): $(DEPDIR)/$(LIBSTDC) $(LIBSTDC_DEV_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^)
+	$(rpm_install) $(lastword $^)
 	$(call parent_pk,libstdcxxdev)
 	$(start_build)
 	$(fromrpm_build)
@@ -312,8 +307,7 @@ $(DEPDIR)/$(LIBSTDC_DEV): $(DEPDIR)/$(LIBSTDC) $(LIBSTDC_DEV_RPM)
 	sed -i "/^dependency_libs/s|-L/usr/lib -L/lib ||" $(targetprefix)/usr/lib/lib{std,sup}c++.la
 
 $(DEPDIR)/$(LIBGCC): $(LIBGCC_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^)
+	$(rpm_install) $(lastword $^)
 	$(start_build)
 	$(fromrpm_build)
 	touch $@
@@ -351,11 +345,10 @@ $(LIBTERMCAP_RPM) $(LIBTERMCAP_DEV_RPM) $(LIBTERMCAP_DOC_RPM): \
 	$(if $(LIBTERMCAP_SPEC_PATCH),( cd SPECS && patch -p1 $(LIBTERMCAP_SPEC) < $(buildprefix)/Patches/$(LIBTERMCAP_SPEC_PATCH) ) &&) \
 	$(if $(LIBTERMCAP_PATCHES),cp $(LIBTERMCAP_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(LIBTERMCAP_SPEC)
+	$(rpm_build) SPECS/$(LIBTERMCAP_SPEC)
 
 $(DEPDIR)/$(LIBTERMCAP): bootstrap $(LIBTERMCAP_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch  -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
+	$(rpm_install) $(lastword $^)
 	ln -sf libtermcap.so.2 $(prefix)/cdkroot/usr/lib/libtermcap.so && \
 	$(INSTALL) -m 644 $(buildprefix)/root/etc/termcap $(prefix)/cdkroot/etc
 	$(start_build)
@@ -364,16 +357,14 @@ $(DEPDIR)/$(LIBTERMCAP): bootstrap $(LIBTERMCAP_RPM)
 
 
 $(DEPDIR)/$(LIBTERMCAP_DEV): $(DEPDIR)/$(LIBTERMCAP) $(LIBTERMCAP_DEV_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch  -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^)
+	$(rpm_install) $(lastword $^)
 	$(start_build)
 	$(fromrpm_build)
 	touch $@
 
 
 $(DEPDIR)/$(LIBTERMCAP_DOC): $(LIBTERMCAP_DOC_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch  -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^)
+	$(rpm_install) $(lastword $^)
 	touch $@
 
 
@@ -446,25 +437,22 @@ $(NCURSES_RPM) $(NCURSES_BASE_RPM) $(NCURSES_DEV_RPM): \
 	$(if $(NCURSES_SPEC_PATCH),( cd SPECS && patch -p1 $(NCURSES_SPEC) < $(buildprefix)/Patches/$(NCURSES_SPEC_PATCH) ) &&) \
 	$(if $(NCURSES_PATCHES),cp $(NCURSES_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(NCURSES_SPEC)
+	$(rpm_build) SPECS/$(NCURSES_SPEC)
 	touch $(DEPDIR)/ncurses.do_compile
 
 $(DEPDIR)/$(NCURSES_BASE): $(NCURSES_BASE_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch  -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $<)
+	$(rpm_install) $(lastword $^)
 	touch $@
 
 $(DEPDIR)/$(NCURSES): $(DEPDIR)/$(NCURSES_BASE) $(NCURSES_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch  -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^)
+	$(rpm_install) $(lastword $^)
 	$(call parent_pk,ncurses)
 	$(start_build)
 	$(fromrpm_build)
 	touch $@
 	
 $(DEPDIR)/$(NCURSES_DEV): $(DEPDIR)/$(NCURSES_BASE) $(NCURSES_DEV_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^)
+	$(rpm_install) $(lastword $^)
 	$(start_build)
 	$(fromrpm_build)
 	touch $@
@@ -488,12 +476,11 @@ $(BASE_PASSWD_RPM): \
 	$(if $(BASE_PASSWD_SPEC_PATCH),( cd SPECS && patch -p1 $(BASE_PASSWD_SPEC) < $(buildprefix)/Patches/$(BASE_PASSWD_SPEC_PATCH) ) &&) \
 	$(if $(BASE_PASSWD_PATCHES),cp $(BASE_PASSWD_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(BASE_PASSWD_SPEC)
+	$(rpm_build) SPECS/$(BASE_PASSWD_SPEC)
 
 $(DEPDIR)/$(BASE_PASSWD): $(BASE_FILES_ADAPTED_ETC_FILES:%=root/etc/%) \
 		$(BASE_PASSWD_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps  --nopost -Uhv \
-		--replacepkgs --badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
+	$(rpm_install) --nopost --replacepkgs $(lastword $^)
 		$(hostprefix)/bin/update-passwd -L -p $(prefix)/cdkroot/usr/share/base-passwd/passwd.master \
 			-g $(prefix)/cdkroot/usr/share/base-passwd/group.master -P $(prefix)/cdkroot/etc/passwd \
 			-S $(prefix)/cdkroot/etc/shadow -G $(prefix)/cdkroot/etc/group && \
@@ -521,11 +508,10 @@ $(MAKEDEV_RPM): \
 	$(if $(MAKEDEV_SPEC_PATCH),( cd SPECS && patch -p1 $(MAKEDEV_SPEC) < $(buildprefix)/Patches/$(MAKEDEV_SPEC_PATCH) ) &&) \
 	$(if $(MAKEDEV_PATCHES),cp $(MAKEDEV_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(MAKEDEV_SPEC)
+	$(rpm_build) SPECS/$(MAKEDEV_SPEC)
 
 $(DEPDIR)/$(MAKEDEV): root/sbin/MAKEDEV $(MAKEDEV_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps --nopost -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^)
+	$(rpm_install) --nopost $(lastword $^)
 	$(INSTALL) -m 755 root/sbin/MAKEDEV $(prefix)/cdkroot/sbin
 	touch $@
 
@@ -548,12 +534,12 @@ $(BASE_FILES_RPM): \
 	$(if $(BASE_FILES_SPEC_PATCH),( cd SPECS && patch -p1 $(BASE_FILES_SPEC) < $(buildprefix)/Patches/$(BASE_FILES_SPEC_PATCH) ) &&) \
 	$(if $(BASE_FILES_PATCHES),cp $(BASE_FILES_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(BASE_FILES_SPEC)
+	$(rpm_build) SPECS/$(BASE_FILES_SPEC)
 
 $(DEPDIR)/$(BASE_FILES): $(BASE_FILES_ADAPTED_ETC_FILES:%=root/etc/%) \
 		$(BASE_FILES_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch  -Uhv \
-		--replacepkgs --badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
+	$(rpm_install) --replacepkgs $(lastword $^)
+
 	( cd root/etc && for i in $(BASE_FILES_ADAPTED_ETC_FILES); do \
 		[ -f $$i ] && $(INSTALL) -m644 $$i $(prefix)/cdkroot/etc/$$i || true; \
 		[ "$${i%%/*}" = "init.d" ] && chmod 755 $(prefix)/cdkroot/etc/$$i || true; done ) && \
@@ -601,11 +587,10 @@ $(LIBATTR_RPM) $(LIBATTR_DEV_RPM): \
 	$(if $(LIBATTR_SPEC_PATCH),( cd SPECS && patch -p1 $(LIBATTR_SPEC) < $(buildprefix)/Patches/$(LIBATTR_SPEC_PATCH) ) &&) \
 	$(if $(LIBATTR_PATCHES),cp $(LIBATTR_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(LIBATTR_SPEC)
+	$(rpm_build) SPECS/$(LIBATTR_SPEC)
 
 $(DEPDIR)/$(LIBATTR): $(LIBATTR_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps --noscripts -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^)
+	$(rpm_install) --noscripts $(lastword $^)
 	$(call parent_pk,libattr)
 	$(start_build)
 	$(fromrpm_build)
@@ -613,8 +598,7 @@ $(DEPDIR)/$(LIBATTR): $(LIBATTR_RPM)
 
 
 $(DEPDIR)/$(LIBATTR_DEV): $(LIBATTR_DEV_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps --noscripts -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^)
+	$(rpm_install) --noscripts $(lastword $^)
 #	sed -i "/^libdir/s|'/usr/lib'|'$(targetprefix)/usr/lib'|" $(targetprefix)/usr/lib/libattr.la
 #	sed -i "/^dependency_libs/s|-L/usr/lib -L/lib ||" $(targetprefix)/usr/lib/libattr.la
 	$(REWRITE_LIBDIR)/libattr.la
@@ -644,19 +628,17 @@ $(LIBAIO_RPM) $(LIBAIO_DEV_RPM): \
 	$(if $(LIBAIO_SPEC_PATCH),( cd SPECS && patch -p1 $(LIBAIO_SPEC) < $(buildprefix)/Patches/$(LIBAIO_SPEC_PATCH) ) &&) \
 	$(if $(LIBAIO_PATCHES),cp $(LIBAIO_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(LIBAIO_SPEC)
+	$(rpm_build) SPECS/$(LIBAIO_SPEC)
 
 $(DEPDIR)/$(LIBAIO): $(LIBAIO_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps --noscripts -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^)
+	$(rpm_install) --noscripts $(lastword $^)
 	$(start_build)
 	$(fromrpm_build)
 	touch $@
 
 
 $(DEPDIR)/$(LIBAIO_DEV): $(LIBAIO_DEV_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps --noscripts -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^)
+	$(rpm_install) --noscripts $(lastword $^)
 #	sed -i "/^libdir/s|'/usr/lib'|'$(targetprefix)/usr/lib'|" $(targetprefix)/usr/lib/libaio.la
 #	sed -i "/^dependency_libs/s|-L/usr/lib -L/lib ||" $(targetprefix)/usr/lib/libaio.la
 	$(REWRITE_LIBDIR)/libaio.la
@@ -684,18 +666,16 @@ $(LIBACL_RPM) $(LIBACL_DEV_RPM): \
 	$(if $(LIBACL_SPEC_PATCH),( cd SPECS && patch -p1 $(LIBACL_SPEC) < $(buildprefix)/Patches/$(LIBACL_SPEC_PATCH) ) &&) \
 	$(if $(LIBACL_PATCHES),cp $(LIBACL_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(LIBACL_SPEC)
+	$(rpm_build) SPECS/$(LIBACL_SPEC)
 
 $(DEPDIR)/$(LIBACL): $(LIBACL_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps --noscripts -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^)
+	$(rpm_install) --noscripts $(lastword $^)
 	touch $@
 	$(start_build)
 	$(fromrpm_build)
 	
 $(DEPDIR)/$(LIBACL_DEV): $(LIBACL_DEV_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps --noscripts -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^)
+	$(rpm_install) --noscripts $(lastword $^)
 	$(REWRITE_LIBDIR)/libacl.la
 	$(REWRITE_LIBDEP)/libacl.la
 	touch $@
@@ -721,11 +701,10 @@ $(USBUTILS_RPM): \
 	$(if $(USBUTILS_SPEC_PATCH),( cd SPECS && patch -p1 $(USBUTILS_SPEC) < $(buildprefix)/Patches/$(USBUTILS_SPEC_PATCH) ) &&) \
 	$(if $(USBUTILS_PATCHES),cp $(USBUTILS_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(USBUTILS_SPEC)
+	$(rpm_build) SPECS/$(USBUTILS_SPEC)
 
 $(DEPDIR)/$(USBUTILS): $(USBUTILS_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps --noscripts -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^)
+	$(rpm_install) --noscripts $(lastword $^)
 	touch $@
 	
 
@@ -764,17 +743,15 @@ $(UDEV_RPM) $(UDEV_DEV_RPM): \
 	$(if $(UDEV_SPEC_PATCH),( cd SPECS && patch -p1 $(UDEV_SPEC) < $(buildprefix)/Patches/$(UDEV_SPEC_PATCH) ) &&) \
 	$(if $(UDEV_PATCHES),cp $(UDEV_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(UDEV_SPEC)
+	$(rpm_build) SPECS/$(UDEV_SPEC)
 
 $(DEPDIR)/$(UDEV_DEV): $(UDEV_DEV_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps --noscripts -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^)
+	$(rpm_install) --noscripts $(lastword $^)
 	touch $@
 	$(REWRITE_LIBDEP)/libgudev-1.0.la
 
 $(DEPDIR)/$(UDEV): $(UDEV_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps --noscripts -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^)
+	$(rpm_install) --noscripts $(lastword $^)
 	$(start_build)
 	$(remove_docs)
 	$(fromrpm_get)

@@ -53,11 +53,10 @@ $(HOST_RPMCONFIG_RPM): \
 	$(if $(HOST_RPMCONFIG_SPEC_PATCH),( cd SPECS && patch -p1 $(HOST_RPMCONFIG_SPEC) < $(buildprefix)/Patches/$(HOST_RPMCONFIG_SPEC_PATCH) ) &&) \
 	$(if $(HOST_RPMCONFIG_PATCHES),cp $(HOST_RPMCONFIG_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild  $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(HOST_RPMCONFIG_SPEC)
+	$(rpm_build) SPECS/$(HOST_RPMCONFIG_SPEC)
 
 $(DEPDIR)/$(HOST_RPMCONFIG): $(HOST_RPMCONFIG_RPM)
-	@rpm $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(STM_RELOCATE)=$(prefix) $< && \
+	$(rpm_install) --badreloc --relocate $(STM_RELOCATE)=$(prefix) $(lastword $^)
 	touch $@
 
 #
@@ -78,10 +77,10 @@ $(HOST_BASE_PASSWD_RPM): \
 	$(if $(HOST_BASE_PASSWD_SPEC_PATCH),( cd SPECS && patch -p1 $(HOST_BASE_PASSWD_SPEC) < $(buildprefix)/Patches/$(HOST_BASE_PASSWD_SPEC_PATCH) ) &&) \
 	$(if $(HOST_BASE_PASSWD_PATCHES),cp $(HOST_BASE_PASSWD_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild  $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(HOST_BASE_PASSWD_SPEC)
+	$(rpm_build) SPECS/$(HOST_BASE_PASSWD_SPEC)
 
 $(DEPDIR)/$(HOST_BASE_PASSWD): $(HOST_BASE_PASSWD_RPM)
-	@rpm  $(DRPM) --ignorearch --nodeps -Uhv $< && \
+	$(rpm_install) $(lastword $^)
 	touch $@
 
 #
@@ -102,10 +101,10 @@ $(HOST_DISTRIBUTIONUTILS_RPM): \
 	$(if $(HOST_DISTRIBUTIONUTILS_SPEC_PATCH),( cd SPECS && patch -p1 $(HOST_DISTRIBUTIONUTILS_SPEC) < $(buildprefix)/Patches/$(HOST_DISTRIBUTIONUTILS_SPEC_PATCH) ) &&) \
 	$(if $(HOST_DISTRIBUTIONUTILS_PATCHES),cp $(HOST_DISTRIBUTIONUTILS_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild  $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(HOST_DISTRIBUTIONUTILS_SPEC)
+	$(rpm_build) SPECS/$(HOST_DISTRIBUTIONUTILS_SPEC)
 
 $(DEPDIR)/$(HOST_DISTRIBUTIONUTILS): $(HOST_DISTRIBUTIONUTILS_RPM)
-	@rpm  $(DRPM) --ignorearch --nodeps -Uhv $< && \
+	$(rpm_install) $(lastword $^)
 	touch $@
 
 #
@@ -125,10 +124,10 @@ $(HOST_AUTOTOOLS_RPM): \
 	$(if $(HOST_AUTOTOOLS_SPEC_PATCH),( cd SPECS && patch -p1 $(HOST_AUTOTOOLS_SPEC) < $(buildprefix)/Patches/$(HOST_AUTOTOOLS_SPEC_PATCH) ) &&) \
 	$(if $(HOST_AUTOTOOLS_PATCHES),cp $(addprefix Patches/,$(HOST_AUTOTOOLS_PATCHES)) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild  $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(HOST_AUTOTOOLS_SPEC)
+	$(rpm_build) SPECS/$(HOST_AUTOTOOLS_SPEC)
 
 $(DEPDIR)/$(HOST_AUTOTOOLS): $(HOST_AUTOTOOLS_RPM)
-	@rpm  $(DRPM) --ignorearch --nodeps -Uhv $< && \
+	$(rpm_install) $(lastword $^)
 	touch $@
 
 #
@@ -148,10 +147,10 @@ $(HOST_AUTOMAKE_RPM): \
 	$(if $(HOST_AUTOMAKE_SPEC_PATCH),( cd SPECS && patch -p1 $(HOST_AUTOMAKE_SPEC) < $(buildprefix)/Patches/$(HOST_AUTOMAKE_SPEC_PATCH) ) &&) \
 	$(if $(HOST_AUTOMAKE_PATCHES),cp $(addprefix Patches/,$(HOST_AUTOMAKE_PATCHES)) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild  $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(HOST_AUTOMAKE_SPEC)
+	$(rpm_build) SPECS/$(HOST_AUTOMAKE_SPEC)
 
 $(DEPDIR)/$(HOST_AUTOMAKE): $(HOST_AUTOMAKE_RPM)
-	@rpm  $(DRPM) --ignorearch --nodeps -Uhv $< && \
+	$(rpm_install) $(lastword $^)
 	touch $@
 #
 # HOST AUTOCONF
@@ -170,10 +169,10 @@ $(HOST_AUTOCONF_RPM): \
 	$(if $(HOST_AUTOCONF_SPEC_PATCH),( cd SPECS && patch -p1 $(HOST_AUTOCONF_SPEC) < $(buildprefix)/Patches/$(HOST_AUTOCONF_SPEC_PATCH) ) &&) \
 	$(if $(HOST_AUTOCONF_PATCHES),cp $(addprefix Patches/,$(HOST_AUTOCONF_PATCHES)) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild  $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(HOST_AUTOCONF_SPEC)
+	$(rpm_build) SPECS/$(HOST_AUTOCONF_SPEC)
 
 $(DEPDIR)/$(HOST_AUTOCONF): $(HOST_AUTOCONF_RPM)
-	@rpm  $(DRPM) --ignorearch --nodeps -Uhv $< && \
+	$(rpm_install) $(lastword $^)
 	touch $@
 
 
@@ -195,10 +194,10 @@ $(HOST_MODINIT_RPM): \
 	$(if $(HOST_MODINIT_SPEC_PATCH),( cd SPECS && patch -p1 $(HOST_MODINIT_SPEC) < $(buildprefix)/Patches/$(HOST_MODINIT_SPEC_PATCH) ) &&) \
 	$(if $(HOST_MODINIT_PATCHES),cp $(addprefix Patches/,$(HOST_MODINIT_PATCHES)) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild  $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(HOST_MODINIT_SPEC)
+	$(rpm_build) SPECS/$(HOST_MODINIT_SPEC)
 
 $(DEPDIR)/$(HOST_MODINIT): $(HOST_MODINIT_RPM)
-	@rpm  $(DRPM) --ignorearch --nodeps -Uhv $< && \
+	$(rpm_install) $(lastword $^)
 	touch $@
 
 #
@@ -218,10 +217,10 @@ $(HOST_PKGCONFIG_RPM): \
 	$(if $(HOST_PKGCONFIG_SPEC_PATCH),( cd SPECS && patch -p1 $(HOST_PKGCONFIG_SPEC) < $(buildprefix)/Patches/$(HOST_PKGCONFIG_SPEC_PATCH) ) &&) \
 	$(if $(HOST_PKGCONFIG_PATCHES),cp $(addprefix Patches/,$(HOST_PKGCONFIG_PATCHES)) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild  $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(HOST_PKGCONFIG_SPEC)
+	$(rpm_build) SPECS/$(HOST_PKGCONFIG_SPEC)
 
 $(DEPDIR)/$(HOST_PKGCONFIG): $(HOST_PKGCONFIG_RPM)
-	@rpm  $(DRPM) --ignorearch --nodeps -Uhv $< && \
+	$(rpm_install) $(lastword $^)
 	touch $@
 
 #
@@ -243,10 +242,10 @@ $(HOST_MTD_UTILS_RPM): \
 	$(if $(HOST_MTD_UTILS_SPEC_PATCH),( cd SPECS && patch -p1 $(HOST_MTD_UTILS_SPEC) < $(buildprefix)/Patches/$(HOST_MTD_UTILS_SPEC_PATCH) ) &&) \
 	$(if $(HOST_MTD_UTILS_PATCHES),cp $(HOST_MTD_UTILS_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild  $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(HOST_MTD_UTILS_SPEC)
+	$(rpm_build) SPECS/$(HOST_MTD_UTILS_SPEC)
 
 $(HOST_MTD_UTILS): $(HOST_MTD_UTILS_RPM)
-	@rpm  $(DRPM) --ignorearch --nodeps -Uhv $< && \
+	$(rpm_install) $(lastword $^)
 	touch .deps/$(notdir $@)
 
 #
@@ -291,10 +290,10 @@ $(CROSS_DISTRIBUTIONUTILS_RPM): \
 	$(if $(CROSS_DISTRIBUTIONUTILS_SPEC_PATCH),( cd SPECS && patch -p1 $(CROSS_DISTRIBUTIONUTILS_SPEC) < $(buildprefix)/Patches/$(CROSS_DISTRIBUTIONUTILS_SPEC_PATCH) ) &&) \
 	$(if $(CROSS_DISTRIBUTIONUTILS_PATCHES),cp $(CROSS_DISTRIBUTIONUTILS_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild  $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(CROSS_DISTRIBUTIONUTILS_SPEC)
+	$(rpm_build) SPECS/$(CROSS_DISTRIBUTIONUTILS_SPEC)
 
 $(DEPDIR)/$(CROSS_DISTRIBUTIONUTILS): $(CROSS_DISTRIBUTIONUTILS_RPM)
-	@rpm  $(DRPM) --ignorearch --nodeps -Uhv $< && \
+	$(rpm_install) $(lastword $^)
 	touch $@
 
 #
@@ -349,14 +348,14 @@ $(CROSS_BINUTILS_RPM) $(CROSS_BINUTILS_DEV_RPM) : \
 	$(if $(CROSS_BINUTILS_SPEC_PATCH),( cd SPECS && patch -p1 $(CROSS_BINUTILS_SPEC) < $(buildprefix)/Patches/$(CROSS_BINUTILS_SPEC_PATCH) ) &&) \
 	$(if $(CROSS_BINUTILS_PATCHES),cp $(CROSS_BINUTILS_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild  $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(CROSS_BINUTILS_SPEC)
+	$(rpm_build) SPECS/$(CROSS_BINUTILS_SPEC)
 
 $(DEPDIR)/$(CROSS_BINUTILS): $(CROSS_BINUTILS_RPM)
-	@rpm  $(DRPM) --ignorearch --nodeps -Uhv $< && \
+	$(rpm_install) $(lastword $^)
 	touch $@
 
 $(DEPDIR)/$(CROSS_BINUTILS_DEV): $(CROSS_BINUTILS_DEV_RPM)
-	@rpm  $(DRPM) --ignorearch --nodeps --noscripts -Uhv $< && \
+	$(rpm_install) --noscripts $(lastword $^)
 	touch $@
 
 #
@@ -376,10 +375,10 @@ $(CROSS_GMP_RPM): \
 	$(if $(CROSS_GMP_SPEC_PATCH),( cd SPECS && patch -p1 $(CROSS_GMP_SPEC) < $(buildprefix)/Patches/$(CROSS_GMP_SPEC_PATCH) ) &&) \
 	$(if $(CROSS_GMP_PATCHES),cp $(addprefix Patches/,$(CROSS_GMP_PATCHES)) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --target=sh4-linux SPECS/$(CROSS_GMP_SPEC)
+	$(rpm_build) SPECS/$(CROSS_GMP_SPEC)
 
 $(DEPDIR)/$(CROSS_GMP): $(CROSS_GMP_RPM)
-	@rpm $(DRPM) --nodeps -Uhv $(lastword $^) && \
+	$(rpm_install) $(lastword $^)
 	touch $@
 #
 # CROSS MPFR
@@ -399,10 +398,10 @@ $(CROSS_MPFR_RPM): \
 	$(if $(CROSS_MPFR_SPEC_PATCH),( cd SPECS && patch -p1 $(CROSS_MPFR_SPEC) < $(buildprefix)/Patches/$(CROSS_MPFR_SPEC_PATCH) ) &&) \
 	$(if $(CROSS_MPFR_PATCHES),cp $(addprefix Patches/,$(CROSS_MPFR_PATCHES)) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(CROSS_MPFR_SPEC)
+	$(rpm_build) SPECS/$(CROSS_MPFR_SPEC)
 
 $(DEPDIR)/$(CROSS_MPFR): $(CROSS_GMP) $(CROSS_MPFR_RPM)
-	@rpm $(DRPM) --nodeps -Uhv $(lastword $^) && \
+	$(rpm_install) $(lastword $^)
 	touch $@
 
 #
@@ -422,10 +421,10 @@ $(CROSS_MPC_RPM): \
 	$(if $(CROSS_MPC_SPEC_PATCH),( cd SPECS && patch -p1 $(CROSS_MPC_SPEC) < $(buildprefix)/Patches/$(CROSS_MPC_SPEC_PATCH) ) &&) \
 	$(if $(CROSS_MPC_PATCHES),cp $(addprefix Patches/,$(CROSS_MPC_PATCHES)) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --target=sh4-linux SPECS/$(CROSS_MPC_SPEC)
+	$(rpm_build) SPECS/$(CROSS_MPC_SPEC)
 
 $(DEPDIR)/$(CROSS_MPC): $(CROSS_MPC_RPM)
-	@rpm $(DRPM) --nodeps -Uhv $(lastword $^) && \
+	$(rpm_install) $(lastword $^)
 	touch $@
 
 #
@@ -445,10 +444,10 @@ $(CROSS_LIBELF_RPM): \
 	$(if $(CROSS_LIBELF_SPEC_PATCH),( cd SPECS && patch -p1 $(CROSS_LIBELF_SPEC) < $(buildprefix)/Patches/$(CROSS_LIBELF_SPEC_PATCH) ) &&) \
 	$(if $(CROSS_LIBELF_PATCHES),cp $(addprefix Patches/,$(CROSS_LIBELF_PATCHES)) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --target=sh4-linux SPECS/$(CROSS_LIBELF_SPEC)
+	$(rpm_build) SPECS/$(CROSS_LIBELF_SPEC)
 
 $(DEPDIR)/$(CROSS_LIBELF): $(CROSS_LIBELF_RPM)
-	@rpm $(DRPM) --nodeps -Uhv $(lastword $^) && \
+	$(rpm_install) $(lastword $^)
 	touch $@
 
 #
@@ -498,32 +497,31 @@ $(CROSS_GCC_RPM) $(CROSS_CPP_RPM) $(CROSS_G++_RPM) $(CROSS_PROTOIZE_RPM) $(CROSS
 	$(if $(CROSS_GCC_SPEC_PATCH),( cd SPECS && patch -p1 $(CROSS_GCC_SPEC) < $(buildprefix)/Patches/$(CROSS_GCC_SPEC_PATCH) ) &&) \
 	$(if $(CROSS_GCC_PATCHES),cp $(CROSS_GCC_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild  $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(CROSS_GCC_SPEC)
+	$(rpm_build) SPECS/$(CROSS_GCC_SPEC)
 	rpm $(DRPM) --nodeps -ev $(STLINUX)-sh4-$(GLIBC_DEV) && \
 	rpm $(DRPM) --nodeps -ev $(STLINUX)-sh4-$(GLIBC)
 
 $(DEPDIR)/$(CROSS_GCC): $(CROSS_GCC_RPM)
-	@rpm  $(DRPM) --ignorearch --nodeps -Uhv $< && \
+	$(rpm_install) $(lastword $^)
 	$(if $(CROSS_GCC_INVALIDATE),sh4-linux-objcopy -v --redefine-sym __ic_invalidate_syscall=__ic_invalidate $(prefix)/devkit/sh4/lib/gcc/sh4-linux/$(CROSS_GCC_RAWVERSION)/libgcc.a &&) \
 	touch $@
 
 $(DEPDIR)/$(CROSS_CPP): $(CROSS_CPP_RPM)
-	@rpm  $(DRPM) --ignorearch --nodeps -Uhv $< && \
+	$(rpm_install) $(lastword $^)
 	touch $@
 
 $(DEPDIR)/$(CROSS_G++): $(CROSS_G++_RPM)
-	@rpm  $(DRPM) --ignorearch --nodeps -Uhv $< && \
+	$(rpm_install) $(lastword $^)
 	touch $@
 
 $(DEPDIR)/$(CROSS_LIBGCC): $(CROSS_LIBGCC_RPM) | $(DEPDIR)/$(GLIBC)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb  $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
-	touch $@
+	$(rpm_install) $(lastword $^)
 	$(start_build)
 	$(fromrpm_build)
+	touch $@
 
 $(DEPDIR)/$(CROSS_PROTOIZE): $(CROSS_PROTOIZE_RPM)
-	@rpm  $(DRPM) --ignorearch --nodeps -Uhv $< && \
+	$(rpm_install) $(lastword $^)
 	touch $@
 
 #

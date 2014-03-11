@@ -181,6 +181,12 @@ query-%:
 			rpm $(DRPM) -qplv --scripts RPMS/$$i/$$j || true; echo;done ) || true ; done
 
 
+# rpm helpers
+rpm_src_install := rpm --ignorearch --nosignature -Uhv
+rpm_build := rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux
+rpm_install := rpm $(DRPM) --ignorearch --nodeps -Uhv
+
+
 # -----------------------------------------
 # Config gui
 # Usage:

@@ -21,17 +21,16 @@ $(SPLASHUTILS_RPM): \
 	$(if $(SPLASHUTILS_PATCHES),cp $(SPLASHUTILS_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
 	export PKG_CONFIG_PATH=$(targetprefix)/usr/lib/pkgconfig && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --nodeps --target=sh4-linux SPECS/$(SPLASHUTILS_SPEC)
+	$(rpm_build) SPECS/$(SPLASHUTILS_SPEC)
 
 $(DEPDIR)/$(SPLASHUTILS): $(SPLASHUTILS_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
+	$(rpm_install) $(lastword $^)
 	cp root/etc/splash/luxisri.ttf $(targetprefix)/etc/splash/ && \
 	cp -rd root/etc/splash/{vdr,liquid,together}_theme $(targetprefix)/etc/splash/ && \
 	$(LN_SF) liquid_theme $(targetprefix)/etc/splash/default && \
 	$(INSTALL_DIR) $(targetprefix)/lib/lsb && \
 	cp root/lib/lsb/splash-functions $(targetprefix)/lib/lsb/ && \
-	[ "x" = "x" ] && touch -r $(lastword $^) $@ || true
+	touch $@
 
 #
 # STSLAVE
@@ -54,12 +53,11 @@ $(STSLAVE_RPM): \
 	$(if $(STSLAVE_SPEC_PATCH),( cd SPECS && patch -p1 $(STSLAVE_SPEC) < $(buildprefix)/Patches/$(STSLAVE_SPEC_PATCH) ) &&) \
 	$(if $(STSLAVE_PATCHES),cp $(STSLAVE_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(STSLAVE_SPEC)
+	$(rpm_build) SPECS/$(STSLAVE_SPEC)
 
 $(DEPDIR)/$(STSLAVE): linux-kernel-headers binutils-dev $(STSLAVE_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
-	[ "x" = "x" ] && touch -r $(lastword $^) $@ || true
+	$(rpm_install) $(lastword $^)
+	touch $@
 
 
 #
@@ -91,21 +89,19 @@ $(OPENSSL_RPM) $(OPENSSL_DEV_RPM): \
 	$(if $(OPENSSL_SPEC_PATCH),( cd SPECS && patch -p1 $(OPENSSL_SPEC) < $(buildprefix)/Patches/$(OPENSSL_SPEC_PATCH) ) &&) \
 	$(if $(OPENSSL_PATCHES),cp $(OPENSSL_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(OPENSSL_SPEC)
+	$(rpm_build) SPECS/$(OPENSSL_SPEC)
 
 $(DEPDIR)/$(OPENSSL): $(OPENSSL_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
-	touch $@ || true
+	$(rpm_install) $(lastword $^)
 	$(start_build)
 	$(fromrpm_build)
+	touch $@
 
 $(DEPDIR)/$(OPENSSL_DEV): $(OPENSSL) $(OPENSSL_DEV_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
-	touch $@ || true
+	$(rpm_install) $(lastword $^)
 	$(start_build)
 	$(fromrpm_build)
+	touch $@
 
 #
 # ALSALIB
@@ -130,17 +126,15 @@ $(ALSALIB_RPM) $(ALSALIB_DEV_RPM): \
 	$(if $(ALSALIB_SPEC_PATCH),( cd SPECS && patch -p1 $(ALSALIB_SPEC) < $(buildprefix)/Patches/$(ALSALIB_SPEC_PATCH) ) &&) \
 	$(if $(ALSALIB_PATCHES),cp $(ALSALIB_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(ALSALIB_SPEC)
+	$(rpm_build) SPECS/$(ALSALIB_SPEC)
 
 $(DEPDIR)/$(ALSALIB): $(ALSALIB_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
-	touch $@ || true
+	$(rpm_install) $(lastword $^)
+	touch $@
 
 $(DEPDIR)/$(ALSALIB_DEV): $(ALSALIB) $(ALSALIB_DEV_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
-	touch $@ || true
+	$(rpm_install) $(lastword $^)
+	touch $@
 
 #
 # ALSAUTILS
@@ -164,12 +158,11 @@ $(ALSAUTILS_RPM): \
 	$(if $(ALSAUTILS_SPEC_PATCH),( cd SPECS && patch -p1 $(ALSAUTILS_SPEC) < $(buildprefix)/Patches/$(ALSAUTILS_SPEC_PATCH) ) &&) \
 	$(if $(ALSAUTILS_PATCHES),cp $(ALSAUTILS_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --nodeps --target=sh4-linux SPECS/$(ALSAUTILS_SPEC)
+	$(rpm_build) SPECS/$(ALSAUTILS_SPEC)
 
 $(DEPDIR)/$(ALSAUTILS): $(ALSAUTILS_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
-	touch $@ || true
+	$(rpm_install) $(lastword $^)
+	touch $@
 
 #
 # ALSAPLAYER
@@ -194,17 +187,15 @@ $(ALSAPLAYER_RPM) $(ALSAPLAYER_DEV_RPM): \
 	$(if $(ALSAPLAYER_PATCHES),cp $(ALSAPLAYER_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
 	export PKG_CONFIG_PATH=$(targetprefix)/usr/include/pkgconfig && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(ALSAPLAYER_SPEC)
+	$(rpm_build) SPECS/$(ALSAPLAYER_SPEC)
 
 $(DEPDIR)/$(ALSAPLAYER): $(ALSAPLAYER_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
-	touch $@ || true
+	$(rpm_install) $(lastword $^)
+	touch $@
 
 $(DEPDIR)/$(ALSAPLAYER_DEV): $(ALSAPLAYER_DEV_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
-	touch $@ || true
+	$(rpm_install) $(lastword $^)
+	touch $@
 
 
 #
@@ -233,18 +224,16 @@ $(LIBEVENT_RPM) $(LIBEVENT_DEV_RPM): \
 	$(if $(LIBEVENT_SPEC_PATCH),( cd SPECS && patch -p1 $(LIBEVENT_SPEC) < $(buildprefix)/Patches/$(LIBEVENT_SPEC_PATCH) ) &&) \
 	$(if $(LIBEVENT_PATCHES),cp $(LIBEVENT_PATCHES:%=Patches/%) SOURCES/ &&) \
 	export PATH=$(hostprefix)/bin:$(PATH) && \
-	rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux SPECS/$(LIBEVENT_SPEC)
+	$(rpm_build) SPECS/$(LIBEVENT_SPEC)
 
 $(DEPDIR)/$(LIBEVENT): $(LIBEVENT_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
-	touch $@ || true
+	$(rpm_install) $(lastword $^)
 	$(start_build)
 	$(fromrpm_build)
+	touch $@
 
 $(DEPDIR)/$(LIBEVENT_DEV): $(LIBEVENT) $(LIBEVENT_DEV_RPM)
-	@rpm --dbpath $(prefix)/cdkroot-rpmdb $(DRPM) --ignorearch --nodeps -Uhv \
-		--badreloc --relocate $(targetprefix)=$(prefix)/cdkroot $(lastword $^) && \
-	touch $@ || true
+	$(rpm_install) $(lastword $^)
 	$(start_build)
 	$(fromrpm_build)
+	touch $@
