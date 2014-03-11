@@ -11,35 +11,23 @@
 # devices being controlled by this remote:
 #
 
-
-
-
 begin remote
 
-
-
-
-  name  SpiderBox_HL101
-  bits           16
+  name SpiderBox_HL101
+  bits 16
   flags SPACE_ENC|CONST_LENGTH
   eps            45
   aeps          100
 
-
-
-
-  header       9110  4414 
+  header       9110  4414
   one           644  1607
-  zero          644  481
-  ptrail        639 
-  repeat       9110  2171 
+  zero          644   481
+  ptrail        639
+  repeat       9110  2171
   pre_data_bits   16
-  pre_data       0x48B7 
+  pre_data       0x48B7
   gap          108102
   toggle_bit_mask 0x0
-
-
-
 
       begin codes
           KEY_0                    0x00FF
@@ -100,10 +88,5 @@ begin remote
           KEY_AUDIO                0xCA35
       end codes
 
-
-
-
 end remote
-Enter file contents here
-
 Enter file contents here
