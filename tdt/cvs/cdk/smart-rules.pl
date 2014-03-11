@@ -674,6 +674,7 @@ sub process_download ($)
       $tmpurl =~ s#ssh://#git\@# if $opts{"protocol"} eq "ssh";
       $output .= " || \\\n\tgit clone $tmpurl " . $f;
       $output .= " -b " . $opts{"b"} if $opts{"b"};
+      $output .= " --depth " . $opts{"d"} if $opts{"d"};
     }
 
     elsif ( $f =~ m/gz$/ )
