@@ -18,7 +18,7 @@ begin remote
   name  SpiderBox_HL101
   bits           16
   flags SPACE_ENC|CONST_LENGTH
-  eps            30
+  eps            45
   aeps          100
 
 
