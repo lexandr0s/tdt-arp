@@ -4,21 +4,23 @@ import sys
 import os
 import re
 
-# Usage ./dep-graph.py [target to study] [makefile dump]
+DEBUG = False
 
+def print_help():
+	print "Usage ./dep-graph.py [target to study] [makefile dump]"
 
 makefile_name = "Makefile.dump"
 if len(sys.argv) > 2:
 	makefile_name = sys.argv[2]
 else:
-	os.system("export LANG=en_US; make -p > %s" % makefile_name)
+	# some non-existing target to do
+	os.system("export LANG=en_US; make nothing -prR > %s" % makefile_name)
 
 rootname = ""
 if len(sys.argv) > 1:
 	rootname = sys.argv[1]
 	
 fdot = open('dep.dot', 'w')
-
 
 f = open(makefile_name)
 
@@ -27,7 +29,7 @@ targ = {}
 fdot.write("digraph G{")
 fdot.write("""
 #	nodesep=0.2;
-ranksep=1;
+	ranksep=1;
 	charset="latin1";
 	rankdir=LR;
 #	fixedsize=true;
@@ -61,7 +63,7 @@ def process(s):
 started = False
 
 def uniq(l):
- return list(set(l))
+	return list(set(l))
 
 while True:
 	line = f.readline()
@@ -75,6 +77,8 @@ while True:
 	if not started:
 		continue
 	if line.startswith("#") or line.startswith("\t"):
+		continue
+	if not line.strip():
 		continue
 	print "line: " + line.strip()
 	l = line.split(":")
@@ -95,73 +99,54 @@ while True:
 	deps = uniq(d)
 	print "adding %s: %s" % (name, ' '.join(deps))
 	if name in targ:
-		print "ERROR: %s duplicate" % name
+		raise Exception("ERROR: %s duplicate" % name)
 	targ[name] = deps
 
-targ2 = {}
-
-
-def unite(suffix, x):
-	if x.endswith(suffix):
-		k = x.replace(suffix,'')
-		try:
-			print "s", k, targ[k]
-		except:
-			pass
-		if not k in targ:
-			print "ERROR: unite of %s failed" % k
-			return False
-		targ[k] += targ[x]
-		c = k + '.do_compile'
-		while c in targ[k]:
-			targ[k].remove(c)
-		c = k + '.do_prepare'
-		while c in targ[k]:
-			targ[k].remove(c)
-		targ2[k] = uniq(targ[k])
-		targ[k] = uniq(targ[k])
-		print "a", k, targ[k]
+# removes vertex x and all its connections
+# so graph may be splitted, be careful
+def ignore(x):
+	if x.find('.version_') > -1:
 		return True
 	return False
 
+# joins vertex x and all its connections with returned vertex
+def parent(x):
+	if x.endswith('.do_prepare'):
+		return x.replace('.do_prepare','')
+	elif x.endswith('.do_compile'):
+		return x.replace('.do_compile','')
+	return None
+
+targ2 = {}
 for x in targ:
-	if unite('.do_prepare',x):
+	if ignore(x):
 		continue
-	if unite('.do_compile',x):
-		continue
-	print "o", x, targ[x]
-	l = targ[x]
-	for i in range(len(l)):
-		if l[i].endswith('.do_prepare'):
-			l[i] = l[i].replace('.do_prepare', '')
-		elif l[i].endswith('.do_compile'):
-			l[i] = l[i].replace('.do_compile', '')
-		elif l[i].find('.version_') > -1:
-			print 'VERSION', l[i][:l[i].find('.version_')]
-			l[i] = l[i][:l[i].find('.version_')]
-	targ[x] = l
-	targ2[x] = targ[x]
+	
+	p = parent(x)
+	if p:
+		key = p
+	else:
+		key = x
+	try:
+		targ2[key] += targ[x]
+	except KeyError:
+		targ2[key] = targ[x]
+
+targ = targ2
+targ2 = {}
+for x in targ:
+	targ2[x] = []
+	for dep in targ[x]:
+		if ignore(dep):
+			continue
+		p = parent(dep)
+		if not p:
+			p = dep
+		if p != x:
+			targ2[x].append(p)
 
 targ = targ2
 del targ2
-
-"""
-key = ".PHONY"
-walk = []
-while True:
-	if (not key in targ) or len(targ[key]) == 0:
-		print "rm", key
-		if key in targ: del targ[key]
-		if len(walk) == 0:
-			break
-		else:
-			parent = walk.pop()
-			targ[parent].remove(key)
-			key = parent
-	else:
-		walk += [key]
-		key = targ[key][0]
-"""
 
 def DFS(start, do_cmd):
 	curr = start
@@ -179,7 +164,8 @@ def DFS(start, do_cmd):
 		#print curr, child
 		if idx >= len(child):
 			# go up
-			do_cmd(curr, walk)
+			if walk:
+				print_dep(walk[-1], curr)
 			if len(walk) == 0:
 				break
 			curr = walk.pop()
@@ -188,28 +174,28 @@ def DFS(start, do_cmd):
 			ne = child[idx]
 			if ne in walk:
 				print "ERROR: broke loop at", ne
+				print_dep(curr, ne)
 				targ[curr].remove(ne)
 				continue
 			last[curr] = ne
 			walk.append(curr)
 			curr = ne
 
-def print_cmd(curr, walk):
-	if walk:
-		fdot.write(' "%s" -> "%s" ;\n' % (walk[-1], curr))
+def print_dep(target, dependency):
+	fdot.write(' "%s" -> "%s" ;\n' % (target, dependency))
 
 if rootname:
-	DFS(rootname, print_cmd)
+	DFS(rootname, print_dep)
 else:
 	for x in targ:
 		for y in targ[x]:
-			fdot.write(' "%s" -> "%s" ;\n' % (y, x))
+			print_dep(x,y)
 
 fdot.write("}")
 fdot.close()
 
 print "Drawing graph...."
-cmd = "cat dep.dot |grep -v '.version_' |tred |dot -Tsvg -o dot.svg"
+cmd = "cat dep.dot |tred |dot -Tsvg -o dot.svg"
 print "exec:", cmd
 os.system(cmd)
 print "output is in dot.svg"
