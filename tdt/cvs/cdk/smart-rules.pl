@@ -2,7 +2,7 @@
 use strict;
 use warnings;
 use IO::File;
-use constant DEBUG => 0;
+use constant DEBUG => 1;
 use constant VDEBUG => 0;
 
 my @allurls;
@@ -16,6 +16,10 @@ my $target; # base .deps file for current processing package
 my $version; # version of current processing package
 my $dir; # dir for current processing package
 
+# function and call commands staff
+my %functions = (); # list of all defined functions.
+my $function = "";  # current function
+
 my $line = 0; # processing line, for debug
 
 # command sytax definitions
@@ -25,10 +29,43 @@ my $make_commands = "nothing|extract|dirextract|patch(-(\\d+))?|pmove|premove|pl
 # commands executed at install time
 my $install_commands = "install|install_file|install_bin|make|move|remove|mkdir|link";
 
-#my $patchesdir .= "\$(buildprefix)/Patches";
-my $patchesdir .= "\$(srcdir)/make";
+my $patchesdir .= "\$(buildprefix)/Patches";
+#my $patchesdir .= "\$(srcdir)/make";
 
 sub load ($$);
+
+my %bracket = (
+  "rule" => 0,
+  "package" => 0,
+  "function" => 0,
+);
+my @lastbracket = ();
+
+# syntax checks
+sub begin($)
+{
+  my $br = shift;
+  print "> open $br\n" if DEBUG;
+  push @lastbracket, $br;
+  if ($bracket{$br} == 1) {
+    die "recursive $_ is forbidden";
+  } else {
+    $bracket{$br} = 1;
+  }
+}
+
+sub end($)
+{
+  my $br = shift;
+  print "< close $br\n" if DEBUG;
+  my $bl = pop @lastbracket;
+  if ($bl ne $br) { die "mismatch $bl closure bracket"; }
+  if ($bracket{$br} == 0) {
+    die "mismatch $_ closure bracket"
+  } else {
+    $bracket{$br} = 0;
+  }
+}
 
 # File preprocessor begins.
 sub load ($$)
@@ -47,42 +84,31 @@ sub load ($$)
   ($foutname = $filename) =~ s#(.*).pre#$1#;
   print "output to $foutname\n";
   open FILE, "+>", "$foutname";
-  
-  my $start = 0; # is we in rule.
-  my $foundrule = 0; # is there any rule for current package
 
   while ( <$fh> )
   {
     $line += 1;
+
+    # === rule brackets ===
     if ( $_ =~ m#^\]\]rule\s*$# )
     {
-      if ($package eq "") { die "$line: rule]] outside of package[[ ]]package is forbidden" }
-      $start = 0;
+      end("rule");
       next;
     }
     if ( $_ =~ m#^rule\[\[\s*$# )
     {
-      if ($package eq "") { die "$line: rule[[ outside of package[[ ]]package is forbidden" }
-      $start = 1;
-      # call begin only once
-      if($foundrule == 0) {
-        process_begin();
-        $foundrule = 1;
-      }
+      begin("rule");
       next;
     }
 
+    # === package brackets ===
     if ($_ =~ m#^package\[\[# )
     {
       if ( $_ =~ m#^package\[\[\s*([\w_]+)\s*$# ) {
-        if ($package ne "") { die "$line: recursive package[[ command is not supported" }
-        if ($start != 0) {die "$line: commands overlap" }
+        begin("package");
         $package = $1;
-        $foundrule = 0;
         print "==> $package" . "\n" if DEBUG;
-        my $dashpackage = $package;
-        $dashpackage =~ s#_#\-#g;
-        print FILE "PN_$package := $dashpackage\n";
+        process_begin();
         next;
       } else {
         die "$line: bad package[[ command format: " . $_;
@@ -90,26 +116,46 @@ sub load ($$)
     }
     if ( $_ =~ m#^\]\]package# )
     {
-      if ($package ne "") {
-        $package = "";
-        if ($start != 0) {die "$line: commands overlap" }
-        if ($foundrule == 0) {die "$line: package without rule is inavlid\nadd empty block\nrule[[\n]]rule" }
+      end("package");
+      $package = "";
+      next;
+    }
+
+    # === function brackets ===
+    if ($_ =~ m#^function\[\[# )
+    {
+      if ( $_ =~ m#^function\[\[\s*([\w_]+)\s*$# ) {
+        begin("function");
+        $function = $1;
+        $functions{$1} = "";
+        print "==> $function" . "\n" if DEBUG;
+        next;
       } else {
-        die "$line: ]]package closure bracket doesn't match";
+        die "$line: bad function[[ command format: " . $_;
+      }
+    }
+    if ( $_ =~ m#^\]\]function# )
+    {
+      end("function");
+      $function = "";
+      next;
+    }
+
+    # === call command ===
+    if ( $_ =~ m#^call\[\[\s*([\w_]+)\s*\]\]# )
+    {
+      if (defined $functions{$1}) {
+        output($functions{$1});
+      } else {
+        die "unknown function $1";
       }
       next;
     }
-    if ($package ne "") {
-      # $$ escapes $
-      # Replace ${P} with package
-      $_ =~ s/(?<!\$)\${P}/$package/g;
-      # Replace ${VARIABLE} with $(package_VARIABLE)
-      $_ =~ s/(?<!\$)\${([\w\d_]+)}/\$\($1_$package\)/g;
-    }
+
     #don't touch Makefile conditional in rule[[
-    if (not $start or ($_ =~ m#^(ifdef |ifndef |ifeq |ifneq |else|endif)#) )
+    if ($bracket{"rule"} != 1 or ($_ =~ m#^(ifdef |ifndef |ifeq |ifneq |else|endif)#) )
     {
-      print FILE $_;
+      output($_);
       next;
     }
     # === rule preprocessor begin ==
@@ -137,17 +183,17 @@ sub process_block ($)
   my $out;
 
   $out = process_depends($_);
-  print FILE subs_vars("DEPENDS_$package += $out \n") if $out;
+  output("DEPENDS_$package += $out \n") if $out;
   $out = process_prepare($_);
-  print FILE subs_vars("PREPARE_$package += $out \n") if $out;
+  output("PREPARE_$package += $out \n") if $out;
   $out = process_sources($_);
-  print FILE subs_vars("SRC_URI_$package += $out \n") if $out;
+  output("SRC_URI_$package += $out \n") if $out;
   $out = process_install($_);
-  print FILE subs_vars("INSTALL_$package += $out \n") if $out;
+  output("INSTALL_$package += $out \n") if $out;
   $out = process_download($_);
-  print FILE subs_vars("$out \n") if $out;
+  output("$out \n") if $out;
 
-  print FILE "\n";
+  output("\n");
 }
 
 sub process_rule($) {
@@ -274,6 +320,7 @@ sub process_begin ()
   $dir = "\$(DIR_$package)";
   $version = "\$(PKGV_$package)";
 
+=pod
   my $output;
   # make it safe. rm -rf
   $output .= "DIR_$package := \$(if $dir,\$(workprefix)/$dir,\$(workprefix)/$package)" . "\n";
@@ -308,8 +355,9 @@ sub process_begin ()
   $output .= "$target.clean:"              . "\n";
   $output .= "\trm -f $target"             . "\n";
 
-  print FILE subs_vars($output);
-  print FILE "\n"
+  $output .= "\n";
+  output($output);
+=cut
 }
 
 
@@ -637,13 +685,17 @@ sub process_download ($)
     my $file = $f;
     $file =~ s/\$\(archivedir\)//;
 
+   my $suburl = $url;
     # omit duplicating urls
+# temporary disable
+=pod
     my $suburl = subs_vars($url);
     if( $suburl ~~ @allurls )
     {
        #warn $suburl . "\n";
        next;
     }
+=cut
     push(@allurls, $suburl);
     
     #warn "download: " . $url . "\n";
@@ -683,16 +735,22 @@ sub process_download ($)
 }
 
 
-sub subs_vars($)
+sub output($)
 {
   my $output = shift;
-  $output =~ s#PKDIR#\$\(PKDIR\)#g;
-#  $output =~ s#\{PV\}#$version#g;
-#  $output =~ s#\{PF\}#../Files/$package#g;
-#  my $dashpackage = $package;
-#  $dashpackage =~ s#_#\-#g;
-#  $output =~ s#\{PN\}#$dashpackage#g;
-  return $output
+  if ($package ne "") {
+    # $$ escapes $
+    # Replace ${P} with package
+    $output =~ s/(?<!\$)\${P}/$package/g;
+    # Replace ${VARIABLE} with $(package_VARIABLE)
+    $output =~ s/(?<!\$)\${([\w\d_]+)}/\$\($1_$package\)/g;
+  }
+
+  if ($function ne "") {
+    $functions{$function} .= $output;
+  } else {
+    print FILE $output;
+  }
 }
 
 load ( $filename, 0 );
