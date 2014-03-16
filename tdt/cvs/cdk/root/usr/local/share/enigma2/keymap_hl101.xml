@@ -54,14 +54,16 @@
 		<key id="KEY_EPG" mapto="showEventInfoPlugin" flags="m" />
 	</map>
 	
-	
+	<map context="InfoBarPlugins">
+		
+	</map>
 	
 	<map context="InfobarInstantRecord">
 		<key id="KEY_RECORD" mapto="instantRecord" flags="m" />
 	</map>
 
 	<map context="InfobarExtensions">
-		<!--key id="KEY_RED" mapto="extensions" flags="m" /-->
+		<key id="KEY_RED" mapto="extensions" flags="m" />
 	</map>
 	
 	<map context="InfobarChannelSelection">
@@ -72,7 +74,8 @@
 		<key id="KEY_REWIND" mapto="historyBack" flags="mr" />
 		<key id="KEY_FASTFORWARD" mapto="historyNext" flags="mr" />
 		<key id="KEY_OK" mapto="openServiceList" flags="m" />
-        <key id="KEY_FAVORITES" mapto="openServiceListFAV" flags="m" />
+		<key id="KEY_FAVORITES" mapto="showFavourites" flags="m" />
+		<key id="KEY_SAT" mapto="showSatellites" flags="m" />
 	</map>
 	
 	<map context="MinuteInputActions">
@@ -134,28 +137,24 @@
 	<map context="InfobarActions">
 		<key id="KEY_PLAY" mapto="showMovies" flags="m" />
 		<key id="KEY_ARCHIVE" mapto="showMovies" flags="m" />
-		<!--key id="KEY_BLUE" mapto="toogleTvRadio" flags="m" /-->
 		<key id="KEY_TV2" mapto="toogleTvRadio" flags="m" />
-
-    <key id="KEY_RIGHT" mapto="volumeUp" flags="mr" />
-    <key id="KEY_LEFT" mapto="volumeDown" flags="mr" />
+		<key id="KEY_RIGHT" mapto="volumeUp" flags="mr" />
+		<key id="KEY_LEFT" mapto="volumeDown" flags="mr" />
     
 		<!--key id="KEY_BLUE" mapto="showTv" flags="b" /-->
 	</map>
 
 
 	<map context="InfobarExtendedAudioSelectionActions">
-		<!--key id="KEY_YELLOW" mapto="audioSelection" flags="m" /-->
+		<key id="KEY_AUDIO" mapto="audioSelection" flags="m" />
 	</map>
 
 	<map context="InfobarAudioSelectionActions">
 		<key id="KEY_AUDIO" mapto="audioSelection" flags="m" />
-		<key id="KEY_LANGUAGE" mapto="audioSelection" flags="m" />
 	</map>
 
 	<map context="InfobarAspectSelectionActions">
-		<key id="KEY_F1" mapto="aspectSelection" flags="m" />
-		<key id="KEY_SUBTITLE" mapto="aspectSelection" flags="m" />
+		<key id="KEY_V" mapto="aspectSelection" flags="m" />
 	</map>
 
 	<map context="InfobarSubserviceSelectionActions">
@@ -258,33 +257,12 @@
 	</map>
 	
 	<map context="MediaPlayerCueSheetActions">
-			<key id="KEY_0" mapto="toggleMark" flags="m" />
+		<key id="KEY_0" mapto="toggleMark" flags="m" />
 	</map>
 	
 	<map context="InfobarTeletextActions">
-		<key id="KEY_SAT" mapto="startTeletext" flags="m" />
+		<key id="KEY_F2" mapto="startTeletext" flags="m" />
 		<key id="KEY_EXIT" mapto="exit" flags="m" />
-	</map>
-
-	<map context="TeletextActions">
-		<key id="KEY_RIGHT" mapto="nextSubPage" flags="m" />
-		<key id="KEY_LEFT" mapto="prevSubPage" flags="m" />
-		<key id="KEY_UP" mapto="nextPage" flags="m" />
-		<key id="KEY_DOWN" mapto="prevPage" flags="m" />
-		<key id="KEY_OK" mapto="ok" flags="m" />
-		<key id="KEY_FILE" mapto="transparent" flags="m" />
-		<key id="KEY_GREEN" mapto="green" flags="m" />
-		<key id="KEY_YELLOW" mapto="yellow" flags="m" />
-		<key id="KEY_RED" mapto="red" flags="m" />
-		<key id="KEY_BLUE" mapto="blue" flags="m" />
-		<key id="KEY_PAGEUP" mapto="zoomMode" flags="m" />
-		<key id="KEY_PAGEDOWN" mapto="screenMode" flags="m" />
-		<key id="KEY_HELP" mapto="hint" flags="m" />
-		<key id="KEY_MENU" mapto="menu" flags="m" />
-		<key id="KEY_TEXT" mapto="exit" flags="m" />
-		<key id="KEY_EXIT" mapto="exit" flags="m" />
-		<key id="KEY_POWER" mapto="exit" flags="m" />
-		<key id="KEY_HOME" mapto="exit" flags="m" />
 	</map>
 
 	<map context="InfobarRdsActions">
@@ -477,11 +455,14 @@
     <key id="KEY_NEXT" mapto="volumeUp" flags="mr" />
     <key id="KEY_PREVIOUS" mapto="volumeDown" flags="mr" />
     <key id="KEY_MUTE" mapto="volumeMute" flags="mr" />
-    <key id="KEY_POWER" mapto="power_long" flags="m" />
+	<key id="KEY_POWER" mapto="power_long" flags="l" />
+	<key id="KEY_POWER" mapto="power_down" flags="m" />
+	<key id="KEY_POWER" mapto="power_up" flags="b" />
   </map>
   
   <map context="PowerKeyActions">
 		<key id="KEY_POWER" mapto="powerdown" flags="m" />
+		<key id="KEY_POWER" mapto="powerup" flags="b" />
 	</map>
 	
 </keymap>
