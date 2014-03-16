@@ -226,8 +226,6 @@ typedef enum LogNum_e
     LogNum_Max
 }LogNum_T;
 
-int PROTON_VFD_ShowIco_Common(LogNum_T log_num,int log_stat);
-
 #define BASE_VFD_PRIVATE 0x00
 
 #define VFD_GetRevision         _IOWR('s',(BASE_VFD_PRIVATE+0),char*)
