@@ -129,6 +129,7 @@ sub load ($$)
         $function = $1;
         $functions{$1} = "";
         print "==> $function" . "\n" if DEBUG;
+        output("### function $function\n");
         next;
       } else {
         die "$line: bad function[[ command format: " . $_;
@@ -136,6 +137,7 @@ sub load ($$)
     }
     if ( $_ =~ m#^\]\]function# )
     {
+      output("### end function\n");
       end("function");
       $function = "";
       next;
