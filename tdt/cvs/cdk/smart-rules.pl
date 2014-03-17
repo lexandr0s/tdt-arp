@@ -25,7 +25,7 @@ my $line = 0; # processing line, for debug
 # command sytax definitions
 my $supported_protocols = "https|http|ftp|file|git|svn|local|localwork";
 # commands executed at prepare time
-my $make_commands = "nothing|extract|dirextract|patch(-(\\d+))?|pmove|premove|plink|pdircreate";
+my $make_commands = "nothing|extract|dirextract|patch(-(\\d+))?|pmove|premove|plink|pdircreate|plndir";
 # commands executed at install time
 my $install_commands = "install|install_file|install_bin|make|move|remove|mkdir|link";
 
