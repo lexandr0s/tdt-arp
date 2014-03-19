@@ -346,7 +346,6 @@ def do_finish():
 	for p in bb_get('PACKAGES').split():
 		pname = bb_get('NAME_%s' % p)
 		print "Package: %s (%s)" % (p, pname)
-		print "Description: ", bb_data['DESCRIPTION_'+p]
 		files = bb_data['FILES_'+p].split(" ")
 		
 		pack_dir = pjoin(build_dir,p)
