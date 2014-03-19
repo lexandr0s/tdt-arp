@@ -115,6 +115,8 @@ def parent(x):
 		return x.replace('.do_prepare','')
 	elif x.endswith('.do_compile'):
 		return x.replace('.do_compile','')
+	elif x.endswith('.do_package'):
+		return x.replace('.do_package','')
 	return None
 
 targ2 = {}
@@ -153,33 +155,38 @@ def DFS(start, do_cmd):
 	walk = []
 	last = {}
 	while True:
-		#find next
-		child = []
-		idx = 0
+		
+		# where can we go from here ?
 		if curr in targ:
 			child = targ[curr]
+		else:
+			raise Exception("unknown dependency", targ)
+			child = []
+	
+		# have we been here before ?
 		if curr in last:
-			idx = child.index(last[curr])
-			idx += 1
-		#print curr, child
+			idx = last[curr] + 1
+		else:
+			idx = 0
+		
 		if idx >= len(child):
-			# go up
-			if walk:
-				print_dep(walk[-1], curr)
+			# visited all childs, go up
 			if len(walk) == 0:
 				break
 			curr = walk.pop()
+			#print '<', curr
 		else:
-			# go next
+			# visit next child
 			ne = child[idx]
+			print_dep(curr, ne)
 			if ne in walk:
-				print "ERROR: broke loop at", ne
-				print_dep(curr, ne)
-				targ[curr].remove(ne)
+				print "ERROR: broke loop at", curr, '->', ne
+				last[curr] = idx + 1
 				continue
-			last[curr] = ne
+			last[curr] = idx
 			walk.append(curr)
 			curr = ne
+			#print '>', curr
 
 def print_dep(target, dependency):
 	fdot.write(' "%s" -> "%s" ;\n' % (target, dependency))
