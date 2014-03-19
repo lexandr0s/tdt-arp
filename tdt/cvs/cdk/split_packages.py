@@ -28,7 +28,7 @@ def bb_checkset(var, val):
 	if not bb_data.has_key(var):
 		bb_set(var, val)
 
-DATAS_STR = 'PKGV PKGR DESCRIPTION SECTION PRIORITY MAINTAINER LICENSE PACKAGE_ARCH HOMEPAGE RDEPENDS RREPLACES RCONFLICTS SRC_URI FILES NAME preinst postinst prerm postrm conffiles'
+DATAS_STR = 'PV PR DESCRIPTION SECTION PRIORITY MAINTAINER LICENSE PACKAGE_ARCH HOMEPAGE RDEPENDS RREPLACES RCONFLICTS SRC_URI FILES NAME preinst postinst prerm postrm conffiles'
 DATAS = DATAS_STR.split()
 
 #######################################################################
@@ -80,14 +80,14 @@ for x in os.environ.keys():
 
 #print bb_data
 
-#install DEST_DIR
+#install DESTDIR
 global pkgs_dir
-pkgs_dir = os.environ['packagingtmpdir']
+pkgs_dir = os.environ['PKDIR']
 print "searching for files in", pkgs_dir
 
 #where this script will build packages
 global build_dir
-build_dir = os.environ['IPKGBUILDDIR']
+build_dir = os.environ['ipkgbuilddir']
 print "temporary files goes in", build_dir
 
 
@@ -267,9 +267,9 @@ def read_control_file(fname):
 			bb_set('MAINTAINER_' + full_package, line[12:])
 		if line.startswith('Version: '):
 			ll = line[9:].split('-')
-			bb_set('PKGV_' + full_package, ll[0])
+			bb_set('PV_' + full_package, ll[0])
 			if len(ll) > 1:
-				bb_set('PKGR_' + full_package, ll[1])
+				bb_set('PR_' + full_package, ll[1])
 		if line.startswith('Section: '):
 			bb_set('SECTION_' + full_package, line[9:])
 		if line.startswith('Priority: '):
@@ -290,8 +290,8 @@ def write_control_file(fdir, full_package):
 	fname = pjoin(fdir, 'control')
 	def ext(param):
 		return "%s_%s" % (param, full_package)
-	pkgv = bb_get(ext('PKGV'))
-	pkgr = bb_get(ext('PKGR'))
+	pkgv = bb_get(ext('PV'))
+	pkgr = bb_get(ext('PR'))
 	if pkgr:
 		bb_set(ext('PKGF'), '%s-%s' % (pkgv, pkgr))
 	else:
