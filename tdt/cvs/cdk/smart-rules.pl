@@ -11,7 +11,6 @@ my @allurls;
 my $filename = shift;
 
 my $package = ""; # current processing package
-my $targetbase; # .deps file for current package without any suffixes
 my $target; # base .deps file for current processing package
 my $version; # version of current processing package
 my $dir; # dir for current processing package
@@ -28,6 +27,8 @@ my $supported_protocols = "https|http|ftp|file|git|svn|local|localwork";
 my $make_commands = "nothing|extract|dirextract|patch(-(\\d+))?|pmove|premove|plink|pdircreate|plndir";
 # commands executed at install time
 my $install_commands = "install|install_file|install_bin|make|move|remove|mkdir|link";
+# pattern that will be substituted
+my $P = "\${P}";
 
 my $patchesdir .= "\$(buildprefix)/Patches";
 #my $patchesdir .= "\$(srcdir)/make";
@@ -185,13 +186,13 @@ sub process_block ($)
   my $out;
 
   $out = process_depends($_);
-  output("DEPENDS_$package += $out \n") if $out;
+  output("DEPENDS_$P += $out \n") if $out;
   $out = process_prepare($_);
-  output("PREPARE_$package += $out \n") if $out;
+  output("PREPARE_$P += $out \n") if $out;
   $out = process_sources($_);
-  output("SRC_URI_$package += $out \n") if $out;
+  output("SRC_URI_$P += $out \n") if $out;
   $out = process_install($_);
-  output("INSTALL_$package += $out \n") if $out;
+  output("INSTALL_$P += $out \n") if $out;
   $out = process_download($_);
   output("$out \n") if $out;
 
@@ -268,7 +269,7 @@ sub process_rule($) {
   if ($url) {
     if ( $url =~ m#^svn://# )
     {
-        $f = $package . ".svn"
+        $f = $P . ".svn"
     }
     if ( $url =~ m#^file://# )
     {
@@ -317,10 +318,9 @@ sub process_depends ($)
 sub process_begin ()
 {
   # some common variables
-  $targetbase = "\$(DEPDIR_$package)/$package";
-  $target  = "\$(TARGET_$package)";
-  $dir = "\$(DIR_$package)";
-  $version = "\$(PKGV_$package)";
+  $target  = "\$(TARGET_$P)";
+  $dir = "\$(DIR_$P)";
+  $version = "\$(PV_$P)";
 
 =pod
   my $output;
