@@ -35,15 +35,6 @@
  
  ##############################################################################
  
-@@ -226,7 +231,7 @@
-         --with-gmp=%{_stm_cross_dir} \
-         --with-mpfr=%{_stm_cross_dir} \
-         --without-ppl \
--        --with-gxx-include-dir="\\\${prefix}/target%{_stm_target_include_dir}/c++/%{version}" \
-+        --with-gxx-include-dir="\\\${prefix}/../../cdkroot%{_stm_target_include_dir}/c++/%{version}" \
-         --enable-__cxa_atexit \
- %if "%{_stm_target_fpu}" == "no"
- %if %target_arch sh4_uclibc
 @@ -267,15 +272,6 @@
  %cross_setup
  %cross_makeinstall
