@@ -12,29 +12,29 @@ URL4SU=ftp://ftp.stlinux.com/pub/stlinux/2.4/updates/SRPMS
 
 $(archivedir)/bash-3.1-16.1.i386.rpm:
 	[ ! -f $(archivedir)/$(notdir $@) ] && \
-	(cd $(archivedir) && $(WGET) $(URLDIV1)/$(notdir $@)) || true
+	($(WGET) $(archivedir) $(URLDIV1)/$(notdir $@)) || true
 
 $(archivedir)/stlinux23-sh4-%.sh4.rpm:
 	[ ! -f $(archivedir)/$(notdir $@) ] && \
-	(cd $(archivedir) && $(WGET) $(URL3)/$(notdir $@) || $(WGET) $(URL3U)/$(notdir $@)) || true
+	($(WGET) $(archivedir) $(URL3)/$(notdir $@) || $(WGET) $(archivedir) $(URL3U)/$(notdir $@)) || true
 $(archivedir)/stlinux24-sh4-%.sh4.rpm:
 	[ ! -f $(archivedir)/$(notdir $@) ] && \
-	(cd $(archivedir) && $(WGET) $(URL4)/$(notdir $@) || $(WGET) $(URL4U)/$(notdir $@)) || true
+	($(WGET) $(archivedir) $(URL4)/$(notdir $@) || $(WGET) $(archivedir) $(URL4U)/$(notdir $@)) || true
 $(archivedir)/stlinux23-host-%.src.rpm:
 	[ ! -f $(archivedir)/$(notdir $@) ] && \
-	(cd $(archivedir) && $(WGET) $(URL3S)/$(notdir $@) || $(WGET) $(URL3SU)/$(notdir $@)) || true
+	($(WGET) $(archivedir) $(URL3S)/$(notdir $@) || $(WGET) $(archivedir) $(URL3SU)/$(notdir $@)) || true
 $(archivedir)/stlinux24-host-%.src.rpm:
 	[ ! -f $(archivedir)/$(notdir $@) ] && \
-	(cd $(archivedir) && $(WGET) $(URL4S)/$(notdir $@) || $(WGET) $(URL4SU)/$(notdir $@)) || true
+	($(WGET) $(archivedir) $(URL4S)/$(notdir $@) || $(WGET) $(archivedir) $(URL4SU)/$(notdir $@)) || true
 $(archivedir)/stlinux23-cross-%.src.rpm:
 	[ ! -f $(archivedir)/$(notdir $@) ] && \
-	(cd $(archivedir) && $(WGET) $(URL3S)/$(notdir $@) || $(WGET) $(URL3SU)/$(notdir $@)) || true
+	($(WGET) $(archivedir) $(URL3S)/$(notdir $@) || $(WGET) $(archivedir) $(URL3SU)/$(notdir $@)) || true
 $(archivedir)/stlinux24-cross-%.src.rpm:
 	[ ! -f $(archivedir)/$(notdir $@) ] && \
-	(cd $(archivedir) && $(WGET) $(URL4S)/$(notdir $@) || $(WGET) $(URL4SU)/$(notdir $@)) || true
+	($(WGET) $(archivedir) $(URL4S)/$(notdir $@) || $(WGET) $(archivedir) $(URL4SU)/$(notdir $@)) || true
 $(archivedir)/stlinux23-target-%.src.rpm:
 	[ ! -f $(archivedir)/$@ ] && \
-	(cd $(archivedir) && $(WGET) $(URL3S)/$(notdir $@) || $(WGET) $(URL3SU)/$(notdir $@)) || true
+	($(WGET) $(archivedir) $(URL3S)/$(notdir $@) || $(WGET) $(archivedir) $(URL3SU)/$(notdir $@)) || true
 $(archivedir)/stlinux24-target-%.src.rpm:
 	[ ! -f $(archivedir)/$@ ] && \
-	(cd $(archivedir) && $(WGET) $(URL4S)/$(notdir $@) || $(WGET) $(URL4SU)/$(notdir $@)) || true
+	($(WGET) $(archivedir) $(URL4S)/$(notdir $@) || $(WGET) $(archivedir) $(URL4SU)/$(notdir $@)) || true
