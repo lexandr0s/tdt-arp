@@ -38,7 +38,7 @@ COMMONPATCHES_24 = \
 		linux-ftdi_sio.c_stm24$(PATCH_STR).patch \
 		linux-sh4-lzma-fix_stm24$(PATCH_STR).patch \
 		$(if $(P0209)$(P0210)$(P0211),linux-tune_stm24.patch) \
-		$(if $(P0213),linux-tune_stm24_0212.patch) \
+		$(if $(P0213),linux-tune_stm24_0213.patch) \
 		$(if $(P0209)$(P0210)$(P0211)$(P0213),linux-sh4-mmap_stm24.patch) \
 		$(if $(P0209),linux-sh4-dwmac_stm24_0209.patch) \
 		$(if $(P0207),linux-sh4-sti7100_missing_clk_alias_stm24$(PATCH_STR).patch) \
