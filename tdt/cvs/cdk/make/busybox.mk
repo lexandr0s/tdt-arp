@@ -13,6 +13,7 @@ busybox
   patch:file://{PN}-{PV}-ash.patch
   patch:file://{PN}-{PV}-date.patch
   patch:file://{PN}-{PV}-iplink.patch
+  patch:file://{PN}-{PV}-nc.patch
   make:install:CONFIG_PREFIX=PKDIR
 ;
 ]]END
