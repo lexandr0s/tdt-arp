@@ -744,7 +744,7 @@ sub output($)
     # $$ escapes $
     # Replace ${P} with package
     $output =~ s/(?<!\$)\${P}/$package/g;
-    # Replace ${VARIABLE} with $(package_VARIABLE)
+    # Replace ${VARIABLE} with $(VARIABLE_package)
     $output =~ s/(?<!\$)\${([\w\d_]+)}/\$\($1_$package\)/g;
   }
 
