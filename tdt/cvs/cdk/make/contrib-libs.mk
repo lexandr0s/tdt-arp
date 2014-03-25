@@ -1604,9 +1604,10 @@ $(DEPDIR)/ffmpeg: $(DEPDIR)/ffmpeg.do_compile
 #
 BEGIN[[
 libass
-  0.10.2
+  0.11.1
   {PN}-{PV}
-  extract:http://{PN}.googlecode.com/files/{PN}-{PV}.tar.gz
+  extract:https://github.com/{PN}/{PN}/releases/download/{PV}/{PN}-{PV}.tar.gz
+  patch:file://{PN}.patch
   make:install:DESTDIR=PKDIR
 ;
 ]]END
