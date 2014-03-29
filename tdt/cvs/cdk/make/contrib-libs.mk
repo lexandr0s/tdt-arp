@@ -1473,7 +1473,7 @@ FILES_ffmpeg = \
 /usr/lib/*.so* \
 /sbin/ffmpeg
 
-$(DEPDIR)/ffmpeg.do_prepare: bootstrap libass rtmpdump $(DEPENDS_ffmpeg)
+$(DEPDIR)/ffmpeg.do_prepare: bootstrap libass rtmpdump libbluray $(DEPENDS_ffmpeg)
 	$(PREPARE_ffmpeg)
 	touch $@
 
@@ -1570,6 +1570,8 @@ $(DEPDIR)/ffmpeg.do_compile: $(DEPDIR)/ffmpeg.do_prepare
 		--enable-protocol=file \
 		--enable-protocol=hls \
 		--enable-protocol=udp \
+		--enable-protocol=bluray \
+		--enable-libbluray \
 		--disable-indevs \
 		--disable-outdevs \
 		--enable-avresample \
@@ -1637,6 +1639,51 @@ $(DEPDIR)/libass: $(DEPDIR)/libass.do_compile
 	$(start_build)
 	cd $(DIR_libass) && \
 		$(INSTALL_libass)
+	$(tocdk_build)
+	$(toflash_build)
+	touch $@
+
+#
+# libbluray
+#
+BEGIN[[
+libbluray
+  0.5.0
+  {PN}-{PV}
+  extract:http://download.videolan.org/pub/videolan/{PN}/{PV}/{PN}-{PV}.tar.bz2
+  patch:file://{PN}-0001-Optimized-file-I-O-for-chained-usage-with-libavforma.patch
+  patch:file://{PN}-0003-Added-bd_get_clip_infos.patch
+  patch:file://{PN}-0005-Don-t-abort-demuxing-if-the-disc-looks-encrypted.patch
+  patch:file://{PN}-0006-disable-M2TS_TRACE.patch
+  make:install:DESTDIR=PKDIR
+;
+]]END
+
+DESCRIPTION_libbluray = "libbluray"
+
+FILES_libbluray = \
+/usr/lib/*.so*
+
+$(DEPDIR)/libbluray.do_prepare: bootstrap $(DEPENDS_libbluray)
+	$(PREPARE_libbluray)
+	touch $@
+
+$(DEPDIR)/libbluray.do_compile: $(DEPDIR)/libbluray.do_prepare
+	cd $(DIR_libbluray) && \
+	$(BUILDENV) \
+	CFLAGS="$(TARGET_CFLAGS)" \
+	./configure \
+		--build=$(build) \
+		--host=$(target) \
+		--prefix=/usr \
+		--without-libxml2 \
+		--without-freetype
+	touch $@
+
+$(DEPDIR)/libbluray: $(DEPDIR)/libbluray.do_compile
+	$(start_build)
+	cd $(DIR_libbluray) && \
+		$(INSTALL_libbluray)
 	$(tocdk_build)
 	$(toflash_build)
 	touch $@
