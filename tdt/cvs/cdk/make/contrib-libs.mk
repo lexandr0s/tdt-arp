@@ -1574,7 +1574,6 @@ $(DEPDIR)/ffmpeg.do_compile: $(DEPDIR)/ffmpeg.do_prepare
 		--enable-libbluray \
 		--disable-indevs \
 		--disable-outdevs \
-		--enable-avresample \
 		--enable-pthreads \
 		--enable-bzlib \
 		--disable-zlib \
