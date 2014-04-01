@@ -42,8 +42,8 @@ begin remote
           KEY_FAVORITES                0x7887		# FAV
           KEY_VOLUMEDOWN               0x38c7		# VOL-
           KEY_VOLUMEUP                 0x22dd		# VOL+
-          KEY_PAGEDOWN                 0xA05F		# PAGE-
-          KEY_PAGEUP                   0xF807		# PAGE+
+          KEY_PAGEDOWN                 0xF807		# PAGE-
+          KEY_PAGEUP                   0xA05F		# PAGE+
           KEY_INFO                     0x58A7		# INFO
           KEY_EPG                      0x708F		# EPG
           KEY_MENU                     0x9A65		# MENU
