@@ -59,6 +59,7 @@
 
 	<map context="InfobarExtensions">
 		<key id="KEY_BLUE" mapto="extensions" flags="m" />
+		<!--key id="KEY_GREEN" mapto="showPluginBrowser" flags="m" /-->
 	</map>
 	<map context="SubServices">
 		<key id="KEY_GREEN" mapto="showSubServices" flags="m" />
