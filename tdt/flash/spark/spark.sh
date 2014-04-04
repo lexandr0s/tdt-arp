@@ -32,12 +32,12 @@ elif [ "$BOX" == "spark7162" ]; then
 box='_alien2'
 fi
 KERN=`cat $LAST | awk -F '--enable-' '{print $5}' | cut -d ' ' -f 1`
-if [ "$KERN" == "p0211" ]; then
+if [ "$KERN" == "p0214" ]; then
+kern='_214'
+elif [ "$KERN" == "p0213" ]; then
+kern='_213'
+elif [ "$KERN" == "p0211" ]; then
 kern='_211'
-elif [ "$KERN" == "p0210" ]; then
-kern='_210'
-elif [ "$KERN" == "p0209" ]; then
-kern='_209'
 fi
 echo "BOX          = $box "
 echo "KERN         = $kern"
