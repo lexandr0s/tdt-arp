@@ -1,0 +1,175 @@
+#
+# basic ENVIRONMENT
+#
+
+# sometimes sbin progs are missing
+export PATH := $(PATH):/usr/sbin:/sbin
+
+# default target
+SETUP: Makefile
+	@echo
+	@echo ----------------------------------------------------------------------------
+	@echo main build system Makefile has been generated
+	@echo to enable bash-completion run \'source make-completion.sh\'
+	@echo to build image run \'make target-image\'
+	@echo you may reconfigure anytime with \'make xconfig\' or \'make menuconfig\'
+	@echo to rebuild brocken Makefile fallback to \'make -f Makefile.setup\'
+	@echo to get info about more targets run \'make help\'
+	@echo
+	@echo good luck
+	@echo your AR-P team
+	@echo ----------------------------------------------------------------------------
+
+# '::' means you can append rules to help target
+help::
+	@echo ----------------------------------------------------------------------------
+	@echo run \'make\' to see some info about common targets and this system
+	@echo run \'make help-functions\' to see defined macroses.
+
+help-functions::
+	@echo ----------------------------------------------------------------------------
+	@echo list of documented functions and their parameters ...
+	@echo ... we are too lazy to complete this list
+
+.PHONY: SETUP help help-functions
+
+#
+# KCONFIG
+#
+
+CONFIG_CONFIG_IN = Config.in
+
+# select remote or local kconfig sources
+# CONFIG = config_wizard
+CONFIG = kconfig_frontends
+
+# configuration tools
+# ----------------------------------------------------------------------------
+ifeq ($(CONFIG),config_wizard)
+
+$(CONFIG)/config.status:
+	cd $(CONFIG) && ./configure
+
+$(CONFIG)/conf $(CONFIG)/mconf $(CONFIG)/qconf $(CONFIG)/gconf: $(CONFIG)/config.status
+	cd $(CONFIG) && $(MAKE)
+	ln -sf frontends/conf/conf $(CONFIG)/conf
+	ln -sf frontends/nconf/nconf $(CONFIG)/nconf
+	ln -sf frontends/mconf/mconf $(CONFIG)/mconf
+	ln -sf frontends/qconf/qconf $(CONFIG)/qconf
+	ln -sf frontends/gconf/gconf $(CONFIG)/gconf
+
+kconfig-clean:
+	$(MAKE) -C $(CONFIG) clean
+
+endif
+
+ifeq ($(CONFIG),kconfig_frontends)
+
+kconfig_PN := kconfig-frontends
+kconfig_PV := 3.12.0.0
+
+$(kconfig_PN)-$(kconfig_PV).tar.bz2:
+	wget http://ymorin.is-a-geek.org/download/$(kconfig_PN)/$@
+
+$(CONFIG)/config.status: $(kconfig_PN)-$(kconfig_PV).tar.bz2
+	tar -xjf $^
+	rm -rf $(CONFIG)
+	mv $(kconfig_PN)-$(kconfig_PV) $(CONFIG)
+	cd $(CONFIG) && ./configure
+
+$(CONFIG)/conf $(CONFIG)/mconf $(CONFIG)/qconf $(CONFIG)/gconf: $(CONFIG)/config.status
+	cd $(CONFIG) && $(MAKE)
+	ln -sf frontends/conf/conf $(CONFIG)/conf
+	ln -sf frontends/mconf/nconf $(CONFIG)/nconf
+	ln -sf frontends/mconf/mconf $(CONFIG)/mconf
+	ln -sf frontends/qconf/qconf $(CONFIG)/qconf
+	ln -sf frontends/gconf/gconf $(CONFIG)/gconf
+
+kconfig-clean:
+	$(MAKE) -C $(CONFIG) clean
+
+kconfig-distclean: kconfig-clean
+	$(MAKE) -C $(CONFIG) distclean
+
+endif
+
+# configuration exec
+# ----------------------------------------------------------------------------
+
+menuconfig: $(CONFIG)/mconf
+	@$(CONFIG)/mconf $(CONFIG_CONFIG_IN)
+
+xconfig: $(CONFIG)/qconf
+	test -f $(CONFIG)/qconf && $(CONFIG)/qconf $(CONFIG_CONFIG_IN) || $(CONFIG)/gconf $(CONFIG_CONFIG_IN)
+
+config: $(CONFIG)/conf
+	@$(CONFIG)/conf $(CONFIG_CONFIG_IN)
+
+oldconfig: $(CONFIG)/conf
+	@$(CONFIG)/conf -o $(CONFIG_CONFIG_IN)
+
+randconfig: $(CONFIG)/conf
+	@$(CONFIG)/conf -r $(CONFIG_CONFIG_IN)
+
+allyesconfig: $(CONFIG)/conf
+	#@$(CONFIG)/conf -y $(CONFIG_CONFIG_IN)
+	#sed -i -e "s/^CONFIG_DEBUG.*/# CONFIG_DEBUG is not set/" .config
+	@$(CONFIG)/conf -o $(CONFIG_CONFIG_IN)
+
+allnoconfig: $(CONFIG)/conf
+	@$(CONFIG)/conf -n $(CONFIG_CONFIG_IN)
+
+defconfig: $(CONFIG)/conf
+	@$(CONFIG)/conf -d $(CONFIG_CONFIG_IN)
+
+
+.PHONY: kconfig-clean kconfig-distclean \
+        menuconfig xconfig config oldconfig randconfig allyesconfig allnoconfig defconfig
+
+#
+# create buildsystem Makefile
+#
+
+.PRECIOUS: Makefile
+
+Makefile.pre: \
+  Makefile.setup \
+  .config \
+  make/buildenv.mk \
+  make/base.mk \
+  make/base-rpm.mk \
+  make/host/*.in \
+  make/host/*/*.in \
+  make/cross/*.in \
+  make/cross/*/*.in \
+  make/target/*.in \
+  make/target/*/*.in \
+  make/host/*.mk \
+  make/host/*/*.mk \
+  make/cross/*.mk \
+  make/cross/*/*.mk \
+  make/target/*.mk \
+  make/target/*/*.mk \
+  make/archive-specs.mk
+
+	echo "# Automatically generated file; DO NOT EDIT." > $@
+	for f in $^; do \
+		echo >> $@ && \
+		echo "#---------------------------------------------------------" >> $@ && \
+		echo "# $$f"                                                      >> $@ && \
+		echo "#---------------------------------------------------------" >> $@ && \
+		cat $$f >> $@; \
+	done
+
+Makefile: smart-rules.pl Makefile.pre
+	./smart-rules.pl Makefile.pre || (rm -f $@ && false)
+
+.config: Config.in
+	@echo outdated .config
+	@echo launch make -f Makefile.setup menuconfig
+	@echo or
+	@echo launch make -f Makefile.setup xconfig
+	@echo
+	@echo if you really shure that your .config is ok
+	@echo run \'touch .config\'
+	@false
