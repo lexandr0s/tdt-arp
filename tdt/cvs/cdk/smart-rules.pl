@@ -444,16 +444,34 @@ sub process_prepare ($)
       $branch = $opts{"b"} if $opts{"b"};
       $rev = $opts{"r"} if $opts{"r"};
 
-      # -- pull changes from remote --
-      my $pullcmd;
-      $pullcmd  = "(cd $f && git fetch && git checkout $branch && git pull --rebase origin $branch && cd -)";
-      $pullcmd .= " && (cd $f && git checkout $rev && cd -)" if $rev;
-      $output .= "$pullcmd && cp -a $f/$subdir $dir";
+      # -- set GIT_DIR variable
+      $outpost .= "GIT_DIR_$P = $f \n";
 
-      # -- pull and then version touch --
-      # do after default UPDATE_ command, so do touch again (override)
-      my $ret = process_update($version, $f);
-      $outpost .= "UPDATE_$package += && ( [ ! -d $f ] || $pullcmd ) && ($ret)";
+      # -- pull changes from remote --
+      my $upd = "";
+      # create git url with protocol
+      my $tmpurl = $url;
+      $tmpurl =~ s#git://#$opts{"protocol"}://#  if $opts{"protocol"} ;
+      $tmpurl =~ s#ssh://#git\@# if $opts{"protocol"} eq "ssh";
+      # сd git directory
+      $upd .= "cd $f && ";
+      # check if url has changed
+      $upd .= "(test \"`git config --get remote.origin.url`\" == \"$tmpurl\"";
+      $upd .= " || git remote set-url origin $tmpurl)";
+      # fetch remote chages
+      $upd .= " && git fetch";
+      # checkout git tree
+      if ($rev eq "") {
+        $upd .= " && git checkout origin/$branch";
+      } else {
+        $upd .= " && git checkout $rev";
+      }
+      # exit git dir
+      $upd .= " && cd -";
+      $outpost .= "UPDATE_$P += $upd \n";
+
+      # -- copy git tree to working dir --
+      $output .= "cp -a $f/$subdir $dir";
     }
     elsif ( $cmd eq "nothing" )
     {
