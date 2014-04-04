@@ -79,26 +79,20 @@ CONFIGPARAM="$CONFIGPARAM $TARGET"
 
 echo -e "\nKernel:"
 echo " Maintained:"
-echo "   1) STM 24 P0207"
-echo "   2) STM 24 P0209"
+echo "   1) STM 24 P0211 (Recommended)"
 echo " Experimental:"
-echo "   3) STM 24 P0210"
-echo "   4) STM 24 P0211 (Recommended)"
-echo "   5) STM 24 P0213"
+echo "   2) STM 24 P0213"
 case $2 in
-        [1-5]) REPLY=$2
+        [1-2]) REPLY=$2
         echo -e "\nSelected kernel: $REPLY\n"
         ;;
         *)
-        read -p "Select kernel (1-5)? ";;
+        read -p "Select kernel (1-2)? ";;
 esac
 
 case "$REPLY" in
-	1) KERNEL="--enable-stm24 --enable-p0207";STMFB="stm24";;
-	2) KERNEL="--enable-stm24 --enable-p0209";STMFB="stm24";;
-	3) KERNEL="--enable-stm24 --enable-p0210";STMFB="stm24";;
-	4) KERNEL="--enable-stm24 --enable-p0211";STMFB="stm24";;
-	5) KERNEL="--enable-stm24 --enable-p0213";STMFB="stm24";;
+	1) KERNEL="--enable-stm24 --enable-p0211";STMFB="stm24";;
+	2) KERNEL="--enable-stm24 --enable-p0213";STMFB="stm24";;
 	*) KERNEL="--enable-stm24 --enable-p0211";STMFB="stm24";;
 esac
 CONFIGPARAM="$CONFIGPARAM $KERNEL"

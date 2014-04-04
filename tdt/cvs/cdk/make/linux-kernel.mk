@@ -1,17 +1,5 @@
 ############ Patches Kernel 24 ###############
 
-ifdef ENABLE_P0207
-PATCH_STR=_0207
-endif
-
-ifdef ENABLE_P0209
-PATCH_STR=_0209
-endif
-
-ifdef ENABLE_P0210
-PATCH_STR=_0210
-endif
-
 ifdef ENABLE_P0211
 PATCH_STR=_0211
 endif
@@ -32,17 +20,12 @@ COMMONPATCHES_24 = \
 		linux-squashfs-lzma_stm24$(PATCH_STR).patch \
 		linux-sh4-ext23_as_ext4_stm24$(PATCH_STR).patch \
 		bpa2_procfs_stm24$(PATCH_STR).patch \
-		$(if $(P0207),xchg_fix_stm24$(PATCH_STR).patch) \
-		$(if $(P0207),mm_cache_update_stm24$(PATCH_STR).patch) \
-		$(if $(P0207),linux-sh4-ehci_stm24$(PATCH_STR).patch) \
 		linux-ftdi_sio.c_stm24$(PATCH_STR).patch \
 		linux-sh4-lzma-fix_stm24$(PATCH_STR).patch \
-		$(if $(P0209)$(P0210)$(P0211),linux-tune_stm24.patch) \
+		$(if $(P0211),linux-tune_stm24.patch) \
 		$(if $(P0213),linux-tune_stm24_0213.patch) \
-		$(if $(P0209)$(P0210)$(P0211)$(P0213),linux-sh4-mmap_stm24.patch) \
-		$(if $(P0209),linux-sh4-dwmac_stm24_0209.patch) \
-		$(if $(P0207),linux-sh4-sti7100_missing_clk_alias_stm24$(PATCH_STR).patch) \
-		$(if $(P0209)$(P0211)$(P0213),linux-sh4-directfb_stm24$(PATCH_STR).patch) \
+		$(if $(P0211)$(P0213),linux-sh4-mmap_stm24.patch) \
+		$(if $(P0211)$(P0213),linux-sh4-directfb_stm24$(PATCH_STR).patch) \
 		patch_swap_notify_core_support.diff
 
 HL101_PATCHES_24 = $(COMMONPATCHES_24) \
@@ -50,17 +33,14 @@ HL101_PATCHES_24 = $(COMMONPATCHES_24) \
 		linux-usbwait123_stm24.patch \
 		linux-sh4-stmmac_stm24$(PATCH_STR).patch \
 		linux-sh4-i2c-st40-pio_stm24$(PATCH_STR).patch \
-		$(if $(P0207)$(P0209)$(P0210)$(P0211)$(P0213),linux-sh4-hl101_i2c_st40_stm24$(PATCH_STR).patch)
+		$(if $(P0211)$(P0213),linux-sh4-hl101_i2c_st40_stm24$(PATCH_STR).patch)
 
 SPARK_PATCHES_24 = $(COMMONPATCHES_24) \
 		linux-sh4-stmmac_stm24$(PATCH_STR).patch \
 		linux-sh4-lmb_stm24$(PATCH_STR).patch \
 		linux-sh4-spark_setup_stm24$(PATCH_STR).patch \
 		bpa2-ignore-bigphysarea-kernel-parameter.patch \
-		$(if $(P0207),linux-sh4-i2c-stm-downgrade_stm24$(PATCH_STR).patch) \
-		$(if $(P0209),linux-sh4-linux_yaffs2_stm24_0209.patch) \
-		$(if $(P0207)$(P0209),linux-sh4-lirc_stm.patch) \
-		$(if $(P0210)$(P0211)$(P0213),linux-sh4-lirc_stm_stm24$(PATCH_STR).patch) \
+		$(if $(P0211)$(P0213),linux-sh4-lirc_stm_stm24$(PATCH_STR).patch) \
 		$(if $(P0211)$(P0213),linux-sh4-fix-crash-usb-reboot_stm24_0211.diff)
 
 SPARK7162_PATCHES_24 = $(COMMONPATCHES_24) \
@@ -90,23 +70,12 @@ $(DEPDIR)/kernel-headers: linux-kernel.do_prepare
 	touch $@
 
 KERNELHEADERS := linux-kernel-headers
-ifdef ENABLE_P0207
-KERNELHEADERS_VERSION := 2.6.32.16-44
-else
-ifdef ENABLE_P0209
-KERNELHEADERS_VERSION := 2.6.32.46-47
-else
-ifdef ENABLE_P0210
-KERNELHEADERS_VERSION := 2.6.32.46-47
-else
+
 ifdef ENABLE_P0211
 KERNELHEADERS_VERSION := 2.6.32.46-47
 else
 ifdef ENABLE_P0213
 KERNELHEADERS_VERSION := 2.6.32.46-48
-endif
-endif
-endif
 endif
 endif
 
@@ -147,23 +116,11 @@ endif
 
 HOST_KERNEL := host-kernel
 
-ifdef ENABLE_P0207
-HOST_KERNEL_VERSION = 2.6.32.28$(KERNELSTMLABEL)-$(KERNELLABEL)
-else
-ifdef ENABLE_P0209
-HOST_KERNEL_VERSION = 2.6.32.46$(KERNELSTMLABEL)-$(KERNELLABEL)
-else
-ifdef ENABLE_P0210
-HOST_KERNEL_VERSION = 2.6.32.57$(KERNELSTMLABEL)-$(KERNELLABEL)
-else
 ifdef ENABLE_P0211
 HOST_KERNEL_VERSION = 2.6.32.59$(KERNELSTMLABEL)-$(KERNELLABEL)
 else
 ifdef ENABLE_P0213
 HOST_KERNEL_VERSION = 2.6.32.61$(KERNELSTMLABEL)-$(KERNELLABEL)
-endif
-endif
-endif
 endif
 endif
 
