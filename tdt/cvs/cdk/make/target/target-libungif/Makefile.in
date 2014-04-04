@@ -1,0 +1,3 @@
+package[[ target_libungif
+call[[ header ]]
+]]package

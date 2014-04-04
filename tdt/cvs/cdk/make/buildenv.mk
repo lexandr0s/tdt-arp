@@ -1,57 +1,140 @@
-#######################################      #########################################
+# print '+' before each executed command
+# SHELL := $(SHELL) -x
 
-export CFLAGS
-export CXXFLAGS
+# gnu make strings magic
+empty :=
+define newline
 
-export DRPM
-export DRPMBUILD
 
-#######################################      #########################################
+endef
+space := $(empty) $(empty)
+comma := ,
 
-ifdef ENABLE_P0207
-KERNELVERSION := 2.6.32.28_stm24_0207
+# def
+# - 1: multiline variable name
+# - 2: multiline variable value
+def = define $1 $(newline)$2$(newline)endef
+
+# global consts
+target_arch := sh4
+target := sh4-linux
+
+# detect host system 32 or 64 bit
+host_arch := $(shell which arch > /dev/null 2>&1 && arch || uname -m)
+ifeq ($(host_arch),i686)
+host := $(host_arch)-pc-linux-gnu
+else
+host := $(host_arch)-unknown-linux-gnu
+endif
+build := $(host)
+
+# selected target box
+ifdef CONFIG_SPARK
+TARGET := spark
+endif
+ifdef CONFIG_SPARK7162
+TARGET := spark7162
+endif
+ifdef CONFIG_HL101
+TARGET := hl101
+endif
+box_arch := $(TARGET)
+
+# directories
+archivedir = $(HOME)/Archive
+
+# root dir hack
+buildprefix := $(shell pwd)
+tdtdir := $(patsubst %/cvs/cdk,%,$(buildprefix))
+
+# dependency control dir
+DEPDIR := $(buildprefix)/.deps
+$(shell mkdir -p $(DEPDIR))
+VPATH := $(DEPDIR)
+
+# build root directories
+prefix := $(tdtdir)/tufsbox
+# host
+hostprefix := $(prefix)/host
+ipkhost := $(prefix)/ipkhost
+# cross
+devkitprefix := $(prefix)/devkit
+crossprefix := $(devkitprefix)/sh4
+targetsh4prefix := $(crossprefix)/target-sh4
+ipkcross := $(prefix)/ipkcross
+# target
+targetprefix := $(prefix)/target
+targetboxprefix := $(prefix)/target-$(TARGET)
+ipktarget := $(prefix)/ipktarget
+# kernel sources dir
+kernelprefix := $(devkitprefix)/sources/kernel
+
+ipkbox := $(prefix)/ipkbox
+
+# strange directories
+configprefix := $(hostprefix)/config
+appsdir := $(tdtdir)/cvs/apps
+driverdir := $(tdtdir)/cvs/driver
+
+# build temporary directories
+specsprefix := $(prefix)/SPECS
+sourcesprefix := $(prefix)/SOURCES
+workprefix := $(prefix)/work
+ipkgbuilddir := $(prefix)/ipkgbuild
+ipkverify := $(prefix)/ipkverify
+PKDIR := $(prefix)/packagingtmpdir
+
+
+# FIXME:
+export CFLAGS = -g -O2
+export CXXFLAGS = -g -O2
+
+# Kernel configuration
+
+ifdef CONFIG_KERNEL_0207
+KERNEL_VERSION := 2.6.32.28_stm24_0207
 endif
 
-ifdef ENABLE_P0209
-KERNELVERSION := 2.6.32.46_stm24_0209
+ifdef CONFIG_KERNEL_0209
+KERNEL_VERSION := 2.6.32.46_stm24_0209
 endif
 
-ifdef ENABLE_P0210
-KERNELVERSION := 2.6.32.57_stm24_0210
+ifdef CONFIG_KERNEL_0210
+KERNEL_VERSION := 2.6.32.57_stm24_0210
 endif
 
-ifdef ENABLE_P0211
-KERNELVERSION := 2.6.32.59_stm24_0211
+ifdef CONFIG_KERNEL_0211
+KERNEL_VERSION := 2.6.32.59_stm24_0211
 endif
 
-ifdef ENABLE_P0212
-KERNELVERSION := 2.6.32.61_stm24_0212
+ifdef CONFIG_KERNEL_0212
+KERNEL_VERSION := 2.6.32.61_stm24_0212
 endif
 
-KERNEL_DIR := linux-sh4-$(KERNELVERSION)
-KERNELSTMLABEL := _$(word 2,$(subst _, ,$(KERNELVERSION)))_$(word 3,$(subst _, ,$(KERNELVERSION)))
-KERNELLABEL := $(shell x=$(KERNELVERSION); echo $${x: -3})
-
-#######################################      #########################################
+KERNEL_VERSION_SPLITED := $(subst _, ,$(KERNEL_VERSION))
+KERNEL_UPSTREAM := $(word 1,$(KERNEL_VERSION_SPLITED))
+KERNEL_STM := $(word 2,$(KERNEL_VERSION_SPLITED))
+KERNEL_LABEL := $(word 3,$(KERNEL_VERSION_SPLITED))
+KERNEL_RELEASE := $(subst ^0,,^$(KERNEL_LABEL))
+# TODO: add KERNEL_DIR 
 
 STLINUX := stlinux24
-STM_SRC := $(STLINUX)
-STM_RELOCATE := /opt/STM/STLinux-2.4
+#? TODO: STM_RELOCATE := /opt/STM/STLinux-2.4
 
-#######################################      #########################################
 # PATH is exported automatically
-
+PATH := $(crossprefix)/bin:$(hostprefix)/bin:$(PATH)
 ifdef ENABLE_CCACHE
-PATH := $(hostprefix)/ccache-bin:$(crossprefix)/bin:$(PATH):/usr/sbin
-else
-PATH := $(crossprefix)/bin:$(PATH):/usr/sbin
+PATH := $(hostprefix)/ccache-bin:$(PATH)
 endif
 
+
+# TODO: review these variables
 DEPMOD = $(hostprefix)/bin/depmod
 SOCKSIFY=
 CMD_CVS=$(SOCKSIFY) $(shell which cvs)
-WGET=$(SOCKSIFY) wget
+WGET=$(SOCKSIFY) wget -P
 
+INSTALL := install
 INSTALL_DIR=$(INSTALL) -d
 INSTALL_BIN=$(INSTALL) -m 755
 INSTALL_FILE=$(INSTALL) -m 644
@@ -72,7 +155,7 @@ BUILDENV := \
 	source $(buildprefix)/build.env &&
 
 EXPORT_BUILDENV := \
-	export PATH=$(MAKE_PATH) && \
+	export PATH=$(PATH) && \
 	export CC=$(target)-gcc && \
 	export CXX=$(target)-g++ && \
 	export LD=$(target)-ld && \
@@ -86,7 +169,7 @@ EXPORT_BUILDENV := \
 	export LN_S="ln -s" && \
 	export CFLAGS="$(TARGET_CFLAGS)" && \
 	export CXXFLAGS="$(TARGET_CFLAGS)" && \
-	export LDFLAGS="$(TARGET_LDFLAGS) -Wl,-rpath-link,$(packagingtmpdir)/usr/lib" && \
+	export LDFLAGS="$(TARGET_LDFLAGS) -Wl,-rpath-link,$(PKDIR)/usr/lib" && \
 	export PKG_CONFIG_SYSROOT_DIR="$(targetprefix)" && \
 	export PKG_CONFIG_PATH="$(targetprefix)/usr/lib/pkgconfig" && \
 	export PKG_CONFIG_LIBDIR="$(targetprefix)/usr/lib/pkgconfig"
@@ -124,23 +207,19 @@ MAKE_ARGS := \
 
 PLATFORM_CPPFLAGS := $(CPPFLAGS) -I$(driverdir)/include -I $(buildprefix)/$(KERNEL_DIR)/include -I$(appsdir)/misc/tools
 
-ifdef ENABLE_SPARK
+ifdef CONFIG_SPARK
 PLATFORM_CPPFLAGS += -DPLATFORM_SPARK
 endif
 
-ifdef ENABLE_SPARK7162
+ifdef CONFIG_SPARK7162
 PLATFORM_CPPFLAGS += -DPLATFORM_SPARK7162
 endif
 
-ifdef ENABLE_HL101
+ifdef CONFIG_HL101
 PLATFORM_CPPFLAGS += -DPLATFORM_HL101
 endif
 
 PLATFORM_CPPFLAGS := CPPFLAGS="$(PLATFORM_CPPFLAGS)"
-
-DEPDIR = .deps
-
-VPATH = $(DEPDIR)
 
 CONFIGURE_OPTS = \
 	--build=$(build) \
@@ -167,41 +246,30 @@ CONFIGURE = \
 	LDFLAGS="$(TARGET_LDFLAGS)" \
 	./configure $(CONFIGURE_OPTS)
 
-PYTHON_VERSION = $(word 1,$(subst ., ,$(VERSION_python))).$(word 2,$(subst ., ,$(VERSION_python)))
-PYTHON_DIR = /usr/lib/python$(PYTHON_VERSION)
+# FIXME
+start_build = $(error obsolete)
 
-query: %query:
-	rpm --dbpath $(prefix)/$*cdkroot-rpmdb $(DRPM) -qa
-
-query-%:
-	@for i in sh4 noarch ${host_arch} ; do \
-		FOUND=`ls RPMS/$$i | grep $*` || true && \
-		( for j in $$FOUND ; do \
-			echo "RPMS/$$i/$$j:" && \
-			rpm $(DRPM) -qplv --scripts RPMS/$$i/$$j || true; echo;done ) || true ; done
-
+# TODO: move it somewhere
+# all helpers
+PKDIR_clean = rm -rf $(PKDIR)/* && mkdir -p $(PKDIR)
 
 # rpm helpers
-rpm_src_install := rpm --ignorearch --nosignature -Uhv
-rpm_build := rpmbuild $(DRPMBUILD) -bb -v --clean --target=sh4-linux
-rpm_install := rpm $(DRPM) --ignorearch --nodeps -Uhv
+rpm_macros := --macros /usr/lib/rpm/macros:$(configprefix)/rpm/hosts/$(build):$(configprefix)/rpm/targets/$(target):$(configprefix)/rpm/common:$(buildprefix)/localmacros
+# --dbpath $(prefix)/rpmdb
+rpm_src_install := rpm $(rpm_macros) --ignorearch --nosignature -Uhv
+#rpm_build := rpmbuild $(rpm_macros) -bb -v --clean --target=$(target)
+rpm_build := rpmbuild $(rpm_macros) -bi -v --nodeps --target=$(target)
+rpm_install := rpm $(rpm_macros)  --ignorearch --nodeps -Uhv
 
+# python helpers
+python_build = \
+	CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
+	PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+	$(crossprefix)/bin/python ./setup.py build
 
-# -----------------------------------------
-# Config gui
-# Usage:
-#   palce $(eval $(call guiconfig,util_name)) somewhere in *mk file
-#   then call make util_name.xcofig
-#
-define guiconfig
+#	$(crossprefix)/bin/python -c "import setuptools; execfile('setup.py')" build
 
-$(1).menuconfig $(1).xconfig: \
-$(1).%:
-	$(MAKE) -C $(DIR_$(1)) ARCH=sh CROSS_COMPILE=sh4-linux- $$*
-	@echo
-	@echo "You have to edit m a n u a l l y Patches/...$(1)...*config to make changes permanent !!!"
-	@echo ""
-	diff $(DIR_$(1))/.config.old $(DIR_$(1))/.config
-	@echo ""
-
-endef
+python_install = \
+	CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
+	PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+	$(crossprefix)/bin/python ./setup.py install --root=$(PKDIR) --prefix=/usr

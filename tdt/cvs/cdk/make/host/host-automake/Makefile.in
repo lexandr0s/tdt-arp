@@ -1,0 +1,3 @@
+package[[ host_automake
+call[[ header ]]
+]]package

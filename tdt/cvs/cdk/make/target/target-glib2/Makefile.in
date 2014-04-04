@@ -1,0 +1,3 @@
+package[[ target_glib2
+call[[ header ]]
+]]package

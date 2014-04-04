@@ -1,0 +1,4 @@
+package[[ host_opkg
+call[[ header ]]
+${P}_conf = $(hostprefix)/etc/opkg.conf
+]]package

@@ -1,0 +1,4 @@
+package[[ cross_filesystem
+call[[ header ]]
+cross_opkg_conf := $(crossprefix)/etc/opkg.conf
+]]package

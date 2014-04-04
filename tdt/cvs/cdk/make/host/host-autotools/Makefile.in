@@ -1,0 +1,3 @@
+package[[ host_autotools
+call[[ header ]]
+]]package

@@ -1,0 +1,7 @@
+package[[ target_gcc
+call[[ header ]]
+]]package
+
+ifdef CONFIG_BUILD_TARGET_GCC
+target_gcc_lib := $(target_gcc)
+endif

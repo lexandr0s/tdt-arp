@@ -1,0 +1,3 @@
+package[[ target_libxmlccwrap
+call[[ header ]]
+]]package

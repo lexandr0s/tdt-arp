@@ -1,0 +1,3 @@
+package[[ target_libattr
+call[[ header ]]
+]]package

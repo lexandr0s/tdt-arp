@@ -3,6 +3,7 @@
 .config
 .config.old
 localmacros
+!Makefile.in
 Makefile
 Makefile.pre
 Makefile.dump

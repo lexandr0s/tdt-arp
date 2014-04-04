@@ -1,0 +1,100 @@
+mainmenu "global config"
+
+	choice
+		prompt "Target:"
+		default SPARK
+		help
+			Select box type
+
+		config SPARK
+		bool "SPARK"
+
+		config SPARK7162
+		bool "SPARK7162"
+
+		config HL101
+		bool "SpiderBox HL-101 (TODO)"
+	endchoice
+		
+	config TARGET
+		string
+		default "spark"  if SPARK
+		default "spark7162"  if SPARK7162
+		default "hl101"  if HL101
+
+	choice
+		prompt "Kernel:"
+		default KERNEL_0211
+		help
+			Select kernel version
+
+		config KERNEL_0207
+		bool "STM 24 2.6.32.28-0207"
+
+		config KERNEL_0209
+		bool "STM 24 2.6.32.46-0209"
+
+		config KERNEL_0210
+		bool "STM 24 2.6.32.57-0210"
+
+		config KERNEL_0211
+		bool "STM 24 2.6.32.59-0211"
+		
+		config KERNEL_0212
+		bool "STM 24 2.6.32.61-0212"
+	endchoice
+
+	choice
+		prompt "toolchain building:"
+		default GLIBC_BINARY
+		help
+			select if use prebuilt binaries for toolchain at stage 1
+
+		config GLIBC_BINARY
+		bool "use prebuilt glibc sh4 binaries (TODO)"
+
+		config GLIBC_SCRATCH
+		bool "use only source files"
+
+	endchoice
+
+	choice
+		prompt "Multicom:"
+		default MULTICOM_324
+
+		config MULTICOM_324
+		bool "Multicom 3.2.4"
+
+		config MULTICOM_406
+		bool "Multicom 4.0.6 (testing)"
+	endchoice
+
+	config BUILD_TARGET_GCC
+		bool "Build target-gcc ?"
+		default y
+
+	choice
+		prompt "Enigma2 source:"
+		default ENIGMA2_SRC_MASTER
+
+		config ENIGMA2_SRC_MASTER
+		bool "non-public branch master"
+
+		config ENIGMA2_SRC_STAGING
+		bool "non-public branch staging"
+
+		config ENIGMA2_SRC_LAST
+		bool "non-public branch last"
+
+	endchoice
+
+	choice
+		prompt "Media Framework:"
+		default EPLAYER3
+
+		config GSTREAMER
+		bool "gstreamer (TODO)"
+
+		config EPLAYER3
+		bool "eplayer3"
+	endchoice

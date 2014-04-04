@@ -1,0 +1,107 @@
+#
+# tdt tools packages
+#
+package[[ target_devinit
+call[[ header ]]
+]]package
+
+package[[ target_evremote2
+call[[ header ]]
+]]package
+
+package[[ target_fp_control
+call[[ header ]]
+]]package
+
+package[[ target_libeplayer3
+call[[ header ]]
+]]package
+
+package[[ target_libmme_host
+call[[ header ]]
+]]package
+
+package[[ target_libmmeimage
+call[[ header ]]
+]]package
+
+package[[ target_showiframe
+call[[ header ]]
+]]package
+
+package[[ target_stfbcontrol
+call[[ header ]]
+]]package
+
+package[[ target_ustslave
+call[[ header ]]
+]]package
+
+PR_tdt_tools = 1
+# end tdt tools packages
+
+function[[ base_tdt_tools
+# define variables before this function
+# you may use $(PR_tdt_tools) as part of your PR
+# you can append some more rule after call to this function
+
+PV_${P} ?= git
+SRC_URI_${P} ?= https://code.google.com/p/tdt-amiko/
+NAME_${P} ?= ${PN}
+
+call[[ base ]]
+
+GIT_DIR_${P} = $(appsdir)/misc/tools/$(subst target_,,${P})
+
+rule[[
+  pdircreate:${DIR}
+  plndir:$(GIT_DIR_${P}):${DIR}
+]]rule
+
+call[[ git ]]
+
+]]function
+
+function[[ TARGET_tdt_tools
+# you can add CONFIG_FLAGS before call to this function
+# you can overwrite any TARGET after call to this function
+
+CONFIG_FLAGS_${P} += \
+	--with-driver=$(driverdir) \
+	--with-dvbincludes=$(driverdir)/include \
+	--with-target=cdk
+
+ifdef CONFIG_MULTICOM_324
+CONFIG_FLAGS_${P} += --enable-multicom324
+endif
+ifdef CONFIG_MULTICOM_406
+CONFIG_FLAGS_${P} += --enable-multicom406
+endif
+
+$(TARGET_${P}).do_prepare: $(DEPENDS_${P})
+	$(PREPARE_${P})
+	touch $@
+
+$(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
+	cd $(DIR_${P}) && \
+		$(BUILDENV) \
+		libtoolize -f -c && \
+		./autogen.sh && \
+		./configure \
+			--build=$(build) \
+			--host=$(target) \
+			--prefix= \
+			$(CONFIG_FLAGS_${P}) \
+		&& \
+		make $(MAKE_FLAGS_${P})
+	touch $@
+
+$(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
+	$(PKDIR_clean)
+	cd $(DIR_${P}) && make $(MAKE_FLAGS_${P}) install DESTDIR=$(PKDIR)
+	touch $@
+
+call[[ ipk ]]
+call[[ ipkbox ]]
+
+]]function

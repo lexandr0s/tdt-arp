@@ -1,0 +1,3 @@
+package[[ target_cross_gcc_lib
+call[[ header ]]
+]]package

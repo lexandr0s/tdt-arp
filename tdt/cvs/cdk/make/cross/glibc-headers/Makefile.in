@@ -1,0 +1,3 @@
+package[[ target_glibc_headers
+call[[ header ]]
+]]package
