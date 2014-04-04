@@ -53,8 +53,6 @@ def process(s):
 			s = l[-2] +'/' + l[-1]
 	else:
 		s = l[-1]
-	if s.startswith("max-") or s.startswith("min-") or s.startswith("std-"):
-		return ''
 	if s == "|":
 		return ''
 	return s
@@ -81,6 +79,8 @@ while True:
 	if not line.strip():
 		continue
 	print "line: " + line.strip()
+	if line.find("::") > -1:
+		continue
 	l = line.split(":")
 	if len(l) < 2:
 		continue
@@ -117,6 +117,19 @@ def parent(x):
 		return x.replace('.do_compile','')
 	elif x.endswith('.do_package'):
 		return x.replace('.do_package','')
+	elif x.endswith('.do_ipk'):
+		return x.replace('.do_ipk','')
+	elif x.endswith('.set_inherit_vars'):
+		return x.replace('.set_inherit_vars','')
+	elif x.endswith('.do_git_version'):
+		return x.replace('.do_git_version','')
+	elif x.endswith('.write_git_version'):
+		return x.replace('.write_git_version','')
+	elif x.endswith('.include_git_version'):
+		return x.replace('.include_git_version','')
+	elif x.endswith('.do_srcrev'):
+		return x.replace('.do_srcrev','')
+
 	return None
 
 targ2 = {}
@@ -160,7 +173,7 @@ def DFS(start, do_cmd):
 		if curr in targ:
 			child = targ[curr]
 		else:
-			raise Exception("unknown dependency", targ)
+			print "WARNING: unknown dependency", curr
 			child = []
 	
 		# have we been here before ?
