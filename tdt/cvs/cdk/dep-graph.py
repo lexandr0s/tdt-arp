@@ -28,18 +28,18 @@ targ = {}
 
 fdot.write("digraph G{")
 fdot.write("""
-#	nodesep=0.2;
-	ranksep=1;
+	nodesep=0.3;
+	ranksep=0.8;
 	charset="latin1";
 	rankdir=LR;
-#	fixedsize=true;
 	concentrate=true;
 	node [style="rounded,filled", width=0, height=0, shape=box, fillcolor="#E5E5E5"]
 """)
 
 
 def debug(s):
-	sys.stderr.write(s+"\n")
+	if DEBUG:
+		sys.stderr.write(s+"\n")
 
 def process(s):
 	s = s.strip()
@@ -78,7 +78,7 @@ while True:
 		continue
 	if not line.strip():
 		continue
-	print "line: " + line.strip()
+	debug( "line: " + line.strip() )
 	if line.find("::") > -1:
 		continue
 	l = line.split(":")
@@ -97,7 +97,7 @@ while True:
 			continue
 		d += [deps[i]]
 	deps = uniq(d)
-	print "adding %s: %s" % (name, ' '.join(deps))
+	debug( "adding %s: %s" % (name, ' '.join(deps)) )
 	if name in targ:
 		raise Exception("ERROR: %s duplicate" % name)
 	targ[name] = deps
