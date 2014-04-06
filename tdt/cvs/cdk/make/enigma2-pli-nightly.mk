@@ -83,6 +83,10 @@ ifdef ENABLE_SPARK7162
 E_CONFIG_OPTS += --enable-spark7162
 endif
 
+ifdef ENABLE_hl101
+E_CONFIG_OPTS += --enable-hl101
+endif
+
 $(DEPDIR)/enigma2-pli-nightly.do_prepare: $(DEPENDS_enigma2_pli)
 	$(PREPARE_enigma2_pli)
 	touch $@
