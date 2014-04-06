@@ -47,8 +47,8 @@
 	</map>
 
 	<map context="InfobarEPGActions">
-		<key id="KEY_EPG" mapto="showEventInfo" flags="m" />
-		<!--key id="KEY_EPG" mapto="showEventInfoPlugin" flags="m" /-->
+		<!--key id="KEY_EPG" mapto="showEventInfo" flags="m" /-->
+		<key id="KEY_EPG" mapto="showEventInfoPlugins" flags="m" />
 	</map>
 
 	<map context="InfobarInstantRecord">
