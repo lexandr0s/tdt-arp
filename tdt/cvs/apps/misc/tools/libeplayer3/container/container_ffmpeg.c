@@ -289,7 +289,6 @@ static void FFMPEGThread(Context_t *context) {
 
 	hasPlayThreadStarted = 1;
 
-	off_t lastSeek = -1;
 	long long int currentVideoPts = -1, currentAudioPts = -1, showtime = 0, bofcount = 0;
 	AudioVideoOut_t avOut;
 
@@ -493,7 +492,7 @@ static void FFMPEGThread(Context_t *context) {
 						swr = NULL;
 					}
 					if (decoded_frame) {
-						avcodec_free_frame(&decoded_frame);
+						av_frame_free(&decoded_frame);
 						decoded_frame = NULL;
 					}
 					context->output->Command(context, OUTPUT_CLEAR, NULL);
@@ -504,12 +503,12 @@ static void FFMPEGThread(Context_t *context) {
 				{
 					int got_frame = 0;
 					if (!decoded_frame) {
-						if (!(decoded_frame = avcodec_alloc_frame())) {
+						if (!(decoded_frame = av_frame_alloc())) {
 							fprintf(stderr, "out of memory\n");
 							exit(1);
 						}
 					} else
-						avcodec_get_frame_defaults(decoded_frame);
+						av_frame_unref(decoded_frame);
 
 					int len = avcodec_decode_audio4(c, decoded_frame, &got_frame, &packet);
 					if (len < 0) {
@@ -804,7 +803,7 @@ static void FFMPEGThread(Context_t *context) {
 	if (swr)
 		swr_free(&swr);
 	if (decoded_frame)
-		avcodec_free_frame(&decoded_frame);
+		av_frame_free(&decoded_frame);
 
 	if (context->playback)
 		context->playback->abortPlayback = 1;
@@ -850,7 +849,6 @@ static int container_ffmpeg_init(Context_t *context, char * filename)
 	isContainerRunning = 1;
 
 	/* initialize ffmpeg */
-	avcodec_register_all();
 	av_register_all();
 	avformat_network_init();
 	//av_log_set_level( AV_LOG_DEBUG );
@@ -861,7 +859,7 @@ static int container_ffmpeg_init(Context_t *context, char * filename)
 	avContext->interrupt_callback.callback = interrupt_cb;
 	avContext->interrupt_callback.opaque = context->playback;
 
-	if ((err = avformat_open_input(&avContext, filename, NULL, 0)) != 0)
+	if ((err = avformat_open_input(&avContext, filename, NULL, NULL)) < 0)
 	{
 		char error[512];
 
@@ -872,6 +870,7 @@ static int container_ffmpeg_init(Context_t *context, char * filename)
 		isContainerRunning = 0;
 		return cERR_CONTAINER_FFMPEG_OPEN;
 	}
+
 	if(strstr(filename, "http://") == filename)
 	{
 		avContext->flags |= AVFMT_FLAG_NONBLOCK | AVIO_FLAG_NONBLOCK | AVFMT_NO_BYTE_SEEK;
@@ -980,10 +979,10 @@ int container_ffmpeg_update_tracks(Context_t *context, char *filename, int initi
 					track.extraSize		= stream->codec->extradata_size;
 
 					track.frame_rate	= stream->r_frame_rate.num;
-
+#if 0
 					track.aacbuf		= 0;
 					track.have_aacheader	= -1;
-
+#endif
 					double frame_rate = av_q2d(stream->r_frame_rate); /* rational to double */
 
 					ffmpeg_printf(10, "frame_rate = %f\n", frame_rate);
@@ -1047,10 +1046,10 @@ int container_ffmpeg_update_tracks(Context_t *context, char *filename, int initi
 					track.Encoding		= encoding;
 					track.stream		= stream;
 					track.Id		= stream->id;
-					track.duration		= (double)stream->duration * av_q2d(stream->time_base) * 1000.0;
+#if 0
 					track.aacbuf		= 0;
 					track.have_aacheader	= -1;
-
+#endif
 					if(stream->duration == AV_NOPTS_VALUE) {
 						ffmpeg_printf(10, "Stream has no duration so we take the duration from context\n");
 						track.duration = (double) avContext->duration / 1000.0;
@@ -1061,9 +1060,9 @@ int container_ffmpeg_update_tracks(Context_t *context, char *filename, int initi
 
 					if(stream->codec->codec_id == AV_CODEC_ID_AAC) {
 						unsigned int sample_index;
-						Hexdump(stream->codec->extradata, stream->codec->extradata_size);
 
 						if(stream->codec->extradata_size >= 2) {
+							Hexdump(stream->codec->extradata, stream->codec->extradata_size);
 							sample_index = ((stream->codec->extradata[0] & 0x7) << 1)
 								+ (stream->codec->extradata[1] >> 7);
 						}
@@ -1071,7 +1070,7 @@ int container_ffmpeg_update_tracks(Context_t *context, char *filename, int initi
 							sample_index = aac_get_sample_rate_index(stream->codec->sample_rate);
 						}
 
-						if (sample_index > 4) { // I do not know if it is the right way, but works on all files which I tested
+						if ((sample_index > 4) || (stream->codec->extradata_size == 0)) { // I do not know if it is the right way, but works on all files which I tested
 							ffmpeg_printf(10,"aac sample index %d, use A_IPCM\n", sample_index);
 							encoding = "A_IPCM";
 							track.Encoding = "A_IPCM";
@@ -1119,11 +1118,10 @@ int container_ffmpeg_update_tracks(Context_t *context, char *filename, int initi
 					track.Encoding		 = encoding;
 					track.stream		 = stream;
 					track.Id			 = stream->id;
-					track.duration		 = (double)stream->duration * av_q2d(stream->time_base) * 1000.0;
-
+#if 0
 					track.aacbuf		 = 0;
 					track.have_aacheader = -1;
-
+#endif
 					track.width		 = -1; /* will be filled online from videotrack */
 					track.height		 = -1; /* will be filled online from videotrack */
 
@@ -1425,6 +1423,11 @@ static int Command(void  *_context, ContainerCmd_t command, void * argument)
 	double length = 0;
 
 	ffmpeg_printf(50, "Command %d\n", command);
+
+	if (command != CONTAINER_INIT && !avContext)
+		return cERR_CONTAINER_FFMPEG_ERR;
+	if (command == CONTAINER_INIT && avContext)
+		return cERR_CONTAINER_FFMPEG_ERR;
 
 	switch(command)
 	{
