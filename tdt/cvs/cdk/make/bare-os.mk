@@ -216,7 +216,7 @@ FILES_libstdc++-dev = \
 
 LIBGCC := libgcc
 ifdef GCC48
-GCC_VERSION := 4.8.2-135
+GCC_VERSION := 4.8.2-137
 else
 GCC_VERSION := 4.7.3-129
 endif
