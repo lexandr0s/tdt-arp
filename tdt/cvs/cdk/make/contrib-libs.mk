@@ -1488,10 +1488,6 @@ $(DEPDIR)/ffmpeg.do_compile: $(DEPDIR)/ffmpeg.do_prepare
 		--disable-ffplay \
 		--disable-ffprobe \
 		--disable-doc \
-		--disable-htmlpages \
-		--disable-manpages \
-		--disable-podpages \
-		--disable-txtpages \
 		--disable-asm \
 		--disable-altivec \
 		--disable-amd3dnow \
@@ -1520,25 +1516,9 @@ $(DEPDIR)/ffmpeg.do_compile: $(DEPDIR)/ffmpeg.do_prepare
 		--disable-mipsfpu \
 		--disable-fast-unaligned \
 		--disable-muxers \
-		--enable-muxer=flac \
-		--enable-muxer=mp3 \
-		--enable-muxer=h261 \
-		--enable-muxer=h263 \
-		--enable-muxer=h264 \
-		--enable-muxer=image2 \
-		--enable-muxer=mpeg1video \
 		--enable-muxer=mpeg2video \
-		--enable-muxer=ogg \
 		--disable-encoders \
-		--enable-encoder=aac \
-		--enable-encoder=h261 \
-		--enable-encoder=h263 \
-		--enable-encoder=h263p \
-		--enable-encoder=ljpeg \
-		--enable-encoder=mjpeg \
-		--enable-encoder=mpeg1video \
 		--enable-encoder=mpeg2video \
-		--enable-encoder=png \
 		--disable-decoders \
 		--enable-decoder=aac \
 		--enable-decoder=dvbsub \
@@ -1564,14 +1544,8 @@ $(DEPDIR)/ffmpeg.do_compile: $(DEPDIR)/ffmpeg.do_prepare
 		--enable-decoder=theora \
 		--enable-decoder=vorbis \
 		--enable-parser=mjpeg \
-		--enable-demuxer=mjpeg \
-		--enable-demuxer=wav \
-		--enable-demuxer=hls \
-		--enable-protocol=file \
-		--enable-protocol=hls \
-		--enable-protocol=udp \
-		--enable-protocol=bluray \
 		--enable-libbluray \
+		--enable-protocol=bluray \
 		--disable-indevs \
 		--disable-outdevs \
 		--enable-pthreads \
@@ -1580,7 +1554,6 @@ $(DEPDIR)/ffmpeg.do_compile: $(DEPDIR)/ffmpeg.do_prepare
 		--disable-bsfs \
 		--enable-librtmp \
 		--pkg-config="pkg-config" \
-		--disable-parser=hevc \
 		--enable-cross-compile \
 		--cross-prefix=$(target)- \
 		--target-os=linux \
@@ -1588,6 +1561,7 @@ $(DEPDIR)/ffmpeg.do_compile: $(DEPDIR)/ffmpeg.do_prepare
 		--disable-debug \
 		--extra-cflags="-fno-strict-aliasing" \
 		--enable-stripping \
+		--enable-pthreads \
 		--prefix=/usr
 	touch $@
 
