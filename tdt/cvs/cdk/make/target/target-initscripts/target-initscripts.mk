@@ -16,6 +16,7 @@ call[[ base ]]
 rule[[
   pdircreate:${PN}-${PV}
   install:-d:$(PKDIR)/etc/init.d
+  install:-d:$(PKDIR)/etc/rc.d
   install_file:$(PKDIR)/etc:file://../root/etc/inittab
   install_bin:$(PKDIR)/etc/init.d:file://../root/release/hostname
   install_bin:$(PKDIR)/etc/init.d:file://../root/release/inetd
@@ -41,11 +42,10 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_prepare
 	$(PKDIR_clean)
-
 	cd $(DIR_${P}) && $(INSTALL_${P})
-	ln -sf ../init.d $(PKDIR)/etc/rc.d
 
-	$(tobox_build)
+	ln -sf ../init.d $(PKDIR)/etc/rc.d/init.d
+
 	touch $@
 
 define postinst_${P}
