@@ -1,6 +1,8 @@
 # print '+' before each executed command
 # SHELL := $(SHELL) -x
 
+MAKE_DEBUG :=
+
 # gnu make strings magic
 empty :=
 define newline
@@ -10,10 +12,21 @@ endef
 space := $(empty) $(empty)
 comma := ,
 
-# def
-# - 1: multiline variable name
-# - 2: multiline variable value
-def = define $1 $(newline)$2$(newline)endef
+# eval_define
+# - 1: variable name
+# - 2: variable name
+eval_define = $(eval define $1 $(newline)$(value $2)$(newline)endef) \
+       $(if $(MAKE_DEBUG), \
+              $(info define $1 $(newline)$(value $2)$(newline)endef) \
+       )
+# eval_assign
+# - 1: variable name
+# - 2: variable value
+eval_assign = $(eval $1 = $(value $2)) \
+       $(if $(MAKE_DEBUG), \
+              $(info $1 = $(value $2)) \
+       )
+
 
 # global consts
 target_arch := sh4

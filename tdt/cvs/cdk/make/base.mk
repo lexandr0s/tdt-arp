@@ -37,6 +37,15 @@ PN_${P} ?= $(patsubst host-%,%,$(patsubst cross-%,%,$(patsubst target-%,%, $(${P
 DIR_${P} ?= $(workprefix)/${PN}-${PV}
 PACKAGE_ARCH_${P} ?= sh4
 
+# opkg control default values
+VERSION_${P} ?= ${PV}-${PR}
+DESCRIPTION_${P} ?= ${P}
+MAINTAINER_${P} ?= Ar-P team
+SECTION_${P} ?= base
+PRIORITY_${P} ?= optional
+LICENSE_${P} ?= unknown
+HOMEPAGE_${P} ?= unknown
+
 # build dependencies
 DEPENDS_${P} += $(TARGET_${P}).version_${PV}-${PR}
 DEPENDS_${P} += $(addprefix $(DEPDIR)/,$(BDEPENDS_${P}))
@@ -101,7 +110,7 @@ call[[ base ]]
 #############################################################################
 
 # ipk related constants
-INHERIT_VARIABLES := VERSION DESCRIPTION SECTION PRIORITY MAINTAINER LICENSE PACKAGE_ARCH HOMEPAGE RDEPENDS RREPLACES RCONFLICTS SRC_URI FILES
+INHERIT_VARIABLES := NAME VERSION DESCRIPTION SECTION PRIORITY MAINTAINER LICENSE PACKAGE_ARCH HOMEPAGE RDEPENDS RREPLACES RCONFLICTS SRC_URI FILES
 INHERIT_DEFINES := preinst postinst prerm postrm conffiles
 
 # we have several dests, so dependencies are shared across them
@@ -109,10 +118,8 @@ host_ipkg_args = -f $(prefix)/opkg.conf -o $(prefix) -d hostroot
 cross_ipkg_args = -f $(prefix)/opkg.conf -o $(prefix) -d crossroot
 target_ipkg_args = -f $(prefix)/opkg.conf -o $(prefix) -d targetroot
 
-box_ipkg_args = -f $(box_opkg_conf) -o $(boxprefix)
-
 # format list separated with spaces to list separeated with commas
-_ipk_control_list = $(subst $(space),$(comma),$(subst $(space)$(space),$(space),$(strip $1)))
+_ipk_control_list = $(subst $(space),$(comma),$(subst $(space)$(space),$(space),$(subst _,-,$(strip $1))))
 
 # _ipk_write_control
 # - 1: pkg that contains variables
@@ -157,15 +164,6 @@ function[[ ipk
 SYSROOT_${P} ?= $(error undefined SYSROOT_${P})
 # Name of IPK that installs to SYSROOT
 IPK_${P} ?= $(ipk${SYSROOT})/$(${P})_${VERSION}_${PACKAGE_ARCH}.ipk
-
-# opkg control default values
-VERSION_${P} ?= ${PV}-${PR}
-DESCRIPTION_${P} ?= ${P}
-MAINTAINER_${P} ?= Ar-P team
-SECTION_${P} ?= base
-PRIORITY_${P} ?= optional
-LICENSE_${P} ?= unknown
-HOMEPAGE_${P} ?= unknown
 
 # for sysroot ipk we copy all files.
 $(TARGET_${P}).do_ipk: $(TARGET_${P}).do_package
@@ -244,7 +242,8 @@ define _ipkbox_write_control
 	$(foreach file, preinst postinst prerm postrm conffiles,
 		$(if $($(file)_$1),
 			$(eval export $(file)_$1)
-			echo "$${$(file)_$1}" > $(ipkgbuilddir)/$1/CONTROL/$(file)
+			$(info $($(file)_$1))
+			printenv $(file)_$1 > $(ipkgbuilddir)/$1/CONTROL/$(file)
 		)
 	)
 	$(foreach file, preinst postinst prerm postrm,
@@ -289,23 +288,23 @@ endef
 
 function[[ ipkbox
 
-PACKAGES_${P} ?= $(subst -,_,${PN})
+PACKAGES_${P} ?= $(patsubst host_%,%,$(patsubst cross_%,%,$(patsubst target_%,%, ${P} )))
 FILES_${P} ?= /
 
 $(TARGET_${P}).set_inherit_vars: $(TARGET_${P}).do_package
 	$(info ==> $(notdir $@)) \
 	$(foreach pkg, $(PACKAGES_${P}), \
+		$(foreach var, $(INHERIT_VARIABLES), \
+			$(if $($(var)_$(pkg)),,\
+				$(call eval_assign,$(var)_$(pkg),$(var)_${P}) \
+			) \
+		) \
 		$(if $(NAME_$(pkg)),, \
 			$(eval NAME_$(pkg) := $(subst _,-,$(pkg)) ) \
 		) \
-		$(foreach var, $(INHERIT_VARIABLES), \
-			$(if $($(var)_$(pkg)),,\
-				$(eval $(var)_$(pkg) := $($(var)_${P}) ) \
-			) \
-		) \
 		$(foreach var, $(INHERIT_DEFINES), \
 			$(if $($(var)_$(pkg)),,\
-				$(eval $(call def,$(var)_$(pkg),$($(var)_${P})) ) \
+				$(call eval_define,$(var)_$(pkg),$(var)_${P}) \
 			) \
 		) \
 	)
