@@ -29,7 +29,6 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_prepare
 # FIXME:
 	$(INSTALL_BIN) ${DIR}/update-rc.d $(hostprefix)/bin/update-rc.d
 
-	$(tobox_build)
 	touch $@
 
 call[[ ipk ]]

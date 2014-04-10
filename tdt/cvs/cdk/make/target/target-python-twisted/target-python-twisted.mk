@@ -27,8 +27,6 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	$(PKDIR_clean)
 	cd $(DIR_${P}) && $(python_install)
-	$(totarget_build)
-	$(tobox_build)
 	touch $@
 
 call[[ ipk ]]

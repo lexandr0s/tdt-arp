@@ -31,7 +31,6 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_prepare
 	cd $(DIR_${P}) && $(INSTALL_${P})
 	ln -sf /etc/tuxbox/timezone.xml $(PKDIR)/etc/timezone.xml
 
-	$(tobox_build)
 	touch $@
 
 call[[ ipk ]]
