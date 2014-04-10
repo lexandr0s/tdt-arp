@@ -53,8 +53,8 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	echo "export CONFIG_PLAYER_191=y" >> ${DIR}.config
 
 # TODO:
-	rm -r ${DIR}/include/multicom
-	rm -r ${DIR}/multicom
+	rm -f ${DIR}/include/multicom
+	rm -f ${DIR}/multicom
 ifdef CONFIG_MULTICOM_324
 	echo "export CONFIG_MULTICOM324=y" >> ${DIR}.config
 	ln -s ../multicom-3.2.4/include ${DIR}/include/multicom
