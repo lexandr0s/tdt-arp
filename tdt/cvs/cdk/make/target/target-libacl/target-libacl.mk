@@ -17,5 +17,6 @@ call[[ base ]]
 call[[ base_rpm ]]
 call[[ rpm ]]
 call[[ ipk ]]
+call[[ ipkbox ]]
 
 ]]package
