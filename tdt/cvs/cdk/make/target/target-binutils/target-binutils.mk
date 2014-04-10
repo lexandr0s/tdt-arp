@@ -3,7 +3,7 @@
 #
 package[[ target_binutils
 
-BDEPENDS_${P} = $(target_filesystem)
+BDEPENDS_${P} = $(target_filesystem) $(cross_gcc_second) $(target_cross_gcc_lib)
 
 PR_${P} = 1
 
@@ -16,5 +16,6 @@ ${P}_SRCRPM = $(archivedir)/$(STLINUX)-$(${P})-$(${P}_VERSION).src.rpm
 call[[ base ]]
 call[[ base_rpm ]]
 call[[ rpm ]]
+call[[ ipk ]]
 
 ]]package

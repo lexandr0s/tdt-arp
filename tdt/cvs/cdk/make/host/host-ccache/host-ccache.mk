@@ -42,4 +42,6 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	mv $(PKDIR)/ccache-bin $(PKDIR)/$(hostprefix)/
 	touch $@
 
+call[[ ipk ]]
+
 ]]package

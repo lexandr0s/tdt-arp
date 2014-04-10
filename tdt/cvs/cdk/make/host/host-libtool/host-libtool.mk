@@ -38,4 +38,6 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 		make install DESTDIR=$(PKDIR)
 	touch $@
 
+call[[ ipk ]]
+
 ]]package

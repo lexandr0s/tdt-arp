@@ -28,6 +28,7 @@ NAME_${P} = $(${P})
 
 call[[ base ]]
 call[[ base_rpm ]]
+call[[ ipk ]]
 
 #call[[ TARGET_rpm_do_compile ]]
 

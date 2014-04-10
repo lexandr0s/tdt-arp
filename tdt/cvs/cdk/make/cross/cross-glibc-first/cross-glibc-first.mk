@@ -18,6 +18,7 @@ ${P}_SRCRPM = $(archivedir)/$(STLINUX)-target-glibc-$(${P}_VERSION).src.rpm
 
 call[[ base ]]
 call[[ base_rpm ]]
+call[[ ipk ]]
 
 #call[[ TARGET_rpm_do_compile ]]
 

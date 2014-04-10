@@ -5,7 +5,7 @@
 # assume gcc depends on common headers for all targets
 package[[ target_kernel_headers
 
-BDEPENDS_${P} = $(cross_filesystem)
+BDEPENDS_${P} = $(target_filesystem)
 
 PR_${P} = 2
 
@@ -17,6 +17,7 @@ ${P}_SRCRPM = $(archivedir)/$(STLINUX)-target-linux-${PN}-$(${P}_VERSION).src.rp
 
 call[[ base ]]
 call[[ base_rpm ]]
+call[[ ipk ]]
 
 call[[ TARGET_rpm_do_compile ]]
 

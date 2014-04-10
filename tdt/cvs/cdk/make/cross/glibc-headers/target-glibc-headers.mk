@@ -3,7 +3,7 @@
 #
 package[[ target_glibc_headers
 
-BDEPENDS_${P} = $(cross_filesystem)
+BDEPENDS_${P} = $(target_filesystem)
 
 PV_${P} = 2.14.1-48
 PR_${P} = 4
@@ -24,5 +24,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_prepare
 	install -d $(PKDIR)/usr/include
 	mv $(DIR_${P})/opt/STM/STLinux-2.4/devkit/sh4/target/usr/include/* $(PKDIR)/usr/include/
 	touch $@
+
+call[[ ipk ]]
 
 ]]package

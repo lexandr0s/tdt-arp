@@ -24,4 +24,6 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	mv $(PKDIR)/$(targetprefix)/* $(PKDIR)
 	touch $@
 
+call[[ ipk ]]
+
 ]]package

@@ -58,4 +58,6 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	cp $(DIR_${P})/hostpgen $(PKDIR)/$(crossprefix)/bin/pgen
 	touch $@
 
+call[[ ipk ]]
+
 ]]package

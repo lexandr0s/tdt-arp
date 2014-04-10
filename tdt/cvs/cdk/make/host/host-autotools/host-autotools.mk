@@ -3,7 +3,7 @@
 #
 package[[ host_autotools
 
-BDEPENDS_${P} = host-opkg-meta $(host_rpmconfig)
+BDEPENDS_${P} = $(host_opkg_meta) $(host_rpmconfig) $(host_ccache)
 
 PR_${P} = 1
 
@@ -15,6 +15,7 @@ ${P}_SRCRPM = $(archivedir)/$(STLINUX)-$(${P})-$(${P}_VERSION).src.rpm
 
 call[[ base ]]
 call[[ base_rpm ]]
+call[[ ipk ]]
 call[[ TARGET_host_rpm ]]
 
 ]]package

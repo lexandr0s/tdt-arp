@@ -22,4 +22,6 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	$(subst stlinux23,stlinux24,$(fromrpm_copy))
 	touch $@
 
+call[[ ipk ]]
+
 ]]package

@@ -72,6 +72,7 @@ DEPENDS_${P} += $(addprefix Patches/,$(${P}_patches) $(${P}_config))
 
 call[[ base ]]
 call[[ base_rpm ]]
+call[[ ipk ]]
 
 call[[ TARGET_rpm_do_compile ]]
 

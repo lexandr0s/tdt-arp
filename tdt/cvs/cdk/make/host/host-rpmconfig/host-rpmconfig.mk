@@ -3,7 +3,7 @@
 #
 package[[ host_rpmconfig
 
-BDEPENDS_${P} = host-opkg-meta $(host_rpmlocalmacros)
+BDEPENDS_${P} = $(host_opkg_meta) $(host_rpmlocalmacros)
 
 PR_${P} = 2
 
@@ -25,5 +25,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	mv $(PKDIR)/opt/STM/STLinux-2.4/* $(PKDIR)/$(hostprefix)/
 	rm -rf $(PKDIR)/opt
 	touch $@
+
+call[[ ipk ]]
 
 ]]package

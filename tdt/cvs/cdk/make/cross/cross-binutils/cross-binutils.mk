@@ -15,6 +15,7 @@ ${P}_SRCRPM = $(archivedir)/$(STLINUX)-$(${P})-$(${P}_VERSION).src.rpm
 
 call[[ base ]]
 call[[ base_rpm ]]
+call[[ ipk ]]
 call[[ TARGET_cross_rpm ]]
 
 ]]package

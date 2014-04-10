@@ -31,4 +31,6 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 
 	touch $@
 
+call[[ ipk ]]
+
 ]]package
