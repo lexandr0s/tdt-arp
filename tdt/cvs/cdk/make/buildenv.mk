@@ -73,7 +73,7 @@ ipkhost := $(prefix)/ipkhost
 # cross
 devkitprefix := $(prefix)/devkit
 crossprefix := $(devkitprefix)/sh4
-targetsh4prefix := $(crossprefix)/target-sh4
+targetsh4prefix := $(prefix)/target-sh4
 ipkcross := $(prefix)/ipkcross
 # target
 targetprefix := $(prefix)/target
