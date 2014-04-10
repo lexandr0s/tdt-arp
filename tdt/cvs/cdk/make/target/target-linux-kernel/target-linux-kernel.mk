@@ -98,14 +98,15 @@ FILES_${P} = \
 	/lib/modules/$(KERNEL_VERSION)/kernel \
 	/lib/modules/$(KERNEL_VERSION)/modules.* \
 	/boot/uImage
+
 define postinst_${P}
 #!/bin/sh
 if [ -z "$$OPKG_OFFLINE_ROOT" ]; then
   flash_eraseall /dev/mtd5
   nandwrite -p /dev/mtd5 /boot/uImage
   rm /boot/uImage
-  depmod -b $$OPKG_OFFLINE_ROOT/ -a $(KERNEL_VERSION)
 fi
+depmod -b $$OPKG_OFFLINE_ROOT/ -a $(KERNEL_VERSION)
 endef
 
 call[[ ipkbox ]]
