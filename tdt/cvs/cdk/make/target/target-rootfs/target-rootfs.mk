@@ -1,10 +1,12 @@
 #
-# ZLIB
+# AR-P buildsystem smart Makefile
 #
 package[[ target_rootfs
 
-BDEPENDS_${P} = \
-$(target_firmware) $(target_bootelf) $(target_ustslave) $(target_driver) $(target_busybox) $(target_update_rcd) $(target_initscripts) $(target_sysvinit) $(target_devinit) $(target_udev) $(target_udev_rules) $(target_base_passwd) $(target_base_files) $(target_netbase) $(target_opkg) $(target_lirc) $(target_evremote2) $(target_vsftpd) $(target_enigma2)
+IPKBOX_LIST_${P} = \
+$(target_firmware) $(target_bootelf) $(target_ustslave) $(target_driver) $(target_busybox) $(target_update_rcd) $(target_initscripts) $(target_sysvinit) $(target_devinit) $(target_udev) $(target_udev_rules) $(target_base_passwd) $(target_base_files) $(target_netbase) $(target_opkg) $(target_lirc) $(target_evremote2) $(target_vsftpd) $(target_enigma2) $(target_tuxbox_configs)
+
+DEPENDS_${P} = $(addsuffix .do_ipkbox, $(IPKBOX_LIST_${P}))
 
 #$(target_libmme_host) $(target_libmmeimage)
 
@@ -13,13 +15,19 @@ PR_${P} = 2
 
 DIR_${P} = $(prefix)/release
 
-opkg_rootfs := opkg -f $(box_opkg_conf) -o $(DIR_${P})
+opkg_rootfs := opkg -f $(prefix)/opkg-box.conf -o $(DIR_${P})
 
-call[[ base_bare ]]
+call[[ base ]]
 
 $(TARGET_${P}): $(DEPENDS_${P})
-	touch $@
 	$(PREPARE_${P})
+	( echo "dest root /"; \
+	  echo "arch spark 16"; \
+	  echo "arch sh4 10"; \
+	  echo "arch all 1"; \
+	  echo "src/gz box file://$(ipkbox)"; \
+	) > $(prefix)/opkg-box.conf
+
 	cd $(ipkbox) && \
 		/usr/bin/python $(hostprefix)/bin/ipkg-make-index . > Packages && \
 		cat Packages | gzip > Packages.gz
