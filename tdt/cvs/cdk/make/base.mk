@@ -146,13 +146,13 @@ endef
 
 # adapt files for cross compiling
 rewrite_libtool = \
-	find $(ipkgbuilddir)/* -name "*.la" -type f -exec \
+	find $(ipkrootdir)/* -name "*.la" -type f -exec \
 		perl -pi -e "s,^libdir=.*$$,libdir='$(targetprefix)/usr/lib'," {} \;
 rewrite_dependency = \
-	find $(ipkgbuilddir)/* -name "*.la" -type f -exec \
+	find $(ipkrootdir)/* -name "*.la" -type f -exec \
 		perl -pi -e "s, /usr/lib, $(targetprefix)/usr/lib,g if /^dependency_libs/" {} \;
 rewrite_pkgconfig = \
-	find $(ipkgbuilddir)/* -name "*.pc" -type f -exec \
+	find $(ipkrootdir)/* -name "*.pc" -type f -exec \
 		perl -pi -e "s,^prefix=.*$$,prefix=$(targetprefix)/usr," {} \;
 #FIXME: unpackaged 'cp'
 rewrite_config = \
@@ -165,27 +165,28 @@ SYSROOT_${P} ?= $(error undefined SYSROOT_${P})
 # Name of IPK that installs to SYSROOT
 IPK_${P} ?= $(ipk${SYSROOT})/$(${P})_${VERSION}_${PACKAGE_ARCH}.ipk
 
+ipkrootdir = $(prefix)/ipkrootdir
 # for sysroot ipk we copy all files.
 $(TARGET_${P}).do_ipk: $(TARGET_${P}).do_package
-	rm -rf $(ipkgbuilddir)
-	mkdir -p $(ipkgbuilddir)/${P}/CONTROL
+	rm -rf $(ipkrootdir)
+	mkdir -p $(ipkrootdir)/${P}/CONTROL
 ifeq (${SYSROOT},host)
-	cp -ar $(PKDIR)/$(hostprefix)/* $(ipkgbuilddir)/${P}
+	cp -ar $(PKDIR)/$(hostprefix)/* $(ipkrootdir)/${P}
 endif
 ifeq (${SYSROOT},cross)
-	cp -ar $(PKDIR)/$(crossprefix)/* $(ipkgbuilddir)/${P}
+	cp -ar $(PKDIR)/$(crossprefix)/* $(ipkrootdir)/${P}
 endif
 ifeq (${SYSROOT},target)
-	cp -ar $(PKDIR)/* $(ipkgbuilddir)/${P}
+	cp -ar $(PKDIR)/* $(ipkrootdir)/${P}
 	$(rewrite_libtool)
 	$(rewrite_dependency)
 endif
 
-	$(call _ipk_write_control,${P},$(ipkgbuilddir)/${P}/CONTROL/control)
+	$(call _ipk_write_control,${P},$(ipkrootdir)/${P}/CONTROL/control)
 
 	rm -rf $(ipkverify)/*
 	mkdir -p $(ipkverify)
-	ipkg-build -o root -g root $(ipkgbuilddir)/${P} $(ipkverify)
+	ipkg-build -o root -g root $(ipkrootdir)/${P} $(ipkverify)
 
 # make shure the built ipk has name defined by IPK_${P} variable !
 	test '$(notdir $(IPK_${P}))' == "`ls $(ipkverify)`" || \
@@ -254,26 +255,26 @@ define _ipkbox_write_control
 endef
 
 define strip_libs
-	find $(PKDIR) -type f -regex '.*/lib/.*\.so\(\.[0-9]+\)*' \
+	find $(ipkgbuilddir)/* -type f -regex '.*/lib/.*\.so\(\.[0-9]+\)*' \
 		-exec echo strip {} \; \
 		-exec $(target)-strip --strip-unneeded {} \;
 endef
 define remove_libs
-	rm -f $(PKDIR)/lib/*.{a,la,o}
-	rm -f $(PKDIR)/usr/lib/*.{a,la,o}
+	rm -f $(ipkgbuilddir)/*/lib/*.{a,la,o}
+	rm -f $(ipkgbuilddir)/*/usr/lib/*.{a,la,o}
 endef
 define remove_pkgconfigs
-	rm -rf $(PKDIR)/usr/lib/pkgconfig
+	rm -rf $(ipkgbuilddir)/*/usr/lib/pkgconfig
 endef
 define remove_includedir
-	rm -rf $(PKDIR)/usr/include
+	rm -rf $(ipkgbuilddir)/*/usr/include
 endef
 define remove_docs
-	rm -rf $(PKDIR)/usr/share/doc
-	rm -rf $(PKDIR)/usr/share/man
-	rm -rf $(PKDIR)/usr/share/info
-	rm -rf $(PKDIR)/usr/share/locale
-	rm -rf $(PKDIR)/usr/share/gtk-doc
+	rm -rf $(ipkgbuilddir)/*/usr/share/doc
+	rm -rf $(ipkgbuilddir)/*/usr/share/man
+	rm -rf $(ipkgbuilddir)/*/usr/share/info
+	rm -rf $(ipkgbuilddir)/*/usr/share/locale
+	rm -rf $(ipkgbuilddir)/*/usr/share/gtk-doc
 endef
 
 # - 1: ${P}
