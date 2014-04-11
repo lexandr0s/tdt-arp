@@ -3,14 +3,14 @@
 #
 package[[ host_rpmlocalmacros
 
-BDEPENDS_${P} = host-opkg-meta
+BDEPENDS_${P} = $(host_opkg_meta)
 
 PV_${P} = 0.1
 PR_${P} = 8
 
-call[[ base_bare ]]
+call[[ base ]]
 
-$(TARGET_${P}): $(DEPENDS_${P})
+$(TARGET_${P}).do_install: $(DEPENDS_${P})
 	( echo "%_topdir $(prefix)"; \
 	  #echo "%_specdir %_topdir/SPECS"; \
 	  #echo "%_sourcedir %_topdir/SOURCES"; \
@@ -38,5 +38,7 @@ $(TARGET_${P}): $(DEPENDS_${P})
 	) > localmacros
 
 	touch $@
+
+$(TARGET_${P}): $(TARGET_${P}).do_install
 
 ]]package

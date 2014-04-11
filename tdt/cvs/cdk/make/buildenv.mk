@@ -27,6 +27,10 @@ eval_assign = $(eval $1 = $(value $2)) \
               $(info $1 = $(value $2)) \
        )
 
+# trivial consts
+false :=
+true := y
+
 
 # global consts
 target_arch := sh4

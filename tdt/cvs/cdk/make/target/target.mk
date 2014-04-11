@@ -1,3 +1,5 @@
+# Disable this code
+ifdef false
 targetsh4-env: bootstrap-cross
 	@echo
 	@echo '==> EXPORT TARGET-SH4 ENV'
@@ -12,8 +14,5 @@ targetbox-env: bootstrap-cross
 	rm -f $(targetprefix)
 	ln -sf $(targetboxprefix) $(targetprefix)
 
-
-$(DEPDIR)/bootstrap: | targetbox-env
-	touch $@
-
 .PHONY: targetsh4-env targetbox-env
+endif

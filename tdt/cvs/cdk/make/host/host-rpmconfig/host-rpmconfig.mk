@@ -3,7 +3,8 @@
 #
 package[[ host_rpmconfig
 
-BDEPENDS_${P} = $(host_opkg_meta) $(host_rpmlocalmacros)
+BDEPENDS_${P} = $(host_opkg_meta)
+DEPENDS_${P} = $(host_rpmlocalmacros)
 
 PR_${P} = 2
 

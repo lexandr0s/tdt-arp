@@ -1,3 +1,5 @@
+# Disable this code
+ifdef false
 cross-env: bootstrap-host
 	@echo
 	@echo '==> EXPORT CROSS ENV'
@@ -9,3 +11,4 @@ cross-env: bootstrap-host
 
 $(DEPDIR)/bootstrap-cross: $(cross_gcc_second)
 	touch $@
+endif
