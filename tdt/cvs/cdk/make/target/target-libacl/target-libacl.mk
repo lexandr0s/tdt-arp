@@ -3,7 +3,7 @@
 #
 package[[ target_libacl
 
-BDEPENDS_${P} = $(target_glibc)
+BDEPENDS_${P} = $(target_glibc) $(target_libattr)
 
 PR_${P} = 2
 

@@ -3,7 +3,7 @@
 #
 package[[ target_libtuxtxt
 
-BDEPENDS_${P} = $(target_freetype) $(target_zlib) $(target_driver)
+BDEPENDS_${P} = $(target_freetype) $(target_zlib) $(target_driver_headers)
 
 PV_${P} = git
 PR_${P} = 1

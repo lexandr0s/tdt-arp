@@ -3,7 +3,7 @@
 #
 package[[ target_gmp
 
-BDEPENDS_${P} = $(target_filesystem)
+BDEPENDS_${P} = $(target_filesystem) $(cross_gcc_second)
 
 PR_${P} = 1
 

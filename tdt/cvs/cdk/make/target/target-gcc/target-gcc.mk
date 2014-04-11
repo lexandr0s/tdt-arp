@@ -4,6 +4,7 @@
 package[[ target_gcc
 
 BDEPENDS_${P} = $(target_filesystem) $(target_glibc) $(target_zlib) $(target_mpc) $(target_libelf)
+BREPLACES_${P} = $(target_cross_gcc_lib)
 
 PR_${P} = 1
 
