@@ -88,10 +88,14 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	cp $(DIR_${P})/arch/sh/boot/uImage $(PKDIR)/boot/
 	cd $(DIR_${P}) && $(MAKE) ARCH=sh INSTALL_MOD_PATH=$(PKDIR) modules_install
 
-	rm -rf $(PKDIR)/lib/modules/$(KERNEL_VERSION)/build
+# provide this dir to build external modules (target_driver)
+#	rm -rf $(PKDIR)/lib/modules/$(KERNEL_VERSION)/build
 	rm -rf $(PKDIR)/lib/modules/$(KERNEL_VERSION)/source
+	rm -rf $(PKDIR)/lib/modules/$(KERNEL_VERSION)/modules.*
 
 	touch $@
+
+call[[ ipk ]]
 
 DESCRIPTION_${P} = The Linux Kernel and modules
 FILES_${P} = \
@@ -129,5 +133,7 @@ $(TARGET_${P}).do_package: $(DEPENDS_${P})
 	cd $(DIR_${P}) && make ARCH=sh INSTALL_HDR_PATH=$(PKDIR)/usr headers_install
 	rm -rf $(PKDIR)/usr/include/scsi
 	touch $@
+
+call[[ ipk ]]
 
 ]]package

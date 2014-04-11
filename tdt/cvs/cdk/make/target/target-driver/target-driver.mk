@@ -17,7 +17,7 @@ package[[ target_driver
 
 call[[ target_driver_common ]]
 
-BDEPENDS_${P} = $(target_linux_kernel_headers)
+BDEPENDS_${P} = $(target_linux_kernel_headers) $(target_linux_kernel)
 PR_${P} = 1
 
 call[[ base ]]
@@ -33,7 +33,7 @@ MAKE_FLAGS_${P} = \
 	ARCH=sh \
 	CROSS_COMPILE=$(target)- \
 	CONFIG_MODULES_PATH=$(targetprefix) \
-	KERNEL_LOCATION=$(DIR_target_linux_kernel) \
+	KERNEL_LOCATION=$(targetprefix)/lib/modules/$(KERNEL_VERSION)/build \
 	DRIVER_TOPDIR=$(DIR_${P}) \
 	BIN_DEST=$(PKDIR)/bin \
 	INSTALL_MOD_PATH=$(PKDIR) \
@@ -49,21 +49,21 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(PREPARE_${P})
 #	$(MAKE) -C $(KERNEL_DIR) $(MAKE_OPTS) ARCH=sh modules_prepare
 
-	echo "# Automatically generated config: don't edit" > ${DIR}.config
-	echo "export CONFIG_PLAYER_191=y" >> ${DIR}.config
+	echo "# Automatically generated config: don't edit" > ${DIR}/.config
+	echo "export CONFIG_PLAYER_191=y" >> ${DIR}/.config
 
 # TODO:
 	rm -f ${DIR}/include/multicom
 	rm -f ${DIR}/multicom
 ifdef CONFIG_MULTICOM_324
-	echo "export CONFIG_MULTICOM324=y" >> ${DIR}.config
+	echo "export CONFIG_MULTICOM324=y" >> ${DIR}/.config
 	ln -s ../multicom-3.2.4/include ${DIR}/include/multicom
 	ln -s multicom-3.2.4 ${DIR}/multicom
 endif
 ifdef CONFIG_MULTICOM_406
 	ln -s ../multicom-4.0.6/include ${DIR}/include/multicom
 	ln -s multicom-4.0.6 ${DIR}/multicom
-	echo "export CONFIG_MULTICOM406=y" >> ${DIR}.config
+	echo "export CONFIG_MULTICOM406=y" >> ${DIR}/.config
 endif
 	touch $@
 
@@ -238,6 +238,7 @@ $(TARGET_${P}).do_package:
 	cp $(driverdir)/include/player2/mme.h $(PKDIR)/usr/include/
 	cp $(driverdir)/include/player2/JPEG_VideoTransformerTypes.h $(PKDIR)/usr/include/
 	cp $(driverdir)/bpamem/bpamem.h $(PKDIR)/usr/include/
+	touch $@
 
 call[[ ipk ]]
 
