@@ -6,7 +6,7 @@ package[[ host_rpmlocalmacros
 BDEPENDS_${P} = $(host_opkg_meta)
 
 PV_${P} = 0.1
-PR_${P} = 8
+PR_${P} = 9
 
 call[[ base ]]
 
@@ -16,7 +16,7 @@ $(TARGET_${P}).do_install: $(DEPENDS_${P})
 	  #echo "%_sourcedir %_topdir/SOURCES"; \
 	  echo "%_builddir $(workprefix)"; \
 	  echo "%_buildrootdir $(prefix)/BUILDROOT"; \
-	  #echo "%_buildroot $(PKDIR)"; \
+	  echo "%buildroot %_topdir/BUILDROOT/%{name}-%{version}-%{release}.$(host_arch)"; \
 	  #echo "%_rpmdir %_topdir/RPMS"; \
 	  #echo "%_srcrpmdir %_topdir/SRPMS"; \
 	  #echo "%_stm_install_prefix $prefix/.."; \
