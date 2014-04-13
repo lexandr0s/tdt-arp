@@ -299,7 +299,7 @@ $(DEPDIR)/libjpeg: $(DEPDIR)/libjpeg.do_compile
 #
 BEGIN[[
 libpng
-  1.6.8
+  1.6.10
   {PN}-{PV}
   extract:http://prdownloads.sourceforge.net/libpng/{PN}-{PV}.tar.gz
   nothing:file://{PN}.diff
