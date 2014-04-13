@@ -1,15 +1,6 @@
 --- libpng-1.5.6/pngrtran.c.org	2006-07-06 19:06:25.000000000 +0200
 +++ libpng-1.5.6/pngrtran.c	2006-07-06 19:08:36.000000000 +0200
-@@ -2157,6 +2157,8 @@
-       png_error(png_ptr, "Uninitialized row");
-    }
- 
-+   png_do_remove_color_if_full_alpha(row_info, png_ptr->row_buf + 1);
-+
- #ifdef PNG_READ_EXPAND_SUPPORTED
-    if (png_ptr->transformations & PNG_EXPAND)
-    {
-@@ -2947,6 +2949,33 @@
+@@ -2650,6 +2650,33 @@
  }
  #endif
  
@@ -42,4 +33,13 @@
 +
  #ifdef PNG_READ_FILLER_SUPPORTED
  /* Add filler channel if we have RGB color */
- void /* PRIVATE */
+ static void
+@@ -4724,6 +4751,8 @@
+       png_error(png_ptr, "Uninitialized row");
+    }
+ 
++   png_do_remove_color_if_full_alpha(row_info, png_ptr->row_buf + 1);
++
+ #ifdef PNG_READ_EXPAND_SUPPORTED
+    if (png_ptr->transformations & PNG_EXPAND)
+    {
