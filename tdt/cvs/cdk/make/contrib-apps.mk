@@ -165,7 +165,7 @@ $(DEPDIR)/pppd: $(DEPDIR)/pppd.do_compile
 #
 BEGIN[[
 usb_modeswitch
-  1.2.7
+  2.1.1
   {PN}-{PV}
   extract:http://www.draisberghof.de/usb_modeswitch/{PN}-{PV}.tar.bz2
   patch:file://{PN}.patch
@@ -1152,7 +1152,7 @@ $(DEPDIR)/jfsutils: $(DEPDIR)/jfsutils.do_compile
 #
 BEGIN[[
 opkg
-  0.1.8
+  0.2.0
   {PN}-{PV}
   extract:http://{PN}.googlecode.com/files/{PN}-{PV}.tar.gz
   make:install:DESTDIR=PKDIR
