@@ -8,7 +8,7 @@ BDEPENDS_${P} = $(target_gcc_lib)
 PV_${P} = 1.2.7
 PR_${P} = 1
 
-DIR_${P} = $(workprefix)/libsigc++-${PV}
+DIR_${P} = $(WORK_${P})/libsigc++-${PV}
 
 call[[ base ]]
 

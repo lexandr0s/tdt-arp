@@ -8,7 +8,7 @@ BDEPENDS_${P} = $(target_python_zopeinterface)
 PV_${P} = 12.0.0
 PR_${P} = 1
 
-DIR_${P} = $(workprefix)/Twisted-${PV}
+DIR_${P} = $(WORK_${P})/Twisted-${PV}
 
 call[[ base ]]
 

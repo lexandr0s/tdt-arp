@@ -97,10 +97,6 @@ driverdir := $(tdtdir)/cvs/driver
 specsprefix := $(prefix)/SPECS
 sourcesprefix := $(prefix)/SOURCES
 workprefix := $(prefix)/work
-ipkgbuilddir := $(prefix)/ipkgbuild
-ipkverify := $(prefix)/ipkverify
-PKDIR := $(prefix)/packagingtmpdir
-
 
 # FIXME:
 export CFLAGS = -g -O2

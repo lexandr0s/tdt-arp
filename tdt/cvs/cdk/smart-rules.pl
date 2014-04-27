@@ -384,7 +384,7 @@ sub process_prepare ($)
       return;
     }
 
-    $output .= "&& cd \$(workprefix) && ";
+    $output .= "&& cd \$(WORK_$P) && ";
 
     if ( ($cmd eq "extract" or $cmd eq "dirextract") and $p !~ m#(git|svn)#)
     {

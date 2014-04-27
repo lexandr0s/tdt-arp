@@ -8,7 +8,7 @@ BDEPENDS_${P} = $(target_python_setuptools)
 PV_${P} = 3.5.1
 PR_${P} = 1
 
-DIR_${P} = $(workprefix)/zope.interface-${PV}
+DIR_${P} = $(WORK_${P})/zope.interface-${PV}
 
 call[[ base ]]
 

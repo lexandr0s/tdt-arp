@@ -19,6 +19,8 @@ SYSROOT_${P} := $(word 1,$(subst _, ,${P}))
 # base
 #############################################################################
 
+PKDIR = $(if $(WORK_${P}),$(WORK_${P})/root,$(error WORK_${P}))
+
 help::
 	@echo run \'make all\' if really want to build everything
 .PHONY: all
@@ -32,9 +34,11 @@ PV_${P} ?= $(error undefined PV_${P})
 PR_${P} ?= $(error undefined PR_${P})
 TARGET_${P} ?= $(error undefined TARGET_${P})
 
+WORK_${P} = $(workprefix)/${P}
+
 # Provide defaults
 PN_${P} ?= $(patsubst host-%,%,$(patsubst cross-%,%,$(patsubst target-%,%, $(${P}) )))
-DIR_${P} ?= $(workprefix)/${PN}-${PV}
+DIR_${P} ?= ${WORK}/${PN}-${PV}
 PACKAGE_ARCH_${P} ?= sh4
 
 # opkg control default values
@@ -51,7 +55,7 @@ DEPENDS_${P} += $(TARGET_${P}).version_${PV}-${PR}
 DEPENDS_${P} += $(addprefix $(DEPDIR)/,$(BDEPENDS_${P}))
 
 # Set new variables and targets
-PREPARE_${P} = (rm -rf $(DIR_${P}) || true)
+PREPARE_${P} = (rm -rf $(WORK_${P}) || true) && mkdir -p $(WORK_${P})
 INSTALL_${P} = true
 
 $(TARGET_${P}).version_%:
@@ -146,13 +150,13 @@ endef
 
 # adapt files for cross compiling
 rewrite_libtool = \
-	find $(ipkrootdir)/* -name "*.la" -type f -exec \
+	find $(ipkrootdir_${P}) -name "*.la" -type f -exec \
 		perl -pi -e "s,^libdir=.*$$,libdir='$(targetprefix)/usr/lib'," {} \;
 rewrite_dependency = \
-	find $(ipkrootdir)/* -name "*.la" -type f -exec \
+	find $(ipkrootdir_${P}) -name "*.la" -type f -exec \
 		perl -pi -e "s, /usr/lib, $(targetprefix)/usr/lib,g if /^dependency_libs/" {} \;
 rewrite_pkgconfig = \
-	find $(ipkrootdir)/* -name "*.pc" -type f -exec \
+	find $(ipkrootdir_${P}) -name "*.pc" -type f -exec \
 		perl -pi -e "s,^prefix=.*$$,prefix=$(targetprefix)/usr," {} \;
 #FIXME: unpackaged 'cp'
 rewrite_config = \
@@ -165,35 +169,29 @@ SYSROOT_${P} ?= $(error undefined SYSROOT_${P})
 # Name of IPK that installs to SYSROOT
 IPK_${P} ?= $(ipk${SYSROOT})/$(${P})_${VERSION}_${PACKAGE_ARCH}.ipk
 
-ipkrootdir = $(prefix)/ipkrootdir
+ipkrootdir_${P} = ${WORK}/ipkrootdir
 # for sysroot ipk we copy all files.
 $(TARGET_${P}).do_ipk: $(TARGET_${P}).do_package
-	rm -rf $(ipkrootdir)
-	mkdir -p $(ipkrootdir)/${P}/CONTROL
+	rm -rf ${ipkrootdir}
+	mkdir -p ${ipkrootdir}/CONTROL
 ifeq (${SYSROOT},host)
-	cp -ar $(PKDIR)/$(hostprefix)/* $(ipkrootdir)/${P}
+	cp -ar $(PKDIR)/$(hostprefix)/* ${ipkrootdir}
 endif
 ifeq (${SYSROOT},cross)
-	cp -ar $(PKDIR)/$(crossprefix)/* $(ipkrootdir)/${P}
+	cp -ar $(PKDIR)/$(crossprefix)/* ${ipkrootdir}
 endif
 ifeq (${SYSROOT},target)
-	cp -ar $(PKDIR)/* $(ipkrootdir)/${P}
+	cp -ar $(PKDIR)/* ${ipkrootdir}
 	$(rewrite_libtool)
 	$(rewrite_dependency)
 endif
 
-	$(call _ipk_write_control,${P},$(ipkrootdir)/${P}/CONTROL/control)
+	$(call _ipk_write_control,${P},${ipkrootdir}/CONTROL/control)
+	
+	rm -f $(WORK_${P})/$(notdir $(IPK_${P}))
+	ipkg-build -o root -g root ${ipkrootdir}/ ${WORK}
 
-	rm -rf $(ipkverify)/*
-	mkdir -p $(ipkverify)
-	ipkg-build -o root -g root $(ipkrootdir)/${P} $(ipkverify)
-
-# make shure the built ipk has name defined by IPK_${P} variable !
-	test '$(notdir $(IPK_${P}))' == "`ls $(ipkverify)`" || \
-	  (echo built package does not match IPK_${P} && false)
-
-	rm -rf $(IPK_${P})
-	mv -v $(ipkverify)/* $(IPK_${P})
+	mv $(WORK_${P})/$(notdir $(IPK_${P})) $(IPK_${P})
 	touch $@
 
 $(TARGET_${P}).clean_ipk:
@@ -225,7 +223,7 @@ help-functions::
 	@echo write_control
 	@echo - 1: package name
 
-write_control = $(call _ipkbox_write_control,$1,$(ipkgbuilddir)/$1/CONTROL/control)
+write_control = $(call _ipkbox_write_control,$1,$(SPLITDIR_${P})/$1/CONTROL/control)
 
 # _ipkbox_write_control
 # - 1: pkg that contains variables
@@ -244,51 +242,52 @@ define _ipkbox_write_control
 		$(if $($(file)_$1),
 			$(eval export $(file)_$1)
 			$(info $($(file)_$1))
-			printenv $(file)_$1 > $(ipkgbuilddir)/$1/CONTROL/$(file)
+			printenv $(file)_$1 > $(SPLITDIR_${P})/$1/CONTROL/$(file)
 		)
 	)
 	$(foreach file, preinst postinst prerm postrm,
 		$(if $($(file)_$1),
-			 chmod +x $(ipkgbuilddir)/$(pkg)/CONTROL/$(file)
+			 chmod +x $(SPLITDIR_${P})/$(pkg)/CONTROL/$(file)
 		)
 	)
 endef
 
 define strip_libs
-	find $(ipkgbuilddir)/* -type f -regex '.*/lib/.*\.so\(\.[0-9]+\)*' \
+	find $(SPLITDIR_${P})/* -type f -regex '.*/lib/.*\.so\(\.[0-9]+\)*' \
 		-exec echo strip {} \; \
 		-exec $(target)-strip --strip-unneeded {} \;
 endef
 define remove_libs
-	rm -f $(ipkgbuilddir)/*/lib/*.{a,la,o}
-	rm -f $(ipkgbuilddir)/*/usr/lib/*.{a,la,o}
+	rm -f $(SPLITDIR_${P})/*/lib/*.{a,la,o}
+	rm -f $(SPLITDIR_${P})/*/usr/lib/*.{a,la,o}
 endef
 define remove_pkgconfigs
-	rm -rf $(ipkgbuilddir)/*/usr/lib/pkgconfig
+	rm -rf $(SPLITDIR_${P})/*/usr/lib/pkgconfig
 endef
 define remove_includedir
-	rm -rf $(ipkgbuilddir)/*/usr/include
+	rm -rf $(SPLITDIR_${P})/*/usr/include
 endef
 define remove_docs
-	rm -rf $(ipkgbuilddir)/*/usr/share/doc
-	rm -rf $(ipkgbuilddir)/*/usr/share/man
-	rm -rf $(ipkgbuilddir)/*/usr/share/info
-	rm -rf $(ipkgbuilddir)/*/usr/share/locale
-	rm -rf $(ipkgbuilddir)/*/usr/share/gtk-doc
+	rm -rf $(SPLITDIR_${P})/*/usr/share/doc
+	rm -rf $(SPLITDIR_${P})/*/usr/share/man
+	rm -rf $(SPLITDIR_${P})/*/usr/share/info
+	rm -rf $(SPLITDIR_${P})/*/usr/share/locale
+	rm -rf $(SPLITDIR_${P})/*/usr/share/gtk-doc
 endef
 
 # - 1: ${P}
 define _ipkbox_do_split
 	$(foreach pkg, $(PACKAGES_$1),
-		install -d $(ipkgbuilddir)/$(pkg)/CONTROL/
+		install -d $(SPLITDIR_${P})/$(pkg)/CONTROL/
 		$(call write_control,$(pkg))
 		$(eval export FILES_$(pkg))
 	)
-	python $(buildprefix)/split.py $(PKDIR) $(ipkgbuilddir) $(PACKAGES_$1)
+	python $(buildprefix)/split.py $(PKDIR) $(SPLITDIR_${P}) $(PACKAGES_$1)
 endef
 
 function[[ ipkbox
 
+SPLITDIR_${P} = $(WORK_${P})/split
 PACKAGES_${P} ?= $(patsubst host_%,%,$(patsubst cross_%,%,$(patsubst target_%,%, ${P} )))
 FILES_${P} ?= /
 
@@ -313,8 +312,8 @@ $(TARGET_${P}).set_inherit_vars: $(TARGET_${P}).do_package
 .PHONY: $(TARGET_${P}).set_inherit_vars
 
 $(TARGET_${P}).do_split: $(TARGET_${P}).do_package | $(TARGET_${P}).set_inherit_vars
-	rm -rf $(ipkgbuilddir)/*
-	mkdir -p $(ipkgbuilddir)
+	rm -rf $(SPLITDIR_${P})/*
+	mkdir -p $(SPLITDIR_${P})
 
 	$(call _ipkbox_do_split,${P})
 
@@ -328,9 +327,9 @@ $(TARGET_${P}).do_ipkbox: $(TARGET_${P}).do_split
 	$(strip_libs)
 
 	set -e; \
-	for pkg in `ls $(ipkgbuilddir)`; do \
+	for pkg in `ls $(SPLITDIR_${P})`; do \
 		echo "building package $${pkg} ..."; \
-		ipkg-build -o root -g root $(ipkgbuilddir)/$${pkg} $(ipkbox); \
+		ipkg-build -o root -g root $(SPLITDIR_${P})/$${pkg} $(ipkbox); \
 	done
 
 	touch $@

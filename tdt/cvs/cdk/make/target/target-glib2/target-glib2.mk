@@ -8,7 +8,7 @@ BDEPENDS_${P} = $(target_glibc) $(target_zlib) $(target_libffi) $(target_libusb)
 PV_${P} = 2.34.3
 PR_${P} = 1
 
-DIR_${P} = $(workprefix)/glib-${PV}
+DIR_${P} = $(WORK_${P})/glib-${PV}
 
 call[[ base ]]
 
