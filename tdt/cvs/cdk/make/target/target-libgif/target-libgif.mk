@@ -5,7 +5,7 @@ package[[ target_libgif
 
 BDEPENDS_${P} = $(target_glibc)
 
-PV_${P} = 4.1.6
+PV_${P} = 5.0.4
 PR_${P} = 1
 
 PN_${P} = giflib
