@@ -6,7 +6,7 @@ function[[ target_linux_kernel_in
 PV_${P} = $(KERNEL_VERSION)
 PR_${P} = 5
 
-DIR_${P} = $(WORK_${P})/linux-kernel-${PV}
+DIR_${P} = $(WORK_target_linux_kernel)/linux-kernel-${PV}
 PACKAGE_ARCH_${P} = $(box_arch)
 SRC_URI_${P} = stlinux.com
 
