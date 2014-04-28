@@ -92,7 +92,7 @@ FILES_openssl = \
 OPENSSL_VERSION := 1.0.1g-30
 OPENSSL_SPEC := stm-target-$(OPENSSL).spec
 OPENSSL_SPEC_PATCH := stm-target-$(OPENSSL).spec.patch
-OPENSSL_PATCHES :=
+OPENSSL_PATCHES := stm-target-$(OPENSSL)-1.0.1g-fix_pod_syntax.patch
 OPENSSL_RPM := RPMS/sh4/$(STLINUX)-sh4-$(OPENSSL)-$(OPENSSL_VERSION).sh4.rpm
 OPENSSL_DEV_RPM := RPMS/sh4/$(STLINUX)-sh4-$(OPENSSL_DEV)-$(OPENSSL_VERSION).sh4.rpm
 
