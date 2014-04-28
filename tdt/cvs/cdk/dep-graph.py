@@ -129,7 +129,12 @@ def parent(x):
 		return x.replace('.include_git_version','')
 	elif x.endswith('.do_srcrev'):
 		return x.replace('.do_srcrev','')
-
+	elif x.endswith('.do_split'):
+		return x.replace('.do_split','')
+	elif x.endswith('.do_ipkbox'):
+		return x.replace('.do_ipkbox','')
+	elif x.endswith('.do_install'):
+		return x.replace('.do_install','')
 	return None
 
 targ2 = {}
