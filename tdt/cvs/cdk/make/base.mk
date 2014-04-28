@@ -385,7 +385,7 @@ $(TARGET_${P}).do_update: $(GIT_DIR_${P})
 	
 	rm -f ${SRCREV}_tmp
 
-VERSION_${P} = ${PV}${GIT_VERSION}
+VERSION_${P} = ${PV}${GIT_VERSION}-${PR}
 
 # GIT_VERSION_${P} is dynamic variable
 # We use dynamic variables pattern,
