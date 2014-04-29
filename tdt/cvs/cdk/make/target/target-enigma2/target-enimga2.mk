@@ -3,12 +3,10 @@
 #
 package[[ target_enigma2
 
-BDEPENDS_${P} = $(target_glibc) $(target_gcc_lib) $(target_libsigc) $(target_libdvbsipp) $(target_freetype) $(target_tuxtxt32bpp) $(target_libgif) $(target_libpng) $(target_libjpeg) $(target_libxmlccwrap) $(target_libfribidi) $(target_python) $(target_python_twisted) $(target_linux_kernel_headers) $(target_libmmeimage) $(target_libmme_host)
-# FIXME:
-# $(target_dvd*.....)
+BDEPENDS_${P} = $(target_glibc) $(target_gcc_lib) $(target_libsigc) $(target_libdvbsipp) $(target_freetype) $(target_tuxtxt32bpp) $(target_libgif) $(target_libpng) $(target_libjpeg) $(target_libxmlccwrap) $(target_libfribidi) $(target_python) $(target_python_twisted) $(target_linux_kernel_headers) $(target_libmmeimage) $(target_libmme_host) $(target_libdreamdvd)
 
 PV_${P} = git
-PR_${P} = 3
+PR_${P} = 4
 PACKAGE_ARCH_${P} = $(box_arch)
 
 DESCRIPTION_${P} = Framebuffer-based digital media application
