@@ -11,13 +11,12 @@ DEPENDS_${P} = $(addsuffix .do_ipkbox, $(IPKBOX_LIST_${P}))
 #$(target_libmme_host) $(target_libmmeimage)
 
 PV_${P} = 0.1
-PR_${P} = 2
-
-DIR_${P} = $(prefix)/release
-
-opkg_rootfs := opkg -f $(prefix)/opkg-box.conf -o $(DIR_${P})
+PR_${P} = 3
 
 call[[ base ]]
+
+DIR_${P} = ${WORK}
+opkg_rootfs := opkg -f $(prefix)/opkg-box.conf -o $(DIR_${P})
 
 $(TARGET_${P}): $(DEPENDS_${P})
 	$(PREPARE_${P})
