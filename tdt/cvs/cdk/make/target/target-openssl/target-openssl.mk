@@ -5,12 +5,12 @@ package[[ target_openssl
 
 BDEPENDS_${P} = $(target_gcc_lib)
 
-PR_${P} = 1
+PR_${P} = 2
 
-${P}_VERSION = 1.0.1e-29
+${P}_VERSION = 1.0.1g-30
 ${P}_SPEC = stm-$(${P}).spec
-${P}_SPEC_PATCH =
-${P}_PATCHES =
+${P}_SPEC_PATCH = stm-$(${P}).spec.patch
+${P}_PATCHES = stm-$(${P})-1.0.1g-fix_pod_syntax.patch
 ${P}_SRCRPM = $(archivedir)/$(STLINUX)-$(${P})-$(${P}_VERSION).src.rpm
 
 call[[ base ]]
