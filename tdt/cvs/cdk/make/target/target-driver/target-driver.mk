@@ -92,7 +92,7 @@ ifeq ($(CONFIG_HL101)$(CONFIG_SPARK),y)
 	cp -dp $(archivedir)/ptinp/pti_$(KERNEL_RELEASE).ko $(PKDIR)/lib/modules/$(KERNEL_VERSION)/extra/pti_np/pti.ko
 endif
 ifdef CONFIG_SPARK7162
-	cp -dp $(archivedir)/ptinp/pti_$(KERNEL_RELEASE).ko $(PKDIR)/lib/modules/$(KERNEL_VERSION)/extra/pti_np/pti.ko
+	cp -dp $(archivedir)/ptinp/pti_$(KERNEL_RELEASE)s2.ko $(PKDIR)/lib/modules/$(KERNEL_VERSION)/extra/pti_np/pti.ko
 endif
 endif #CONFIG_PTINP_SRC
 
