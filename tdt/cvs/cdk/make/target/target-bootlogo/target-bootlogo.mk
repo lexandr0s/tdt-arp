@@ -7,6 +7,7 @@ BDEPENDS_${P} = $(target_filesystem)
 
 PV_${P} = 0.1
 PR_${P} = 1
+PACKAGE_ARCH_${P} = all
 
 DESCRIPTION_${P} = bootlogo.mvi
 
