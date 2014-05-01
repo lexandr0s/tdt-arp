@@ -28,6 +28,7 @@ endif
 ifdef CONFIG_EPLAYER3
 BDEPENDS_${P} += $(target_libeplayer3)
 CONFIG_FLAGS_${P} += --enable-libeplayer3 LIBEPLAYER3_CPPFLAGS="-I$(appsdir)/misc/tools/libeplayer3/include"
+RDEPENDS_enigma2 = libeplayer3
 endif
 
 # box type
@@ -137,7 +138,7 @@ PACKAGES_${P} = \
 	enigma2_plugin_skin_magic \
 	enigma2_plugin_skin_megamod
 
-RDEPENDS_enigma2 = libgcc1 libpython2.7 python-threading libtuxtxt0 libgif4 libfreetype6 python-core python-twisted-core libdvbsi++1 python-re enigma2-fonts font-tuxtxt libpng16 font-valis-enigma libstdc++6 libglib libsigc-1.2 python-fcntl python-netclient python-netserver python-codecs libcrypto1 libfribidi0 python-zopeinterface python-xml libtuxtxt32bpp0 python-pickle libxmlccwrap python-shell ethtool libjpeg8 libdreamdvd0 python-twisted-web python-zlib python-crypt python-lang python-subprocess libeplayer3
+RDEPENDS_enigma2 += libgcc1 libpython2.7 python-threading libtuxtxt0 libgif4 libfreetype6 python-core python-twisted-core libdvbsi++1 python-re enigma2-fonts font-tuxtxt libpng16 font-valis-enigma libstdc++6 libglib libsigc-1.2 python-fcntl python-netclient python-netserver python-codecs libcrypto1 libfribidi0 python-zopeinterface python-xml libtuxtxt32bpp0 python-pickle libxmlccwrap python-shell ethtool libjpeg8 libdreamdvd0 python-twisted-web python-zlib python-crypt python-lang python-subprocess
 FILES_enigma2 = \
 	/usr/bin \
 	/usr/lib/libopen.* \
