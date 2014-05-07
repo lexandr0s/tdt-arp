@@ -1,13 +1,13 @@
 --- a/Makefile	2013-08-06 19:45:40.000000000 +0300
 +++ b/Makefile	2013-08-15 22:15:54.352508773 +0300
-@@ -76,8 +76,8 @@
- 	install -D --mode=755 usb_modeswitch $(SBINDIR)/usb_modeswitch
+@@ -81,8 +81,8 @@
  	install -D --mode=755 usb_modeswitch.sh $(UDEVDIR)/usb_modeswitch
  	install -D --mode=644 usb_modeswitch.conf $(ETCDIR)/usb_modeswitch.conf
--	install -D --mode=644 usb_modeswitch.1 $(MANDIR)/usb_modeswitch.1
+ 	install -D --mode=644 usb_modeswitch.1 $(MANDIR)/usb_modeswitch.1
+-	install -D --mode=644 usb_modeswitch_dispatcher.1 $(MANDIR)/usb_modeswitch_dispatcher.1
 -	install -D --mode=755 usb_modeswitch_dispatcher $(SBINDIR)/usb_modeswitch_dispatcher
-+#	install -D --mode=644 usb_modeswitch.1 $(MANDIR)/usb_modeswitch.1
++#	install -D --mode=644 usb_modeswitch_dispatcher.1 $(MANDIR)/usb_modeswitch_dispatcher.1
 +#	install -D --mode=755 usb_modeswitch_dispatcher $(SBINDIR)/usb_modeswitch_dispatcher
  	install -d $(DESTDIR)/var/lib/usb_modeswitch
- 
- install: install-script
+ 	test -d $(UPSDIR) -a -e /sbin/initctl && install --mode=644 usb-modeswitch-upstart.conf $(UPSDIR) || test 1
+ 	test -d $(SYSDIR) -a -e /usr/bin/systemctl && install --mode=644 usb_modeswitch@.service $(SYSDIR) || test 1
