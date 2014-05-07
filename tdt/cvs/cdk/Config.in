@@ -88,6 +88,11 @@ mainmenu "global config"
 
 	endchoice
 
+	comment	"Enigma2 extras to flash:"
+
+		config ENIGMA2_FULL
+		bool "Enigma2 extra skins and plugins"
+
 	choice
 		prompt "Media Framework:"
 		default EPLAYER3
@@ -98,3 +103,17 @@ mainmenu "global config"
 		config EPLAYER3
 		bool "eplayer3"
 	endchoice
+
+	comment	"Equipment:"
+
+		config WLAN_SUPPORT
+		bool "Wireless support"
+
+		config 3G_SUPPORT
+		bool "Support 3G modem"
+
+		config NTFS_3G_SUPPORT
+		bool "Support ntfs filesystem"
+
+		config IPTABLES_SUPPORT
+		bool "Iptables support"
