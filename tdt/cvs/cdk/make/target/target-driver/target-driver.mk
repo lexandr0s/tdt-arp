@@ -191,27 +191,27 @@ FILES_kernel_module_stgfb = /lib/modules/$(KERNEL_VERSION)/extra/stgfb
 
 DESCRIPTION_kernel_module_rt2870sta = rt2870sta frontends driver for control wireless devices
 FILES_kernel_module_rt2870sta = /lib/modules/$(KERNEL_VERSION)/extra/wireless/rt2870sta
-RDEPENDS_kernel_module_rt2870sta = wlan_firmware firmware-rt2870
+RDEPENDS_kernel_module_rt2870sta = firmware_rt2870
 
 DESCRIPTION_kernel_module_rt3070sta = rt3070sta driver for control wireless devices
 FILES_kernel_module_rt3070sta = /lib/modules/$(KERNEL_VERSION)/extra/wireless/rt3070sta
-RDEPENDS_kernel_module_rt3070sta = wlan_firmware firmware-rt3070
+RDEPENDS_kernel_module_rt3070sta = firmware_rt3070
 
 DESCRIPTION_kernel_module_rt5370sta = rt5370sta driver for control wireless devices
 FILES_kernel_module_rt5370sta = /lib/modules/$(KERNEL_VERSION)/extra/wireless/rt5370sta
-RDEPENDS_kernel_module_rt5370sta = wlan_firmware
+RDEPENDS_kernel_module_rt5370sta = firmware_rt5370
 
 DESCRIPTION_kernel_module_rtl8192cu = rtl8192cu driver for control wireless devices
 FILES_kernel_module_rtl8192cu = /lib/modules/$(KERNEL_VERSION)/extra/wireless/rtl8192cu
-RDEPENDS_kernel_module_rtl8192cu = firmware-rtl8192cu
+RDEPENDS_kernel_module_rtl8192cu = firmware_rtl8192cu
 
 DESCRIPTION_kernel_module_rtl871x = rtl871x driver for control wifi devices
 FILES_kernel_module_rtl871x = /lib/modules/$(KERNEL_VERSION)/extra/wireless/rtl871x
-RDEPENDS_kernel_module_rtl871x = firmware-rtl8712u
+RDEPENDS_kernel_module_rtl871x = firmware_rtl8712u
 
 DESCRIPTION_kernel_module_rtl8188eu = rtl8188eu driver for control wifi  devices
 FILES_kernel_module_rtl8188eu = /lib/modules/$(KERNEL_VERSION)/extra/wireless/rtl8188eu
-RDEPENDS_kernel_module_rtl8188eu = firmware-rtl8188eu
+RDEPENDS_kernel_module_rtl8188eu = firmware_rtl8188eu
 
 call[[ ipkbox ]]
 
