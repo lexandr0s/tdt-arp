@@ -15,12 +15,6 @@ rule[[
   patch:file://${PN}.diff
 ]]rule
 
-DESCRIPTION_${P} = Library for interacting with ID3 tags in MP3 files  Library for \
- interacting with ID3 tags in MP3 files.
-NAME_${P} = libid3tag0
-RDEPENDS_${P} = libz1 libc6
-FILES_${P} = /usr/lib/*.so*
-
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(PREPARE_${P})
 	touch $@
