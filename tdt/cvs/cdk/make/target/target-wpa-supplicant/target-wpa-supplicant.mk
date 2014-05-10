@@ -29,7 +29,7 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	$(PKDIR_clean)
-	cd $(DIR_${P})/wpa_supplicant && $(MAKE) install DESTDIR=$(PKDIR) LIBDIR=$(PKDIR)/usr/lib BINDIR=$(PKDIR)/usr
+	cd $(DIR_${P})/wpa_supplicant && $(MAKE) install DESTDIR=$(PKDIR) LIBDIR=/usr/lib BINDIR=/usr/sbin
 	touch $@
 
 call[[ ipk ]]
