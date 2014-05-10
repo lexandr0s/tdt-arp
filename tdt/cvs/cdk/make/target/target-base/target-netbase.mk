@@ -35,7 +35,7 @@ rule[[
   install_file:$(PKDIR)/etc/hosts:file://../root/etc/hosts
 
 #FIXME: ???
-  install_bin:-D:$(PKDIR)/etc/init.d/udphc:file://../root/etc/init.d/udhcpc
+  install_bin:-D:$(PKDIR)/etc/init.d/udhcpc:file://../root/etc/init.d/udhcpc
   install_bin:-D:$(PKDIR)/usr/share/udhcpc/default.script:file://../root/usr/share/udhcpc/default.script
 ]]rule
 
