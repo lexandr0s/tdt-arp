@@ -14,7 +14,7 @@ DESCRIPTION_${P} = bootlogo.mvi
 call[[ base ]]
 
 rule[[
-  pdircreate:${PN}-${PV}
+  pdircreate:${DIR}
   install:-d:$(PKDIR)/boot
   install_file:$(PKDIR)/boot/bootlogo.mvi:file://../root/bootscreen/bootlogo.mvi
 ]]rule

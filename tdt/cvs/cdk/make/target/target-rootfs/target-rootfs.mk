@@ -19,7 +19,7 @@ IPKBOX_LIST_${P} += $(target_modem_scripts) $(target_usb_modeswitch) $(target_pp
 endif
 
 ifdef CONFIG_NTFS_3G_SUPPORT
-IPKBOX_LIST_${P} +=
+IPKBOX_LIST_${P} += $(target_ntfs_3g)
 endif
 
 ifdef CONFIG_IPTABLES_SUPPORT
