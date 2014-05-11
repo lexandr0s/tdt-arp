@@ -69,7 +69,8 @@ DESCRIPTION_${P} = lirc
 FILES_lirc = \
 	/usr/bin/lircd \
 	/usr/lib/*.so* \
-	/etc/lircd*
+	/etc/lircd* \
+	/var/run/lirc/
 
 ifeq ($(CONFIG_SPARK)$(CONFIG_SPARK7162),y)
 define conffiles_${P}
