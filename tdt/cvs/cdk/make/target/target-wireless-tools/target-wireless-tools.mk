@@ -3,7 +3,7 @@
 #
 package[[ target_wireless_tools
 
-BDEPENDS_${P} = $(target_glibc) $(target_wpa_supplicant) $(target_rfkill)
+BDEPENDS_${P} = $(target_glibc) $(target_wpa_supplicant)
 
 PV_${P} = 29
 PR_${P} = 1
@@ -27,12 +27,11 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	$(PKDIR_clean)
-	cd $(DIR_${P}) && $(MAKE) install INSTALL_MAN=$(PKDIR)/usr/share/man PREFIX=$(PKDIR)/usr
+	cd $(DIR_${P}) && $(MAKE) install PREFIX=$(PKDIR)/usr
 	touch $@
 
 call[[ ipk ]]
 
-NAME_${P} = wireless-tools
 DESCRIPTION_${P} =  Tools for the Linux Standard Wireless Extension Subsystem
 RDEPENDS_${P} = rfkill wpa-supplicant
 FILES_${P} = /usr/lib/*.so* /usr/sbin/*

@@ -3,7 +3,7 @@
 #
 package[[ target_usb_modeswitch_data
 
-BDEPENDS_${P} = $(target_glibc)
+BDEPENDS_${P} = $(target_filesystem)
 
 PV_${P} = 20140327
 PR_${P} = 1
@@ -20,8 +20,7 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	touch $@
 
 $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
-	cd $(DIR_${P}) && \
-		$(MAKE) $(MAKE_OPTS)
+	cd $(DIR_${P}) && $(MAKE)
 	touch $@
 
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
@@ -29,13 +28,9 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	cd $(DIR_${P}) && $(MAKE) install DESTDIR=$(PKDIR)
 	touch $@
 
-call[[ ipk ]]
-
-NAME_${P} = usb-modeswitch-data
 DESCRIPTION_${P} = usb-modeswitch-data
 RDEPENDS_${P} = usb_modeswitch
-FILES_${P} = \
-	/usr/share/*
+FILES_${P} = /usr/share/*
 
 call[[ ipkbox ]]
 

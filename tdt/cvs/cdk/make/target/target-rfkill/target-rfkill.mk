@@ -14,6 +14,8 @@ rule[[
   nothing:git://git.sipsolutions.net/rfkill.git
 ]]rule
 
+call[[ git ]]
+
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(PREPARE_${P})
 	touch $@

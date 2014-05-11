@@ -21,23 +21,20 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 
 $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 	cd $(DIR_${P}) && \
-	$(BUILDENV) \
+		$(BUILDENV) \
 		$(MAKE) $(MAKE_OPTS)
 	touch $@
 
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	$(PKDIR_clean)
-	cd $(DIR_${P}) && $(MAKE) install DESTDIR=$(PKDIR) PREFIX=$(PKDIR)/usr
+	cd $(DIR_${P}) && $(MAKE) install DESTDIR=$(PKDIR)
 	touch $@
 
 call[[ ipk ]]
 
-NAME_${P} = usb-modeswitch
 DESCRIPTION_${P} = usb-modeswitch
 RDEPENDS_${P} = libusb-0.1 libusb-1.0 usb_modeswitch_data
-FILES_${P} = /etc/* \
-	/lib/udev/* \
-	/usr/sbin/*
+FILES_${P} = /etc/* /lib/udev/* /usr/sbin/*
 
 call[[ ipkbox ]]
 

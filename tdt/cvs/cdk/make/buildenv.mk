@@ -31,6 +31,14 @@ eval_assign = $(eval $1 = $(value $2)) \
 false :=
 true := y
 
+# check if variable is defined
+# - 1: variable name
+defined = $(if $(findstring undefined,$(origin $1)),$(false),$(true))
+
+# check if variable is undefined
+# - 1: variable name
+undefined = $(if $(findstring undefined,$(origin $1)),$(true),$(false))
+
 
 # global consts
 target_arch := sh4

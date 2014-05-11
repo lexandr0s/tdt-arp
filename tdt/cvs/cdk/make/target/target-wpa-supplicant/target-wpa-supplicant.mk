@@ -22,7 +22,7 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	touch $@
 
 $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
-	cd $(DIR_${P})/wpa_supplicant  && \
+	cd $(DIR_${P})/wpa_supplicant && \
 		mv ../wpa_supplicant.config .config && \
 		$(MAKE) $(MAKE_OPTS)
 	touch $@
@@ -34,7 +34,6 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 
 call[[ ipk ]]
 
-NAME_${P} = wpa-supplicant
 DESCRIPTION_${P} =  Tools for the Linux Standard Wireless Extension Subsystem
 FILES_${P} = /usr/sbin/*
 

@@ -28,11 +28,11 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 			--build=$(build) \
 			--host=$(target) \
 			--target=$(target) \
+			--prefix=/usr \
 			--with-kernel=$(buildprefix)/$(KERNEL_DIR) \
 			--disable-kernel-module \
-			--prefix=/usr \
 		&& \
-		$(MAKE) $(MAKE_OPTS)
+		$(MAKE)
 	touch $@
 
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
@@ -42,11 +42,9 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 
 call[[ ipk ]]
 
-NAME_${P} = pppd
 DESCRIPTION_${P} = package which implements the Point-to-Point Protocol (PPP)
 RDEPENDS_${P} = libc6
-FILES_${P} = /usr/sbin/* \
-	     /usr/lib/*
+FILES_${P} = /usr/sbin/* /usr/lib/*
 
 call[[ ipkbox ]]
 
