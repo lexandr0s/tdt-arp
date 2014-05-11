@@ -7,7 +7,7 @@ BDEPENDS_${P} = $(target_filesystem)
 
 PV_${P} = 4.34
 PR_ST_${P} = 10
-PR_${P} = ${PR_ST}-2
+PR_${P} = ${PR_ST}-3
 
 DESCRIPTION_${P} = Miscellaneous files for the base networking
 
@@ -46,6 +46,12 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_prepare
 	$(PKDIR_clean)
 	cd $(DIR_${P}) && $(INSTALL_${P})
+	(echo "spoofprotect=yes"; \
+	 echo "ip_forward=no"; \
+	 echo "syncookies=no"; \
+	 echo "disable_tcp_ecn=yes"; \
+	 ) > $(PKDIR)/etc/network/options
+
 	touch $@
 
 call[[ ipkbox ]]
