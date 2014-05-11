@@ -207,9 +207,9 @@ $(TARGET_${P}).do_install: $(TARGET_${P}).do_ipk
 $(TARGET_${P}): $(TARGET_${P}).do_install
 
 # currently not in use.
-$(TARGET_${P}).do_preclean:
+$(TARGET_${P}).clean_install:
 	opkg $($(SYSROOT_${P})_ipkg_args) --force-removal-of-dependent-packages remove $(${P})
-	touch $@
+	rm -f $(TARGET_${P}).do_install
 
 ]]function
 
