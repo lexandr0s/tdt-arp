@@ -295,7 +295,7 @@ $(TARGET_${P}).set_inherit_vars: $(TARGET_${P}).do_package
 	$(info ==> $(notdir $@)) \
 	$(foreach pkg, $(PACKAGES_${P}), \
 		$(foreach var, $(INHERIT_VARIABLES), \
-			$(if $($(var)_$(pkg)),,\
+			$(if $(call undefined,$(var)_$(pkg)), \
 				$(call eval_assign,$(var)_$(pkg),$(var)_${P}) \
 			) \
 		) \
@@ -303,7 +303,7 @@ $(TARGET_${P}).set_inherit_vars: $(TARGET_${P}).do_package
 			$(eval NAME_$(pkg) := $(subst _,-,$(pkg)) ) \
 		) \
 		$(foreach var, $(INHERIT_DEFINES), \
-			$(if $($(var)_$(pkg)),,\
+			$(if $(call undefined,$(var)_$(pkg)), \
 				$(call eval_define,$(var)_$(pkg),$(var)_${P}) \
 			) \
 		) \
