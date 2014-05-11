@@ -319,7 +319,6 @@ $(TARGET_${P}).do_ipkbox: $(TARGET_${P}).do_split
 	$(remove_docs)
 	$(remove_libs)
 	$(remove_pkgconfigs)
-	$(remove_includedir)
 	$(strip_libs)
 
 	set -e; \
