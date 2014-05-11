@@ -16,7 +16,6 @@ call[[ base ]]
 # TODO:
 # /etc/nsswitch.conf
 # /etc/host.conf
-# +/var/lock
 # +/var/tmp
 # -/etc/profile.d/empty
 # +/etc/motd
@@ -28,7 +27,6 @@ call[[ base ]]
 # +/tmp
 # -/etc/skel/.bashrc
 # +/etc/hostname
-# +/var/log
 # -/etc/skel/.profile
 # +/etc/profile
 # -/etc/default/usbd
@@ -47,8 +45,12 @@ rule[[
   install:-d:$(PKDIR)/var/tmp
   install:-d:$(PKDIR)/var/run
   install:-d:$(PKDIR)/var/log
+  install:-d:$(PKDIR)/var/lock
+  install:-d:$(PKDIR)/var/lib
   install:-d:$(PKDIR)/var/cache
   install:-d:$(PKDIR)/etc
+  install:-d:$(PKDIR)/root
+  install:-d:$(PKDIR)/bin
   install_file:$(PKDIR)/etc/motd:file://../root/etc/motd
   install_file:$(PKDIR)/etc/fstab:file://../root/etc/fstab
 #  nothing:file://../root/etc/image-version
@@ -56,8 +58,8 @@ rule[[
 #  nothing:file://../root/bin/autologin
 #  nothing:file://../root/bin/fw_*
 #  nothing:file://../root/bin/setspark.sh
-#  nothing:file://../root/bin/vdstandby
-#  nothing:file://../root/etc/vdstandby.cfg
+  install_bin:$(PKDIR)/bin/vdstandby:file://../root/bin/vdstandby
+  install_file:$(PKDIR)/etc/vdstandby.cfg:file://../root/etc/vdstandby.cfg
 #  nothing:file://../root/sbin/flash_*
 #  nothing:file://../root/sbin/nand*
 #  nothing:file://../root/etc/inetd.conf
