@@ -103,10 +103,6 @@ $(TARGET_${P}).do_%: $(TARGET_${P}).do_prepare
 	touch $@
 ]]function
 
-function[[ base_bare
-$(warning obsolete base_bare)
-call[[ base ]]
-]]function
 
 
 

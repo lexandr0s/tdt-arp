@@ -14,7 +14,7 @@ comma := ,
 
 # eval_define
 # - 1: variable name
-# - 2: variable name
+# - 2: variable value
 eval_define = $(eval define $1 $(newline)$(value $2)$(newline)endef) \
        $(if $(MAKE_DEBUG), \
               $(info define $1 $(newline)$(value $2)$(newline)endef) \
