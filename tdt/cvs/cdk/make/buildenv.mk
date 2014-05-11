@@ -14,7 +14,7 @@ comma := ,
 
 # eval_define
 # - 1: variable name
-# - 2: variable name
+# - 2: variable value
 eval_define = $(eval define $1 $(newline)$(value $2)$(newline)endef) \
        $(if $(MAKE_DEBUG), \
               $(info define $1 $(newline)$(value $2)$(newline)endef) \
@@ -152,7 +152,6 @@ endif
 # TODO: review these variables
 DEPMOD = $(hostprefix)/bin/depmod
 SOCKSIFY=
-CMD_CVS=$(SOCKSIFY) $(shell which cvs)
 WGET=$(SOCKSIFY) wget -P
 
 INSTALL := install
@@ -164,13 +163,6 @@ CP_D=$(shell which cp) -d
 CP_P=$(shell which cp) -p
 CP_RD=$(shell which cp) -rd
 SED=$(shell which sed)
-
-MAKE_PATH := $(hostprefix)/bin:$(PATH)
-
-# rpm helper-"functions":
-PKG_CONFIG_PATH = $(targetprefix)/usr/lib/pkgconfig
-REWRITE_LIBDIR = sed -i "s,^libdir=.*,libdir='$(targetprefix)/usr/lib'," $(targetprefix)/usr/lib
-REWRITE_LIBDEP = sed -i -e "s,\(^dependency_libs='\| \|-L\|^dependency_libs='\)/usr/lib,\$(targetprefix)/usr/lib," $(targetprefix)/usr/lib
 
 BUILDENV := \
 	source $(buildprefix)/build.env &&
@@ -226,46 +218,17 @@ MAKE_ARGS := \
 	OBJDUMP=$(target)-objdump \
 	LN_S="ln -s"
 
-PLATFORM_CPPFLAGS := $(CPPFLAGS) -I$(driverdir)/include -I $(buildprefix)/$(KERNEL_DIR)/include -I$(appsdir)/misc/tools
-
+PLATFORM_CPPFLAGS := $(CPPFLAGS) -I$(driverdir)/include -I$(appsdir)/misc/tools
 ifdef CONFIG_SPARK
 PLATFORM_CPPFLAGS += -DPLATFORM_SPARK
 endif
-
 ifdef CONFIG_SPARK7162
 PLATFORM_CPPFLAGS += -DPLATFORM_SPARK7162
 endif
-
 ifdef CONFIG_HL101
 PLATFORM_CPPFLAGS += -DPLATFORM_HL101
 endif
-
 PLATFORM_CPPFLAGS := CPPFLAGS="$(PLATFORM_CPPFLAGS)"
-
-CONFIGURE_OPTS = \
-	--build=$(build) \
-	--host=$(target) \
-	--prefix=$(targetprefix)/usr \
-	--with-driver=$(driverdir) \
-	--with-dvbincludes=$(driverdir)/include \
-	--with-target=cdk
-
-ifdef ENABLE_CCACHE
-CONFIGURE_OPTS += --enable-ccache 
-endif
-
-ifdef MAINTAINER_MODE
-CONFIGURE_OPTS += --enable-maintainer-mode
-endif
-
-CONFIGURE = \
-	./autogen.sh && \
-	CC=$(target)-gcc \
-	CXX=$(target)-g++ \
-	CFLAGS="-Wall $(TARGET_CFLAGS)" \
-	CXXFLAGS="-Wall $(TARGET_CXXFLAGS)" \
-	LDFLAGS="$(TARGET_LDFLAGS)" \
-	./configure $(CONFIGURE_OPTS)
 
 # FIXME
 start_build = $(error obsolete)

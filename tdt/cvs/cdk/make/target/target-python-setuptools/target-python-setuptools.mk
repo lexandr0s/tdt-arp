@@ -3,8 +3,10 @@
 #
 package[[ target_python_setuptools
 
+BDEPENDS_${P} = $(target_python)
+
 PV_${P} = 0.6c11
-PR_${P} = 1
+PR_${P} = 2
 PN_${P} = setuptools
 
 call[[ base ]]
@@ -39,8 +41,6 @@ FILES_${P} = \
 	$(PYTHON_DIR)/site-packages/setuptools/*.pyo \
 	$(PYTHON_DIR)/site-packages/setuptools/command/*.py \
 	$(PYTHON_DIR)/site-packages/setuptools/command/*.pyo
-
-BDEPENDS_${P} = $(target_python)
 
 call[[ ipkbox ]]
 

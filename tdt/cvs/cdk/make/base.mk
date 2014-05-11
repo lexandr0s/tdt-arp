@@ -103,10 +103,6 @@ $(TARGET_${P}).do_%: $(TARGET_${P}).do_prepare
 	touch $@
 ]]function
 
-function[[ base_bare
-$(warning obsolete base_bare)
-call[[ base ]]
-]]function
 
 
 
@@ -207,9 +203,9 @@ $(TARGET_${P}).do_install: $(TARGET_${P}).do_ipk
 $(TARGET_${P}): $(TARGET_${P}).do_install
 
 # currently not in use.
-$(TARGET_${P}).do_preclean:
+$(TARGET_${P}).clean_install:
 	opkg $($(SYSROOT_${P})_ipkg_args) --force-removal-of-dependent-packages remove $(${P})
-	touch $@
+	rm -f $(TARGET_${P}).do_install
 
 ]]function
 
@@ -323,7 +319,6 @@ $(TARGET_${P}).do_ipkbox: $(TARGET_${P}).do_split
 	$(remove_docs)
 	$(remove_libs)
 	$(remove_pkgconfigs)
-	$(remove_includedir)
 	$(strip_libs)
 
 	set -e; \
