@@ -46,6 +46,12 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_prepare
 	$(PKDIR_clean)
 	cd $(DIR_${P}) && $(INSTALL_${P})
+	(echo "spoofprotect=yes"; \
+	 echo "ip_forward=no"; \
+	 echo "syncookies=no"; \
+	 echo "disable_tcp_ecn=yes"; \
+	 ) > $(PKDIR)/etc/network/options
+
 	touch $@
 
 call[[ ipkbox ]]
