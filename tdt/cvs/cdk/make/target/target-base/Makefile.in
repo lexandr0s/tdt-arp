@@ -5,3 +5,7 @@ call[[ header ]]
 package[[ target_netbase
 call[[ header ]]
 ]]package
+
+package[[ target_flash_tools
+call[[ header ]]
+]]package
