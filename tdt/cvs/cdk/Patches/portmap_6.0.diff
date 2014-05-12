@@ -23,7 +23,7 @@
  
  # Comment out if your RPC library does not allocate privileged ports for
  # requests from processes with root privilege, or the new portmap will
-@@ -136,12 +136,12 @@
+@@ -136,12 +136,16 @@
  	sed $(MAN_SED) < portmap.8 > portmap.man
  
  install: all
@@ -33,15 +33,20 @@
 -	install -o root -g root -m 0644 portmap.man ${BASEDIR}/usr/share/man/man8/portmap.8
 -	install -o root -g root -m 0644 pmap_dump.8 ${BASEDIR}/usr/share/man/man8
 -	install -o root -g root -m 0644 pmap_set.8 ${BASEDIR}/usr/share/man/man8
++	install -d ${BASEDIR}/etc/init.d
++	install -m 0755 portmap.init ${BASEDIR}/etc/init.d/portmap
++	install -d ${BASEDIR}/sbin
 +	install -m 0755 portmap ${BASEDIR}/sbin
 +	install -m 0755 pmap_dump ${BASEDIR}/sbin
 +	install -m 0755 pmap_set ${BASEDIR}/sbin
++	install -d ${BASEDIR}/usr/share/man/man8
 +	install -m 0644 portmap.man ${BASEDIR}/usr/share/man/man8/portmap.8
 +	install -m 0644 pmap_dump.8 ${BASEDIR}/usr/share/man/man8
 +	install -m 0644 pmap_set.8 ${BASEDIR}/usr/share/man/man8
  
  clean:
  	rm -f *.o portmap pmap_dump pmap_set from_local \
+
 --- portmap_6.0/pmap_check.c	2007-05-11 05:02:10.000000000 +0200
 +++ portmap_6.0/pmap_check.c-new	2007-11-13 17:29:50.000000000 +0100
 @@ -44,7 +44,7 @@
