@@ -6,7 +6,7 @@ package[[ target_udev
 BDEPENDS_${P} = \
 $(target_filesystem) $(target_libattr) $(target_libacl) $(target_glib2) $(target_libusb_compat) $(target_usbutils)
 
-PR_${P} = 1
+PR_${P} = 2
 
 ${P}_VERSION = 162-37
 ${P}_SPEC = stm-$(${P}).spec
@@ -26,6 +26,7 @@ call[[ ipk ]]
 
 NAME_${P} = udev
 RDEPENDS_${P} = libattr1 libacl libusb-0.1 libglib
+FILES_${P} = /etc/* /lib/* /sbin/* /usr/sbin/udevadm /usr/lib/*
 define postinst_${P}
 #!/bin/sh
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ udev start 5 S . stop 99 0 6 .

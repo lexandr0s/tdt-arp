@@ -5,7 +5,7 @@ package[[ target_base_passwd
 
 BDEPENDS_${P} = $(target_filesystem) $(host_base_passwd)
 
-PR_${P} = 1
+PR_${P} = 2
 
 ${P}_VERSION = 3.5.9-11
 ${P}_SPEC = stm-$(${P}).spec
@@ -24,6 +24,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	mv $(PKDIR)/$(targetprefix)/* $(PKDIR)
 	touch $@
 
+FILES_${P} = /etc/* /usr/*
 define postinst_${P}
 #!/bin/sh
 update-passwd -L \
