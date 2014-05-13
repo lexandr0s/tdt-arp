@@ -4,7 +4,7 @@
 package[[ target_rootfs
 
 IPKBOX_LIST_${P} = \
-$(target_firmware) $(target_bootelf) $(target_ustslave) $(target_driver) $(target_busybox) $(target_update_rcd) $(target_initscripts) $(target_sysvinit) $(target_devinit) $(target_udev) $(target_udev_rules) $(target_base_passwd) $(target_base_files) $(target_netbase) $(target_opkg) $(target_lirc) $(target_evremote2) $(target_vsftpd) $(target_enigma2) $(target_tuxbox_configs) $(target_ethtool) $(target_showiframe) $(target_fp_control) $(target_stfbcontrol)
+$(target_firmware) $(target_bootelf) $(target_ustslave) $(target_driver) $(target_busybox) $(target_update_rcd) $(target_initscripts) $(target_sysvinit) $(target_devinit) $(target_udev) $(target_udev_rules) $(target_base_passwd) $(target_base_files) $(target_netbase) $(target_opkg) $(target_lirc) $(target_evremote2) $(target_vsftpd) $(target_enigma2) $(target_tuxbox_configs) $(target_ethtool) $(target_showiframe) $(target_fp_control) $(target_stfbcontrol) $(target_bootlogo) $(target_portmap) $(target_flash_tools) $(target_rfkill)
 
 ifdef CONFIG_WLAN_SUPPORT
 IPKBOX_LIST_${P} += $(target_wireless_tools) $(target_python_wifi) $(target_firmware_wlan)
@@ -83,9 +83,16 @@ opkg_my_list = \
 	libc6 \
 	libgcc1
 
+# netutils binaries and tools
+opkg_my_list += \
+	portmap \
+	vsftpd \
+	ethtool
+
 # kernel with firmware and modules
 opkg_my_list += \
 	boot-elf \
+	bootlogo \
 	firmware \
 	ustslave \
 	evremote2 \
@@ -224,19 +231,5 @@ opkg_os := linux-kernel \
 		distro-feed-configs \
 		udev-rules \
 		libeplayer3
-
-opkg_enigma2 := enigma2 \
-		config-satellites \
-		config-cables \
-		config-terrestrial \
-		
-
-opkg_enigma2_full := 
-
-opkg_wireless := 
-
-opkg_net_utils:= portmap \
-		 vsftpd \
-		 ethtool
 
 ]]package

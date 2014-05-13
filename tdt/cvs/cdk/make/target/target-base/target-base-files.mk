@@ -16,7 +16,6 @@ call[[ base ]]
 # TODO:
 # /etc/nsswitch.conf
 # /etc/host.conf
-# +/var/tmp
 # -/etc/profile.d/empty
 # +/etc/motd
 # +/var/run
@@ -28,7 +27,6 @@ call[[ base ]]
 # -/etc/skel/.bashrc
 # +/etc/hostname
 # -/etc/skel/.profile
-# +/etc/profile
 # -/etc/default/usbd
 # +/etc/filesystems
 # +/etc/mtab
@@ -49,28 +47,18 @@ rule[[
   install:-d:$(PKDIR)/var/lib
   install:-d:$(PKDIR)/var/cache
   install:-d:$(PKDIR)/etc
+  install:-d:$(PKDIR)/mnt
+  install:-d:$(PKDIR)/hdd
+  install:-d:$(PKDIR)/media/hdd
+  install:-d:$(PKDIR)/media/dvd
+  install:-d:$(PKDIR)/media/net
   install:-d:$(PKDIR)/root
   install:-d:$(PKDIR)/bin
   install_file:$(PKDIR)/etc/motd:file://motd
   install_file:$(PKDIR)/etc/fstab:file://fstab
-#  nothing:file://../root/etc/image-version
-#  nothing:file://../root/etc/network/interfaces
-#  nothing:file://../root/bin/autologin
-#  nothing:file://../root/bin/fw_*
-#  nothing:file://../root/bin/setspark.sh
   install_bin:$(PKDIR)/bin/vdstandby:file://vdstandby
   install_file:$(PKDIR)/etc/vdstandby.cfg:file://vdstandby.cfg
-#  nothing:file://../root/sbin/flash_*
-#  nothing:file://../root/sbin/nand*
-#  nothing:file://../root/etc/inetd.conf
   install_file:$(PKDIR)/etc/profile:file://profile
-#  nothing:file://../root/etc/resolv.conf
-#  nothing:file://../root/etc/tuxbox/satellites.xml
-#  nothing:file://../root/etc/tuxbox/cables.xml
-#  nothing:file://../root/etc/tuxbox/terrestrial.xml
-#  nothing:file://../root/etc/tuxbox/timezone.xml
-#  nothing:file://../root/etc/init.d/udhcpc
-#  nothing:file://../root/usr/share/udhcpc/default.script
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
