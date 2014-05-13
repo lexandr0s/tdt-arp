@@ -65,8 +65,8 @@ ifdef CONFIG_ENIGMA2_SRC_LAST
 endif
 
   install:-d:$(PKDIR)/usr/share/enigma2/
-  install_file:$(PKDIR)/usr/share/enigma2/keymap.xml:file://../root/usr/local/share/enigma2/$(keymap_${P})
-  install_file:$(PKDIR)/usr/share/enigma2/keymap_amiko.xml:file://../root/usr/local/share/enigma2/keymap_amiko.xml
+  install_file:$(PKDIR)/usr/share/enigma2/keymap.xml:file://$(keymap_${P})
+  install_file:$(PKDIR)/usr/share/enigma2/keymap_amiko.xml:file://keymap_amiko.xml
 
 ]]rule
 

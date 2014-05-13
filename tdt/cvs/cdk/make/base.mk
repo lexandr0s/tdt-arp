@@ -11,6 +11,7 @@ function[[ header
 ${P} := $(subst _,-,${P})
 TARGET_${P} := $(DEPDIR)/$(${P})
 SYSROOT_${P} := $(word 1,$(subst _, ,${P}))
+SDIR_${P} := $(buildprefix)/$(_thisdir)/files
 ]]function
 
 

@@ -13,7 +13,7 @@ call[[ base ]]
 rule[[
   pdircreate:${PN}-${PV}
   install:-d:$(PKDIR)/etc/udev/rules.d
-  install_file:$(PKDIR)/etc/udev/rules.d/:file://../root/etc/60-dvb-ca.rules
+  install_file:$(PKDIR)/etc/udev/rules.d/:file://60-dvb-ca.rules
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})

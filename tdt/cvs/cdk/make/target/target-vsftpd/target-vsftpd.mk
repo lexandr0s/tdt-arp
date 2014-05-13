@@ -15,8 +15,8 @@ rule[[
   patch:file://${PN}_${PV}.diff
 
   install:-d:$(PKDIR)/etc/init.d
-  install_bin:$(PKDIR)/etc/init.d/vsftpd:file://../root/release/vsftpd
-  install_file:$(PKDIR)/etc/vsftpd.conf:file://../root/etc/vsftpd.conf
+  install_bin:$(PKDIR)/etc/init.d/vsftpd:file://vsftpd
+  install_file:$(PKDIR)/etc/vsftpd.conf:file://vsftpd.conf
 ]]rule
 
 MAKE_FLAGS_${P} = $(MAKE_OPTS) CFLAGS="-pipe -Os -g0" PREFIX=$(PKDIR)

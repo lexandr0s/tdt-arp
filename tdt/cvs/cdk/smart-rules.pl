@@ -30,9 +30,6 @@ my $install_commands = "install|install_file|install_bin|make|move|remove|mkdir|
 # pattern that will be substituted
 my $P = "\${P}";
 
-my $patchesdir .= "\$(buildprefix)/Patches";
-#my $patchesdir .= "\$(srcdir)/make";
-
 sub load ($$);
 
 my %bracket = (
@@ -275,7 +272,7 @@ sub process_rule($) {
     {
         $f = $url;
         $f =~ s#^file://##;
-        $f = "$patchesdir/$f";
+        $f = "\$(SDIR_$P)/$f";
     }
     elsif ( $url =~ m#^localwork://# )
     {
