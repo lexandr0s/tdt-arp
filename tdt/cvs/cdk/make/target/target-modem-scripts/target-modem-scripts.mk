@@ -15,13 +15,13 @@ rule[[
   install:-d:$(PKDIR)/etc/udev/rules.d
   install:-d:$(PKDIR)/etc/ppp/peers
   install:-d:$(PKDIR)/usr/bin
-  install_bin:$(PKDIR)/etc/ppp/:file://../root/etc/ppp/ip-*
-  install_bin:$(PKDIR)/usr/bin/:file://../root/usr/bin/modem.sh
-  install_bin:$(PKDIR)/usr/bin/:file://../root/usr/bin/modemctrl.sh
-  install_file:$(PKDIR)/etc/:file://../root/etc/modem.conf
-  install_file:$(PKDIR)/etc/:file://../root/etc/modem.list
-  install_file:$(PKDIR)/etc/udev/rules.d/:file://../root/etc/55-modem.rules
-  install_file:$(PKDIR)/etc/udev/rules.d/:file://../root/etc/30-modemswitcher.rules
+  install_bin:$(PKDIR)/etc/ppp/:file://ip-*
+  install_bin:$(PKDIR)/usr/bin/:file://modem.sh
+  install_bin:$(PKDIR)/usr/bin/:file://modemctrl.sh
+  install_file:$(PKDIR)/etc/:file://modem.conf
+  install_file:$(PKDIR)/etc/:file://modem.list
+  install_file:$(PKDIR)/etc/udev/rules.d/:file://55-modem.rules
+  install_file:$(PKDIR)/etc/udev/rules.d/:file://30-modemswitcher.rules
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})

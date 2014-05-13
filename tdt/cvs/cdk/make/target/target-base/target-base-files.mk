@@ -58,8 +58,8 @@ rule[[
 #  nothing:file://../root/bin/autologin
 #  nothing:file://../root/bin/fw_*
 #  nothing:file://../root/bin/setspark.sh
-  install_bin:$(PKDIR)/bin/vdstandby:file://../root/bin/vdstandby
-  install_file:$(PKDIR)/etc/vdstandby.cfg:file://../root/etc/vdstandby.cfg
+  install_bin:$(PKDIR)/bin/vdstandby:file://vdstandby
+  install_file:$(PKDIR)/etc/vdstandby.cfg:file://vdstandby.cfg
 #  nothing:file://../root/sbin/flash_*
 #  nothing:file://../root/sbin/nand*
 #  nothing:file://../root/etc/inetd.conf

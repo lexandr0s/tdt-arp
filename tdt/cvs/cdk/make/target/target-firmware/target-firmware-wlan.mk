@@ -15,9 +15,8 @@ call[[ base ]]
 
 rule[[
   nothing:git://github.com/BjornLee/linux-firmware.git
-  nothing:file://../../driver/wireless/rtl8188eu/rtl8188eufw.bin
-  nothing:file://../root/etc/Wireless/RT2870STA/RT2870STA.dat
-  nothing:file://../root/etc/Wireless/RT3070STA/RT3070STA.dat
+  nothing:file://Wireless/RT2870STA/RT2870STA.dat
+  nothing:file://Wireless/RT3070STA/RT3070STA.dat
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
@@ -37,7 +36,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_prepare
 	$(INSTALL_FILE) RT3070STA.dat $(PKDIR)/etc/Wireless/RT3070STA/ && \
 	ln -sf /lib/firmware/rt2870.bin $(PKDIR)/lib/firmware/rt3070.bin && \
 	ln -sf /lib/firmware/rt2870.bin $(PKDIR)/lib/firmware/rt5370.bin && \
-	$(INSTALL_FILE) rtl8188eufw.bin $(PKDIR)/lib/firmware/rtl8188eu && \
+	$(INSTALL_FILE) $(driverdir)/wireless/rtl8188eu/rtl8188eufw.bin $(PKDIR)/lib/firmware/rtl8188eu && \
 	$(INSTALL_FILE) rtlwifi/rtl8192cufw.bin $(PKDIR)/lib/firmware/rtlwifi && \
 	$(INSTALL_FILE) rtlwifi/rtl8712u.bin $(PKDIR)/lib/firmware/rtlwifi
 	touch $@

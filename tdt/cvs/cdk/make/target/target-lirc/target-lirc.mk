@@ -15,6 +15,15 @@ call[[ base ]]
 rule[[
   extract:http://prdownloads.sourceforge.net/${PN}/${PN}-${PV}.tar.gz
   patch:file://${PN}-${PV}-try_first_last_remote.diff
+  nothing:file://lircd_hl101.conf
+  nothing:file://lircd_hl101.conf.03_00_02
+  nothing:file://lircd_hl101.conf.03_00_07
+  nothing:file://lircd_spark7162.conf
+  nothing:file://lircd_spark.conf
+  nothing:file://lircd_spark.conf.09_00_07
+  nothing:file://lircd_spark.conf.09_00_08
+  nothing:file://lircd_spark.conf.09_00_0B
+  nothing:file://lircd_spark.conf.09_00_1D
 ]]rule
 
 CONFIG_FLAGS_${P} = 
@@ -54,12 +63,16 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 
 	$(INSTALL_DIR) $(PKDIR)/etc
 	$(INSTALL_DIR) $(PKDIR)/var/run/lirc/
-	$(INSTALL_FILE) $(buildprefix)/root/etc/lircd_$(TARGET).conf $(PKDIR)/etc/lircd.conf
+	$(INSTALL_FILE) ${DIR}/lircd_$(TARGET).conf $(PKDIR)/etc/lircd.conf
+ifdef CONFIG_HL101
+	$(INSTALL_FILE) ${DIR}/lircd_hl101.conf.03_00_02 $(PKDIR)/etc/lircd.conf.03_00_02
+	$(INSTALL_FILE) ${DIR}/lircd_hl101.conf.03_00_07 $(PKDIR)/etc/lircd.conf.03_00_07
+endif
 ifeq ($(CONFIG_SPARK)$(CONFIG_SPARK7162),y)
-	$(INSTALL_FILE) $(buildprefix)/root/etc/lircd_spark.conf.09_00_0B $(PKDIR)/etc/lircd.conf.09_00_0B
-	$(INSTALL_FILE) $(buildprefix)/root/etc/lircd_spark.conf.09_00_07 $(PKDIR)/etc/lircd.conf.09_00_07
-	$(INSTALL_FILE) $(buildprefix)/root/etc/lircd_spark.conf.09_00_08 $(PKDIR)/etc/lircd.conf.09_00_08
-	$(INSTALL_FILE) $(buildprefix)/root/etc/lircd_spark.conf.09_00_1D $(PKDIR)/etc/lircd.conf.09_00_1D
+	$(INSTALL_FILE) ${DIR}/lircd_spark.conf.09_00_0B $(PKDIR)/etc/lircd.conf.09_00_0B
+	$(INSTALL_FILE) ${DIR}/lircd_spark.conf.09_00_07 $(PKDIR)/etc/lircd.conf.09_00_07
+	$(INSTALL_FILE) ${DIR}/lircd_spark.conf.09_00_08 $(PKDIR)/etc/lircd.conf.09_00_08
+	$(INSTALL_FILE) ${DIR}/lircd_spark.conf.09_00_1D $(PKDIR)/etc/lircd.conf.09_00_1D
 endif
 	touch $@
 
@@ -83,6 +96,8 @@ endef
 else
 define conffiles_${P}
 /etc/lircd.conf
+/etc/lircd.conf.03_00_02
+/etc/lircd.conf.03_00_07
 endef
 endif
 

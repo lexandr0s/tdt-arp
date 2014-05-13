@@ -15,7 +15,7 @@ call[[ base ]]
 rule[[
   extract:http://fossies.org/unix/misc/old/${PN}-${PV}.tgz
   patch:file://${PN}_${PV}.diff
-  nothing:file://../root/etc/init.d/portmap.init
+  nothing:file://portmap.init
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
