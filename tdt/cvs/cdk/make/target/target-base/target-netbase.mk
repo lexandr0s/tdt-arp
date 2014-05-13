@@ -30,13 +30,13 @@ rule[[
   install_file:$(PKDIR)/etc/services:localwork://${DIR}/etc-services
   install_file:$(PKDIR)/etc/rpc:localwork://${DIR}/etc-rpc
 
-  install_file:$(PKDIR)/etc/network/interfaces:file://../root/etc/network/interfaces
-  install_file:$(PKDIR)/etc/resolv.conf:file://../root/etc/resolv.conf
-  install_file:$(PKDIR)/etc/hosts:file://../root/etc/hosts
+  install_file:$(PKDIR)/etc/network/interfaces:file://interfaces
+  install_file:$(PKDIR)/etc/resolv.conf:file://resolv.conf
+  install_file:$(PKDIR)/etc/hosts:file://hosts
 
 #FIXME: ???
-  install_bin:-D:$(PKDIR)/etc/init.d/udphc:file://../root/etc/init.d/udhcpc
-  install_bin:-D:$(PKDIR)/usr/share/udhcpc/default.script:file://../root/usr/share/udhcpc/default.script
+  install_bin:-D:$(PKDIR)/etc/init.d/udphc:file://udhcpc
+  install_bin:-D:$(PKDIR)/usr/share/udhcpc/default.script:file://udhcpc-default.script
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})

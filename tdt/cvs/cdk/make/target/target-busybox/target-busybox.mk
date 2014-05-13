@@ -15,8 +15,8 @@ call[[ base ]]
 rule[[
   extract:http://www.${PN}.net/downloads/${PN}-${PV}.tar.bz2
   nothing:file://${PN}-${PV}.config
-  nothing:file://../root/etc/init.d/busybox-cron
-  nothing:file://../root/bin/autologin
+  nothing:file://busybox-cron
+  nothing:file://autologin
   pmove:${DIR}/${PN}-${PV}.config:${DIR}/.config
   patch:file://${PN}-${PV}-ash.patch
   patch:file://${PN}-${PV}-date.patch

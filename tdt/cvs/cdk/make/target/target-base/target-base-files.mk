@@ -49,8 +49,8 @@ rule[[
   install:-d:$(PKDIR)/var/log
   install:-d:$(PKDIR)/var/cache
   install:-d:$(PKDIR)/etc
-  install_file:$(PKDIR)/etc/motd:file://../root/etc/motd
-  install_file:$(PKDIR)/etc/fstab:file://../root/etc/fstab
+  install_file:$(PKDIR)/etc/motd:file://motd
+  install_file:$(PKDIR)/etc/fstab:file://fstab
 #  nothing:file://../root/etc/image-version
 #  nothing:file://../root/etc/network/interfaces
 #  nothing:file://../root/bin/autologin
@@ -61,7 +61,7 @@ rule[[
 #  nothing:file://../root/sbin/flash_*
 #  nothing:file://../root/sbin/nand*
 #  nothing:file://../root/etc/inetd.conf
-  install_file:$(PKDIR)/etc/profile:file://../root/etc/profile
+  install_file:$(PKDIR)/etc/profile:file://profile
 #  nothing:file://../root/etc/resolv.conf
 #  nothing:file://../root/etc/tuxbox/satellites.xml
 #  nothing:file://../root/etc/tuxbox/cables.xml

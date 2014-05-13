@@ -6,7 +6,7 @@ package[[ target_firmware
 BDEPENDS_${P} = $(target_filesystem)
 
 PV_${P} = 0.1
-PR_${P} = 1
+PR_${P} = 2
 PACKAGE_ARCH_${P} = $(box_arch)
 
 DESCRIPTION_${P} = firmware non public
@@ -15,12 +15,10 @@ call[[ base ]]
 
 rule[[
   pdircreate:${PN}-${PV}
-  nothing:file://../root/firmware/component_7111_mb618.fw
-  nothing:file://../root/firmware/component_7105_pdk7105.fw
-  nothing:file://../root/firmware/dvb-fe-avl2108.fw
-  nothing:file://../root/firmware/dvb-fe-stv6306.fw
-# FIXME:
-  nothing:file://../root/release/fstab_hl101
+  nothing:file://component_7111_mb618.fw
+  nothing:file://component_7105_pdk7105.fw
+  nothing:file://dvb-fe-avl2108.fw
+  nothing:file://dvb-fe-stv6306.fw
 ]]rule
 
 $(TARGET_${P}).do_package: $(DEPENDS_${P})

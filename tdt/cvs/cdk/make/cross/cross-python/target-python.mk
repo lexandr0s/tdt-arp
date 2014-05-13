@@ -546,7 +546,7 @@ python_readline python_subprocess python_pydoc python_logging python_mailbox pyt
 python_sqlite3 python_sqlite3_tests python_unittest python_stringold python_robotparser python_pickle \
 python_multiprocessing python_pkgutil python_2to3 python_debugger python_bsddb python_numbers python_mmap \
 python_smtpd python_shell python_idle python_zlib python_db python_crypt python_tests python_lang python_audio
-FILES_python_modules = \
+FILES_python_modules =
 
 DESCRIPTION_python_multiprocessing = Python Multiprocessing Support
 RDEPENDS_python_multiprocessing = python_core python_io python_lang libpython$(PYTHON_VERSION) python_pickle python_threading python_ctypes libc6

@@ -15,7 +15,7 @@ call[[ base ]]
 rule[[
   pdircreate:${DIR}
   install:-d:$(PKDIR)/boot
-  install_file:$(PKDIR)/boot/bootlogo.mvi:file://../root/bootscreen/bootlogo.mvi
+  install_file:$(PKDIR)/boot/bootlogo.mvi:file://bootlogo.mvi
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})

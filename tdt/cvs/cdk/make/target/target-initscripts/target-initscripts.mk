@@ -17,23 +17,24 @@ rule[[
   pdircreate:${PN}-${PV}
   install:-d:$(PKDIR)/etc/init.d
   install:-d:$(PKDIR)/etc/rc.d
-  install_file:$(PKDIR)/etc:file://../root/etc/inittab
-  install_bin:$(PKDIR)/etc/init.d:file://../root/release/hostname
-  install_bin:$(PKDIR)/etc/init.d:file://../root/release/inetd
-  install_bin:$(PKDIR)/etc/init.d/initmodules:file://../root/release/initmodules_$(TARGET)
-  install_bin:$(PKDIR)/etc/init.d/halt:file://../root/release/halt_$(TARGET)
-  install_bin:$(PKDIR)/etc/init.d:file://../root/release/mountall
-  install_bin:$(PKDIR)/etc/init.d:file://../root/release/mountsysfs
-  install_bin:$(PKDIR)/etc/init.d:file://../root/release/networking
-  install_bin:$(PKDIR)/etc/init.d:file://../root/release/rc
-  install_bin:$(PKDIR)/etc/init.d:file://../root/release/reboot
-  install_bin:$(PKDIR)/etc/init.d:file://../root/release/sendsigs
-  install_bin:$(PKDIR)/etc/init.d:file://../root/release/telnetd
-  install_bin:$(PKDIR)/etc/init.d:file://../root/release/syslogd
-  install_bin:$(PKDIR)/etc/init.d:file://../root/release/umountfs
-  install_bin:$(PKDIR)/etc/init.d:file://../root/release/lircd
-  install_bin:$(PKDIR)/etc/init.d:file://../root/etc/init.d/avahi-daemon
-  install_bin:$(PKDIR)/etc/init.d:file://../root/etc/init.d/rdate
+  install_file:$(PKDIR)/etc:file://inittab
+  install_bin:$(PKDIR)/etc/init.d:file://hostname
+  install_bin:$(PKDIR)/etc/init.d:file://inetd
+  install_bin:$(PKDIR)/etc/init.d/initmodules:file://initmodules_$(TARGET)
+  install_bin:$(PKDIR)/etc/init.d/halt:file://halt_$(TARGET)
+  install_bin:$(PKDIR)/etc/init.d:file://mountall
+  install_bin:$(PKDIR)/etc/init.d:file://mountsysfs
+  install_bin:$(PKDIR)/etc/init.d:file://networking
+  install_bin:$(PKDIR)/etc/init.d:file://rc
+  install_bin:$(PKDIR)/etc/init.d:file://reboot
+  install_bin:$(PKDIR)/etc/init.d:file://sendsigs
+  install_bin:$(PKDIR)/etc/init.d:file://telnetd
+  install_bin:$(PKDIR)/etc/init.d:file://syslogd
+  install_bin:$(PKDIR)/etc/init.d:file://umountfs
+  install_bin:$(PKDIR)/etc/init.d:file://lircd
+# FIXME avahi mess
+  install_bin:$(PKDIR)/etc/init.d:file://avahi-daemon
+  install_bin:$(PKDIR)/etc/init.d:file://rdate
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})

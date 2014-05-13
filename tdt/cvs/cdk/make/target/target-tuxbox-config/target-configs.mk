@@ -14,10 +14,10 @@ call[[ base ]]
 rule[[
   pdircreate:${PN}-${PV}
   install:-d:$(PKDIR)/etc/tuxbox
-  install_file:$(PKDIR)/etc/tuxbox:file://../root/etc/tuxbox/satellites.xml
-  install_file:$(PKDIR)/etc/tuxbox:file://../root/etc/tuxbox/cables.xml
-  install_file:$(PKDIR)/etc/tuxbox:file://../root/etc/tuxbox/terrestrial.xml
-  install_file:$(PKDIR)/etc/tuxbox:file://../root/etc/tuxbox/timezone.xml
+  install_file:$(PKDIR)/etc/tuxbox:file://satellites.xml
+  install_file:$(PKDIR)/etc/tuxbox:file://cables.xml
+  install_file:$(PKDIR)/etc/tuxbox:file://terrestrial.xml
+  install_file:$(PKDIR)/etc/tuxbox:file://timezone.xml
 
 ]]rule
 
