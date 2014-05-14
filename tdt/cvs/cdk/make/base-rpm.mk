@@ -5,8 +5,8 @@ function[[ base_rpm
 # place after variables definitions in *.mk file and before TARGET
 PV_${P} = $(${P}_VERSION)
 SRC_URI_${P} ?= stlinux.com
-DEPENDS_${P} += $(if $(${P}_SPEC_PATCH),Patches/$(${P}_SPEC_PATCH))
-DEPENDS_${P} += $(if $(${P}_PATCHES),$(${P}_PATCHES:%=Patches/%))
+DEPENDS_${P} += $(if $(${P}_SPEC_PATCH),${SDIR}/$(${P}_SPEC_PATCH))
+DEPENDS_${P} += $(if $(${P}_PATCHES),$(addprefix ${SDIR},$(${P}_PATCHES)))
 DEPENDS_${P} += $(${P}_SRCRPM)
 
 ]]function
@@ -15,8 +15,8 @@ function[[ TARGET_rpm_do_compile
 
 $(TARGET_${P}).do_compile: $(DEPENDS_${P})
 	$(rpm_src_install) $(${P}_SRCRPM)
-	$(if $(${P}_SPEC_PATCH), cd $(specsprefix) && patch -p1 $(${P}_SPEC) < $(buildprefix)/Patches/$(${P}_SPEC_PATCH) )
-	$(if $(${P}_PATCHES), cp $(${P}_PATCHES:%=Patches/%) $(sourcesprefix) )
+	$(if $(${P}_SPEC_PATCH), cd $(specsprefix) && patch -p1 $(${P}_SPEC) < ${SDIR}/$(${P}_SPEC_PATCH) )
+	$(if $(${P}_PATCHES), cp $(addprefix ${SDIR},$(${P}_PATCHES)) $(sourcesprefix) )
 #	rm -rf $(prefix)/BUILDROOT/*
 	$(rpm_build) $(specsprefix)/$(${P}_SPEC)
 	touch $@
