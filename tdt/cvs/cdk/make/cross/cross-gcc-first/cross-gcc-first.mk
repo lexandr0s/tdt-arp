@@ -32,8 +32,8 @@ call[[ ipk ]]
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(rpm_src_install) $(${P}_SRCRPM)
 	cp $(buildprefix)/my-$(${P}).spec $(specsprefix)/$(${P}_SPEC)
-	$(if $(${P}_SPEC_PATCH), cd $(specsprefix) && patch -p1 $(${P}_SPEC) < $(buildprefix)/Patches/$(${P}_SPEC_PATCH) )
-	$(if $(${P}_PATCHES), cp $(${P}_PATCHES:%=Patches/%) $(sourcesprefix) )
+	$(if $(${P}_SPEC_PATCH), cd $(specsprefix) && patch -p1 $(${P}_SPEC) < ${SDIR}/$(${P}_SPEC_PATCH) )
+	$(if $(${P}_PATCHES), cp $(addprefix ${SDIR}/,$(${P}_PATCHES)) $(sourcesprefix) )
 	touch $@
 
 $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
