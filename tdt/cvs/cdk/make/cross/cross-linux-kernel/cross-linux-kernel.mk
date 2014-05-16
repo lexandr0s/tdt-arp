@@ -33,11 +33,11 @@ ifeq ($(CONFIG_KERNEL_209)$(CONFIG_KERNEL_210)$(CONFIG_KERNEL_211),y)
 ${P}_patches += linux-tune_stm24.patch
 endif
 
-ifeq ($(CONFIG_KERNEL_212),y)
-${P}_patches += linux-tune_stm24_0212.patch
+ifeq ($(CONFIG_KERNEL_212)$(CONFIG_KERNEL_214),y)
+${P}_patches += linux-tune_stm24_$(KERNEL_LABEL).patch
 endif
 
-ifeq ($(CONFIG_KERNEL_209)$(CONFIG_KERNEL_210)$(CONFIG_KERNEL_211)$(CONFIG_KERNEL_212),y)
+ifeq ($(CONFIG_KERNEL_209)$(CONFIG_KERNEL_210)$(CONFIG_KERNEL_211)$(CONFIG_KERNEL_212)$(CONFIG_KERNEL_214),y)
 ${P}_patches += linux-sh4-mmap_stm24.patch
 endif
 
@@ -49,7 +49,7 @@ ifeq ($(CONFIG_KERNEL_207),y)
 ${P}_patches += linux-sh4-sti7100_missing_clk_alias_stm24_$(KERNEL_LABEL).patch
 endif
 
-ifeq ($(CONFIG_KERNEL_209)$(CONFIG_KERNEL_211)$(CONFIG_KERNEL_212),y)
+ifeq ($(CONFIG_KERNEL_209)$(CONFIG_KERNEL_211)$(CONFIG_KERNEL_212)$(CONFIG_KERNEL_214),y)
 ${P}_patches += linux-sh4-directfb_stm24_$(KERNEL_LABEL).patch
 endif
 
