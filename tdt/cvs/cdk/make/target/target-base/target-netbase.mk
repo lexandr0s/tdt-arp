@@ -7,7 +7,7 @@ BDEPENDS_${P} = $(target_filesystem)
 
 PV_${P} = 4.34
 PR_ST_${P} = 10
-PR_${P} = ${PR_ST}-2
+PR_${P} = ${PR_ST}-3
 
 DESCRIPTION_${P} = Miscellaneous files for the base networking
 
