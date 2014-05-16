@@ -4,7 +4,7 @@
 package[[ target_rootfs
 
 IPKBOX_LIST_${P} = \
-$(target_firmware) $(target_bootelf) $(target_ustslave) $(target_driver) $(target_busybox) $(target_update_rcd) $(target_initscripts) $(target_sysvinit) $(target_devinit) $(target_udev) $(target_udev_rules) $(target_base_passwd) $(target_base_files) $(target_netbase) $(target_opkg) $(target_lirc) $(target_evremote2) $(target_vsftpd) $(target_enigma2) $(target_tuxbox_configs) $(target_ethtool) $(target_showiframe) $(target_fp_control) $(target_stfbcontrol) $(target_bootlogo) $(target_portmap) $(target_flash_tools) $(target_rfkill)
+$(target_firmware) $(target_bootelf) $(target_ustslave) $(target_driver) $(target_busybox) $(target_update_rcd) $(target_initscripts) $(target_sysvinit) $(target_devinit) $(target_udev) $(target_udev_rules) $(target_base_passwd) $(target_base_files) $(target_netbase) $(target_opkg) $(target_lirc) $(target_evremote2) $(target_vsftpd) $(target_enigma2) $(target_tuxbox_configs) $(target_ethtool) $(target_showiframe) $(target_fp_control) $(target_stfbcontrol) $(target_bootlogo) $(target_portmap) $(target_flash_tools) $(target_rfkill) $(target_hotplug_e2_helper)
 
 ifdef CONFIG_WLAN_SUPPORT
 IPKBOX_LIST_${P} += $(target_wireless_tools) $(target_python_wifi) $(target_firmware_wlan)
@@ -95,6 +95,7 @@ opkg_my_list += \
 	bootlogo \
 	firmware \
 	ustslave \
+	hotplug-e2-helper \
 	evremote2 \
 	fp-control \
 	stfbcontrol \
