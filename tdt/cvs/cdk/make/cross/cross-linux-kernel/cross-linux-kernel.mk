@@ -68,7 +68,7 @@ ${P}_SPEC_PATCH =
 ${P}_PATCHES =
 ${P}_SRCRPM = $(archivedir)/$(STLINUX)-host-kernel-source-sh4-$(KERNEL_VERSION)-$(KERNEL_RELEASE).src.rpm
 
-DEPENDS_${P} += $(addprefix Patches/,$(${P}_patches) $(${P}_config))
+DEPENDS_${P} += $(addprefix ${SDIR}/,$(${P}_patches) $(${P}_config))
 
 call[[ base ]]
 call[[ base_rpm ]]
@@ -86,8 +86,8 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile $(DEPENDS_${P})
 # 	rm -rf linux{,-sh4}
 # 	rpm $(DRPM) --ignorearch --nodeps -Uhv $(lastword $^)
 
-	cd $(DIR_${P}) && cat $(addprefix $(buildprefix)/Patches/,$(${P}_patches)) | patch -p1
-	cp Patches/$(${P}_config) $(DIR_${P})/.config
+	cd $(DIR_${P}) && cat $(addprefix ${SDIR}/,$(${P}_patches)) | patch -p1
+	cp ${SDIR}/$(${P}_config) $(DIR_${P})/.config
 
 # 	-rm $(KERNEL_DIR)/localversion*
 # 	echo "$(KERNELSTMLABEL)" > $(KERNEL_DIR)/localversion-stm
