@@ -3,7 +3,7 @@
 #
 package[[ target_python
 
-BDEPENDS_${P} = $(target_glibc) $(cross_python) $(target_zlib) $(target_openssl) $(target_libffi) $(target_bzip2)
+BDEPENDS_${P} = $(target_glibc) $(cross_python) $(target_zlib) $(target_openssl) $(target_libffi) $(target_libbz2)
 
 PR_${P} = 1
 
