@@ -1,6 +1,5 @@
-package[[ cross_python
+package[[ target_python
 call[[ header ]]
-]]package
 
 PYTHON_VERSION = 2.7
 PV_${P} = $(PYTHON_VERSION).3
