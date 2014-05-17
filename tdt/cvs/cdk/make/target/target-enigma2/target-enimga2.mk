@@ -118,6 +118,7 @@ PACKAGES_${P} = \
 	enigma2_plugin_systemplugins_cablescan \
 	enigma2_plugin_systemplugins_defaultservicesscanner \
 	enigma2_plugin_systemplugins_diseqctester \
+	enigma2_plugin_systemplugins_fastscan \
 	enigma2_plugin_systemplugins_hdmicec \
 	enigma2_plugin_systemplugins_hotplug \
 	enigma2_plugin_systemplugins_keymapmanager \
