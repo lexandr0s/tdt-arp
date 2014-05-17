@@ -28,20 +28,8 @@ mainmenu "global config"
 		help
 			Select kernel version
 
-		config KERNEL_0207
-		bool "STM 24 2.6.32.28-0207"
-
-		config KERNEL_0209
-		bool "STM 24 2.6.32.46-0209"
-
-		config KERNEL_0210
-		bool "STM 24 2.6.32.57-0210"
-
 		config KERNEL_0211
 		bool "STM 24 2.6.32.59-0211"
-		
-		config KERNEL_0212
-		bool "STM 24 2.6.32.61-0212"
 
 		config KERNEL_0214
 		bool "STM 24 2.6.32.61-0214"

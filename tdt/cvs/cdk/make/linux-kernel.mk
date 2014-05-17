@@ -16,7 +16,7 @@ ifdef ENABLE_P0211
 PATCH_STR=_0211
 endif
 
-ifdef ENABLE_P0212
+ifdef ENABLE_P021
 PATCH_STR=_0212
 endif
 
