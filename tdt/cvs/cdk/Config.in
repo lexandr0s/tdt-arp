@@ -46,7 +46,7 @@ mainmenu "global config"
 
 	choice
 		prompt "toolchain building:"
-		default GLIBC_BINARY
+		default GLIBC_SCRATCH
 		help
 			select if use prebuilt binaries for toolchain at stage 1
 
