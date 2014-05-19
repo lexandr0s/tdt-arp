@@ -35,7 +35,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 call[[ ipk ]]
 
 DESCRIPTION_${P} =  high-quality data compressor
-FILES_${P} = /usr/bin/* /usr/lib/*
+FILES_${P} = /usr/lib/*
 
 call[[ ipkbox ]]
 
