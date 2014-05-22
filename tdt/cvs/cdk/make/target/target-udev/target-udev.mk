@@ -11,7 +11,7 @@ PR_${P} = 2
 ${P}_VERSION = 162-37
 ${P}_SPEC = stm-$(${P}).spec
 ${P}_SPEC_PATCH = $(${P}_SPEC).diff
-${P}_PATCHES =
+${P}_PATCHES = usbhd-automount.rules
 ${P}_SRCRPM = $(archivedir)/$(STLINUX)-$(${P})-$(${P}_VERSION).src.rpm
 
 call[[ base ]]
