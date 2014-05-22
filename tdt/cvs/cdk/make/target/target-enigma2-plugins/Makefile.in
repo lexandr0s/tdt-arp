@@ -1,0 +1,7 @@
+package[[ target_openwebif
+call[[ header ]]
+]]package
+
+package[[ target_mediaportal
+call[[ header ]]
+]]package
