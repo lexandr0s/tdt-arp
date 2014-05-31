@@ -11,7 +11,7 @@ PR_${P} = 1
 call[[ base ]]
 
 rule[[
-  extract:http://freefr.dl.sourceforge.net/project/pythonwifi.berlios/python-wifi-${PV}.tar.bz2
+  extract:http://freefr.dl.sourceforge.net/project/pythonwifi.berlios/${PN}-${PV}.tar.bz2
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
