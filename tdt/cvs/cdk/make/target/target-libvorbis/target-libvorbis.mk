@@ -3,7 +3,7 @@
 #
 package[[ target_libvorbis
 
-BDEPENDS_${P} = $(target_glibc)
+BDEPENDS_${P} = $(target_glibc) $(target_libogg)
 
 PV_${P} = 1.3.4
 PR_${P} = 1
