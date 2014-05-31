@@ -23,7 +23,7 @@ PACKAGES_${P} = libncurses5 \
 		libmenu5 \
 		libform5
 
-DESCRIPTION_libncurses5 =  ncurses panel library
+DESCRIPTION_${P} =  ncurses panel library
 RDEPENDS_libncurses5 = libc6
 FILES_libncurses5 = /lib/*  /usr/lib/libncurses.so
 define postinst_libncurses5
@@ -32,8 +32,7 @@ if [ x"$$OPKG_OFFLINE_ROOT/" = "x" ]; then
 	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
 fi
 endef
-
-DESCRIPTION_libpanel5 =  ncurses panel library 
+ 
 RDEPENDS_libpanel5 = libncurses5 libc6
 FILES_libpanel5 = /usr/lib/libpanel.so.*
 define postinst_libpanel5
@@ -43,7 +42,6 @@ if [ x"$$OPKG_OFFLINE_ROOT/" = "x" ]; then
 fi
 endef
 
-DESCRIPTION_libmenu5 =  ncurses menu library
 RDEPENDS_libmenu5 = libncurses5 libc6
 FILES_libmenu5 = /usr/lib/libmenu.so.*
 define postinst_libmenu5
@@ -53,7 +51,6 @@ if [ x"$$OPKG_OFFLINE_ROOT/" = "x" ]; then
 fi
 endef
 
-DESCRIPTION_libform5 =  ncurses form library  
 RDEPENDS_libform5 = libncurses5 libc6
 FILES_libform5 = /usr/lib/libform.so.*
 define postinst_libform5
