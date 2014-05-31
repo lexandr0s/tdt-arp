@@ -61,7 +61,7 @@ if [ x"$$D" = "x" ]; then
 	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
 fi
 endef
-FILES_${P} = /usr/bin/xmlcatalog /usr/bin/xmllint /usr/lib/libxml2.*
+FILES_${P} = /usr/bin/xmlcatalog /usr/bin/xmllint /usr/lib/libxml2.s*
 
 call[[ ipkbox ]]
 

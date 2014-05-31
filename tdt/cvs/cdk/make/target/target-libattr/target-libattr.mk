@@ -26,7 +26,7 @@ RDEPENDS_attr = libattr1 libc6
 FILES_attr = /usr/bin
 
 RDEPENDS_libattr1 = libc6
-FILES_libattr1 = /usr/lib/*
+FILES_libattr1 = /usr/lib/libattr.s*
 define postinst_libattr1
 #!/bin/sh
 if [ x"$$D" = "x" ]; then

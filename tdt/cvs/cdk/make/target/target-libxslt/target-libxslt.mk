@@ -56,8 +56,8 @@ call[[ ipk ]]
 
 DESCRIPTION_${P} = XML stylesheet transformation library
 FILES_${P} = \
-	/usr/lib/libxslt* \
-	/usr/lib/libexslt* \
+	/usr/lib/libxslt.s* \
+	/usr/lib/libexslt.s* \
 	$(PYTHON_DIR)/site-packages/libxslt.py
 
 call[[ ipkbox ]]

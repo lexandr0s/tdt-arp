@@ -58,7 +58,7 @@ DESCRIPTION_${P} = lightweight package management system
 FILES_${P} = \
 	/etc/opkg \
 	/usr/bin \
-	/usr/lib
+	/usr/lib/libopkg.s*
 
 call[[ ipkbox ]]
 

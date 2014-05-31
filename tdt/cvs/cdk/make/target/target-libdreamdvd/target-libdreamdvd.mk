@@ -43,7 +43,7 @@ call[[ ipk ]]
 NAME_${P} = libdreamdvd0
 DESCRIPTION_${P} = libdvdnav wrapper for enigma2 based stbs.
 RDEPENDS_${P} = libdvdread4 libdvdnav4 libc6
-FILES_${P} = /usr/lib/*
+FILES_${P} = /usr/lib/libdreamdvd.s*
 
 call[[ ipkbox ]]
 

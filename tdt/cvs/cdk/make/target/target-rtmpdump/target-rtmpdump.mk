@@ -45,7 +45,7 @@ if [ x"$$D" = "x" ]; then
 	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
 fi
 endef
-FILES_${P} = /usr/lib/librtmp.*
+FILES_${P} = /usr/lib/librtmp.s*
 
 call[[ ipkbox ]]
 

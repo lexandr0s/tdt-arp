@@ -255,8 +255,8 @@ define strip_libs
 		-exec $(target)-strip --strip-unneeded {} \;
 endef
 define remove_libs
-	rm -f $(SPLITDIR_${P})/*/lib/*.{a,la,o}
-	rm -f $(SPLITDIR_${P})/*/usr/lib/*.{a,la,o}
+	rm -f $(SPLITDIR_${P})/*/lib/*.{la,o}
+	rm -f $(SPLITDIR_${P})/*/usr/lib/*.{la,o}
 endef
 define remove_pkgconfigs
 	rm -rf $(SPLITDIR_${P})/*/usr/lib/pkgconfig
