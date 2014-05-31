@@ -19,7 +19,7 @@ endif
 function[[ target_linux_kernel_in
 
 PV_${P} = $(KERNEL_VERSION)
-PR_${P} = 7
+PR_${P} = 8
 
 DIR_${P} = $(WORK_target_linux_kernel)/linux-$(KERNEL_MAJOR)
 PACKAGE_ARCH_${P} = $(box_arch)
