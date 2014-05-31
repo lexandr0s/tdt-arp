@@ -32,6 +32,7 @@ rule[[
   install_file:$(PKDIR)/usr/share/fonts:file://seg.ttf
   install_file:$(PKDIR)/usr/share/fonts:file://Symbols.ttf
   install_file:$(PKDIR)/usr/share/fonts:file://tuxtxt.ttf
+  install_file:$(PKDIR)/usr/share/fonts:file://tuxtxt.otb
   install_file:$(PKDIR)/usr/share/fonts:file://uhr-digital.ttf
   install_file:$(PKDIR)/usr/share/fonts:file://valis_enigma.ttf
   install_file:$(PKDIR)/usr/share/fonts:file://valis_lcd.ttf
@@ -67,6 +68,8 @@ PACKAGES_${P} = font_ae_almateen \
 		font_tuxtxt \
 		font_valis_enigma
 
+DESCRIPTION_${P} = ttf fonts
+
 FILES_font_ae_almateen = /usr/share/fonts/ae_AlMateen.ttf
 FILES_font_allruk = /usr/share/fonts/allruk.ttf
 FILES_font_blue = /usr/share/fonts/blue.ttf
@@ -84,13 +87,9 @@ FILES_font_freesans = /usr/share/fonts/FreeSans.ttf
 FILES_font_lcd = /usr/share/fonts/lcd.ttf
 FILES_font_nmsbd = /usr/share/fonts/nmsbd.ttf
 FILES_font_seg = /usr/share/fonts/seg.ttf
-FILES_font_tuxtxt = /usr/share/fonts/tuxtxt.ttf
+FILES_font_tuxtxt = /usr/share/fonts/tuxtxt.ttf /usr/share/fonts/tuxtxt.otb
 FILES_font_valis_enigma = /usr/share/fonts/valis_enigma.ttf
 
-
-
-                                 
-                                                
 call[[ ipkbox ]]
 
 ]]package
