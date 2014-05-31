@@ -17,6 +17,7 @@ rule[[
   pdircreate:${PN}-${PV}
   nothing:file://component_7111_mb618.fw
   nothing:file://component_7105_pdk7105.fw
+  nothing:file://fdvo0_7105.fw
   nothing:file://dvb-fe-avl2108.fw
   nothing:file://dvb-fe-stv6306.fw
 ]]rule
@@ -30,7 +31,8 @@ ifdef CONFIG_SPARK
 	$(INSTALL_FILE) ${DIR}/component_7111_mb618.fw $(PKDIR)/lib/firmware/component.fw
 endif
 ifdef CONFIG_SPARK7162
-	$(INSTALL_FILE) ${DIR}/component_7105_pdk7105.fw $(PKDIR)/lib/firmware/component.fw
+	$(INSTALL_FILE) ${DIR}/component_7105_pdk7105.fw $(PKDIR)/lib/firmware/component.fw \
+	$(INSTALL_FILE) ${DIR}/fdvo0_7105.fw $(PKDIR)/lib/firmware/fdvo0.fw
 endif
 ifdef CONFIG_HL101
 	$(INSTALL_FILE) ${DIR}/dvb-fe-avl2108.fw $(PKDIR)/lib/firmware/
@@ -41,9 +43,7 @@ endif
 
 NAME_${P} = firmware
 SRC_URI_${P} = stlinux.com
-FILES_${P} = \
-	/lib/firmware/component.fw \
-	/etc/fstab
+FILES_${P} = /lib/firmware/component.fw /lib/firmware/fdvo0.fw
 
 call[[ ipkbox ]]
 
