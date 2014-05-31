@@ -25,7 +25,7 @@ call[[ rpm ]]
 call[[ ipk ]]
 
 NAME_${P} = udev
-RDEPENDS_${P} = libattr1 libacl libusb-0.1 libglib
+RDEPENDS_${P} = libattr1 libacl libusb-0.1 libglib util-linux-blkid util-linux-fdisk
 FILES_${P} = /etc/* /lib/* /sbin/* /usr/sbin/udevadm /usr/lib/*
 define postinst_${P}
 #!/bin/sh
