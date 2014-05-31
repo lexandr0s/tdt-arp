@@ -7,7 +7,7 @@ BDEPENDS_${P} = $(target_filesystem)
 
 PV_${P} = 4.34
 PR_ST_${P} = 10
-PR_${P} = ${PR_ST}-3
+PR_${P} = ${PR_ST}-4
 
 DESCRIPTION_${P} = Miscellaneous files for the base networking
 
@@ -35,7 +35,7 @@ rule[[
   install_file:$(PKDIR)/etc/hosts:file://hosts
 
 #FIXME: ???
-  install_bin:-D:$(PKDIR)/etc/init.d/udphc:file://udhcpc
+  install_bin:-D:$(PKDIR)/etc/init.d/udhcpc:file://udhcpc
   install_bin:-D:$(PKDIR)/usr/share/udhcpc/default.script:file://udhcpc-default.script
 ]]rule
 
