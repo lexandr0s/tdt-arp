@@ -71,10 +71,10 @@ CONFIG_FLAGS_${P} += \
 	--with-dvbincludes=$(driverdir)/include \
 	--with-target=cdk
 
-ifdef CONFIG_MULTICOM_324
+ifdef CONFIG_MULTICOM324
 CONFIG_FLAGS_${P} += --enable-multicom324
 endif
-ifdef CONFIG_MULTICOM_406
+ifdef CONFIG_MULTICOM406
 CONFIG_FLAGS_${P} += --enable-multicom406
 endif
 

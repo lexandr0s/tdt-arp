@@ -3,7 +3,7 @@
 #
 package[[ target_showiframe
 
-BDEPENDS_${P} = $(target_glibc)
+BDEPENDS_${P} = $(target_glibc) $(target_gcc)
 
 PR_${P} = $(PR_tdt_tools).1
 

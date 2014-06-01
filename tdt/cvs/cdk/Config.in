@@ -1,5 +1,6 @@
 mainmenu "global config"
 
+menu "Global Configuration"
 	choice
 		prompt "Target:"
 		default SPARK
@@ -51,38 +52,31 @@ mainmenu "global config"
 
 	choice
 		prompt "Multicom:"
-		default MULTICOM_324
+		default MULTICOM324
 
-		config MULTICOM_324
+		config MULTICOM324
 		bool "Multicom 3.2.4"
 
-		config MULTICOM_406
+		config MULTICOM406
 		bool "Multicom 4.0.6 (testing)"
 	endchoice
+	
+		choice
+		prompt "Player:"
+		default PLAYER191
+
+		config PLAYER191
+		bool "Player 191"
+
+		config PLAYER179
+		bool "Player 179 (old not used)"
+	endchoice
+
 
 	config BUILD_TARGET_GCC
 		bool "Build target-gcc ?"
 		default y
 
-	choice
-		prompt "Enigma2 source:"
-		default ENIGMA2_SRC_MASTER
-
-		config ENIGMA2_SRC_MASTER
-		bool "non-public branch master"
-
-		config ENIGMA2_SRC_STAGING
-		bool "non-public branch staging"
-
-		config ENIGMA2_SRC_LAST
-		bool "non-public branch last"
-
-	endchoice
-
-	comment	"Enigma2 extras to flash:"
-
-		config ENIGMA2_FULL
-		bool "Enigma2 extra skins and plugins"
 
 	choice
 		prompt "Media Framework:"
@@ -108,3 +102,77 @@ mainmenu "global config"
 
 		config IPTABLES_SUPPORT
 		bool "Iptables support"
+
+endmenu
+
+menu "GUI Configuration"
+
+	choice
+		prompt "Apps:"
+		default BUILD_ENIGMA2
+
+		config BUILD_ENIGMA2
+		tristate "Enigma2"
+
+		config BUILD_NEUTRINO
+		tristate "Neutrino"
+
+		config BUILD_XBMC
+		tristate "XBMC"
+
+		config BUILD_VDR
+		tristate "VDR"
+
+		config BUILD_HYBRID
+		tristate "Hybrid Enigma2 and Neutrino"
+
+	endchoice
+
+	choice
+		prompt "Enigma2 source:"
+		default ENIGMA2_SRC_MASTER
+
+		config ENIGMA2_SRC_MASTER 
+		bool "non-public branch master"
+
+		config ENIGMA2_SRC_STAGING
+		bool "non-public branch staging"
+
+		config ENIGMA2_SRC_LAST
+		bool "non-public branch last"
+
+	endchoice
+
+	config ENIGMA2_PLUGINS
+	bool "enigma2-plugins-extra"
+	default y
+	depends on BUILD_ENIGMA2 || BUILD_HYBRID
+
+		config ENIGMA2_EXTENSION_OPENWEBIF
+		bool "enigma2-plugin-extensions-openwebif"
+		depends on ENIGMA2_PLUGINS
+
+		config ENIGMA2_EXTENSION_MEDIAPORTAL
+		bool "enigma2-plugin-extensions-mediaportal"
+		depends on ENIGMA2_PLUGINS
+
+		config ENIGMA2_SKIN_MEGAMOD
+		bool "enigma2-plugin-skin-megamod"
+		depends on ENIGMA2_PLUGINS
+
+		config ENIGMA2_SYSTEM_LIBGISCLUBSKIN
+		bool "enigma2-plugin-systemplugins-libgisclubskin"
+		depends on ENIGMA2_PLUGINS
+
+	choice
+		prompt "Neutrino source:"
+		default NEUTRINO_SRC_MASTER
+
+		config NEUTRINO_SRC_MASTER
+		bool "public branch master"
+
+		config NEUTRINO_SRC_MARTII
+		bool "public branch Martii"
+
+	endchoice
+endmenu
