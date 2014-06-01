@@ -12,7 +12,7 @@ RDEPENDS_${P} = kernel_module_player2 kernel_module_stgfb ffmpeg
 FILES_${P} = \
 	/bin/eplayer3 \
 	/bin/meta \
-	/lib/libeplayer3.*
+	/lib/libeplayer3.s*
 
 
 call[[ base_tdt_tools ]]
