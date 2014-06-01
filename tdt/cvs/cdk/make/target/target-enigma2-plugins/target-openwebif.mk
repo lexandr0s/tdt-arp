@@ -6,7 +6,7 @@ package[[ target_openwebif
 BDEPENDS_${P} = $(target_python_setuptools)
 
 PV_${P} = git
-PR_${P} = 1
+PR_${P} = 2
 
 call[[ base ]]
 
@@ -30,8 +30,8 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_prepare
 call[[ ipk ]]
 
 NAME_${P} = enigma2-plugin-extensions-openwebif
-DESCRIPTION_${P} = "open webinteface plugin for enigma2 by openpli team"
-RDEPENDS_${P} = python_cheetah aio_grab
+DESCRIPTION_${P} = open webinteface plugin for enigma2 by openpli team
+RDEPENDS_${P} = python_cheetah aio_grab python_pyopenssl python_json
 FILES_${P} = /usr/lib/enigma2/python/Plugins/Extensions/OpenWebif
 
 call[[ ipkbox ]]
