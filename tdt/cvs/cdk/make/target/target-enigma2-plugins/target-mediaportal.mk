@@ -50,7 +50,7 @@ call[[ ipk ]]
 
 NAME_${P} = enigma2-plugin-extensions-mediaportal
 DESCRIPTION_${P} = "Enigma2 MediaPortal"
-RDEPENDS_${P} = python_core python_json python_xml python_html python_misc python_twisted_core python_twisted_web python_compression python_robotparser python_mechanize librtmp0
+RDEPENDS_${P} = python_core python_json python_xml python_html python_misc python_twisted_core python_twisted_web python_compression python_robotparser python_mechanize librtmp1
 FILES_${P} = /usr/lib/enigma2/python/Plugins/Extensions/MediaPortal
 
 call[[ ipkbox ]]
