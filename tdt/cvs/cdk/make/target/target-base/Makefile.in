@@ -5,3 +5,8 @@ call[[ header ]]
 package[[ target_netbase
 call[[ header ]]
 ]]package
+
+
+package[[ target_distro_feed_configs
+call[[ header ]]
+]]package
