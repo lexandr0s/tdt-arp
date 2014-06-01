@@ -5,7 +5,7 @@ package[[ target_base_files
 
 BDEPENDS_${P} = $(target_filesystem)
 
-PV_${P} = 0.1
+PV_${P} = 0.2
 PR_${P} = 1
 PACKAGE_ARCH_${P} = $(box_arch)
 
@@ -49,6 +49,8 @@ rule[[
   install:-d:$(PKDIR)/var/log
   install:-d:$(PKDIR)/var/cache
   install:-d:$(PKDIR)/etc
+  install:-d:$(PKDIR)/dev
+  install:-d:$(PKDIR)/dev.static
   install_file:$(PKDIR)/etc/motd:file://motd
   install_file:$(PKDIR)/etc/fstab:file://fstab
 #  nothing:file://../root/etc/image-version
@@ -83,6 +85,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_prepare
 	ln -sf /media/hdd $(PKDIR)/hdd
 	ln -sf /proc/mounts $(PKDIR)/etc/mtab
 	echo "$(TARGET)" > $(PKDIR)/etc/hostname
+	echo "576i50" > $(PKDIR)/etc/videomode
 
 	touch $@
 
