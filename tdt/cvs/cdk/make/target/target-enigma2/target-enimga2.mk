@@ -3,7 +3,7 @@
 #
 package[[ target_enigma2
 
-BDEPENDS_${P} = $(target_glibc) $(target_gcc_lib) $(target_libsigc) $(target_libdvbsipp) $(target_freetype) $(target_tuxtxt32bpp) $(target_libgif) $(target_libpng) $(target_libjpeg) $(target_libxmlccwrap) $(target_libfribidi) $(target_python) $(target_python_twisted) $(target_linux_kernel_headers) $(target_libmmeimage) $(target_libmme_host) $(target_libdreamdvd)
+BDEPENDS_${P} = $(target_libsigc) $(target_libdvbsipp) $(target_freetype) $(target_tuxtxt32bpp) $(target_libgif) $(target_libpng) $(target_libxmlccwrap) $(target_python) $(target_python_twisted) $(target_libdreamdvd) $(target_libmme_host) $(target_libmmeimage)
 
 PV_${P} = git
 PR_${P} = 4
@@ -13,6 +13,7 @@ DESCRIPTION_${P} = Framebuffer-based digital media application
 
 CONFIG_FLAGS_${P} = \
 	--with-libsdl=no \
+	--with-boxtype=none \
 	--datadir=/usr/share \
 	--libdir=/usr/lib \
 	--bindir=/usr/bin \
@@ -95,6 +96,13 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	cd $(DIR_${P}) && $(INSTALL_${P})
 
 	$(target)-strip $(PKDIR)/usr/bin/enigma2
+	rm -f $(PKDIR)/usr/share/fonts/ae_AlMateen.ttf
+	rm -f $(PKDIR)/usr/share/fonts/lcd.ttf
+	rm -f $(PKDIR)/usr/share/fonts/md_khmurabi_10.ttf
+	rm -f $(PKDIR)/usr/share/fonts/nmsbd.ttf
+	rm -f $(PKDIR)/usr/share/fonts/valis_enigma.ttf
+	rm -f $(PKDIR)/usr/share/fonts/tuxtxt.ttf
+	
 	touch $@
 
 call[[ ipk ]]
@@ -105,9 +113,7 @@ call[[ ipk ]]
 PACKAGES_${P} = \
 	enigma2 \
 	enigma2_meta \
-	enigma2_fonts \
-	font_valis_enigma \
-	font_tuxtxt \
+	font_andale \
 	enigma2_plugin_extensions_cutlisteditor \
 	enigma2_plugin_extensions_dvdplayer \
 	enigma2_plugin_extensions_graphmultiepg \
@@ -139,10 +145,10 @@ PACKAGES_${P} = \
 	enigma2_plugin_skin_magic \
 	enigma2_plugin_skin_megamod
 
-RDEPENDS_enigma2 += libgcc1 libpython2.7 python-threading libtuxtxt0 libgif4 libfreetype6 python-core python-twisted-core libdvbsi++1 python-re enigma2-fonts font-tuxtxt libpng16 font-valis-enigma libstdc++6 libglib libsigc-1.2 python-fcntl python-netclient python-netserver python-codecs libcrypto1 libfribidi0 python-zopeinterface python-xml libtuxtxt32bpp0 python-pickle libxmlccwrap python-shell ethtool libjpeg8 libdreamdvd0 python-twisted-web python-zlib python-crypt python-lang python-subprocess
+RDEPENDS_enigma2 += libgcc1 libpython2.7 python-threading libtuxtxt0 libbz2 libgif4 libfreetype6 python-core python-twisted-core libdvbsi++1 python-re font-ae-almateen font-andale font-lcd font-md-khmurabi font-tuxtxt font-nmsbd libpng16 font-valis-enigma libstdc++6 libglib libsigc-1.2 python-fcntl python-netclient python-netserver python-codecs libcrypto1 libfribidi0 python-zopeinterface python-xml libtuxtxt32bpp0 python-pickle libxmlccwrap python-shell ethtool libjpeg8 libdreamdvd0 python-twisted-web python-zlib python-crypt python-lang python-subprocess enigma2_meta
 FILES_enigma2 = \
 	/usr/bin \
-	/usr/lib/libopen.* \
+	/usr/lib/libopen.s* \
 	/usr/lib/enigma2/python/Components \
 	/usr/lib/enigma2/python/Plugins/Extensions/__init__.p* \
 	/usr/lib/enigma2/python/Plugins/PLi/__init__.p* \
@@ -163,22 +169,8 @@ DESCRIPTION_enigma2_meta = meta files for  enigma2
 RDEPENDS_enigma2_meta = enigma2
 FILES_enigma2_meta = /usr/share/meta
 
-DESCRIPTION_enigma2_fonts = Fonts for  enigma2
-RDEPENDS_enigma2_fonts = enigma2
-FILES_enigma2_fonts = \
-	/usr/share/fonts/ae_AlMateen.ttf \
-	/usr/share/fonts/andale.ttf \
-	/usr/share/fonts/lcd.ttf \
-	/usr/share/fonts/md_khmurabi_10.ttf \
-	/usr/share/fonts/nmsbd.ttf
-
-DESCRIPTION_font_valis_enigma = Fonts for  enigma2
-RDEPENDS_font_valis_enigma = enigma2
-FILES_font_valis_enigma = /usr/share/fonts/valis_enigma.ttf
-
-DESCRIPTION_font_tuxtxt = Fonts for  enigma2
-RDEPENDS_font_tuxtxt = enigma2
-FILES_font_tuxtxt = /usr/share/fonts/tuxtxt.ttf
+DESCRIPTION_font_andale = ttf fonts
+FILES_font_andale = /usr/share/fonts/andale.ttf
 
 DESCRIPTION_enigma2_plugin_extensions_cutlisteditor = CutListEditor allows you to edit your movies
 RDEPENDS_enigma2_plugin_extensions_cutlisteditor = enigma2
