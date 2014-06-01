@@ -54,14 +54,14 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 # TODO:
 	rm -f ${DIR}/include/multicom
 	rm -f ${DIR}/multicom
-ifdef CONFIG_MULTICOM_324
+ifdef CONFIG_MULTICOM324
 	echo "export CONFIG_MULTICOM324=y" >> ${DIR}/.config
-	ln -s ../multicom-3.2.4/include ${DIR}/include/multicom
-	ln -s multicom-3.2.4 ${DIR}/multicom
+	ln -sf ../multicom-3.2.4/include ${DIR}/include/multicom
+	ln -sf multicom-3.2.4 ${DIR}/multicom
 endif
-ifdef CONFIG_MULTICOM_406
-	ln -s ../multicom-4.0.6/include ${DIR}/include/multicom
-	ln -s multicom-4.0.6 ${DIR}/multicom
+ifdef CONFIG_MULTICOM406
+	ln -sf ../multicom-4.0.6/include ${DIR}/include/multicom
+	ln -sf multicom-4.0.6 ${DIR}/multicom
 	echo "export CONFIG_MULTICOM406=y" >> ${DIR}/.config
 endif
 	touch $@
