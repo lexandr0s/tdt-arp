@@ -342,7 +342,7 @@ define DEPSCLEANUP_libeplayer3
 	rm -f $(DEPDIR)/libeplayer3.do_compile
 endef
 
-$(DEPDIR)/libeplayer3.do_prepare: bootstrap libstdc++-dev $(DEPENDS_libeplayer3)
+$(DEPDIR)/libeplayer3.do_prepare: bootstrap libstdc++-dev libass $(DEPENDS_libeplayer3)
 	$(PREPARE_libeplayer3)
 	touch $@
 
