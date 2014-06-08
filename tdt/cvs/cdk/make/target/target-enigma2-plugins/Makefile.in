@@ -5,3 +5,11 @@ call[[ header ]]
 package[[ target_mediaportal
 call[[ header ]]
 ]]package
+
+package[[ target_oscam
+call[[ header ]]
+]]package
+
+package[[ target_oscam_config
+call[[ header ]]
+]]package
