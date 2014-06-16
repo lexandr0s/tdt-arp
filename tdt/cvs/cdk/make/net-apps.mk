@@ -155,10 +155,10 @@ $(DEPDIR)/ethtool: $(DEPDIR)/ethtool.do_compile
 #
 BEGIN[[
 samba
-  3.6.18
+  3.6.23
   {PN}-{PV}
   extract:http://www.{PN}.org/{PN}/ftp/stable/{PN}-{PV}.tar.gz
-  patch:file://{PN}-{PV}.diff
+  patch:file://{PN}.diff
   make:install:prefix=/usr:DESTDIR=PKDIR
 ;
 ]]END
