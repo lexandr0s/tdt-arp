@@ -522,7 +522,7 @@ $(DEPDIR)/transmission: $(DEPDIR)/transmission.do_compile
 #
 BEGIN[[
 smbnetfs
-  0.5.3a
+  0.5.3b
   {PN}-{PV}
   extract:https://sourceforge.net/projects/{PN}/files/{PN}/SMBNetFS-{PV}/{PN}-{PV}.tar.bz2
   patch-0:file://{PN}.diff
