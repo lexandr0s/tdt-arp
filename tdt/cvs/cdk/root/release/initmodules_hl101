@@ -6,7 +6,7 @@
 #
   
    modprobe cpu_frequ
-   echo 31241 > /proc/cpu_frequ/pll0_ndiv_mdiv
+   echo 15110 > /proc/cpu_frequ/pll0_ndiv_mdiv
 
    echo "init frontpanel"
    modprobe proton
@@ -17,7 +17,7 @@
 
    echo "init stmfb"
    modprobe stmcore-display-stx7109c3
-   modprobe stmfb display0=1920x1080-32@50:12m:pal:yuv:yuv
+   modprobe stmfb.ko display0=720x576-32@60:12m:pal:yuv:yuv
 
    echo "LOADING MODULES"   
    echo "LOAD" >/dev/vfd
@@ -29,38 +29,25 @@
    echo "init embx"
    modprobe embxshell
    modprobe embxmailbox mailbox0=0xb9211000:136:set2 mailbox1=0xb9212000:0 ;
-   modprobe embxshm mailbox0=shm:0:7:0x60000000:0:256:256:0:512:0x40000000:0x10000000 ;
+   modprobe embxshm mailbox0=shm:0:7:0x60000000:0:256:256:0:1024:0xa4000000:0x10000000 ;
    modprobe mme_host transport0=shm
-
+	
    echo "init AVS"
    modprobe avs type=stv6418
-
-   modprobe mmelog
-   modprobe mpeg2hw mmeName=MPEG2_TRANSFORMER1;
-   modprobe ksound
-   modprobe kreplay
+   player=`cat /proc/stb/player/version | awk '{ print substr( $0, length($0) - 2, length($0) ) }'`
+   echo "init player $player"
+   
+   modprobe mmelog   
+   modprobe ksound   
    modprobe p2div64
-   modprobe stm_v4l2
-   modprobe pseudocard
-
-   echo "init frontends"
-   if [ "ST" = `sed 's/.*STB=//;s/ .*//;//!d;s/:/_/g' /proc/cmdline` ]; then
-       modprobe fe-core demod=stb090x tuner=stb6110x
-       echo "stb090x"
-   elif [ "sharp" = `sed 's/.*STB=//;s/ .*//;//!d;s/:/_/g' /proc/cmdline` ]; then
-       modprobe fe-core demod=stv090x tuner=sharp7306 
-       echo "sharp"
-   else
-       modprobe fe-core
-       echo "stb0899"
-   fi
-
-   echo "init drivers"
+   modprobe stm_v4l2   
+   modprobe pseudocard   
+   #modprobe fe-core demod=stb090x tuner=stb6110x
+   #modprobe fe-core demod=stv090x tuner=sharp7306 
+   modprobe fe-core demod=stb0899 tuner=stb6100
    modprobe pti waitMS=20 videoMem=4096
-   modprobe stm_monitor
-   modprobe stmsysfs
    modprobe stmdvb
-
+   modprobe stm_monitor
    modprobe player2 discardlateframe=0
    modprobe sth264pp
    modprobe stmalloc
@@ -68,11 +55,11 @@
    modprobe silencegen
    modprobe smartcard debug=100
    modprobe bpamem
-   
-   echo "init oc"
+            
+   #echo "init oc"
    #modprobe cpu_frequ
    #300mhz
-   echo 15110 > /proc/cpu_frequ/pll0_ndiv_mdiv
+   #echo 15110 > /proc/cpu_frequ/pll0_ndiv_mdiv
    #echo 1 > /proc/cpu_frequ/pll1_fdma_bypass
    #15110 = 266mhz
    #25609 = 300mhz
@@ -83,12 +70,25 @@
    #35593 = 417mhz
    #36361 = 426mhz
    #4097 = 432mhz
-   rmmod cpu_frequ
+   #rmmod cpu_frequ
    
-   echo "1" > /proc/sys/kernel/printk #for more log change level or  remake line 
-   cat /etc/videomode > /proc/stb/video/videomode
+   # Load module for swap in ram
+   #mem_by_cpu=$(($(grep MemTotal /proc/meminfo | awk ' { print $2 } ')*256))
+   #modprobe zram num_devices=1
+   #echo $mem_by_cpu > /sys/block/zram0/disksize
+
+   if [ ! `grep 'hdmicec.enabled=false' /etc/enigma2/settings` ]; then
+    modprobe cec
+   fi
+   
+   cat /etc/videomode > /proc/stb/video/videomode 
    showiframe -p /boot/bootlogo.mvi &
    stfbcontrol a 0
 
 	stfbcontrol a 255
+	
+   # Enable swap in ram
+   #mkswap /dev/zram0
+   #swapon /dev/zram0
+
 	echo " e2 "
