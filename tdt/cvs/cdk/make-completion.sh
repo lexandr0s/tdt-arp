@@ -66,7 +66,7 @@ function _make_arp()
         [ -n "$makef_dir" ] && makef_dir="-C ${makef_dir}"
 
         COMPREPLY=( $( compgen -W "$( make -qrp $makef $makef_dir .DEFAULT 2>/dev/null | \
-            awk -F ':' '/^[a-Z0-9_\/\-\.]+:([^=]|$)/ {len=split($1,A,/\//); print A[len];}' )" \
+            awk -F ':' '/^[A-z0-9_\/\-\.]+:([^=]|$)/ {len=split($1,A,/\//); print A[len];}' )" \
             -- "$cur" ) )
 
     fi
