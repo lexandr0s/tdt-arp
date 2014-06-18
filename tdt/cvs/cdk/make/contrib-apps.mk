@@ -878,7 +878,7 @@ $(DEPDIR)/lm_sensors: $(DEPDIR)/lm_sensors.do_compile
 #
 BEGIN[[
 fuse
-  2.9.2
+  2.9.3
   {PN}-{PV}
   extract:http://dfn.dl.sourceforge.net/sourceforge/{PN}/{PN}-{PV}.tar.gz
   patch:file://{PN}.diff
