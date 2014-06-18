@@ -475,7 +475,7 @@ $(DEPDIR)/libgif: $(DEPDIR)/libgif.do_compile
 #
 BEGIN[[
 curl
-  7.34.0
+  7.37.0
   {PN}-{PV}
   extract:http://{PN}.haxx.se/download/{PN}-{PV}.tar.gz
   make:install:DESTDIR=PKDIR
