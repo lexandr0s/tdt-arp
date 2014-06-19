@@ -3,9 +3,9 @@
 #
 package[[ target_libmmeimage
 
-BDEPENDS_${P} = $(target_glibc)
+BDEPENDS_${P} = $(target_glibc) $(target_libjpeg)
 
-PR_${P} = $(PR_tdt_tools).1
+PR_${P} = $(PR_tdt_tools).2
 
 DESCRIPTION_${P} = libmmeimage
 FILES_${P} = /lib/libmmeimage.*
