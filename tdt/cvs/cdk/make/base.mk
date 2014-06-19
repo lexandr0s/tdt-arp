@@ -114,6 +114,10 @@ $(TARGET_${P}).do_%: $(TARGET_${P}).do_prepare
 INHERIT_VARIABLES := NAME VERSION DESCRIPTION SECTION PRIORITY MAINTAINER LICENSE PACKAGE_ARCH HOMEPAGE RDEPENDS RREPLACES RCONFLICTS SRC_URI FILES
 INHERIT_DEFINES := preinst postinst prerm postrm conffiles
 
+# makes run only one instance of opkg at a time
+lock := lock_run() { (flock --timeout 60 --exclusive 200 && $$@) 200>opkg.lock; } && lock_run
+opkg := $(lock) opkg
+
 # we have several dests, so dependencies are shared across them
 host_ipkg_args = -f $(prefix)/opkg.conf -o $(prefix) -d hostroot
 cross_ipkg_args = -f $(prefix)/opkg.conf -o $(prefix) -d crossroot
@@ -196,16 +200,16 @@ $(TARGET_${P}).clean_ipk:
 
 # finally install
 $(TARGET_${P}).do_install: $(TARGET_${P}).do_ipk
-	opkg $($(SYSROOT_${P})_ipkg_args) install $(IPK_${P})
+	$(opkg) $($(SYSROOT_${P})_ipkg_args) install $(IPK_${P})
 # I need this flag to make dependencies work correctly
-	opkg $($(SYSROOT_${P})_ipkg_args) flag installed $(${P})
+	$(opkg) $($(SYSROOT_${P})_ipkg_args) flag installed $(${P})
 	touch $@
 
 $(TARGET_${P}): $(TARGET_${P}).do_install
 
 # currently not in use.
 $(TARGET_${P}).clean_install:
-	opkg $($(SYSROOT_${P})_ipkg_args) --force-removal-of-dependent-packages remove $(${P})
+	$(opkg) $($(SYSROOT_${P})_ipkg_args) --force-removal-of-dependent-packages remove $(${P})
 	rm -f $(TARGET_${P}).do_install
 
 ]]function
