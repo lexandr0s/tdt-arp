@@ -5,3 +5,7 @@ call[[ header ]]
 package[[ target_mediaportal
 call[[ header ]]
 ]]package
+
+package[[ target_enigma2_plugins
+call[[ header ]]
+]]package
