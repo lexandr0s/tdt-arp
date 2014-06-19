@@ -26,12 +26,12 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 	cd $(DIR_${P}) && \
 		$(BUILDENV) \
 		libtoolize -f -c && \
-		$(MAKE) $(MAKE_FLAGS_${P})
+		make $(MAKE_FLAGS_${P})
 	touch $@
 
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	$(PKDIR_clean)
-	cd $(DIR_${P}) && $(MAKE) $(MAKE_FLAGS_${P}) install DESTDIR=$(PKDIR)
+	cd $(DIR_${P}) && make $(MAKE_FLAGS_${P}) install DESTDIR=$(PKDIR)
 	touch $@
 
 call[[ ipk ]]
