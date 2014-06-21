@@ -32,8 +32,8 @@ menu "Global Configuration"
 		config KERNEL_0211
 		bool "STM 24 2.6.32.59-0211"
 
-		config KERNEL_0214
-		bool "STM 24 2.6.32.61-0214"
+		config KERNEL_0215
+		bool "STM 24 2.6.32.61-0215"
 	endchoice
 
 	choice
