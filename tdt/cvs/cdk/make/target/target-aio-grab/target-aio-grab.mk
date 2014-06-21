@@ -11,7 +11,7 @@ PR_${P} = 1
 call[[ base ]]
 
 rule[[
-  nothing:git://git.code.sf.net/p/openpli/${PN}.git: r=ef31eca61832b31f28f69157dfe5f850a3cab916
+  nothing:git://git.code.sf.net/p/openpli/${PN}.git:r=ef31eca61832b31f28f69157dfe5f850a3cab916
   patch:file://${PN}-ADD_ST_SUPPORT.patch
   patch:file://${PN}-ADD_ST_FRAMESYNC_SUPPORT.patch
 ]]rule
@@ -24,8 +24,8 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 
 $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 	cd $(DIR_${P}) && \
-		autoreconf -i && \
 		$(BUILDENV) \
+		autoreconf -i && \
 		./configure \
 			--build=$(build) \
 			--host=$(target) \

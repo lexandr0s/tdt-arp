@@ -9,7 +9,7 @@ PR_${P} = 2
 
 ${P}_VERSION = 1.0.1h-31
 ${P}_SPEC = stm-$(${P}).spec
-${P}_SPEC_PATCH =
+${P}_SPEC_PATCH = stm-$(${P}).spec.patch
 ${P}_SRCRPM = $(archivedir)/$(STLINUX)-$(${P})-$(${P}_VERSION).src.rpm
 
 call[[ base ]]

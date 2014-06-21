@@ -14,3 +14,4 @@ build.env
 make.log
 kconfig-frontends-*.tar.bz2
 kconfig_frontends/
+opkg.lock

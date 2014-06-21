@@ -1,5 +1,5 @@
 #
-# FONTCONFIG
+# AR-P buildsystem smart Makefile
 #
 package[[ target_fp_control
 
