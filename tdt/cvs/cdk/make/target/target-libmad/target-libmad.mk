@@ -6,7 +6,7 @@ package[[ target_libmad
 BDEPENDS_${P} = $(target_glibc) $(target_zlib)
 
 PV_${P} = 0.15.1b
-PR_${P} = 1
+PR_${P} = 2
 
 call[[ base ]]
 
@@ -48,7 +48,7 @@ call[[ ipk ]]
 
 DESCRIPTION_${P} = Library for interacting with ID3 tags in MP3 files  Library for \
  interacting with ID3 tags in MP3 files.
-NAME_${P} = libid3tag0
+NAME_${P} = libmad0
 RDEPENDS_${P} = libz1 libc6
 FILES_${P} = /usr/lib/*.so*
 
