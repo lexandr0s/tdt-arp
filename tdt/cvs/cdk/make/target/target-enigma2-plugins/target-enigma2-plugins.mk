@@ -49,8 +49,8 @@ $(TARGET_${P}).include_vars: $(TARGET_${P}).write_vars
 # output file will be included by make at run time
 $(TARGET_${P}).write_vars: $(TARGET_${P}).do_compile
 	@echo "==> $(notdir $@)"
-	echo > $@;
 	set -e; \
+	echo > $@; \
 	\
 	cd ${DIR}; \
 	list=`ls */Makefile |sed 's#/Makefile##'`; \
