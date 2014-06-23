@@ -55,6 +55,13 @@ HOMEPAGE_${P} ?= unknown
 DEPENDS_${P} += $(TARGET_${P}).version_${PV}-${PR}
 DEPENDS_${P} += $(addprefix $(DEPDIR)/,$(BDEPENDS_${P}))
 
+# pedantic dependecny check
+$(foreach dep, $(value BDEPENDS_${P}), \
+	$(if $(call undefined,$(patsubst $$(%),%,$(dep))), \
+		$(warning undefined $(dep) in BDEPENDS_${P}) \
+	) \
+)
+
 # Set new variables and targets
 PREPARE_${P} = (rm -rf $(WORK_${P}) || true) && mkdir -p $(WORK_${P})
 INSTALL_${P} = true
