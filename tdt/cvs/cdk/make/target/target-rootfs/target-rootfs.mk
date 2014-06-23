@@ -17,7 +17,7 @@ IPKBOX_LIST_${P} += $(target_enigma2) $(target_tuxbox_configs) $(target_hotplug_
 endif
 
 ifdef CONFIG_ENIGMA2_PLUGINS
-IPKBOX_LIST_${P} += $(target_openwebif) $(target_mediaportal) $(target_aio_grab) $(target_python_cheetah) $(target_python_pyopenssl) $(target_python_pycrypto) $(target_python_wifi) \
+IPKBOX_LIST_${P} += $(target_enigma2_plugins) $(target_openwebif) $(target_mediaportal) $(target_aio_grab) $(target_python_cheetah) $(target_python_pyopenssl) $(target_python_pycrypto) $(target_python_wifi) \
 $(target_python_mechanize)
 endif
 
@@ -224,8 +224,8 @@ ifdef CONFIG_ENIGMA2_SKIN_MEGAMOD
 opkg_my_list += enigma2-plugin-skin-megamod
 endif
 
-ifdef CONFIG_ENIGMA2_SYSTEM_LIBGISCLUBSKIN
-opkg_my_list += enigma2-plugin-systemplugins-libgisclubskin
+ifdef CONFIG_ENIGMA2_EXTENSION_ALTSOFTCAM
+opkg_my_list += enigma2-plugin-extensions-alternativesoftcammanager
 endif
 
 ########################################################################################
