@@ -237,6 +237,7 @@ rpm_install := rpm $(rpm_macros)  --ignorearch --nodeps -Uhv
 # python helpers
 python_build = \
 	CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
+	CPPFLAGS="-I$(targetprefix)/usr/include/python$(PYTHON_VERSION)" \
 	PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
 	$(crossprefix)/bin/python ./setup.py build
 
