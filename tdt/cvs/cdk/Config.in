@@ -160,8 +160,8 @@ menu "GUI Configuration"
 		bool "enigma2-plugin-skin-megamod"
 		depends on ENIGMA2_PLUGINS
 
-		config ENIGMA2_SYSTEM_LIBGISCLUBSKIN
-		bool "enigma2-plugin-systemplugins-libgisclubskin"
+		config CONFIG_ENIGMA2_EXTENSION_ALTSOFTCAM
+		bool "enigma2-plugin-extensions-alternativesoftcammanager"
 		depends on ENIGMA2_PLUGINS
 
 	choice

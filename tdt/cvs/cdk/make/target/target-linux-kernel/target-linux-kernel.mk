@@ -26,7 +26,7 @@ ifdef CONFIG_HL101
   ${P}_patches += linux-usbwait123_stm24.patch
   ${P}_patches += linux-sh4-stmmac_stm24_$(KERNEL_LABEL).patch
   ${P}_patches += linux-sh4-i2c-st40-pio_stm24_$(KERNEL_LABEL).patch
-ifeq ($(CONFIG_KERNEL_211)$(CONFIG_KERNEL_214),y)
+ifeq ($(CONFIG_KERNEL_0211)$(CONFIG_KERNEL_0215),y)
   ${P}_patches += linux-sh4-hl101_i2c_st40_stm24_$(KERNEL_LABEL).patch)
 endif
 endif #CONFIG_HL101
@@ -37,10 +37,10 @@ ifdef CONFIG_SPARK
   ${P}_patches += linux-sh4-spark_setup_stm24_$(KERNEL_LABEL).patch
   ${P}_patches += bpa2-ignore-bigphysarea-kernel-parameter.patch
 
-ifeq ($(CONFIG_KERNEL_211)$(CONFIG_KERNEL_215),y)
+ifeq ($(CONFIG_KERNEL_0211)$(CONFIG_KERNEL_0215),y)
   ${P}_patches += linux-sh4-lirc_stm_stm24_$(KERNEL_LABEL).patch
 endif
-ifeq ($(CONFIG_KERNEL_211)$(CONFIG_KERNEL_215),y)
+ifeq ($(CONFIG_KERNEL_0211)$(CONFIG_KERNEL_0215),y)
   ${P}_patches += linux-sh4-fix-crash-usb-reboot_stm24_0211.diff
 endif
 endif #CONFIG_SPARK
@@ -50,7 +50,7 @@ ifdef CONFIG_SPARK7162
   ${P}_patches += bpa2-ignore-bigphysarea-kernel-parameter.patch
   ${P}_patches += linux-sh4-lmb_stm24_$(KERNEL_LABEL).patch
   ${P}_patches += linux-sh4-spark7162_setup_stm24_$(KERNEL_LABEL).patch
-ifeq ($(CONFIG_KERNEL_211)$(CONFIG_KERNEL_215),y)
+ifeq ($(CONFIG_KERNEL_0211)$(CONFIG_KERNEL_0215),y)
   ${P}_patches += linux-sh4-fix-crash-usb-reboot_stm24_0211.diff
 endif
 endif #CONFIG_SPARK7162

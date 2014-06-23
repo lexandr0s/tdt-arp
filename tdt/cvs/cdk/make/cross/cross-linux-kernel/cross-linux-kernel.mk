@@ -20,19 +20,20 @@ ${P}_patches = \
 	linux-ftdi_sio.c_stm24_$(KERNEL_LABEL).patch \
 	linux-sh4-lzma-fix_stm24_$(KERNEL_LABEL).patch
 
-ifeq ($(CONFIG_KERNEL_211),y)
+ifeq ($(CONFIG_KERNEL_0211),y)
 ${P}_patches += linux-tune_stm24.patch
 endif
 
-ifeq ($(CONFIG_KERNEL_214),y)
+ifeq ($(CONFIG_KERNEL_0215),y)
 ${P}_patches += linux-tune_stm24_$(KERNEL_LABEL).patch
+${P}_patches += linux-sh4-ratelimit-bug_stm24_$(KERNEL_LABEL).patch
 endif
 
-ifeq ($(CONFIG_KERNEL_211)$(CONFIG_KERNEL_214),y)
+ifeq ($(CONFIG_KERNEL_0211)$(CONFIG_KERNEL_0215),y)
 ${P}_patches += linux-sh4-mmap_stm24.patch
 endif
 
-ifeq ($(CONFIG_KERNEL_211)$(CONFIG_KERNEL_214),y)
+ifeq ($(CONFIG_KERNEL_0211)$(CONFIG_KERNEL_0215),y)
 ${P}_patches += linux-sh4-directfb_stm24_$(KERNEL_LABEL).patch
 endif
 
