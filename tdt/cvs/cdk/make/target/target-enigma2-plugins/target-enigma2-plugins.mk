@@ -43,7 +43,7 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 $(TARGET_${P}).include_vars: $(TARGET_${P}).write_vars
 	@echo "==> include $<"
 	$(eval include $<)
-.PHONY: $(TARGET_${P}).include_git_version
+.PHONY: $(TARGET_${P}).include_vars
 
 # read control file and convert it to Makefile format
 # output file will be included by make at run time
