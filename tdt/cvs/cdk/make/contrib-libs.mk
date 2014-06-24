@@ -1579,7 +1579,7 @@ $(DEPDIR)/ffmpeg: $(DEPDIR)/ffmpeg.do_compile
 #
 BEGIN[[
 libass
-  0.11.1
+  0.11.2
   {PN}-{PV}
   extract:https://github.com/{PN}/{PN}/releases/download/{PV}/{PN}-{PV}.tar.gz
   patch:file://{PN}.patch
