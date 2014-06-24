@@ -1874,9 +1874,9 @@ $(DEPDIR)/lite: $(DEPDIR)/lite.do_compile
 #
 BEGIN[[
 sqlite
-  3.7.11
-  {PN}-autoconf-3071100
-  extract:http://www.{PN}.org/{PN}-autoconf-3071100.tar.gz
+  3.8.5
+  {PN}-autoconf-3080500
+  extract:http://www.{PN}.org/2014/{PN}-autoconf-3080500.tar.gz
   make:install:DESTDIR=PKDIR
 ;
 ]]END
