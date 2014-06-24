@@ -2929,7 +2929,7 @@ $(DEPDIR)/pythoncheetah: $(DEPDIR)/pythoncheetah.do_compile
 #
 BEGIN[[
 zope_interface
-  4.0.1
+  4.1.1
   zope.interface-{PV}
   extract:http://pypi.python.org/packages/source/z/zope.interface/zope.interface-{PV}.tar.gz
 ;
