@@ -7,41 +7,43 @@ SCRIPTDIR=$CURDIR/scripts
 TMPDIR=$CURDIR/tmp
 TMPROOTDIR=$TMPDIR/ROOT
 TMPKERNELDIR=$TMPDIR/KERNEL
-LAST=$CDKDIR/lastChoice
+LAST=$CDKDIR/.config
 OUTDIR=$CURDIR/out
 
 if [ -e $TMPDIR ]; then
   rm -rf $TMPDIR/*
 fi
-PLAY=`cat $LAST | awk -F '--enable-' '{print $9}' | cut -d ' ' -f 1`
-if [ "$PLAY" == "mediafwgstreamer" ]; then
+if egrep  "^CONFIG_GSTREAMER=y" $LAST > /dev/null; then
 play='_gst'
-else
+fi
+if egrep  "^CONFIG_EPLAYER3=y" $LAST > /dev/null; then
 play='_epl3'
 fi
-OE=`cat $LAST | awk -F '--enable-' '{print $8}' | cut -d ' ' -f 1`
-if [ "$OE" == "py27" ]; then
-oe='OE2.0'
-else
+
+if egrep  "^CONFIG_PYTHON26=y" $LAST > /dev/null; then
 oe='OE1.6'
+else
+oe='OE2.0'
 fi
-BOX=`cat $LAST | awk -F '--enable-' '{print $3}' | cut -d ' ' -f 1`
-if [ "$BOX" == "spark" ]; then
+
+if egrep  "^CONFIG_SPARK=y" $LAST > /dev/null; then
 box='_alien'
-elif [ "$BOX" == "spark7162" ]; then
+fi
+if egrep  "^CONFIG_SPARK7162=y" $LAST > /dev/null; then
 box='_alien2'
 fi
-KERN=`cat $LAST | awk -F '--enable-' '{print $5}' | cut -d ' ' -f 1`
-if [ "$KERN" == "p0211" ]; then
+
+
+if egrep  "^CONFIG_KERNEL_0211=y" $LAST > /dev/null; then
 kern='_211'
-elif [ "$KERN" == "p0210" ]; then
-kern='_210'
-elif [ "$KERN" == "p0209" ]; then
-kern='_209'
 fi
+if egrep  "^CONFIG_KERNEL_0215=y" $LAST > /dev/null; then
+kern='_215'
+fi
+
 echo "BOX          = $box "
 echo "KERN         = $kern"
-VERSION="OpenAR-P_$oe$kern$box$play-git-`date +%d-%m-%y`_`git describe --always`"
+VERSION="OpenAR-P_$oe$kern$box$play-git-`date +%d-%m-%y`_`git rev-list --count HEAD`"
 
 echo "CURDIR       = $CURDIR"
 echo "TUFSBOXDIR   = $TUFSBOXDIR"
