@@ -1181,7 +1181,7 @@ $(DEPDIR)/expat: $(DEPDIR)/expat.do_compile
 #
 BEGIN[[
 fontconfig
-  2.10.2
+  2.11.1
   {PN}-{PV}
   extract:http://{PN}.org/release/{PN}-{PV}.tar.gz
   make:install:DESTDIR=PKDIR
