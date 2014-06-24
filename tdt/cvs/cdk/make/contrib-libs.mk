@@ -928,7 +928,7 @@ $(DEPDIR)/libmng: $(DEPDIR)/libmng.do_compile
 BEGIN[[
 lcms
   2.6
-  {PN}-{PV}
+  {PN}2-{PV}
   extract:http://dfn.dl.sourceforge.net/sourceforge/{PN}/{PN}2-{PV}.tar.gz
   patch:file://{PN}.diff
   make:install:DESTDIR=PKDIR
