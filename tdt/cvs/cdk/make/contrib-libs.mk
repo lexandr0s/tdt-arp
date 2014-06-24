@@ -1314,7 +1314,7 @@ $(DEPDIR)/a52dec: a52dec.do_compile
 #
 BEGIN[[
 libdvdcss
-  1.2.12
+  1.2.13
   {PN}-{PV}
   extract:http://download.videolan.org/pub/{PN}/{PV}/{PN}-{PV}.tar.bz2
   make:install:DESTDIR=PKDIR
