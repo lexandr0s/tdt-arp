@@ -427,12 +427,23 @@ sub process_prepare ($)
     }
     elsif ( $p eq "svn" )
     {
-      if ( not $opts{"r"} )
-      {
-         $output .= "(cd " . $f . " && svn update) && ";
+      # -- set SVN_DIR variable
+      $outpost .= "SVN_DIR_$P = $f \n";
+	  
+      # -- pull changes from server
+      # cd repo
+      my $upd .= "cd $f";
+      # update
+      if ($opts{"r"}) {
+        $upd .= " && svn update -r " . $opts{"r"};
+      } else {
+	    $upd .= " && svn update";
       }
-      $output .= "(cd " . $f . "; svn up -r " . $opts{"r"} . "; cd -) && " if $opts{"r"};
-      $output .= "cp -a " . $f . $subdir . " " . $dir;
+      $upd .= " && cd -";
+      $outpost .= "UPDATE_$P := $upd \n";
+	  
+      # -- copy repo to work dir
+      $output .= "cp -a $f/$subdir $dir";
     }
     elsif ( $p eq "git" )
     {
@@ -465,7 +476,7 @@ sub process_prepare ($)
       }
       # exit git dir
       $upd .= " && cd -";
-      $outpost .= "UPDATE_$P += $upd \n";
+      $outpost .= "UPDATE_$P := $upd \n";
 
       # -- copy git tree to working dir --
       $output .= "cp -a $f/$subdir $dir";
