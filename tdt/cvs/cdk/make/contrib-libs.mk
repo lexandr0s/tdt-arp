@@ -2315,7 +2315,7 @@ $(DEPDIR)/lxml: $(DEPDIR)/lxml.do_compile
 #
 BEGIN[[
 setuptools
-  0.6c11
+  5.2
   {PN}-{PV}
   extract:http://pypi.python.org/packages/source/s/{PN}/{PN}-{PV}.tar.gz
 ;
