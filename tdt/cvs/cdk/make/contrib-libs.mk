@@ -2675,7 +2675,7 @@ $(DEPDIR)/pycrypto: $(DEPDIR)/pycrypto.do_compile
 #
 BEGIN[[
 pyusb
-  1.0.0a3
+  1.0.0b1
   {PN}-{PV}
   extract:http://pypi.python.org/packages/source/p/{PN}/{PN}-{PV}.tar.gz
 ;
