@@ -435,7 +435,7 @@ $(DEPDIR)/libungif: $(DEPDIR)/libungif.do_compile
 #
 BEGIN[[
 libgif
-  5.0.4
+  5.1.0
   giflib-{PV}
   extract:http://heanet.dl.sourceforge.net/sourceforge/giflib/giflib-{PV}.tar.bz2
   make:install:DESTDIR=PKDIR
