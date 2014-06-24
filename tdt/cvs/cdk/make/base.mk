@@ -419,3 +419,77 @@ $(TARGET_${P}).write_git_version: $(GIT_DIR_${P})
 all-update: $(TARGET_${P}).do_update
 
 ]]function
+
+
+
+# svn
+#############################################################################
+
+# very similar with git
+# TODO: some common vcs function
+
+# svn staff related constants
+# you need first 'cd' to interesting directory
+svn_log_srcrev := svn info | awk '/Revision:/ { print $$2 }'
+svn_log_version := svn info | awk '/Revision:/ { print $$2 }'
+
+function[[ svn
+# place after rule definitions
+# now you have SVN_VERSION_${P} variable
+
+# Check requirements
+SVN_DIR_${P} ?= $(error undefined SVN_DIR_${P})
+
+# Set file where we store srcrev
+SRCREV_${P} = $(TARGET_${P}).do_srcrev
+
+# add dependencies:
+# you need do_srcrev at prepare time, so if svn is updated all rebuilds.
+$(TARGET_${P}).do_prepare: $(SRCREV_${P})
+# I assume you need SVN_VERSION variable at packaging time
+$(TARGET_${P}).do_package: $(TARGET_${P}).do_svn_version
+
+# initial srcrev value
+$(SRCREV_${P}): $(SVN_DIR_${P})
+	$(UPDATE_${P})
+	cd $(SVN_DIR_${P}) && $(svn_log_srcrev) > ${SRCREV}
+
+# update stored srcrev if it has changed
+$(TARGET_${P}).do_update: $(SVN_DIR_${P})
+	@echo && echo "==> checking ${SRCREV}" && echo
+	$(UPDATE_${P})
+	cd $(SVN_DIR_${P}) && $(svn_log_srcrev) > ${SRCREV}_tmp
+
+	(test -f ${SRCREV} && test "`cat ${SRCREV}_tmp`" == "`cat ${SRCREV}`") \
+	|| (cp ${SRCREV}_tmp ${SRCREV} && touch ${SRCREV} && \
+	    echo && echo "==> updated ${SRCREV}" && echo)
+	
+	rm -f ${SRCREV}_tmp
+
+VERSION_${P} = ${PV}${SVN_VERSION}-${PR}
+
+# SVN_VERSION_${P} is dynamic variable
+# We use dynamic variables pattern,
+# I suggest to use such Makefile 'hack' everytime you deal with dynamic variables
+
+# end user target is do_svn_version, specify it as prerequisite if you access dynamic variable
+$(TARGET_${P}).do_svn_version: $(TARGET_${P}).write_svn_version | $(TARGET_${P}).include_svn_version
+	touch $@
+
+# inlude is evaluated every time make runs, beacause it is phony target and specified as oder-only prerequisite
+$(TARGET_${P}).include_svn_version: $(TARGET_${P}).write_svn_version
+	@echo "==> include $<"
+	$(eval include $<)
+
+.PHONY: $(TARGET_${P}).include_svn_version
+
+# Here we specify the main code of generating dynamic variables
+# output file will be included by make at run time
+$(TARGET_${P}).write_svn_version: $(SVN_DIR_${P})
+	echo -n "SVN_VERSION_${P} := " > $@
+	cd $(SVN_DIR_${P}) && $(svn_log_version) >> $@
+
+# add to list
+all-update: $(TARGET_${P}).do_update
+
+]]function
