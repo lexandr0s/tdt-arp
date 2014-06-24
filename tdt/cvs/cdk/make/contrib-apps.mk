@@ -577,7 +577,7 @@ $(DEPDIR)/mc: glib2 $(DEPDIR)/mc.do_compile
 #
 BEGIN[[
 sdparm
-  1.07
+  1.08
   {PN}-{PV}
   extract:http://sg.danny.cz/sg/p/{PN}-{PV}.tgz
   make:install:DESTDIR=PKDIR
