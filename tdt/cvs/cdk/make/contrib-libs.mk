@@ -1621,7 +1621,7 @@ $(DEPDIR)/libass: $(DEPDIR)/libass.do_compile
 #
 BEGIN[[
 libbluray
-  0.5.0
+  0.6.0
   {PN}-{PV}
   extract:http://download.videolan.org/pub/videolan/{PN}/{PV}/{PN}-{PV}.tar.bz2
   patch:file://{PN}-0001-Optimized-file-I-O-for-chained-usage-with-libavforma.patch
