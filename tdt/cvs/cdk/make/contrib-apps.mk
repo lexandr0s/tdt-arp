@@ -405,10 +405,10 @@ $(DEPDIR)/openrdate: $(DEPDIR)/openrdate.do_compile
 #
 BEGIN[[
 e2fsprogs
-  1.42.8
+  1.42.10
   {PN}-{PV}
   extract:http://sourceforge.net/projects/{PN}/files/{PN}/v{PV}/{PN}-{PV}.tar.gz
-  patch:file://{PN}-{PV}.patch
+  patch:file://{PN}.patch
   make:install:DESTDIR=PKDIR
 ;
 ]]END
