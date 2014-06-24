@@ -2514,9 +2514,9 @@ $(DEPDIR)/bs4: $(DEPDIR)/bs4.do_compile
 #
 BEGIN[[
 twisted
-  13.0.0
+  14.0.0
   Twisted-{PV}
-  extract:http://twistedmatrix.com/Releases/Twisted/13.0/Twisted-{PV}.tar.bz2
+  extract:http://twistedmatrix.com/Releases/Twisted/14.0/Twisted-{PV}.tar.bz2
 ;
 ]]END
 
