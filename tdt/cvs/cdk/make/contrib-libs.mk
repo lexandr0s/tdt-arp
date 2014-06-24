@@ -257,7 +257,7 @@ endif
 #
 BEGIN[[
 libjpeg
-  8d
+  9a
   jpeg-{PV}
   extract:http://www.ijg.org/files/jpegsrc.v{PV}.tar.gz
   patch:file://jpeg.diff
