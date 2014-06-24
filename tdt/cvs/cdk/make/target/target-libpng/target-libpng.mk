@@ -5,7 +5,7 @@ package[[ target_libpng
 
 BDEPENDS_${P} = $(target_glibc) $(target_zlib)
 
-PV_${P} = 1.6.8
+PV_${P} = 1.6.10
 PR_${P} = 1
 
 call[[ base ]]
