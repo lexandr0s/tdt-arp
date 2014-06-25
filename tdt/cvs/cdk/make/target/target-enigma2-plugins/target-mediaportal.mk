@@ -31,8 +31,8 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 
 $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 	cd $(DIR_${P}) && \
-		./autogen.sh && \
 		$(BUILDENV) \
+		./autogen.sh && \
 		./configure \
 			--host=$(target) \
 			--prefix=/usr \
