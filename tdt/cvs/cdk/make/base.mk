@@ -106,7 +106,7 @@ $(TARGET_${P}).do_%: $(TARGET_${P}).do_prepare
 	@echo
 	@echo "You have to edit m a n u a l l y Patches/...${PN}...config to make changes permanent !!!"
 	@echo ""
-	diff $(DIR_${P})/.config.old $(DIR_${P})/.config
+	diff -u $(DIR_${P})/.config.old $(DIR_${P})/.config
 	@echo
 	touch $@
 ]]function
