@@ -437,7 +437,7 @@ BEGIN[[
 libgif
   5.1.0
   giflib-{PV}
-  extract:http://heanet.dl.sourceforge.net/sourceforge/giflib/giflib-{PV}.tar.bz2
+  extract:http://sourceforge.net/projects/giflib/files/giflib-{PV}.tar.gz
   make:install:DESTDIR=PKDIR
 ;
 ]]END
