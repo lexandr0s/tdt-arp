@@ -59,6 +59,8 @@ ${P}_config = linux-sh4-$(KERNEL_UPSTREAM)-$(KERNEL_LABEL)_$(TARGET).config$(DEB
 
 DEPENDS_${P} += $(addprefix ${SDIR}/,$(${P}_patches) $(${P}_config))
 
+MAKE_FLAGS_${P} = ARCH=sh CROSS_COMPILE=$(target)-
+
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(PREPARE_${P})
 	cp -ar $(crossprefix)/sources/kernel $(DIR_${P})
@@ -71,14 +73,14 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	touch $@
 
 $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
-	cd $(DIR_${P}) && $(MAKE) ARCH=sh CROSS_COMPILE=$(target)- uImage modules
+	cd $(DIR_${P}) && $(MAKE) ${MAKE_FLAGS} uImage modules
 	touch $@
 
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	$(PKDIR_clean)
 	install -d $(PKDIR)/boot
 	cp $(DIR_${P})/arch/sh/boot/uImage $(PKDIR)/boot/
-	cd $(DIR_${P}) && $(MAKE) ARCH=sh INSTALL_MOD_PATH=$(PKDIR) modules_install
+	cd $(DIR_${P}) && $(MAKE) ${MAKE_FLAGS} INSTALL_MOD_PATH=$(PKDIR) modules_install
 
 # provide this dir to build external modules (target_driver)
 #	rm -rf $(PKDIR)/lib/modules/$(KERNEL_VERSION)/build
@@ -122,7 +124,7 @@ call[[ base ]]
 
 $(TARGET_${P}).do_package: $(DEPENDS_${P})
 	$(PKDIR_clean)
-	cd $(DIR_${P}) && make ARCH=sh INSTALL_HDR_PATH=$(PKDIR)/usr headers_install
+	cd $(DIR_${P}) && make ${MAKE_FLAGS} INSTALL_HDR_PATH=$(PKDIR)/usr headers_install
 	rm -rf $(PKDIR)/usr/include/scsi
 	touch $@
 
