@@ -13,7 +13,7 @@ diff --git a/src/libbluray/bluray.c b/src/libbluray/bluray.c
 index 5fe5c53..2b113db 100644
 --- a/src/libbluray/bluray.c
 +++ b/src/libbluray/bluray.c
-@@ -608,7 +608,6 @@ static int _read_block(BLURAY *bd, BD_STREAM *st, uint8_t *buf)
+@@ -634,7 +634,6 @@ static int _read_block(BLURAY *bd, BD_STREAM *st, uint8_t *buf)
                          BD_DEBUG(DBG_BLURAY | DBG_CRIT,
                                   "TP header copy permission indicator != 0, unit is still encrypted?\n");
                          _queue_event(bd, BD_EVENT_ENCRYPTED, BD_ERROR_AACS);

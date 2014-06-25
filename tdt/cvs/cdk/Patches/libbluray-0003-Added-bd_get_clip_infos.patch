@@ -15,9 +15,9 @@ diff --git a/src/libbluray/bluray.c b/src/libbluray/bluray.c
 index d19872f..5fe5c53 100644
 --- a/src/libbluray/bluray.c
 +++ b/src/libbluray/bluray.c
-@@ -3292,3 +3292,20 @@ void bd_free_clpi(struct clpi_cl *cl)
+@@ -3462,3 +3462,20 @@ void bd_free_mpls(struct mpls_pl *pl)
  {
-     clpi_free(cl);
+     mpls_free(pl);
  }
 +
 +int bd_get_clip_infos(BLURAY *bd, int clip, uint64_t *clip_start_time, uint64_t *stream_start_time, uint64_t *pos, uint64_t *duration)
@@ -40,9 +40,9 @@ diff --git a/src/libbluray/bluray.h b/src/libbluray/bluray.h
 index 828a74c..22cb7bc 100644
 --- a/src/libbluray/bluray.h
 +++ b/src/libbluray/bluray.h
-@@ -861,6 +861,19 @@ struct clpi_cl *bd_read_clpi(const char *clpi_file);
-  */
- void bd_free_clpi(struct clpi_cl *cl);
+@@ -899,6 +899,19 @@ struct clpi_cl *bd_read_clpi(const char *clpi_file);
+ void bd_stop_bdj(BLURAY *bd); // shutdown BD-J and clean up resources
+ 
  
 +/**
 + *

@@ -30,19 +30,10 @@ diff --git a/src/file/file_posix.c b/src/file/file_posix.c
 index 4bca744..485599d 100644
 --- a/src/file/file_posix.c
 +++ b/src/file/file_posix.c
-@@ -113,13 +113,15 @@ static BD_FILE_H *file_open_linux(const char* filename, const char *mode)
+@@ -90,6 +90,8 @@ static BD_FILE_H *file_open_linux(const char* filename, const char *mode)
      file->eof = file_eof_linux;
  
- #ifdef _WIN32
--    wchar_t wfilename[MAX_PATH], wmode[8];
--    if (MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, filename, -1, wfilename, MAX_PATH) &&
-+    wchar_t wfilename[4096], wmode[8];
-+    if (MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, filename, -1, wfilename, 4096) &&
-         MultiByteToWideChar(CP_UTF8, MB_ERR_INVALID_CHARS, mode, -1, wmode, 8) &&
-         (fp = _wfopen(wfilename, wmode))) {
- #else
      if ((fp = fopen(filename, mode))) {
- #endif
 +        // Set file buffer
 +        setvbuf(fp, NULL, _IOFBF, 6144 * 10);
          file->internal = fp;
@@ -52,7 +43,7 @@ diff --git a/src/libbluray/bluray.c b/src/libbluray/bluray.c
 index 4f6d3a3..d19872f 100644
 --- a/src/libbluray/bluray.c
 +++ b/src/libbluray/bluray.c
-@@ -523,7 +523,7 @@ static int _open_m2ts(BLURAY *bd, BD_STREAM *st)
+@@ -549,7 +549,7 @@ static int _open_m2ts(BLURAY *bd, BD_STREAM *st)
  
      f_name = str_printf("%s" DIR_SEP "BDMV" DIR_SEP "STREAM" DIR_SEP "%s",
                          bd->device_path, st->clip->name);
@@ -61,7 +52,7 @@ index 4f6d3a3..d19872f 100644
      X_FREE(f_name);
  
      st->clip_size = 0;
-@@ -1433,6 +1433,25 @@ int64_t bd_seek_time(BLURAY *bd, uint64_t tick)
+@@ -1539,6 +1539,25 @@ int64_t bd_seek_time(BLURAY *bd, uint64_t tick)
      return bd->s_pos;
  }
  
