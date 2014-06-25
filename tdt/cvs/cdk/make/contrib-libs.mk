@@ -2710,7 +2710,7 @@ $(DEPDIR)/pyusb: $(DEPDIR)/pyusb.do_compile
 #
 BEGIN[[
 pyopenssl
-  0.14
+  0.13
   pyOpenSSL-{PV}
   extract:https://pypi.python.org/packages/source/p/pyOpenSSL/pyOpenSSL-{PV}.tar.gz
 ;
