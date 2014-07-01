@@ -2706,6 +2706,147 @@ $(DEPDIR)/pyusb: $(DEPDIR)/pyusb.do_compile
 	touch $@
 
 #
+# characteristic
+#
+BEGIN[[
+characteristic
+  0.1.0
+  {PN}-{PV}
+  extract:https://pypi.python.org/packages/source/c/{PN}/{PN}-{PV}.tar.gz
+;
+]]END
+
+DESCRIPTION_characteristic = "Python package with class decorators"
+FILES_characteristic = \
+$(PYTHON_DIR)/site-packages/characteristic.py \
+$(PYTHON_DIR)/site-packages/characteristic.pyo
+
+$(DEPDIR)/characteristic.do_prepare: bootstrap setuptools $(DEPENDS_characteristic)
+	$(PREPARE_characteristic)
+	touch $@
+
+$(DEPDIR)/characteristic.do_compile: $(DEPDIR)/characteristic.do_prepare
+	cd $(DIR_characteristic) && \
+		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python ./setup.py build
+	touch $@
+
+$(DEPDIR)/characteristic: $(DEPDIR)/characteristic.do_compile
+	$(start_build)
+	cd $(DIR_characteristic) && \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python ./setup.py install --root=$(PKDIR) --prefix=/usr
+	$(tocdk_build)
+	$(toflash_build)
+	touch $@
+
+#
+# pyasn1modules
+#
+BEGIN[[
+pyasn1modules
+  0.0.5
+  pyasn1-modules-{PV}
+  extract:https://pypi.python.org/packages/source/p/pyasn1-modules/pyasn1-modules-{PV}.tar.gz
+;
+]]END
+
+DESCRIPTION_pyasn1modules = "A collection of ASN.1-based protocols modules"
+FILES_pyasn1modules = \
+$(PYTHON_DIR)/site-packages/pyasn1_modules/*
+
+$(DEPDIR)/pyasn1modules.do_prepare: bootstrap setuptools $(DEPENDS_pyasn1modules)
+	$(PREPARE_pyasn1modules)
+	touch $@
+
+$(DEPDIR)/pyasn1modules.do_compile: $(DEPDIR)/pyasn1modules.do_prepare
+	cd $(DIR_pyasn1modules) && \
+		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python ./setup.py build
+	touch $@
+
+$(DEPDIR)/pyasn1modules: $(DEPDIR)/pyasn1modules.do_compile
+	$(start_build)
+	cd $(DIR_pyasn1modules) && \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python ./setup.py install --root=$(PKDIR) --prefix=/usr
+	$(tocdk_build)
+	$(toflash_build)
+	touch $@
+
+#
+# pyasn1
+#
+BEGIN[[
+pyasn1
+  0.1.7
+  {PN}-{PV}
+  extract:https://pypi.python.org/packages/source/p/{PN}/{PN}-{PV}.tar.gz
+;
+]]END
+
+DESCRIPTION_pyasn1 = "ASN.1 library for Python"
+FILES_pyasn1 = \
+$(PYTHON_DIR)/site-packages/pyasn1/*
+
+$(DEPDIR)/pyasn1.do_prepare: bootstrap setuptools $(DEPENDS_pyasn1)
+	$(PREPARE_pyasn1)
+	touch $@
+
+$(DEPDIR)/pyasn1.do_compile: $(DEPDIR)/pyasn1.do_prepare
+	cd $(DIR_pyasn1) && \
+		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python ./setup.py build
+	touch $@
+
+$(DEPDIR)/pyasn1: $(DEPDIR)/pyasn1.do_compile
+	$(start_build)
+	cd $(DIR_pyasn1) && \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python ./setup.py install --root=$(PKDIR) --prefix=/usr
+	$(tocdk_build)
+	$(toflash_build)
+	touch $@
+
+#
+# serviceidentity
+#
+BEGIN[[
+serviceidentity
+  1.0.0
+  service_identity-{PV}
+  extract:https://pypi.python.org/packages/source/s/service_identity/service_identity-{PV}.tar.gz
+;
+]]END
+
+DESCRIPTION_serviceidentity = "Service identity verification for pyOpenSSL"
+FILES_serviceidentity = \
+$(PYTHON_DIR)/site-packages/service_identity/*
+
+$(DEPDIR)/serviceidentity.do_prepare: bootstrap setuptools pyasn1 pyasn1modules characteristic $(DEPENDS_serviceidentity)
+	$(PREPARE_serviceidentity)
+	touch $@
+
+$(DEPDIR)/serviceidentity.do_compile: $(DEPDIR)/serviceidentity.do_prepare
+	cd $(DIR_serviceidentity) && \
+		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python ./setup.py build
+	touch $@
+
+$(DEPDIR)/serviceidentity: $(DEPDIR)/serviceidentity.do_compile
+	$(start_build)
+	cd $(DIR_serviceidentity) && \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python ./setup.py install --root=$(PKDIR) --prefix=/usr
+	$(tocdk_build)
+	$(toflash_build)
+	touch $@
+
+#
 # pyopenssl
 #
 BEGIN[[
@@ -2721,7 +2862,7 @@ FILES_pyopenssl = \
 $(PYTHON_DIR)/site-packages/OpenSSL/*py \
 $(PYTHON_DIR)/site-packages/OpenSSL/*so
 
-$(DEPDIR)/pyopenssl.do_prepare: bootstrap setuptools $(DEPENDS_pyopenssl)
+$(DEPDIR)/pyopenssl.do_prepare: bootstrap setuptools serviceidentity $(DEPENDS_pyopenssl)
 	$(PREPARE_pyopenssl)
 	touch $@
 
