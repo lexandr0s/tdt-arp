@@ -151,6 +151,10 @@ menu "GUI Configuration"
 		config ENIGMA2_EXTENSION_OPENWEBIF
 		bool "enigma2-plugin-extensions-openwebif"
 		depends on ENIGMA2_PLUGINS
+		
+		config ENIGMA2_EXTENSION_WEBIF
+		bool "enigma2-plugin-extensions-webinterface"
+		depends on ENIGMA2_PLUGINS
 
 		config ENIGMA2_EXTENSION_MEDIAPORTAL
 		bool "enigma2-plugin-extensions-mediaportal"
@@ -160,8 +164,12 @@ menu "GUI Configuration"
 		bool "enigma2-plugin-skin-megamod"
 		depends on ENIGMA2_PLUGINS
 
-		config CONFIG_ENIGMA2_EXTENSION_ALTSOFTCAM
+		config ENIGMA2_EXTENSION_ALTSOFTCAM
 		bool "enigma2-plugin-extensions-alternativesoftcammanager"
+		depends on ENIGMA2_PLUGINS
+		
+		config OSCAM
+		bool  "enigma2-plugin-cams-oscam"
 		depends on ENIGMA2_PLUGINS
 
 	choice
