@@ -1,14 +1,3 @@
---- SPECS/stm-target-udev.spec.orig	2014-03-19 16:17:35.756323960 +0100
-+++ SPECS/stm-target-udev.spec	2014-03-19 16:23:12.564323951 +0100
-@@ -37,7 +37,7 @@
- 
- %define _docdir		%{_stm_cross_target_dir}%{_stm_target_doc_dir}
- %define _no_objdir 1
--%define udev_scriptdir %{_stm_cross_target_dir}/lib/udev
-+%define udev_scriptdir /lib/udev
- #
- #  Source Package
- #
 --- SPECS/stm-target-udev.spec.orig	2014-03-19 16:35:18.896323629 +0100
 +++ SPECS/stm-target-udev.spec	2014-03-19 16:35:23.440323950 +0100
 @@ -202,7 +202,7 @@
