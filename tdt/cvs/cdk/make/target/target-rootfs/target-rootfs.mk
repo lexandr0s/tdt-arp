@@ -18,7 +18,7 @@ endif
 
 ifdef CONFIG_ENIGMA2_PLUGINS
 IPKBOX_LIST_${P} += $(target_enigma2_plugins) $(target_openwebif) $(target_mediaportal) $(target_aio_grab) $(target_python_cheetah) $(target_python_pyopenssl) $(target_python_pycrypto) $(target_python_wifi) \
-$(target_python_mechanize)
+$(target_python_mechanize) $(target_oscam)
 endif
 
 ifdef CONFIG_BUILD_NEUTRINO
@@ -216,6 +216,10 @@ ifdef CONFIG_ENIGMA2_EXTENSION_OPENWEBIF
 opkg_my_list += enigma2-plugin-extensions-openwebif
 endif
 
+ifdef CONFIG_ENIGMA2_EXTENSION_WEBIF
+opkg_my_list += enigma2-plugin-extensions-webinterface
+endif
+
 ifdef CONFIG_ENIGMA2_EXTENSION_MEDIAPORTAL
 opkg_my_list += enigma2-plugin-extensions-mediaportal
 endif
@@ -226,6 +230,10 @@ endif
 
 ifdef CONFIG_ENIGMA2_EXTENSION_ALTSOFTCAM
 opkg_my_list += enigma2-plugin-extensions-alternativesoftcammanager
+endif
+
+ifdef CONFIG_OSCAM
+opkg_my_list += enigma2-plugin-cams-oscam
 endif
 
 ########################################################################################
