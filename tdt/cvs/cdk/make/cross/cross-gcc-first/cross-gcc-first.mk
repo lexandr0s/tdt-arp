@@ -8,7 +8,7 @@ BDEPENDS_${P} = $(target_kernel_headers) $(target_glibc_headers) $(cross_mpc) $(
 PR_${P} = 1
 
 ifdef CONFIG_GCC48
-${P}_VERSION = 4.8.2-131
+${P}_VERSION = 4.8.2-132
 else
 ${P}_VERSION = 4.7.3-124
 endif
@@ -31,7 +31,6 @@ call[[ ipk ]]
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(rpm_src_install) $(${P}_SRCRPM)
-	cp $(buildprefix)/my-$(${P}).spec $(specsprefix)/$(${P}_SPEC)
 	$(if $(${P}_SPEC_PATCH), cd $(specsprefix) && patch -p1 $(${P}_SPEC) < ${SDIR}/$(${P}_SPEC_PATCH) )
 	$(if $(${P}_PATCHES), cp $(addprefix ${SDIR}/,$(${P}_PATCHES)) $(sourcesprefix) )
 	touch $@

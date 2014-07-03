@@ -35,7 +35,7 @@
  
  ##############################################################################
  
-@@ -255,15 +260,6 @@
+@@ -267,15 +272,6 @@
  %cross_setup
  %cross_makeinstall
  
@@ -51,7 +51,7 @@
  cd ..
  
  %compress_man %{buildroot}%{_stm_cross_info_dir}
-@@ -327,14 +323,16 @@
+@@ -342,14 +338,16 @@
  	\( -name "libmudflap*" -o -name "libssp*" \) -print | \
  	xargs --no-run-if-empty --verbose rm
  # Remove some installed files we don't ship, to keep rpm happy
@@ -73,7 +73,7 @@
  
  rm -rf %{buildroot}%{_stm_cross_targetconf_dir}/share/gcc-%{version}/python
  
-@@ -457,10 +455,6 @@
+@@ -450,10 +448,6 @@
  %{_stm_cross_targetconf_dir}/bin/cpp
  %{_stm_cross_sharedstate_dir}/locale/*/LC_MESSAGES/cpplib.mo
  
@@ -84,7 +84,7 @@
  %files -n %{_gpp_pkgname}
  %defattr(-,root,root)
  %{_stm_cross_bin_dir}/%{_stm_target_toolprefix}g++
-@@ -475,7 +469,6 @@
+@@ -468,7 +462,6 @@
  
  %files -n %{_gcc_pkgname}-doc
  %defattr(-,root,root)
@@ -92,7 +92,7 @@
  %{_stm_cross_man_dir}/man7/*
  
  %if %target_cpu sh
-@@ -492,22 +485,6 @@
+@@ -485,22 +478,6 @@
  %{_stm_cross_target_dir}/lib/m4-nofpu/libgcc_s-%{version}.so.1
  %endif
  
@@ -113,5 +113,5 @@
 -	%{_stm_cross_info_dir}/gcc.info
 -
  %changelog
- * Wed Feb 12 2014 Christian Bruel <christian.bruel@st.com> 131
- - [Add patch: gcc-4.8.2-stm-140225.patch]
+ * Thu Oct 02 2013 Laurent Alfonsi <laurent.alfonsi@st.com> 124
+ - [Add patch: gcc-4.7.3-bugzilla-36994.patch]

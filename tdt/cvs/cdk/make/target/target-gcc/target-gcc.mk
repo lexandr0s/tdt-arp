@@ -8,8 +8,8 @@ BREPLACES_${P} = $(target_cross_gcc_lib)
 
 PR_${P} = 1
 
-ifdef GCC48
-${P}_VERSION := 4.8.2-135
+ifdef CONFIG_GCC48
+${P}_VERSION := 4.8.2-138
 else
 ${P}_VERSION := 4.7.3-129
 endif
