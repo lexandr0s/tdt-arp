@@ -11,3 +11,13 @@
  %if ! %{nohostbuilddeps}
  BuildRequires: gperf
  %endif
+ --- SPECS/stm-target-udev.spec.orig	2014-03-19 16:35:18.896323629 +0100
++++ SPECS/stm-target-udev.spec	2014-03-19 16:35:23.440323950 +0100
+@@ -202,7 +202,7 @@
+ 
+ install -m 0755 %{SOURCE2} %{buildroot}%{_stm_cross_target_dir}%{_stm_target_sysconf_dir}/udev/makedev.d/50-udev.nodes
+ 
+-mkdir -p %{buildroot}%{_stm_cross_target_dir}%{_stm_cross_target_dir}%{_stm_target_sharedstate_dir}/udev
++mkdir -p %{buildroot}%{_stm_cross_target_dir}%{_stm_target_sharedstate_dir}/udev
+ 
+ mkdir -p -m 0755 %{buildroot}%{_stm_cross_target_dir}/lib/firmware
