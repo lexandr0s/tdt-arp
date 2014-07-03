@@ -5,7 +5,7 @@ package[[ target_glibc_headers
 
 BDEPENDS_${P} = $(target_filesystem)
 
-PV_${P} = 2.14.1-48
+PV_${P} = 2.14.1-50
 PR_${P} = 4
 
 ST_PN_${P} = glibc
