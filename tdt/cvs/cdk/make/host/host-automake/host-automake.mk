@@ -7,7 +7,7 @@ BDEPENDS_${P} = host-opkg-meta $(host_rpmconfig) $(host_autotools)
 
 PR_${P} = 1
 
-${P}_VERSION = 1.11.1-3
+${P}_VERSION = 1.11.1-4
 ${P}_SPEC = stm-$(${P}).spec
 ${P}_SPEC_PATCH =
 ${P}_PATCHES =
