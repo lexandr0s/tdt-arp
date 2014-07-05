@@ -14,11 +14,12 @@ call[[ base ]]
 rule[[
   pdircreate:${PN}-${PV}
   install:-d:$(PKDIR)/etc/tuxbox
+  install:-d:$(PKDIR)/usr/share/zoneinfo
   install_file:$(PKDIR)/etc/tuxbox:file://satellites.xml
   install_file:$(PKDIR)/etc/tuxbox:file://cables.xml
   install_file:$(PKDIR)/etc/tuxbox:file://terrestrial.xml
   install_file:$(PKDIR)/etc/tuxbox:file://timezone.xml
-
+  install_file:$(PKDIR)/usr/share/zoneinfo:file://zoneinfo/*
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
@@ -51,7 +52,7 @@ DESCRIPTION_config_satellites = satellites.xml config
 FILES_config_satellites = /etc/tuxbox/satellites.xml
 
 DESCRIPTION_config_timezone = timezone.xml config
-FILES_config_timezone = /etc/tuxbox/timezone.xml /etc/timezone.xml
+FILES_config_timezone = /etc/tuxbox/timezone.xml /etc/timezone.xml /usr/share/zoneinfo/*
 
 call[[ ipkbox ]]
 
