@@ -15,7 +15,7 @@ endif
 
 ST_PN_${P} = cross-gcc
 ${P}_SPEC = stm-${ST_PN}.spec
-${P}_SPEC_PATCH = $(${P}_SPEC).$(${P}_VERSION).diff
+${P}_SPEC_PATCH = $(${P}_SPEC).$(${P}_VERSION).first.diff
 ${P}_PATCHES = stm-${ST_PN}.$(${P}_VERSION).diff
 ${P}_SRCRPM = $(archivedir)/$(STLINUX)-${ST_PN}-$(${P}_VERSION).src.rpm
 

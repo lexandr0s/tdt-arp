@@ -35,29 +35,15 @@
  
  ##############################################################################
  
-@@ -195,8 +195,12 @@
-         --with-local-prefix=%{_stm_cross_dir} \
-         --with-sysroot=%{_stm_cross_target_dir} \
- 	--enable-target-optspace \
--        --enable-languages=c,c++ \
-+        --enable-languages=c \
-         --enable-threads=posix \
-+        --disable-libmudflap \
-+       --disable-libssp \
-+       --disable-libquadmath \
-+       --without-headers \
- %if %target_cpu arm
- 	--disable-multilib \
- %endif
-@@ -204,7 +208,7 @@
-         --enable-c99 \
-         --enable-long-long \
-         --with-system-zlib \
--	--enable-shared \
-+	--disable-shared \
- %if "%{_stm_target_arch}" != "armv7" && "%{_stm_target_arch}" != "armv7_uclibc"
- 	--disable-libgomp \
- %endif
+@@ -226,7 +231,7 @@
+         --with-gmp=%{_stm_cross_dir} \
+         --with-mpfr=%{_stm_cross_dir} \
+         --without-ppl \
+-        --with-gxx-include-dir="\\\${prefix}/target%{_stm_target_include_dir}/c++/%{version}" \
++        --with-gxx-include-dir="\\\${prefix}/../../cdkroot%{_stm_target_include_dir}/c++/%{version}" \
+         --enable-__cxa_atexit \
+ %if "%{_stm_target_fpu}" == "no"
+ %if %target_arch sh4_uclibc
 @@ -267,15 +272,6 @@
  %cross_setup
  %cross_makeinstall
@@ -74,138 +60,67 @@
  cd ..
  
  %compress_man %{buildroot}%{_stm_cross_info_dir}
-@@ -306,63 +310,14 @@
- 	%{buildroot}/%{_stm_cross_targetconf_dir}/lib/cpp
- 
- mkdir -p %{buildroot}%{_stm_cross_target_dir}/lib
--mv %{buildroot}%{_stm_cross_targetconf_dir}/lib/libgcc_s.so.1 \
--	%{buildroot}%{_stm_cross_target_dir}/lib/libgcc_s-%{version}.so.1
- ln -s libgcc_s-%{version}.so.1 \
- 	%{buildroot}%{_stm_cross_target_dir}/lib/libgcc_s.so.1
- 
- mv %{buildroot}%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/include-fixed/* \
- 	%{buildroot}%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/include/
- 
--# This is a text file, so shift it to the right place.
--mv %{buildroot}%{_stm_cross_targetconf_dir}/lib/libgcc_s.so \
--	%{buildroot}%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/libgcc_s.so
--
--%if %target_cpu sh
--mv %{buildroot}%{_stm_cross_targetconf_dir}/lib/m4-nofpu/libgcc_s.so \
--	%{buildroot}%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu/libgcc_s.so
--mkdir -p %{buildroot}%{_stm_cross_target_dir}/lib/m4-nofpu
--mv %{buildroot}%{_stm_cross_targetconf_dir}/lib/m4-nofpu/libgcc_s.so.1 \
--        %{buildroot}%{_stm_cross_target_dir}/lib/m4-nofpu/libgcc_s-%{version}.so.1
--ln -s m4-nofpu/libgcc_s-%{version}.so.1 \
--        %{buildroot}%{_stm_cross_target_dir}/lib/m4-nofpu/libgcc_s.so.1
--%endif
--
- %find_lang gcc
- 
--# Target include files and libs are part of the target-gcc packages
--rm %{buildroot}%{_stm_cross_targetconf_dir}/lib/libstdc++*
--rm %{buildroot}%{_stm_cross_targetconf_dir}/lib/libsupc++*
--rm -rf %{buildroot}%{_stm_cross_target_dir}%{_stm_target_include_dir}/c++
--%if %target_cpu sh
--rm %{buildroot}%{_stm_cross_targetconf_dir}/lib/m4-nofpu/libstdc++*
--rm %{buildroot}%{_stm_cross_targetconf_dir}/lib/m4-nofpu/libsupc++*
--%endif
--find %{buildroot}%{_stm_cross_targetconf_dir}/lib \
--	\( -name "libmudflap*" -o -name "libssp*" \) -print | \
--	xargs --no-run-if-empty --verbose rm
--# Remove some installed files we don't ship, to keep rpm happy
+@@ -342,14 +338,16 @@
+ 	\( -name "libmudflap*" -o -name "libssp*" \) -print | \
+ 	xargs --no-run-if-empty --verbose rm
+ # Remove some installed files we don't ship, to keep rpm happy
 -rm %{buildroot}%{_stm_cross_info_dir}/cppinternals.info.gz
 -rm %{buildroot}%{_stm_cross_info_dir}/gccinstall.info.gz
 -rm %{buildroot}%{_stm_cross_info_dir}/gccint.info.gz
 -rm -f %{buildroot}%{_stm_cross_info_dir}/dir.*
--rm -r %{buildroot}%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/install-tools
--rm -f %{buildroot}%{_stm_cross_lib_dir}/libiberty.a
++rm %{buildroot}%{_stm_cross_info_dir}/cppinternals.info.gz || true
++rm %{buildroot}%{_stm_cross_info_dir}/gccinstall.info.gz || true
++rm %{buildroot}%{_stm_cross_info_dir}/gccint.info.gz || true
++rm -f %{buildroot}%{_stm_cross_info_dir}/dir.* || true
+ rm -r %{buildroot}%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/install-tools
+ rm -f %{buildroot}%{_stm_cross_lib_dir}/libiberty.a
 -rm -f  %{buildroot}%{_stm_cross_dir}/lib64/libiberty.a
--rm -r %{buildroot}%{_stm_cross_libexec_dir}/gcc/%{_stm_target_config}/%{version}/install-tools
--
--rm -rf %{buildroot}%{_stm_cross_targetconf_dir}/share/gcc-%{version}/python
--
--# On some targets (eg ARM), stm_target_config != stm_target_toolprefix
--# and we prefer that GCC is named with the more friendly
--# stm_target_toolprefix
--%if "%{_stm_target_config}-" != "%{_stm_target_toolprefix}"
--mv -f %{buildroot}%{_stm_cross_bin_dir}/%{_stm_target_config}-gcc-%{version} %{buildroot}%{_stm_cross_bin_dir}/%{_stm_target_toolprefix}gcc-%{version}
--%endif
--
--%unfixincludes  %{buildroot}%{_gccdir}
--
--
- ##############################################################################
- %clean
- rm -rf %{buildroot}
-@@ -388,8 +343,6 @@
- %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/include/
++rm -f  %{buildroot}%{_stm_cross_dir}/lib{32,64}/libiberty.a || true
+ rm -r %{buildroot}%{_stm_cross_libexec_dir}/gcc/%{_stm_target_config}/%{version}/install-tools
++rm %{buildroot}%{_stm_cross_info_dir}/cpp.info* || true
++rm %{buildroot}%{_stm_cross_info_dir}/gcc.info* || true
  
- %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/libgcc.a
--%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/libgcc_eh.a
--%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/libgcc_s.so
- %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/libgcov.a
- %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/crt*
+ rm -rf %{buildroot}%{_stm_cross_targetconf_dir}/share/gcc-%{version}/python
  
-@@ -403,16 +356,10 @@
- %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu/libgcc-4-200.a
- %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu/libgcc-4-300.a
- %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu/libgcc-Os-4-200.a
--%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu/libgcc_eh.a
--%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu/libgcc_s.so
- %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu/libgcov.a
- %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu/crt*
- %endif
+@@ -450,10 +448,6 @@
+ %{_stm_cross_targetconf_dir}/bin/cpp
+ %{_stm_cross_sharedstate_dir}/locale/*/LC_MESSAGES/cpplib.mo
  
--%if "%{_stm_target_cpu}" != "arm"
--%{_stm_cross_dir}/info/libquadmath.info.gz
--%endif
--
- %{_stm_cross_libexec_dir}/gcc/%{_stm_target_config}/%{version}/liblto_plugin.la
- %{_stm_cross_libexec_dir}/gcc/%{_stm_target_config}/%{version}/liblto_plugin.so*
- %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/plugin/include/
-@@ -442,27 +389,6 @@
- 
- %doc COPYING COPYING.LIB ABOUT-NLS README
- 
--%files -n %{_cpp_pkgname}
--%defattr(-,root,root)
--%{_stm_cross_bin_dir}/%{_stm_target_toolprefix}cpp
--%{_stm_cross_man_dir}/man1/%{_stm_target_toolprefix}cpp.1.gz
--%{_stm_cross_targetconf_dir}/lib/cpp
--%{_stm_cross_targetconf_dir}/bin/cpp
--%{_stm_cross_sharedstate_dir}/locale/*/LC_MESSAGES/cpplib.mo
--
 -%files -n %{_cpp_pkgname}-doc
 -%defattr(-,root,root)
 -%{_stm_cross_info_dir}/cpp.info.gz
 -
--%files -n %{_gpp_pkgname}
--%defattr(-,root,root)
--%{_stm_cross_bin_dir}/%{_stm_target_toolprefix}g++
--%{_stm_cross_bin_dir}/%{_stm_target_toolprefix}c++
--%{_stm_cross_targetconf_dir}/bin/c++
--%{_stm_cross_targetconf_dir}/bin/g++
--%{_stm_cross_man_dir}/man1/%{_stm_target_toolprefix}g++.1.gz
--%{_stm_cross_libexec_dir}/gcc/%{_stm_target_config}/%{version}/cc1plus
--
- %files -n %{_protoize_pkgname}
+ %files -n %{_gpp_pkgname}
  %defattr(-,root,root)
+ %{_stm_cross_bin_dir}/%{_stm_target_toolprefix}g++
+@@ -468,7 +462,6 @@
  
-@@ -475,16 +401,6 @@
- %{_stm_cross_doc_dir}/*
+ %files -n %{_gcc_pkgname}-doc
+ %defattr(-,root,root)
+-%{_stm_cross_info_dir}/gcc.info.gz
+ %{_stm_cross_man_dir}/man7/*
+ 
+ %if %target_cpu sh
+@@ -485,22 +478,6 @@
+ %{_stm_cross_target_dir}/lib/m4-nofpu/libgcc_s-%{version}.so.1
  %endif
  
--%files -n %{_libgcc_pkgname}
--%defattr(-,root,root)
--%{_stm_cross_target_dir}/lib/libgcc_s-%{version}.so.*
--%{_stm_cross_target_dir}/lib/libgcc_s.so.*
--%if %target_cpu sh
--%dir %{_stm_cross_target_dir}/lib/m4-nofpu
--%{_stm_cross_target_dir}/lib/m4-nofpu/libgcc_s.so.1
--%{_stm_cross_target_dir}/lib/m4-nofpu/libgcc_s-%{version}.so.1
--%endif
+-%post -n %{_cpp_pkgname}-doc
+-install-info --quiet --dir-file=%{_stm_cross_info_dir}/dir \
+-	%{_stm_cross_info_dir}/cpp.info
 -
- %post -n %{_cpp_pkgname}-doc
- install-info --quiet --dir-file=%{_stm_cross_info_dir}/dir \
- 	%{_stm_cross_info_dir}/cpp.info
+-%preun -n %{_cpp_pkgname}-doc
+-install-info --quiet --dir-file=%{_stm_cross_info_dir}/dir --remove \
+-	%{_stm_cross_info_dir}/cpp.info
+-
+-%post -n %{_gcc_pkgname}-doc
+-install-info --quiet --dir-file=%{_stm_cross_info_dir}/dir \
+-	%{_stm_cross_info_dir}/gcc.info
+-
+-%preun -n %{_gcc_pkgname}-doc
+-install-info --quiet --dir-file=%{_stm_cross_info_dir}/dir --remove \
+-	%{_stm_cross_info_dir}/gcc.info
+-
+ %changelog
+ * Thu Oct 02 2013 Laurent Alfonsi <laurent.alfonsi@st.com> 124
+ - [Add patch: gcc-4.7.3-bugzilla-36994.patch]
