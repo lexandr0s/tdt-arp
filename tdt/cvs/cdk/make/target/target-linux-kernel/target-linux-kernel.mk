@@ -65,19 +65,19 @@ endif #CONFIG_SPARK7162
 
 ${P}_config = linux-sh4-$(KERNEL_UPSTREAM)-$(KERNEL_LABEL)_$(TARGET).config$(DEBUG_STR)
 
-DEPENDS_${P} += $(addprefix Patches/,$(${P}_patches) $(${P}_config))
+DEPENDS_${P} += $(addprefix ${SDIR}/,$(${P}_patches) $(${P}_config))
 
 MAKE_FLAGS_${P} = ARCH=sh CROSS_COMPILE=$(target)-
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(PREPARE_${P})
 	cp -ar $(crossprefix)/sources/kernel $(DIR_${P})
-	cd $(DIR_${P}) && cat $(addprefix $(buildprefix)/Patches/,$(${P}_patches)) | patch -p1
+	cd $(DIR_${P}) && cat $(addprefix ${SDIR}/,$(${P}_patches)) | patch -p1
 	cd $(DIR_${P}) && $(MAKE) ARCH=sh CROSS_COMPILE=$(target)- mrproper
 # FIXME:
-	ln -sf $(buildprefix)/integrated_firmware $(DIR_${P})/../integrated_firmware
+	ln -sf ${SDIR}/integrated_firmware $(DIR_${P})/../integrated_firmware
 
-	cp Patches/$(${P}_config) $(DIR_${P})/.config
+	cp ${SDIR}/$(${P}_config) $(DIR_${P})/.config
 	touch $@
 
 $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
