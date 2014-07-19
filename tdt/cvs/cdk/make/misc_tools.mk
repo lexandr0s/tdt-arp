@@ -2,7 +2,6 @@
 
 misc-tools-clean: \
 	devinit-clean \
-	evremote2-clean \
 	fp_control-clean \
 	gitVCInfo-clean \
 	hotplug-clean \
@@ -65,65 +64,6 @@ $(DEPDIR)/devinit: $(DEPDIR)/devinit.do_compile
 	$(get_git_version)
 	cd $(DIR_devinit) && \
 		$(INSTALL_devinit)
-	CPPFLAGS="\
-	$(if $(SPARK), -DPLATFORM_SPARK) \
-	$(if $(SPARK7162), -DPLATFORM_SPARK7162) \
-	$(if $(HL101), -DPLATFORM_HL101) \
-	$(if $(PLAYER179), -DPLAYER179) \
-	$(if $(PLAYER191), -DPLAYER191)"
-	$(tocdk_build)
-	$(toflash_build)
-	touch $@
-
-#
-# EVREMOTE2
-#
-BEGIN[[
-evremote2
-  git
-  {PN}-{PV}
-  plink:$(appsdir)/misc/tools/{PN}:{PN}-{PV}
-  make:install:DESTDIR=PKDIR
-;
-]]END
-
-DESCRIPTION_evremote2 = "evremote2"
-SRC_URI_evremote2 = "https://code.google.com/p/tdt-amiko/"
-PKGR_evremote2 = r1
-FILES_evremote2 = \
-/bin/evremote2 \
-/bin/evtest
-
-define DISTCLEANUP_evremote2
-	cd $(DIR_evremote2) && \
-	$(MAKE) distclean
-	rm -f $(DEPDIR)/evremote2
-	rm -f $(DIR_evremote2)
-endef
-define DEPSCLEANUP_evremote2
-	cd $(DIR_evremote2) && \
-	$(MAKE) distclean
-	rm -f $(DEPDIR)/evremote2.do_compile
-endef
-
-$(DEPDIR)/evremote2.do_prepare: bootstrap $(DEPENDS_evremote2)
-	$(PREPARE_evremote2)
-	touch $@
-
-$(DEPDIR)/evremote2.do_compile: $(DEPDIR)/evremote2.do_prepare
-	export PATH=$(hostprefix)/bin:$(PATH) && \
-	cd $(DIR_evremote2) && \
-	libtoolize -f -c && \
-	$(CONFIGURE) --prefix= \
-	$(if $(MULTICOM406), --enable-multicom406) $(if $(MULTICOM324), --enable-multicom324) \
-	$(MAKE)
-	touch $@
-
-$(DEPDIR)/evremote2: $(DEPDIR)/evremote2.do_compile
-	$(start_build)
-	$(get_git_version)
-	cd $(DIR_evremote2) && \
-		$(INSTALL_evremote2)
 	CPPFLAGS="\
 	$(if $(SPARK), -DPLATFORM_SPARK) \
 	$(if $(SPARK7162), -DPLATFORM_SPARK7162) \
