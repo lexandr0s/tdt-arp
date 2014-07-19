@@ -192,13 +192,17 @@ lirc
   0.9.0
   {PN}-{PV}
   extract:http://prdownloads.sourceforge.net/{PN}/{PN}-{PV}.tar.gz
-  patch:file://{PN}-{PV}-try_first_last_remote.diff
+  patch:file://{PN}-neutrino-uinput-hack.diff
+  patch:file://{PN}-try_first_last_remote.diff
+  patch:file://{PN}-uinput-repeat-fix.diff
+  patch:file://{PN}-repeat_and_delay_hack.patch
+  patch:file://{PN}-rename_input_device.patch
   make:install:DESTDIR=PKDIR
 ;
 ]]END
 
 DESCRIPTION_lirc ="lirc"
-PKGR_lirc = r3
+PKGR_lirc = r4
 FILES_lirc = \
 /usr/bin/lircd \
 /usr/lib/*.so* \
@@ -212,21 +216,15 @@ $(DEPDIR)/lirc.do_compile: $(DEPDIR)/lirc.do_prepare
 	cd $(DIR_lirc) && \
 		$(BUILDENV) \
 		ac_cv_path_LIBUSB_CONFIG= \
-		CFLAGS="$(TARGET_CFLAGS) -Os -D__KERNEL_STRICT_NAMES" \
+		CFLAGS="$(TARGET_CFLAGS) -Os -D__KERNEL_STRICT_NAMES -DUINPUT_NEUTRINO_HACK" \
 		./configure \
 			--build=$(build) \
 			--host=$(target) \
 			--prefix=/usr \
 			--sbindir=\$${exec_prefix}/bin \
-			--mandir=\$${prefix}/share/man \
 			--with-kerneldir=$(buildprefix)/$(KERNEL_DIR) \
 			--without-x \
-			--with-devdir=/dev \
-			--with-moduledir=/lib/modules \
-			--with-major=61 \
 			--with-driver=userspace \
-			--enable-debug \
-			--with-syslog=LOG_DAEMON \
 			--enable-sandboxed && \
 		$(MAKE) all
 	touch $@
