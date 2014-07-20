@@ -2,7 +2,7 @@ Index: lirc-0.9.0/daemons/lircd.c
 ===================================================================
 --- lirc-0.9.0.orig/daemons/lircd.c	2014-03-26 20:05:26.507128449 +0100
 +++ lirc-0.9.0/daemons/lircd.c	2014-03-26 20:07:24.199128294 +0100
-@@ -101,6 +101,8 @@
+@@ -103,6 +103,8 @@
  extern struct hardware hw;
  
  char *progname = "lircd";
@@ -11,7 +11,7 @@ Index: lirc-0.9.0/daemons/lircd.c
  const char *configfile = NULL;
  #ifndef USE_SYSLOG
  char *logfile = LOGFILE;
-@@ -996,7 +998,7 @@
+@@ -991,7 +993,7 @@
  	nolinger(sockfd);
  
  	if (useuinput) {

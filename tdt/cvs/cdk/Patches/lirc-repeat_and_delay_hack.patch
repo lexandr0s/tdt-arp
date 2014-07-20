@@ -1,8 +1,15 @@
-Index: lirc-0.9.0/daemons/lircd.c
-===================================================================
---- lirc-0.9.0.orig/daemons/lircd.c
-+++ lirc-0.9.0/daemons/lircd.c
-@@ -146,6 +146,7 @@ char *protocol_string[] = {
+--- lirc-0.9.0.orig/daemons/lircd.c.org	2014-07-20 22:57:20.610748484 +0300
++++ lirc-0.9.0.orig/daemons/lircd.c	2014-07-20 23:16:53.644565246 +0300
+@@ -97,6 +97,8 @@
+ static int repeat_fd = -1;
+ static char *repeat_message = NULL;
+ static __u32 repeat_max = REPEAT_MAX_DEFAULT;
++static int repeat_delay = 700;
++static int repeat_period = 100;
+ 
+ extern struct hardware hw;
+ 
+@@ -146,6 +148,7 @@
  
  static void log_enable(int enabled);
  static int log_enabled = 1;
@@ -10,7 +17,7 @@ Index: lirc-0.9.0/daemons/lircd.c
  
  #ifndef USE_SYSLOG
  #define HOSTNAME_LEN 128
-@@ -408,6 +409,46 @@ void dosighup(int sig)
+@@ -408,6 +411,39 @@
  	}
  }
  
@@ -26,38 +33,31 @@ Index: lirc-0.9.0/daemons/lircd.c
 +{
 +
 +    int res = 0;
-+    /*
-+     * Ugly hack maybe we should make this adjustable
-+     * via commandline or move to application...
-+     */
-+    const int delay = 700; /* 700 ms initial delay */
-+    const int period = 100; /* 100 ms per period */
 +    struct input_event ie;
 +    ie.type = EV_REP;
 +    ie.code = REP_DELAY;
-+    ie.value = delay;
++    ie.value = repeat_delay;
 +    if (-1 == write(source, &ie, sizeof(ie)))
 +    {   res = 1;
-+        logprintf(LOG_ERR, "REP_DELAY: %s",strerror(errno));
++        logprintf(LOG_ERR, "REP_DELAY: %s", strerror(errno));
 +    }
 +    ie.code = REP_PERIOD;
-+    ie.value = period;
++    ie.value = repeat_period;
 +    if (-1 == write(source, &ie, sizeof(ie)))
 +    {
 +        res = 2;
-+        logprintf(LOG_ERR, "REP_PERIOD: %s",strerror(errno));
++        logprintf(LOG_ERR, "REP_PERIOD: %s", strerror(errno));
 +    }
 +    if( 0 == res )
 +    {
-+        logprintf(LOG_INFO, "Repeat rate set to delay: %d period: %d",delay,period);
++        logprintf(LOG_INFO, "Repeat rate set to delay: %d period: %d", repeat_delay, repeat_period);
 +    }
 +}
-+
 +
  int setup_uinputfd(const char *name)
  {
  #if defined(__linux__)
-@@ -956,6 +997,7 @@ void start_server(mode_t permission, int
+@@ -956,6 +992,7 @@
  
  	if (useuinput) {
  		uinputfd = setup_uinputfd(progname);
@@ -65,3 +65,38 @@ Index: lirc-0.9.0/daemons/lircd.c
  	}
  	if (listen_tcpip) {
  		int enable = 1;
+@@ -2104,9 +2141,11 @@
+ 			{"uinput", no_argument, NULL, 'u'},
+ #                       endif
+ 			{"repeat-max", required_argument, NULL, 'R'},
++			{"repeat-delay", required_argument, NULL, 'Y'},
++			{"repeat-period", required_argument, NULL, 'O'},
+ 			{0, 0, 0, 0}
+ 		};
+-		c = getopt_long(argc, argv, "hvnp:H:d:o:P:l::c:r::aR:"
++		c = getopt_long(argc, argv, "hvnp:H:d:o:P:l::c:r::aR:Y:O:"
+ #                               if defined(__linux__)
+ 				"u"
+ #                               endif
+@@ -2144,6 +2183,8 @@
+ 			printf("\t -u --uinput\t\tgenerate Linux input events\n");
+ #                       endif
+ 			printf("\t -R --repeat-max=limit\t\tallow at most this many repeats\n");
++			printf("\t -Y --repeat-delay=value\t\trepeat rate initial delay in ms\n");
++			printf("\t -O --repeat-period=value\t\trepeat period in ms\n");
+ 			return (EXIT_SUCCESS);
+ 		case 'v':
+ 			printf("%s %s\n", progname, VERSION);
+@@ -2236,6 +2277,12 @@
+ 		case 'R':
+ 			repeat_max = atoi(optarg);
+ 			break;
++		case 'Y':
++			repeat_delay = atoi(optarg);
++			break;
++		case 'O':
++			repeat_period = atoi(optarg);
++			break;
+ 		default:
+ 			printf("Usage: %s [options] [config-file]\n", progname);
+ 			return (EXIT_FAILURE);
