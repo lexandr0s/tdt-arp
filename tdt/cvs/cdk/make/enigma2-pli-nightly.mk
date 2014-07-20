@@ -54,7 +54,6 @@ PKGR_enigma2_pli = r3
 SRC_URI_enigma2_pli := git://openpli.git.sourceforge.net/gitroot/openpli/enigma2
 FILES_enigma2_pli := /usr/lib/ /etc/enigma2 /usr/share /usr/bin
 RDEPENDS_enigma2_pli = fp_control \
-evremote2 \
 devinit \
 ustslave \
 stfbcontrol \
