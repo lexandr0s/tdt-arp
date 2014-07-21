@@ -4,7 +4,7 @@
  static int repeat_fd = -1;
  static char *repeat_message = NULL;
  static __u32 repeat_max = REPEAT_MAX_DEFAULT;
-+static int repeat_delay = 700;
++static int repeat_delay = 500;
 +static int repeat_period = 100;
  
  extern struct hardware hw;
