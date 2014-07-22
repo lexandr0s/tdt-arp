@@ -1822,3 +1822,47 @@ $(DEPDIR)/tor: $(DEPDIR)/tor.do_compile
 		$(INSTALL_tor)
 	$(extra_build)
 	touch $@
+
+#
+# wget
+#
+BEGIN[[
+wget
+  1.15
+  {PN}-{PV}
+  http://ftp.gnu.org/gnu/{PN}/{PN}-{PV}.tar.gz
+  patch:file://{PN}.diff
+  make:install:DESTDIR=PKDIR
+;
+]]END
+
+DESCRIPTION_wget := GNU Wget is a free network utility to retrieve files from the World Wide Web using HTTP and FTP, the two most widely used Internet protocols.
+PKGR_wget = r0
+
+$(DEPDIR)/wget.do_prepare: $(DEPENDS_wget) $(RDEPENDS_wget)
+	$(PREPARE_wget)
+	touch $@
+
+$(DEPDIR)/wget.do_compile: $(DEPDIR)/wget.do_prepare
+	cd $(DIR_wget) && \
+		$(BUILDENV) \
+		./configure \
+			--prefix= \
+			--datarootdir=/usr/share \
+			--with-ssl=openssl \
+			--disable-nls \
+			--disable-debug \
+			--build=$(build) \
+			--host=$(target) \
+			--target=$(target)  && \
+		$(MAKE) 
+	touch $@
+
+$(DEPDIR)/wget: $(DEPDIR)/wget.do_compile
+	$(start_build)
+	cd $(DIR_wget)  && \
+		$(INSTALL_wget)
+	$(tocdk_build)
+	$(toflash_build)
+	touch $@
+

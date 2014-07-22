@@ -23,6 +23,7 @@ bare-os: \
 		$(MAKEDEV) \
 		$(BASE_FILES) \
 		busybox \
+		wget \
 		libz \
 		bzip2 \
 		$(INITSCRIPTS) \
