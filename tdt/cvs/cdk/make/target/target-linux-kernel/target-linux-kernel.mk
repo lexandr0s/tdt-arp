@@ -4,7 +4,7 @@
 function[[ target_linux_kernel_in
 
 PV_${P} = $(KERNEL_VERSION)
-PR_${P} = 5
+PR_${P} = 6
 
 DIR_${P} = $(WORK_target_linux_kernel)/linux-kernel-${PV}
 PACKAGE_ARCH_${P} = $(box_arch)
