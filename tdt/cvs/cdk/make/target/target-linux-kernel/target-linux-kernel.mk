@@ -10,6 +10,8 @@ DIR_${P} = $(WORK_target_linux_kernel)/linux-kernel-${PV}
 PACKAGE_ARCH_${P} = $(box_arch)
 SRC_URI_${P} = stlinux.com
 
+MAKE_FLAGS_${P} = ARCH=sh CROSS_COMPILE=$(target)-
+
 ]]function
 
 package[[ target_linux_kernel
@@ -67,13 +69,11 @@ ${P}_config = linux-sh4-$(KERNEL_UPSTREAM)-$(KERNEL_LABEL)_$(TARGET).config$(DEB
 
 DEPENDS_${P} += $(addprefix ${SDIR}/,$(${P}_patches) $(${P}_config))
 
-MAKE_FLAGS_${P} = ARCH=sh CROSS_COMPILE=$(target)-
-
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(PREPARE_${P})
 	cp -ar $(crossprefix)/sources/kernel $(DIR_${P})
 	cd $(DIR_${P}) && cat $(addprefix ${SDIR}/,$(${P}_patches)) | patch -p1
-	cd $(DIR_${P}) && $(MAKE) ARCH=sh CROSS_COMPILE=$(target)- mrproper
+	cd $(DIR_${P}) && $(MAKE) ${MAKE_FLAGS} mrproper
 # FIXME:
 	ln -sf ${SDIR}/integrated_firmware $(DIR_${P})/../integrated_firmware
 
