@@ -22,11 +22,13 @@ SETUP: Makefile
 
 # '::' means you can append rules to help target
 help::
+	@echo
 	@echo ----------------------------------------------------------------------------
 	@echo run \'make\' to see some info about common targets and this system
 	@echo run \'make help-functions\' to see defined macroses.
 
 help-functions::
+	@echo
 	@echo ----------------------------------------------------------------------------
 	@echo list of documented functions and their parameters ...
 	@echo ... we are too lazy to complete this list
