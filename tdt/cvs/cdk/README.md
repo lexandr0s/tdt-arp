@@ -1,7 +1,23 @@
-OpenAR-pachost
-==============
+tdt-arp
+=======================
 
 Image build-system for settopboxes sh4 based
+remake of duckbox tdt
+
+Start
+=======================
+Preparation
+
+ 0. To avoid data loss I _recommend_ you to run this build system under individual user. So these build scripts have no chance to mess in your main home directory !
+ 1. Your host system requires some packages. Run `sudo ./setuptdt.sh`. If don't like to run unknown scripts under root install them manually
+
+That's it, now start toolchain
+ 2. Generate config: run `make -f Makefile.setup xconfig` or `make -f Makefile.setup menuconfig`
+ 3. Generate core Makefile run `make -f Makefile.setup`
+ 4. Add make compleshion by <TAB>: `source make-compleshion.sh`
+ 5. To build image exec buildsystem with `make target-image`
+ 6. A lot of make targets are available
+
 
 Smart-rules
 =======================
@@ -11,7 +27,7 @@ Smart-rules is Makefile preprocessor written in perl, it helps to write simpler 
 
 You must understand that **firstly** it expands all **smart-rules** macroses, and **secondly** make evaluates **Makefile variables**.
 
-rule
+rules section
 -----------------------
 ##### example
 ```
@@ -37,7 +53,7 @@ endif
 ##### purpose
 This macro defines variables for future use in Makefile. They are `DEPENDS` , `PREPARE` , `INSTALL` and `SRC_URI`. Additional special targets and variables also printed to Makefile.
 
-rules format
+rule format
 ----------------------
 variants are
 ```
