@@ -14,7 +14,7 @@ Preparation
 That's it, now start toolchain
  2. Generate config: run `make -f Makefile.setup xconfig` or `make -f Makefile.setup menuconfig`
  3. Generate core Makefile run `make -f Makefile.setup`
- 4. Add make compleshion by <TAB>: `source make-compleshion.sh`
+ 4. Add make compleshion by TAB: `source make-compleshion.sh`
  5. To build image exec buildsystem with `make target-image`
  6. A lot of make targets are available
 
