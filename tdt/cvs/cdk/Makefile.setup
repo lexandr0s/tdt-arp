@@ -71,7 +71,8 @@ kconfig_PN := kconfig-frontends
 kconfig_PV := 3.12.0.0
 
 $(kconfig_PN)-$(kconfig_PV).tar.bz2:
-	wget http://ymorin.is-a-geek.org/download/$(kconfig_PN)/$@
+	wget http://ymorin.is-a-geek.org/download/$(kconfig_PN)/$@ || \
+	wget http://ptxdist.sat-universum.de/$@
 
 $(CONFIG)/config.status: $(kconfig_PN)-$(kconfig_PV).tar.bz2
 	tar -xjf $^
