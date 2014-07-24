@@ -165,17 +165,20 @@ $(DEPDIR)/driver-ptinp:
 ifdef ENABLE_HL101
 	$(if $(P0211),cp -dp $(archivedir)/ptinp/pti_211.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti/pti.ko) \
 	$(if $(P0213),cp -dp $(archivedir)/ptinp/pti_213.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti/pti.ko) \
-	$(if $(P0214),cp -dp $(archivedir)/ptinp/pti_214.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti/pti.ko)
+	$(if $(P0214),cp -dp $(archivedir)/ptinp/pti_214.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti/pti.ko) \
+	$(if $(P0215),cp -dp $(archivedir)/ptinp/pti_215.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti/pti.ko)
 endif	
 ifdef ENABLE_SPARK
 	$(if $(P0211),cp -dp $(archivedir)/ptinp/pti_211.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti/pti.ko) \
 	$(if $(P0213),cp -dp $(archivedir)/ptinp/pti_213.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti/pti.ko) \
-	$(if $(P0214),cp -dp $(archivedir)/ptinp/pti_214.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti/pti.ko)
+	$(if $(P0214),cp -dp $(archivedir)/ptinp/pti_214.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti/pti.ko) \
+	$(if $(P0215),cp -dp $(archivedir)/ptinp/pti_215.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti/pti.ko)
 endif
 ifdef ENABLE_SPARK7162
 	$(if $(P0211),cp -dp $(archivedir)/ptinp/pti_211s2.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti/pti.ko) \
 	$(if $(P0213),cp -dp $(archivedir)/ptinp/pti_213s2.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti/pti.ko) \
-	$(if $(P0214),cp -dp $(archivedir)/ptinp/pti_214s2.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti/pti.ko)
+	$(if $(P0214),cp -dp $(archivedir)/ptinp/pti_214s2.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti/pti.ko) \
+	$(if $(P0215),cp -dp $(archivedir)/ptinp/pti_215s2.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/pti/pti.ko)
 endif
 	$(toflash_build)
 	touch $@
@@ -189,14 +192,16 @@ $(DEPDIR)/driver-encrypt:
 	$(start_build)
 	mkdir -p $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/encrypt
 ifdef ENABLE_SPARK
-	$(if $(P0210), cp -dp $(buildprefix)/root/release/encrypt_spark_stm24_0210.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/encrypt/encrypt.ko) \
-	$(if $(P0211), cp -dp $(buildprefix)/root/release/encrypt_spark_stm24_0211.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/encrypt/encrypt.ko)
+	$(if $(P0211), cp -dp $(buildprefix)/root/release/encrypt_spark_stm24_0211.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/encrypt/encrypt.ko) \
+	$(if $(P0213), cp -dp $(buildprefix)/root/release/encrypt_spark_stm24_0213.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/encrypt/encrypt.ko) \
+	$(if $(P0214), cp -dp $(buildprefix)/root/release/encrypt_spark_stm24_0214.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/encrypt/encrypt.ko) \
+	$(if $(P0215), cp -dp $(buildprefix)/root/release/encrypt_spark_stm24_0215.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/encrypt/encrypt.ko)
 endif
 ifdef ENABLE_SPARK7162
-	$(if $(P0207), cp -dp $(buildprefix)/root/release/encrypt_spark7162_stm24_0207.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/encrypt/encrypt.ko) \
-	$(if $(P0209), cp -dp $(buildprefix)/root/release/encrypt_spark7162_stm24_0209.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/encrypt/encrypt.ko) \
-	$(if $(P0210), cp -dp $(buildprefix)/root/release/encrypt_spark7162_stm24_0210.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/encrypt/encrypt.ko) \
-	$(if $(P0211), cp -dp $(buildprefix)/root/release/encrypt_spark7162_stm24_0211.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/encrypt/encrypt.ko)
+	$(if $(P0211), cp -dp $(buildprefix)/root/release/encrypt_spark7162_stm24_0211.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/encrypt/encrypt.ko) \
+	$(if $(P0213), cp -dp $(buildprefix)/root/release/encrypt_spark7162_stm24_0213.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/encrypt/encrypt.ko) \
+	$(if $(P0214), cp -dp $(buildprefix)/root/release/encrypt_spark7162_stm24_0214.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/encrypt/encrypt.ko) \
+	$(if $(P0215), cp -dp $(buildprefix)/root/release/encrypt_spark7162_stm24_0215.ko $(PKDIR)/lib/modules/$(KERNELVERSION)/extra/encrypt/encrypt.ko)
 endif
 	$(toflash_build)
 	touch $@

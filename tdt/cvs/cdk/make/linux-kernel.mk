@@ -27,9 +27,9 @@ COMMONPATCHES_24 = \
 		linux-ftdi_sio.c_stm24$(PATCH_STR).patch \
 		linux-sh4-lzma-fix_stm24$(PATCH_STR).patch \
 		$(if $(P0211),linux-tune_stm24.patch) \
-		$(if $(P0213)$(P0214),linux-tune_stm24_0213.patch) \
-		$(if $(P0211)$(P0213)$(P0214),linux-sh4-mmap_stm24.patch) \
-		$(if $(P0211)$(P0213)$(P0214),linux-sh4-directfb_stm24$(PATCH_STR).patch) \
+		$(if $(P0213)$(P0214)$(P0215),linux-tune_stm24$(PATCH_STR).patch) \
+		$(if $(P0211)$(P0213)$(P0214)$(P0215),linux-sh4-mmap_stm24.patch) \
+		$(if $(P0211)$(P0213)$(P0214)$(P0215),linux-sh4-directfb_stm24$(PATCH_STR).patch) \
 		patch_swap_notify_core_support.diff
 
 HL101_PATCHES_24 = $(COMMONPATCHES_24) \
@@ -37,22 +37,22 @@ HL101_PATCHES_24 = $(COMMONPATCHES_24) \
 		linux-usbwait123_stm24.patch \
 		linux-sh4-stmmac_stm24$(PATCH_STR).patch \
 		linux-sh4-i2c-st40-pio_stm24$(PATCH_STR).patch \
-		$(if $(P0211)$(P0213)$(P0214),linux-sh4-hl101_i2c_st40_stm24$(PATCH_STR).patch)
+		$(if $(P0211)$(P0213)$(P0214)$(P0215),linux-sh4-hl101_i2c_st40_stm24$(PATCH_STR).patch)
 
 SPARK_PATCHES_24 = $(COMMONPATCHES_24) \
 		linux-sh4-stmmac_stm24$(PATCH_STR).patch \
 		linux-sh4-lmb_stm24$(PATCH_STR).patch \
 		linux-sh4-spark_setup_stm24$(PATCH_STR).patch \
 		bpa2-ignore-bigphysarea-kernel-parameter.patch \
-		$(if $(P0211)$(P0213)$(P0214),linux-sh4-lirc_stm_stm24$(PATCH_STR).patch) \
-		$(if $(P0211)$(P0213)$(P0214),linux-sh4-fix-crash-usb-reboot_stm24_0211.diff)
+		$(if $(P0211)$(P0213)$(P0214)$(P0215),linux-sh4-lirc_stm_stm24$(PATCH_STR).patch) \
+		$(if $(P0211)$(P0213)$(P0214)$(P0215),linux-sh4-fix-crash-usb-reboot_stm24_0211.diff)
 
 SPARK7162_PATCHES_24 = $(COMMONPATCHES_24) \
 		linux-sh4-stmmac_stm24$(PATCH_STR).patch \
 		bpa2-ignore-bigphysarea-kernel-parameter.patch \
 		linux-sh4-lmb_stm24$(PATCH_STR).patch \
 		linux-sh4-spark7162_setup_stm24$(PATCH_STR).patch \
-		$(if $(P0211)$(P0213)$(P0214),linux-sh4-fix-crash-usb-reboot_stm24_0211.diff)
+		$(if $(P0211)$(P0213)$(P0214)$(P0215),linux-sh4-fix-crash-usb-reboot_stm24_0211.diff)
 
 KERNELPATCHES_24 =  \
 		$(if $(HL101),$(HL101_PATCHES_24)) \
@@ -83,6 +83,10 @@ KERNELHEADERS_VERSION := 2.6.32.46-48
 else
 ifdef ENABLE_P0214
 KERNELHEADERS_VERSION := 2.6.32.46-48
+else
+ifdef ENABLE_P0215
+KERNELHEADERS_VERSION := 2.6.32.46-48
+endif
 endif
 endif
 endif
@@ -132,6 +136,10 @@ HOST_KERNEL_VERSION = 2.6.32.61$(KERNELSTMLABEL)-$(KERNELLABEL)
 else
 ifdef ENABLE_P0214
 HOST_KERNEL_VERSION = 2.6.32.61$(KERNELSTMLABEL)-$(KERNELLABEL)
+else
+ifdef ENABLE_P0215
+HOST_KERNEL_VERSION = 2.6.32.61$(KERNELSTMLABEL)-$(KERNELLABEL)
+endif
 endif
 endif
 endif
