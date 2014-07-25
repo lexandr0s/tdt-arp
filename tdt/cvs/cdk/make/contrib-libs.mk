@@ -2845,6 +2845,76 @@ $(DEPDIR)/serviceidentity: $(DEPDIR)/serviceidentity.do_compile
 	touch $@
 
 #
+# requests
+#
+BEGIN[[
+requests
+  2.3.0
+  {PN}-{PV}
+  extract:https://pypi.python.org/packages/source/r/{PN}/{PN}-{PV}.tar.gz
+;
+]]END
+
+DESCRIPTION_requests = "Python HTTP for Humans."
+FILES_requests = \
+$(PYTHON_DIR)/site-packages/requests/*
+
+$(DEPDIR)/requests.do_prepare: bootstrap $(DEPENDS_requests)
+	$(PREPARE_requests)
+	touch $@
+
+$(DEPDIR)/requests.do_compile: $(DEPDIR)/requests.do_prepare
+	cd $(DIR_requests) && \
+		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python ./setup.py build
+	touch $@
+
+$(DEPDIR)/requests: $(DEPDIR)/requests.do_compile
+	$(start_build)
+	cd $(DIR_requests) && \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python ./setup.py install --root=$(PKDIR) --prefix=/usr
+	$(tocdk_build)
+	$(toflash_build)
+	touch $@
+
+#
+# livestreamer
+#
+BEGIN[[
+livestreamer
+  1.9.0
+  {PN}-{PV}
+  extract:https://pypi.python.org/packages/source/l/{PN}/{PN}-{PV}.tar.gz
+;
+]]END
+
+DESCRIPTION_livestreamer = "Command-line utility that extracts streams from various services and pipes them into a video player of choice."
+FILES_livestreamer = \
+$(PYTHON_DIR)/site-packages/livestreamer/*
+
+$(DEPDIR)/livestreamer.do_prepare: bootstrap requests $(DEPENDS_livestreamer)
+	$(PREPARE_livestreamer)
+	touch $@
+
+$(DEPDIR)/livestreamer.do_compile: $(DEPDIR)/livestreamer.do_prepare
+	cd $(DIR_livestreamer) && \
+		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python ./setup.py build
+	touch $@
+
+$(DEPDIR)/livestreamer: $(DEPDIR)/livestreamer.do_compile
+	$(start_build)
+	cd $(DIR_livestreamer) && \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python ./setup.py install --root=$(PKDIR) --prefix=/usr
+	$(tocdk_build)
+	$(toflash_build)
+	touch $@
+
+#
 # pyopenssl
 #
 BEGIN[[
@@ -2917,6 +2987,7 @@ FILES_python = \
 /usr/lib/libpython$(PYTHON_VERSION).* \
 $(PYTHON_DIR)/*.py \
 $(PYTHON_DIR)/encodings \
+$(PYTHON_DIR)/email \
 $(PYTHON_DIR)/hotshot \
 $(PYTHON_DIR)/idlelib \
 $(PYTHON_DIR)/json \
