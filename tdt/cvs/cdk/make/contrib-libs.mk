@@ -2845,6 +2845,44 @@ $(DEPDIR)/serviceidentity: $(DEPDIR)/serviceidentity.do_compile
 	touch $@
 
 #
+# singledispatch
+#
+BEGIN[[
+singledispatch
+  3.4.0.3
+  {PN}-{PV}
+  extract:https://pypi.python.org/packages/source/s/{PN}/{PN}-{PV}.tar.gz
+;
+]]END
+
+DESCRIPTION_singledispatch = "This library brings functools.singledispatch from Python 3.4 to Python 2.6-3.3."
+FILES_singledispatch = \
+$(PYTHON_DIR)/site-packages/singledispatch.py \
+$(PYTHON_DIR)/site-packages/singledispatch.pyo \
+$(PYTHON_DIR)/site-packages/singledispatch_helpers.py \
+$(PYTHON_DIR)/site-packages/singledispatch_helpers.pyo
+
+$(DEPDIR)/singledispatch.do_prepare: bootstrap $(DEPENDS_singledispatch)
+	$(PREPARE_singledispatch)
+	touch $@
+
+$(DEPDIR)/singledispatch.do_compile: $(DEPDIR)/singledispatch.do_prepare
+	cd $(DIR_singledispatch) && \
+		CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python ./setup.py build
+	touch $@
+
+$(DEPDIR)/singledispatch: $(DEPDIR)/singledispatch.do_compile
+	$(start_build)
+	cd $(DIR_singledispatch) && \
+		PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
+		$(crossprefix)/bin/python ./setup.py install --root=$(PKDIR) --prefix=/usr
+	$(tocdk_build)
+	$(toflash_build)
+	touch $@
+
+#
 # requests
 #
 BEGIN[[
@@ -2894,7 +2932,7 @@ DESCRIPTION_livestreamer = "Command-line utility that extracts streams from vari
 FILES_livestreamer = \
 $(PYTHON_DIR)/site-packages/livestreamer/*
 
-$(DEPDIR)/livestreamer.do_prepare: bootstrap requests $(DEPENDS_livestreamer)
+$(DEPDIR)/livestreamer.do_prepare: bootstrap requests singledispatch $(DEPENDS_livestreamer)
 	$(PREPARE_livestreamer)
 	touch $@
 
