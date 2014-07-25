@@ -12,6 +12,10 @@ ifdef ENABLE_P0214
 PATCH_STR=_0214
 endif
 
+ifdef ENABLE_P0215
+PATCH_STR=_0215
+endif
+
 STM24_DVB_PATCH = linux-sh4-linuxdvb_stm24$(PATCH_STR).patch
 
 COMMONPATCHES_24 = \
