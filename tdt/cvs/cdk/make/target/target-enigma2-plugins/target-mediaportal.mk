@@ -3,7 +3,7 @@
 #
 package[[ target_mediaportal
 
-BDEPENDS_${P} = $(target_python) $(target_enigma2)
+BDEPENDS_${P} = $(target_python)
 
 PV_${P} = git
 PR_${P} = 1
@@ -50,7 +50,11 @@ call[[ ipk ]]
 
 NAME_${P} = enigma2-plugin-extensions-mediaportal
 DESCRIPTION_${P} = "Enigma2 MediaPortal"
+ifeq ($(strip $(CONFIG_GSTREAMER)),y)
+RDEPENDS_${P} = python_json python_pyopenssl python_xml python_html python_misc python_twisted_core python_twisted_web python_compression python_robotparser python_mechanize gst_plugins_good_flv gst_plugins_bad_fragmented gst_plugins_bad_rtmp
+else
 RDEPENDS_${P} = python_core python_json python_xml python_html python_misc python_twisted_core python_twisted_web python_compression python_robotparser python_mechanize librtmp1
+endif
 FILES_${P} = /usr/lib/enigma2/python/Plugins/Extensions/MediaPortal
 
 call[[ ipkbox ]]
