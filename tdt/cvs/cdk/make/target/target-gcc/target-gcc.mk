@@ -8,10 +8,14 @@ BREPLACES_${P} = $(target_cross_gcc_lib)
 
 PR_${P} = 1
 
-ifdef CONFIG_GCC48
-${P}_VERSION := 4.8.2-138
-else
-${P}_VERSION := 4.7.3-129
+ifdef CONFIG_GCC483
+${P}_VERSION = 4.8.3-141
+endif
+ifdef CONFIG_GCC482
+${P}_VERSION = 4.8.2-141
+endif
+ifdef CONFIG_GCC473
+${P}_VERSION = 4.7.3-134
 endif
 
 ${P}_SPEC = stm-$(${P}).spec
