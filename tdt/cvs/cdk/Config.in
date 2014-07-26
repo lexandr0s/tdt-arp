@@ -68,17 +68,28 @@ menu "Global Configuration"
 		config PLAYER191
 		bool "Player 191"
 
-		config PLAYER179
-		bool "Player 179 (old not used)"
 	endchoice
 
 
 	config BUILD_TARGET_GCC
 		bool "Build target-gcc ?"
-		default y
 
-		config GCC48
+	  choice
+		prompt "Select GCC"
+		default GCC473
+
+		config GCC473
+		bool "Build gcc 4.7.3"
+		depends on BUILD_TARGET_GCC
+
+		config GCC482
 		bool "Build gcc 4.8.2"
+		depends on BUILD_TARGET_GCC
+		
+		config GCC483
+		bool "Build gcc 4.8.3"
+		depends on BUILD_TARGET_GCC
+	  endchoice
 
 
 	choice
@@ -91,6 +102,10 @@ menu "Global Configuration"
 		config EPLAYER3
 		bool "eplayer3"
 	endchoice
+
+	config GSTREAMER_GIT
+		bool "gstreamer git version"
+		depends on GSTREAMER
 
 	comment	"Equipment:"
 
@@ -109,42 +124,31 @@ menu "Global Configuration"
 endmenu
 
 menu "GUI Configuration"
+  choice
+	prompt "Apps:"
+	default BUILD_ENIGMA2
 
-	choice
-		prompt "Apps:"
-		default BUILD_ENIGMA2
+	config BUILD_ENIGMA2
+			bool
+			prompt "Enigma2"
+	if BUILD_ENIGMA2 || BUILD_HYBRID
+		choice
+		  prompt "Enigma2 source:"
+		  default ENIGMA2_SRC_MASTER
 
-		config BUILD_ENIGMA2
-		tristate "Enigma2"
+		  config ENIGMA2_SRC_MASTER 
+		  bool "non-public branch master"
+		  depends on BUILD_ENIGMA2 || BUILD_HYBRID
 
-		config BUILD_NEUTRINO
-		tristate "Neutrino"
+		  config ENIGMA2_SRC_STAGING
+		  bool "non-public branch staging"
+		  depends on BUILD_ENIGMA2 || BUILD_HYBRID
 
-		config BUILD_XBMC
-		tristate "XBMC"
+		  config ENIGMA2_SRC_LAST
+		  bool "non-public branch last"
+		  depends on BUILD_ENIGMA2 || BUILD_HYBRID
 
-		config BUILD_VDR
-		tristate "VDR"
-
-		config BUILD_HYBRID
-		tristate "Hybrid Enigma2 and Neutrino"
-
-	endchoice
-
-	choice
-		prompt "Enigma2 source:"
-		default ENIGMA2_SRC_MASTER
-
-		config ENIGMA2_SRC_MASTER 
-		bool "non-public branch master"
-
-		config ENIGMA2_SRC_STAGING
-		bool "non-public branch staging"
-
-		config ENIGMA2_SRC_LAST
-		bool "non-public branch last"
-
-	endchoice
+		endchoice
 
 	config ENIGMA2_PLUGINS
 	bool "enigma2-plugins-extra"
@@ -174,16 +178,39 @@ menu "GUI Configuration"
 		config OSCAM
 		bool  "enigma2-plugin-cams-oscam"
 		depends on ENIGMA2_PLUGINS
+	endif
 
-	choice
-		prompt "Neutrino source:"
-		default NEUTRINO_SRC_MASTER
+	config BUILD_NEUTRINO
+		bool
+		prompt "Neutrino"
 
-		config NEUTRINO_SRC_MASTER
-		bool "public branch master"
+		if BUILD_NEUTRINO || BUILD_HYBRID
+		      choice
+			prompt "Neutrino source:"
+			default NEUTRINO_SRC_MASTER
 
-		config NEUTRINO_SRC_MARTII
-		bool "public branch Martii"
+			config NEUTRINO_SRC_MASTER
+			bool "public branch master"
+			depends on BUILD_NEUTRINO || BUILD_HYBRID
 
-	endchoice
+			config NEUTRINO_SRC_MARTII
+			bool "public branch Martii"
+			depends on BUILD_NEUTRINO || BUILD_HYBRID
+
+		      endchoice
+		endif
+
+	config BUILD_XBMC
+		bool
+		prompt "XBMC"
+
+	config BUILD_VDR
+		tristate "VDR"
+
+	config BUILD_HYBRID
+		tristate "Hybrid Enigma2 and Neutrino"
+		select BUILD_ENIGMA2 
+		select BUILD_NEUTRINO
+  endchoice
+
 endmenu

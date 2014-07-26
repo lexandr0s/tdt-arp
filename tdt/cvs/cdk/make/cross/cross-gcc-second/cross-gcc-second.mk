@@ -8,10 +8,14 @@ BREPLACES_${P} = $(cross_gcc_first)
 
 PR_${P} = 1
 
-ifdef CONFIG_GCC48
-${P}_VERSION = 4.8.2-132
-else
-${P}_VERSION = 4.7.3-124
+ifdef CONFIG_GCC483
+${P}_VERSION = 4.8.3-133
+endif
+ifdef CONFIG_GCC482
+${P}_VERSION = 4.8.2-133
+endif
+ifdef CONFIG_GCC473
+${P}_VERSION = 4.7.3-129
 endif
 
 ST_PN_${P} = cross-gcc
