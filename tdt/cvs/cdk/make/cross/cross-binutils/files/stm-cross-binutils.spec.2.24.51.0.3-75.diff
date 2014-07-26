@@ -1,14 +1,6 @@
---- stm-cross-binutils.spec.orig	2013-05-31 19:00:00.611319283 +0200
-+++ stm-cross-binutils.spec	2013-05-31 19:00:00.611319283 +0200
-@@ -23,6 +23,7 @@
- # SH4 patches
- Patch100: binutils-2.23.2-stm-130806.patch
- Patch101: binutils-2.23.2-config_bfd.patch
-+Patch102: stm-cross-binutils.%{version}-%{release}.diff
- 
- # ST200 patches
- Patch200: binutils-2.21.51-st200-7.03-6-0-0-B-111108.patch
-@@ -37,9 +38,6 @@
+--- stm-cross-binutils.spec.orig	2014-07-15 17:37:39.000000000 +0200
++++ stm-cross-binutils.spec	2014-07-26 00:32:34.725885086 +0200
+@@ -40,9 +41,6 @@
  BuildRequires: texinfo
  %endif
  BuildRequires: %{_stm_pkg_prefix}-host-autoconf
@@ -18,15 +10,7 @@
  BuildRequires: %{_stm_pkg_prefix}-host-rpmconfig
  
  Group: Development/Languages
-@@ -90,6 +88,7 @@
- %if %target_cpu sh
- %patch100 -p1
- %patch101 -p1
-+%patch102 -p1
- %endif
- 
- %if %target_cpu st200
-@@ -117,6 +116,7 @@
+@@ -119,6 +118,7 @@
  %cross_configure \
         --enable-nls \
         --disable-multilib \
@@ -34,7 +18,7 @@
         --with-system-zlib \
  %if "%{_stm_target_fpu}" == "yes"
  %if %target_arch armv7 armv7_uclibc
-@@ -143,10 +143,6 @@
+@@ -146,10 +146,6 @@
  
  %make
  

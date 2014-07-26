@@ -7,10 +7,10 @@ BDEPENDS_${P} = cross-filesystem
 
 PR_${P} = 1
 
-${P}_VERSION = 2.23.2-72
+${P}_VERSION = 2.24.51.0.3-75
 ${P}_SPEC = stm-$(${P}).spec
 ${P}_SPEC_PATCH = $(${P}_SPEC).$(${P}_VERSION).diff
-${P}_PATCHES = stm-$(${P}).$(${P}_VERSION).diff
+${P}_PATCHES =
 ${P}_SRCRPM = $(archivedir)/$(STLINUX)-$(${P})-$(${P}_VERSION).src.rpm
 
 call[[ base ]]
