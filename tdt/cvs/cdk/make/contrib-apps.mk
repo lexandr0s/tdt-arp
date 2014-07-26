@@ -1839,7 +1839,7 @@ DESCRIPTION_wget := GNU Wget is a free network utility to retrieve files from th
 PKGR_wget = r0
 RDEPENDS_wget = openssl
 
-$(DEPDIR)/wget.do_prepare: $(DEPENDS_wget) $(RDEPENDS_wget)
+$(DEPDIR)/wget.do_prepare: $(DEPENDS_wget) openssl-dev $(RDEPENDS_wget)
 	$(PREPARE_wget)
 	touch $@
 
