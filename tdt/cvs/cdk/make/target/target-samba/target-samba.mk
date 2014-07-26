@@ -126,6 +126,12 @@ RDEPENDS_samba = libc6
 FILES_samba_lib = \
 /usr/lib/*.so \
 /usr/lib/*.so.*
+define postinst_samba_lib
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
 
 call[[ ipkbox ]]
 
