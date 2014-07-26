@@ -8,8 +8,12 @@ package[[ target_kernel_headers
 BDEPENDS_${P} = $(target_filesystem)
 
 PR_${P} = 2
-
+ifeq ($(CONFIG_KERNEL_0211),y)
 ${P}_VERSION = 2.6.32.46-47
+endif
+ifeq ($(CONFIG_KERNEL_0215),y)
+${P}_VERSION = 2.6.32.46-48
+endif
 ${P}_SPEC = stm-target-${PN}-kbuild.spec
 ${P}_SPEC_PATCH =
 ${P}_PATCHES =
