@@ -1791,7 +1791,6 @@ tor
   https://www.torproject.org/dist/{PN}-{PV}.tar.gz
 #  patch-0:file://tor.patch
   make:install:DESTDIR=PKDIR
-
 ;
 ]]END
 
@@ -1838,6 +1837,7 @@ wget
 
 DESCRIPTION_wget := GNU Wget is a free network utility to retrieve files from the World Wide Web using HTTP and FTP, the two most widely used Internet protocols.
 PKGR_wget = r0
+RDEPENDS_wget = openssl
 
 $(DEPDIR)/wget.do_prepare: $(DEPENDS_wget) $(RDEPENDS_wget)
 	$(PREPARE_wget)
