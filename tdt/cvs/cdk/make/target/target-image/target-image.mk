@@ -16,6 +16,6 @@ ifeq ($(CONFIG_SPARK)$(CONFIG_SPARK7162),y)
 	cd $(prefix)/../flash/spark && \
 		echo -e "1\n1" | ./spark.sh
 endif
-	touch $@
+
 
 ]]package
