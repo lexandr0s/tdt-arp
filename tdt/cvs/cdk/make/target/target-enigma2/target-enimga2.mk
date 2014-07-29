@@ -62,6 +62,10 @@ endif
 ifdef CONFIG_ENIGMA2_SRC_LAST
   git://github.com:schpuntik/enigma2-pli-arp.git;b=last;protocol=ssh
 endif
+ifdef CONFIG_ENIGMA2_SRC_MAX
+  git://git.code.sf.net/p/openpli/enigma2.git;b=master
+  patch:file://enigma2-pli-nightly.0.diff
+endif
 
   install:-d:$(PKDIR)/usr/share/enigma2/
   install_file:$(PKDIR)/usr/share/enigma2/keymap.xml:file://$(keymap_${P})

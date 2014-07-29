@@ -97,6 +97,9 @@ mainmenu "global config"
 		config ENIGMA2_SRC_LAST
 		bool "non-public branch last"
 
+		config ENIGMA2_SRC_MAX
+		bool "public enigma2 max10  diff0"
+
 	endchoice
 
 	choice
