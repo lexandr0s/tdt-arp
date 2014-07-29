@@ -1,0 +1,97 @@
+#
+# AR-P buildsystem smart Makefile
+#
+package[[ target_gstreamer
+
+BDEPENDS_${P} = $(target_glibc) $(target_glib2) $(target_libxml2)
+
+ifeq ($(strip $(CONFIG_GSTREAMER_GIT)),y)
+
+PV_${P} = git
+PR_${P} = 1
+
+call[[ base ]]
+
+rule[[
+  git://anongit.freedesktop.org/gstreamer/gstreamer;b=0.10;r=1bcabb9
+  patch:file://check_fix.patch
+  #patch:file://gst-inspect-check-error.patch 
+  #patch:file://multiqueue-sparsestreams.patch
+]]rule
+
+call[[ git ]]
+
+else
+
+PV_${P} = 0.10.36
+PR_${P} = 1
+
+call[[ base ]]
+
+rule[[
+  extract:http://gstreamer.freedesktop.org/src/${PN}/${PN}-${PV}.tar.bz2
+  patch:file://check_fix.patch
+]]rule
+
+endif
+
+$(TARGET_${P}).do_prepare: $(DEPENDS_${P})
+	$(PREPARE_${P})
+ifeq ($(strip $(CONFIG_GSTREAMER_GIT)),y)
+	cd $(DIR_${P})/common && \
+	git submodule init && \
+	git submodule update
+endif
+	touch $@
+
+$(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
+	export PATH=$(hostprefix)/bin:$(PATH) && \
+	cd $(DIR_${P}) && \
+	autoreconf --verbose --force --install -I$(hostprefix)/share/aclocal && \
+	$(BUILDENV) \
+	./configure \
+		--host=$(target) \
+		--build=$(build) \
+		--libexecdir=/usr/lib/gstreamer/ \
+		--prefix=/usr \
+		--disable-dependency-tracking \
+		--with-check=no \
+		--disable-examples \
+		--disable-tests \
+		--disable-valgrind \
+		ac_cv_func_register_printf_function=no \
+	&& \
+	$(MAKE)
+	touch $@
+
+$(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
+	$(PKDIR_clean)
+	cd $(DIR_${P}) && $(MAKE) install DESTDIR=$(PKDIR)
+	rm -r $(PKDIR)/usr/share/locale
+	touch $@
+
+call[[ ipk ]]
+
+DESCRIPTION_${P} = GStreamer Multimedia Framework
+RDEPENDS_${P} = libglib libxml2 libffi6 libz1 libc6
+FILES_${P} = \
+/usr/bin/gst-* \
+/usr/lib/libgstbase*.s* \
+/usr/lib/libgstcheck*.s* \
+/usr/lib/libgstcontroller*.s* \
+/usr/lib/libgstdataprotocol*.s* \
+/usr/lib/libgstnet*.s* \
+/usr/lib/libgstreamer*.s* \
+/usr/lib/gstreamer/gstreamer-0.10/gst-plugin-scanner \
+/usr/lib/gstreamer-0.10/libgstcoreelements.so \
+/usr/lib/gstreamer-0.10/libgstcoreindexers.so
+define postinst_${P}
+#!/bin/sh
+if [ x"$$D" = "x" ]; then
+	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
+fi
+endef
+
+call[[ ipkbox ]]
+
+]]package

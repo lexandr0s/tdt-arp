@@ -1,0 +1,45 @@
+From faa95fd19acbd62936c847d48c67b1d9054c6b2d Mon Sep 17 00:00:00 2001
+From: Lubosz Sarnecki <lubosz@gmail.com>
+Date: Sat, 3 Aug 2013 13:55:11 +0200
+Subject: [PATCH 1/2] parse: fix double declaration warnings
+
+---
+ gst/parse/Makefile.am | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/gst/parse/Makefile.am b/gst/parse/Makefile.am
+index edff324..c05d672 100644
+--- a/gst/parse/Makefile.am
++++ b/gst/parse/Makefile.am
+@@ -45,8 +45,6 @@ lex.priv_gst_parse_yy.c: parse.l grammar.tab.h
+ 	echo '#ifdef HAVE_CONFIG_H' > lex.priv_gst_parse_yy_tmp2.c && \
+ 	echo '#include <config.h>' >> lex.priv_gst_parse_yy_tmp2.c && \
+ 	echo '#endif' >> lex.priv_gst_parse_yy_tmp2.c && \
+-	echo 'static inline int priv_gst_parse_yyget_column  (void * yyscanner);' >> lex.priv_gst_parse_yy_tmp2.c && \
+-	echo 'static inline void priv_gst_parse_yyset_column (int  column_no , void * yyscanner);' >> lex.priv_gst_parse_yy_tmp2.c && \
+ 	cat lex.priv_gst_parse_yy_tmp.c >> lex.priv_gst_parse_yy_tmp2.c && \
+ 	rm lex.priv_gst_parse_yy_tmp.c && \
+ 	mv lex.priv_gst_parse_yy_tmp2.c lex.priv_gst_parse_yy.c
+
+From 50bc20b1494065b074fa9b62156d02fb365c836d Mon Sep 17 00:00:00 2001
+From: Lubosz Sarnecki <lubosz@gmail.com>
+Date: Sat, 3 Aug 2013 13:58:06 +0200
+Subject: [PATCH 2/2] parse: fix build with bison 3.0
+
+---
+ gst/parse/grammar.y | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/gst/parse/grammar.y b/gst/parse/grammar.y
+index cd26a2a..ce85295 100644
+--- a/gst/parse/grammar.y
++++ b/gst/parse/grammar.y
+@@ -36,7 +36,7 @@
+ 
+ typedef void* yyscan_t;
+ 
+-int priv_gst_parse_yylex (void * yylval_param , yyscan_t yyscanner);
++int priv_gst_parse_yylex (void * yylval_param);
+ int priv_gst_parse_yylex_init (yyscan_t scanner);
+ int priv_gst_parse_yylex_destroy (yyscan_t scanner);
+ struct yy_buffer_state * priv_gst_parse_yy_scan_string (char* , yyscan_t);

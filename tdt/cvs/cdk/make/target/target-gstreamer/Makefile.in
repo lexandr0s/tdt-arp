@@ -1,0 +1,27 @@
+package[[ target_gstreamer
+call[[ header ]]
+]]package
+
+package[[ target_gst_plugins_ugly
+call[[ header ]]
+]]package
+
+package[[ target_gst_plugins_dvbmediasink
+call[[ header ]]
+]]package
+
+package[[ target_gst_plugins_base
+call[[ header ]]
+]]package
+
+package[[ target_gst_plugins_good
+call[[ header ]]
+]]package
+
+package[[ target_gst_plugins_bad
+call[[ header ]]
+]]package
+
+package[[ target_gst_plugin_subsink
+call[[ header ]]
+]]package
