@@ -49,6 +49,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 
 call[[ ipk ]]
 
+NAME_${P} =libasound2
 DESCRIPTION_${P} = "ALSA library"
 RDEPENDS_${P} = libc6
 define postinst_${P}
