@@ -1,6 +1,7 @@
 #
 # NEUTRINO
 #
+ifeq ($(strip $(CONFIG_BUILD_NEUTRINO)),y)
 package[[ target_neutrino
 
 BDEPENDS_${P} = $(target_libjpeg) $(target_libstb_hal) $(target_libopenthreads) $(target_lua) $(target_curl) $(target_util_linux) $(target_libalsa) $(target_libdvbsipp) $(target_libgif) $(target_libmme_host) $(target_libmmeimage)
@@ -131,7 +132,7 @@ PACKAGES_${P} = \
 	
 	
 
-RDEPENDS_neutrino += neutrino-plugins neutrino-configs liblua libssl1 libcrypto1 libcurl4 libid3tag0 libmad0 libvorbisidec1 libpng16 libjpeg8 libgif4 font-md-khmurabi font-tuxtxt font-dejavulgcsansmono-bold font-micron font-micron-bold font-micron-italic font-neutrino font-pakenham libfreetype6 ffmpeg libdvbsi++1 libopenthreads libusb_1.0 libalsa libstb_hal libc6
+RDEPENDS_neutrino += neutrino-plugins neutrino-configs liblua libssl1 libcrypto1 libcurl4 libid3tag0 libmad0 libvorbisidec1 libpng16 libjpeg8 libgif4 font-md-khmurabi font-tuxtxt font-dejavulgcsansmono-bold font-micron font-micron-bold font-micron-italic font-neutrino font-pakenham libfreetype6 ffmpeg libdvbsi++1 libopenthreads libusb_1.0 libasound2 libstb_hal libc6
 
 FILES_neutrino = /usr/bin/* /usr/sbin/*
 FILES_neutrino_plugins = /usr/share/tuxbox /usr/share/iso-codes/*
@@ -152,3 +153,5 @@ DESCRIPTION_font_pakenham = ttf fonts
 call[[ ipkbox ]]
 
 ]]package
+endif
+

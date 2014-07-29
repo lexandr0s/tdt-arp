@@ -1,12 +1,13 @@
 #
 # ENIGMA2
 #
+ifeq ($(strip $(CONFIG_BUILD_ENIGMA2)),y)
 package[[ target_enigma2
 
-BDEPENDS_${P} = $(target_libsigc) $(target_libdvbsipp) $(target_freetype) $(target_tuxtxt32bpp) $(target_libgif) $(target_libpng) $(target_libxmlccwrap) $(target_python) $(target_python_twisted) $(target_libdreamdvd) $(target_libmme_host) $(target_libmmeimage)
+BDEPENDS_${P} = $(target_libsigc) $(target_libdvbsipp) $(target_freetype) $(target_tuxtxt32bpp) $(target_libungif) $(target_libpng) $(target_libxmlccwrap) $(target_python) $(target_python_twisted) $(target_libdreamdvd) $(target_libmme_host) $(target_libmmeimage) $(target_libfribidi)
 
 PV_${P} = git
-PR_${P} = 4
+PR_${P} = 5
 PACKAGE_ARCH_${P} = $(box_arch)
 
 DESCRIPTION_${P} = Framebuffer-based digital media application
@@ -21,10 +22,59 @@ CONFIG_FLAGS_${P} = \
 	PY_PATH=$(targetprefix)/usr \
 	$(PLATFORM_CPPFLAGS)
 
+GST_BASE_RDEPS = \
+	gst_plugins_base_alsa \
+	gst_plugins_base_app \
+	gst_plugins_base_audioconvert \
+	gst_plugins_base_audioresample \
+	gst_plugins_base_decodebin \
+	gst_plugins_base_decodebin2 \
+	gst_plugins_base_ogg \
+	gst_plugins_base_playbin \
+	gst_plugins_base_subparse \
+	gst_plugins_base_typefindfunctions \
+	gst_plugins_base_vorbis
+
+GST_GOOD_RDEPS = \
+	gst_plugins_good_apetag \
+	gst_plugins_good_audioparsers \
+	gst_plugins_good_autodetect \
+	gst_plugins_good_avi \
+	gst_plugins_good_flac \
+	gst_plugins_good_flv \
+	gst_plugins_good_icydemux \
+	gst_plugins_good_id3demux \
+	gst_plugins_good_isomp4 \
+	gst_plugins_good_matroska \
+	gst_plugins_good_rtp \
+	gst_plugins_good_rtpmanager \
+	gst_plugins_good_rtsp \
+	gst_plugins_good_souphttpsrc \
+	gst_plugins_good_udp \
+	gst_plugins_good_wavparse
+
+GST_BAD_RDEPS = \
+	gst_plugins_bad_cdxaparse \
+	gst_plugins_bad_mms \
+	gst_plugins_bad_mpegdemux \
+	gst_plugins_bad_rtmp \
+	gst_plugins_bad_vcdsrc \
+	gst_plugins_bad_fragmented \
+	gst_plugins_bad_faad
+
+GST_UGLY_RDEPS = \
+	gst_plugins_ugly_asf \
+	gst_plugins_ugly_cdio \
+	gst_plugins_ugly_dvdsub \
+	gst_plugins_ugly_mad \
+	gst_plugins_ugly_mpegaudioparse \
+	gst_plugins_ugly_mpegstream
+
 # media framework
 ifdef CONFIG_GSTREAMER
-BDEPENDS_${P} += $(target_gstreamer)
+BDEPENDS_${P} += $(target_gst_plugins_dvbmediasink)
 CONFIG_FLAGS_${P} += --enable-mediafwgstreamer
+RDEPENDS_enigma2 = gst_plugins_dvbmediasink gst_plugin_subsink $(GST_BASE_RDEPS) $(GST_GOOD_RDEPS) $(GST_BAD_RDEPS) $(GST_UGLY_RDEPS)
 endif
 ifdef CONFIG_EPLAYER3
 BDEPENDS_${P} += $(target_libeplayer3)
@@ -63,6 +113,10 @@ ifdef CONFIG_ENIGMA2_SRC_STAGING
 endif
 ifdef CONFIG_ENIGMA2_SRC_LAST
   git://github.com:schpuntik/enigma2-pli-arp.git;b=last;protocol=ssh
+endif
+ifdef CONFIG_ENIGMA2_SRC_MAX
+  git://git.code.sf.net/p/openpli/enigma2.git;b=master
+  patch:file://enigma2-pli-nightly.0.diff
 endif
 
   install:-d:$(PKDIR)/usr/share/enigma2/
@@ -308,3 +362,5 @@ FILES_enigma2_plugin_skin_megamod = /usr/share/enigma2/megaMod
 call[[ ipkbox ]]
 
 ]]package
+endif
+
