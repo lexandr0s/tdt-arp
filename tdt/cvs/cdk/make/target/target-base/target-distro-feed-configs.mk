@@ -25,9 +25,12 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_prepare
 	$(PKDIR_clean)
-	cd $(DIR_${P}) && $(INSTALL_${P}) \
-
-	echo "src/gz spark-all http://amiko.sat-universum.de" > $(PKDIR)/etc/opkg/all-spark-feed.conf && \
+	cd $(DIR_${P}) && $(INSTALL_${P})
+ifeq ($(strip $(CONFIG_GSTREAMER)),y)
+	echo "src/gz spark-all http://gst.sat-universum.de" > $(PKDIR)/etc/opkg/all-spark-feed.conf
+else
+	echo "src/gz spark-all http://eplay.sat-universum.de" > $(PKDIR)/etc/opkg/all-spark-feed.conf
+endif
 	echo "src/gz non-free-feed http://nonfree.sat-universum.de" > $(PKDIR)/etc/opkg/nonfree-feed.conf
 
 	touch $@
