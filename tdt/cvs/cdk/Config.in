@@ -148,6 +148,10 @@ menu "GUI Configuration"
 		  bool "non-public branch last"
 		  depends on BUILD_ENIGMA2 || BUILD_HYBRID
 
+		  config ENIGMA2_SRC_MAX
+		  bool "public enigma2 max10  diff0"
+		  depends on BUILD_ENIGMA2 || BUILD_HYBRID
+
 		endchoice
 
 	config ENIGMA2_PLUGINS
