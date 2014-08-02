@@ -155,7 +155,7 @@ $(DEPDIR)/ethtool: $(DEPDIR)/ethtool.do_compile
 #
 BEGIN[[
 samba
-  3.6.23
+  3.6.24
   {PN}-{PV}
   extract:http://www.{PN}.org/{PN}/ftp/stable/{PN}-{PV}.tar.gz
   patch:file://{PN}.diff
