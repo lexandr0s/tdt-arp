@@ -101,7 +101,7 @@ opkg_my_list += \
 	enigma2-plugin-systemplugins-videomode \
 	enigma2-plugin-skin-magic
 ifdef CONFIG_WLAN_SUPPORT
-IPKBOX_LIST_${P} += $(target_wireless_tools) $(target_firmware_wlan)
+IPKBOX_LIST_${P} += $(target_wireless_tools) $(target_firmware_wlan) $(target_compat_wireless)
 opkg_my_list += enigma2-plugin-systemplugins-wirelesslan
 endif
 endif
@@ -138,10 +138,10 @@ IPKBOX_LIST_${P} += $(target_neutrino) $(target_libid3tag) $(target_libvorbiside
 opkg_my_list += neutrino libblkid1
 endif
 
-ifdef CONFIG_BUILD_HYBRID
-CONFIG_BUILD_ENIGMA2=y
-CONFIG_BUILD_NEUTRINO=y
-endif
+#ifdef CONFIG_BUILD_HYBRID
+#CONFIG_BUILD_ENIGMA2=y
+#CONFIG_BUILD_NEUTRINO=y
+#endif
 
 ########################################################################################
 #extras
@@ -153,7 +153,8 @@ opkg_my_list += wireless-tools \
 		kernel-module-rt5370sta \
 		kernel-module-rtl8192cu \
 		kernel-module-rtl871x \
-		kernel-module-rtl8188eu
+		kernel-module-rtl8188eu \
+		kernel-module-ath9k-htc
 endif
 
 ifdef CONFIG_3G_SUPPORT
