@@ -14,7 +14,7 @@ ifdef CONFIG_GCC482
 ${P}_VERSION = 4.8.2-133
 endif
 ifdef CONFIG_GCC473
-${P}_VERSION = 4.7.3-129
+${P}_VERSION = 4.7.3-124
 endif
 
 ST_PN_${P} = cross-gcc

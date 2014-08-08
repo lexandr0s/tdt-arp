@@ -15,7 +15,7 @@ ifdef CONFIG_GCC482
 ${P}_VERSION = 4.8.2-141
 endif
 ifdef CONFIG_GCC473
-${P}_VERSION = 4.7.3-134
+${P}_VERSION = 4.7.3-129
 endif
 
 ${P}_SPEC = stm-$(${P}).spec
