@@ -14,10 +14,12 @@ DESCRIPTION_${P} = linux-firmware
 call[[ base ]]
 
 rule[[
-  nothing:git://github.com/BjornLee/linux-firmware.git
+  git://git.kernel.org/pub/scm/linux/kernel/git/firmware/linux-firmware.git
   nothing:file://Wireless/RT2870STA/RT2870STA.dat
   nothing:file://Wireless/RT3070STA/RT3070STA.dat
 ]]rule
+
+call[[ git ]]
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(PREPARE_${P})
@@ -38,7 +40,11 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_prepare
 	ln -sf /lib/firmware/rt2870.bin $(PKDIR)/lib/firmware/rt5370.bin && \
 	$(INSTALL_FILE) $(driverdir)/wireless/rtl8188eu/rtl8188eufw.bin $(PKDIR)/lib/firmware/rtl8188eu && \
 	$(INSTALL_FILE) rtlwifi/rtl8192cufw.bin $(PKDIR)/lib/firmware/rtlwifi && \
-	$(INSTALL_FILE) rtlwifi/rtl8712u.bin $(PKDIR)/lib/firmware/rtlwifi
+	$(INSTALL_FILE) rtlwifi/rtl8712u.bin $(PKDIR)/lib/firmware/rtlwifi && \
+	$(INSTALL_FILE) htc_7010.fw $(PKDIR)/lib/firmware && \
+	$(INSTALL_FILE) htc_9271.fw $(PKDIR)/lib/firmware && \
+	$(INSTALL_FILE) carl9170-1.fw $(PKDIR)/lib/firmware && \
+	$(INSTALL_FILE) rt73.bin $(PKDIR)/lib/firmware
 	touch $@
 
 PACKAGES_${P} = \
@@ -47,7 +53,10 @@ PACKAGES_${P} = \
 	firmware_rt5370 \
 	firmware_rtl8188eu \
 	firmware_rtl8192cu \
-	firmware_rtl8712u
+	firmware_rtl8712u \
+	firmware_carl9170 \
+	firmware_ath9k_htc \
+	firmware_rt73
 
 FILES_firmware_rt2870 = \
 	/lib/firmware/rt2870.bin \
@@ -72,6 +81,15 @@ FILES_firmware_rtl8192cu =\
 
 FILES_firmware_rtl8712u = \
 	/lib/firmware/rtlwifi/rtl8712u.bin
+
+FILES_firmware_carl9170 =\
+	/lib/firmware/carl9170-1.fw
+
+FILES_firmware_ath9k_htc = \
+	/lib/firmware/htc_7010.fw /lib/firmware/htc_9271.fw
+
+FILES_firmware_rt73 = \
+	/lib/firmware/rt73.bin
 
 call[[ ipkbox ]]
 
