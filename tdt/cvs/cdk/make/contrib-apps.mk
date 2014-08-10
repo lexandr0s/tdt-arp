@@ -165,7 +165,7 @@ $(DEPDIR)/pppd: $(DEPDIR)/pppd.do_compile
 #
 BEGIN[[
 usb_modeswitch
-  2.1.1
+  2.2.0
   {PN}-{PV}
   extract:http://www.draisberghof.de/usb_modeswitch/{PN}-{PV}.tar.bz2
   patch:file://{PN}.patch
@@ -203,7 +203,7 @@ $(DEPDIR)/usb_modeswitch: $(DEPDIR)/usb_modeswitch.do_compile
 #
 BEGIN[[
 usb_modeswitch_data
-  20130807
+  20140529
   {PN}-{PV}
   extract:http://www.draisberghof.de/usb_modeswitch/{PN}-{PV}.tar.bz2
   patch:file://{PN}.patch
