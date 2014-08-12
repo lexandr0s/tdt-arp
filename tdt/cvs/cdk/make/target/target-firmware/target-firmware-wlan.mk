@@ -38,7 +38,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_prepare
 	$(INSTALL_FILE) RT3070STA.dat $(PKDIR)/etc/Wireless/RT3070STA/ && \
 	ln -sf /lib/firmware/rt2870.bin $(PKDIR)/lib/firmware/rt3070.bin && \
 	ln -sf /lib/firmware/rt2870.bin $(PKDIR)/lib/firmware/rt5370.bin && \
-	$(INSTALL_FILE) $(driverdir)/wireless/rtl8188eu/rtl8188eufw.bin $(PKDIR)/lib/firmware/rtl8188eu && \
+	$(INSTALL_FILE) rtlwifi/rtl8188eufw.bin $(PKDIR)/lib/firmware/rtlwifi && \
 	$(INSTALL_FILE) rtlwifi/rtl8192cufw.bin $(PKDIR)/lib/firmware/rtlwifi && \
 	$(INSTALL_FILE) rtlwifi/rtl8712u.bin $(PKDIR)/lib/firmware/rtlwifi && \
 	$(INSTALL_FILE) htc_7010.fw $(PKDIR)/lib/firmware && \
@@ -74,7 +74,7 @@ RDEPENDS_firmware_rt5370 = \
 	firmware_rt2870
 
 FILES_firmware_rtl8188eu = \
-	/lib/firmware/rtl8188eu/rtl8188eufw.bin
+	/lib/firmware/rtlwifi/rtl8188eufw.bin
 
 FILES_firmware_rtl8192cu =\
 	/lib/firmware/rtlwifi/rtl8192cufw.bin
