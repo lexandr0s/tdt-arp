@@ -90,13 +90,13 @@ AC_ARG_ENABLE(p0213,
 TDT_CONDITIONAL(ENABLE_P0213,test "$enable_p0213" = "yes")
 AC_SUBST(P0213)
 
-AC_ARG_ENABLE(p0214,
-	AS_HELP_STRING(--enable-p0214,  set up the CDK to use the STLinux 2.4 with patchlevel 0214),
+AC_ARG_ENABLE(p0215,
+	AS_HELP_STRING(--enable-p0215,  set up the CDK to use the STLinux 2.4 with patchlevel 0215),
 	[case "${enableval}" in
-		yes) P0214=p0214 ;;
-	esac], [enable_p0214=no])
-TDT_CONDITIONAL(ENABLE_P0214,test "$enable_p0214" = "yes")
-AC_SUBST(P0214)
+		yes) P0215=p0215 ;;
+	esac], [enable_p0215=no])
+TDT_CONDITIONAL(ENABLE_P0215,test "$enable_p0215" = "yes")
+AC_SUBST(P0215)
 
 AC_ARG_ENABLE(debug,
 	AS_HELP_STRING(--enable-debug,	set up the CDK to use debug kernel configs),
@@ -655,11 +655,9 @@ summary:
 target cpu/boxtype          : $CPU_MODEL / $BOXTYPE
 STLinux 2.4                 : $enable_stm24
 GCC 4.8.2                   : $enable_gcc48
-Patchlevel P0207            : $enable_p0207
-Patchlevel P0209            : $enable_p0209
-Patchlevel P0210            : $enable_p0210
-Patchlevel P0211            : $enable_p0211
-Patchlevel P0212            : $enable_p0212
+Patchlevel P0211            : $enable_p0210
+Patchlevel P0213            : $enable_p0211
+Patchlevel P0215            : $enable_p0215
 vdr VDR 1.7.22              : $enable_vdr1722
 vdr VDR 1.7.27              : $enable_vdr1727
 ccache                      : $enable_ccache

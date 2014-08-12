@@ -52,7 +52,7 @@
 - * made, and equivalent changes to the setup here.  Note, only boot-from-NOR has
 - * been fully tested.
 - */
-+const char *LMI_IO_partalias[] = { "v4l2-coded-video-buffers", "BPA2_Region1", "v4l2-video-buffers" ,
++const char *LMI_IO_partalias[] = { "audio", "v4l2-coded-video-buffers", "BPA2_Region1", "v4l2-video-buffers" ,
 +                                    "coredisplay-video", "gfx-memory", "BPA2_Region0", "LMI_VID", NULL };
 +
 + 
@@ -247,7 +247,7 @@
 +		 .offset = 0x18000000,
 +	     }, {
 +		 .name = "E2 RootFs",
-+		 .size = 0x5000000,
++		 .size = 0x7700000,
 +		 .offset = 0x18800000,
 +	     },
  	},
