@@ -5,7 +5,7 @@ package[[ target_samba
 
 BDEPENDS_${P} = $(target_glibc)
 
-PV_${P} = 3.6.23
+PV_${P} = 3.6.24
 PR_${P} = 1
 
 call[[ base ]]
