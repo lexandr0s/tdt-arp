@@ -5,7 +5,7 @@ package[[ target_libjpeg
 
 BDEPENDS_${P} = $(target_glibc)
 
-PV_${P} = 8d
+PV_${P} = 9a
 PR_${P} = 1
 
 PN_${P} = jpeg
