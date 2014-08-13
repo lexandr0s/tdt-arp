@@ -5,7 +5,7 @@ package[[ target_libass
 
 BDEPENDS_${P} = $(target_glibc) $(target_freetype) $(target_libfribidi)
 
-PV_${P} = 0.10.2
+PV_${P} = 0.11.2
 PR_${P} = 1
 
 DESCRIPTION_${P} = libass
