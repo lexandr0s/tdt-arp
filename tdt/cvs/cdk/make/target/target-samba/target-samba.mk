@@ -5,14 +5,14 @@ package[[ target_samba
 
 BDEPENDS_${P} = $(target_glibc)
 
-PV_${P} = 3.6.18
+PV_${P} = 3.6.23
 PR_${P} = 1
 
 call[[ base ]]
 
 rule[[
   extract:http://www.${PN}.org/${PN}/ftp/stable/${PN}-${PV}.tar.gz
-  patch:file://${PN}-${PV}.diff
+  patch:file://${PN}.diff
 ]]rule
 
 CONFIG_FLAGS_${P} = \
