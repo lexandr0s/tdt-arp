@@ -5,14 +5,14 @@ package[[ target_libxml2
 
 BDEPENDS_${P} = $(target_glibc) $(target_zlib)
 
-PV_${P} = 2.7.8
+PV_${P} = 2.9.1
 PR_${P} = 1
 
 call[[ base ]]
 
 rule[[
   extract:http://xmlsoft.org/sources/${PN}-${PV}.tar.gz
-  patch:file://${PN}-${PV}.diff
+  patch:file://${PN}.diff
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
