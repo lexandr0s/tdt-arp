@@ -5,7 +5,7 @@ package[[ target_fontconfig
 
 BDEPENDS_${P} = $(target_glibc) $(target_zlib) $(target_libxml2) $(target_freetype) $(target_expat)
 
-PV_${P} = 2.10.2
+PV_${P} = 2.11.1
 PR_${P} = 1
 
 DESCRIPTION_${P} = Generic font configuration library \
