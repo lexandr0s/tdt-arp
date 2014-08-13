@@ -154,7 +154,8 @@ opkg_my_list += wireless-tools \
 		kernel-module-rtl8192cu \
 		kernel-module-rtl871x \
 		kernel-module-rtl8188eu \
-		kernel-module-ath9k-htc
+		kernel-module-ath9k-htc \
+		kernel-module-rt2x00
 endif
 
 ifdef CONFIG_3G_SUPPORT
