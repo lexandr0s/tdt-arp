@@ -5,7 +5,7 @@ package[[ target_sqlite
 
 BDEPENDS_${P} = $(target_glibc)
 
-PV_${P} = 3080403
+PV_${P} = 3080500
 PR_${P} = 1
 
 DIR_${P} = ${WORK}/${PN}-autoconf-${PV}
