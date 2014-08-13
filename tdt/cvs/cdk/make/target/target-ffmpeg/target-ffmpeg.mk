@@ -13,8 +13,8 @@ DESCRIPTION_${P} = ffmpeg
 call[[ base ]]
 
 rule[[
-  extract:http://www.{PN}.org/releases/{PN}-{PV}.tar.gz
-  patch:file://${PN}-${PV}.patch
+  extract:http://www.${PN}.org/releases/${PN}-${PV}.tar.gz
+  patch:file://${PN}.patch
 ]]rule
 
 CONFIG_FLAGS_${P} = \
@@ -50,7 +50,6 @@ CONFIG_FLAGS_${P} = \
 		--disable-armv6t2 \
 		--disable-vfp \
 		--disable-neon \
-		--disable-vis \
 		--disable-inline-asm \
 		--disable-yasm \
 		--disable-mips32r2 \
