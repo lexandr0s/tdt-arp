@@ -5,7 +5,7 @@ package[[ target_python_zopeinterface
 
 BDEPENDS_${P} = $(target_python_setuptools)
 
-PV_${P} = 3.5.1
+PV_${P} = 4.1.1
 PR_${P} = 1
 
 DIR_${P} = $(WORK_${P})/zope.interface-${PV}
