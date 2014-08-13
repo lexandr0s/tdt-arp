@@ -13,7 +13,7 @@ DESCRIPTION_${P} = libass
 call[[ base ]]
 
 rule[[
-  extract:http://${PN}.googlecode.com/files/${PN}-${PV}.tar.gz
+  extract:https://github.com/${PN}/${PN}/releases/download/${PV}/${PN}-${PV}.tar.gz
 ]]rule
 
 CONFIG_FLAGS_${P} = \
