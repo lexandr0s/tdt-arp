@@ -5,7 +5,7 @@ package[[ target_python_setuptools
 
 BDEPENDS_${P} = $(target_python)
 
-PV_${P} = 0.6c11
+PV_${P} = 5.2
 PR_${P} = 2
 PN_${P} = setuptools
 
