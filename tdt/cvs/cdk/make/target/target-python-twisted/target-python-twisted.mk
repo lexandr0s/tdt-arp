@@ -5,7 +5,7 @@ package[[ target_python_twisted
 
 BDEPENDS_${P} = $(target_python_zopeinterface)
 
-PV_${P} = 12.0.0
+PV_${P} = 14.0.0
 PR_${P} = 1
 
 DIR_${P} = $(WORK_${P})/Twisted-${PV}
@@ -13,7 +13,7 @@ DIR_${P} = $(WORK_${P})/Twisted-${PV}
 call[[ base ]]
 
 rule[[
-  extract:http://twistedmatrix.com/Releases/Twisted/12.0/Twisted-${PV}.tar.bz2
+  extract:http://twistedmatrix.com/Releases/Twisted/14.0/Twisted-${PV}.tar.bz2
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
