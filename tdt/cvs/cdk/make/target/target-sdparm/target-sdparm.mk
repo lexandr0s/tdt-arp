@@ -5,7 +5,7 @@ package[[ target_sdparm
 
 BDEPENDS_${P} = $(target_glibc)
 
-PV_${P} = 1.07
+PV_${P} = 1.08
 PR_${P} = 1
 
 call[[ base ]]
