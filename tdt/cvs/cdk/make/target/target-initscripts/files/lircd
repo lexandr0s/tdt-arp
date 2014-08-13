@@ -3,7 +3,6 @@
 # lirc daemon
 # chkconfig: S 36 80
 #
-PID=/var/run/lirc/lircd.pid
 
 [ -e /dev/lirc ] || ln -s lirc0 /dev/lirc
 [ -d /var/run/lirc ] || mkdir -p /var/run/lirc
@@ -22,22 +21,26 @@ case $1 in
 		boxver	# determine boxtype
 		# if a /etc/lircd.conf.$BOX_ID exists, use it...
 		[ -z "$LIRCD_OPTS" ] && [ -e /etc/lircd.conf.$BOX_ID ] && LIRCD_OPTS=/etc/lircd.conf.$BOX_ID
-		/usr/bin/lircd $LIRCD_OPTS
-		start-stop-daemon -S -b -x /bin/evremote2
+		start-stop-daemon --start --quiet --exec /usr/bin/lircd -- -u --device=/dev/lirc $LIRCD_OPTS
 		echo "LIRCD_OPTS = $LIRCD_OPTS"
 		;;
 	stop)
 		echo "Stopping lircd..."
-		start-stop-daemon -K -x /bin/evremote2
-		kill -TERM `cat $PID`
+		start-stop-daemon --stop --quiet --exec /usr/bin/lircd
+		;;
+	reload|force-reload)
+		start-stop-daemon --stop --quiet --signal 1 --exec /usr/bin/lircd
 		;;
 	restart)
 		echo "Restarting lircd... "
 		$0 stop
+		sleep 1
 		$0 start
 		;;
 	*)
-		echo   "usage:	$0 <start|stop|restart>"
+		echo   "usage:	$0 {start|stop|reload|restart|force-reload}"
 		exit 1
 		;;
 esac
+
+exit 0
