@@ -5,14 +5,14 @@ package[[ target_e2fsprogs
 
 BDEPENDS_${P} = $(target_glibc) $(target_util_linux)
 
-PV_${P} = 1.42.8
+PV_${P} = 1.42.9
 PR_${P} = 1
 
 call[[ base ]]
 
 rule[[
   extract:http://sourceforge.net/projects/${PN}/files/${PN}/v${PV}/${PN}-${PV}.tar.gz
-  patch:file://${PN}-${PV}.patch
+  patch:file://${PN}.patch
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
