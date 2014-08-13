@@ -5,7 +5,7 @@ package[[ target_python_pycrypto
 
 BDEPENDS_${P} = $(target_python_setuptools)
 
-PV_${P} = 2.5
+PV_${P} = 2.7a1
 PR_${P} = 1
 
 DIR_${P} = $(WORK_${P})/pycrypto-${PV}
@@ -14,7 +14,6 @@ call[[ base ]]
 
 rule[[
   extract:http://ftp.dlitz.net/pub/dlitz/crypto/pycrypto/pycrypto-${PV}.tar.gz
-  patch:file://${PN}-no-usr-include.patch
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
