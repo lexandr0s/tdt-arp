@@ -8,13 +8,17 @@ BDEPENDS_${P} = $(target_glibc)
 DEPENDS_${P} = $(target_linux_kernel)
 
 PV_${P} = 0.9.0
-PR_${P} = 1
+PR_${P} = 3
 
 call[[ base ]]
 
 rule[[
   extract:http://prdownloads.sourceforge.net/${PN}/${PN}-${PV}.tar.gz
-  patch:file://${PN}-${PV}-try_first_last_remote.diff
+  patch:file://${PN}-neutrino-uinput-hack.diff
+  patch:file://${PN}-try_first_last_remote.diff
+  patch:file://${PN}-uinput-repeat-fix.diff
+  patch:file://${PN}-repeat_and_delay_hack.patch
+  patch:file://${PN}-rename_input_device.patch
   nothing:file://lircd_hl101.conf
   nothing:file://lircd_hl101.conf.03_00_02
   nothing:file://lircd_hl101.conf.03_00_07
@@ -36,21 +40,15 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 	cd $(DIR_${P}) && \
 		$(BUILDENV) \
 		ac_cv_path_LIBUSB_CONFIG= \
-		CFLAGS="$(TARGET_CFLAGS) -Os -D__KERNEL_STRICT_NAMES" \
+		CFLAGS="$(TARGET_CFLAGS) -Os -D__KERNEL_STRICT_NAMES -DUINPUT_NEUTRINO_HACK" \
 		./configure \
 			--build=$(build) \
 			--host=$(target) \
 			--prefix=/usr \
 			--sbindir=\$${exec_prefix}/bin \
-			--mandir=\$${prefix}/share/man \
 			--with-kerneldir=$(buildprefix)/$(KERNEL_DIR) \
 			--without-x \
-			--with-devdir=/dev \
-			--with-moduledir=/lib/modules \
-			--with-major=61 \
 			--with-driver=userspace \
-			--enable-debug \
-			--with-syslog=LOG_DAEMON \
 			--enable-sandboxed \
 		&& \
 		make all

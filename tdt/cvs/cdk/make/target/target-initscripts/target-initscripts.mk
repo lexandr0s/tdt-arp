@@ -6,7 +6,7 @@ package[[ target_initscripts
 BDEPENDS_${P} = $(target_filesystem)
 
 PV_${P} = 0.1
-PR_${P} = 2
+PR_${P} = 3
 PACKAGE_ARCH_${P} = $(box_arch)
 
 DESCRIPTION_${P} = init scripts and rules for system start
