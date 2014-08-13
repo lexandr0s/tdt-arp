@@ -5,7 +5,7 @@ package[[ target_libgif
 
 BDEPENDS_${P} = $(target_glibc)
 
-PV_${P} = 5.0.4
+PV_${P} = 5.1.0
 PR_${P} = 1
 
 PN_${P} = giflib
@@ -13,7 +13,7 @@ PN_${P} = giflib
 call[[ base ]]
 
 rule[[
-  extract:http://heanet.dl.sourceforge.net/sourceforge/giflib/giflib-${PV}.tar.bz2
+  extract:http://sourceforge.net/projects/giflib/files/giflib-${PV}.tar.gz
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
