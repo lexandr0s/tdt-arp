@@ -3,7 +3,7 @@
 #
 package[[ target_libeplayer3
 
-BDEPENDS_${P} = $(target_glibc) $(target_gcc_lib) $(target_driver) $(target_ffmpeg)
+BDEPENDS_${P} = $(target_glibc) $(target_gcc_lib) $(target_driver) $(target_libass) $(target_ffmpeg)
 
 PR_${P} = $(PR_tdt_tools).1
 
