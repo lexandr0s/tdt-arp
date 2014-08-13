@@ -5,7 +5,7 @@ package[[ target_curl
 
 BDEPENDS_${P} = 
 
-PV_${P} = 7.34.0
+PV_${P} = 7.37.0
 PR_${P} = 1
 
 call[[ base ]]
