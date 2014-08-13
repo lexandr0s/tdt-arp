@@ -5,7 +5,7 @@ package[[ target_libffi
 
 BDEPENDS_${P} = $(target_glibc)
 
-PV_${P} = 3.0.13
+PV_${P} = 3.1
 PR_${P} = 1
 
 DESCRIPTION_${P} = A portable foreign function interface library \
@@ -23,7 +23,7 @@ call[[ base ]]
 
 rule[[
   extract:ftp://sourceware.org/pub/${PN}/${PN}-${PV}.tar.gz
-  patch:file://libffi-3.0.11.patch
+  patch:file://${PN}.patch
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
