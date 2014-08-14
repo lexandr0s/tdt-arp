@@ -13,7 +13,7 @@ PN_${P} = giflib
 call[[ base ]]
 
 rule[[
-  extract:http://sourceforge.net/projects/giflib/files/giflib-{PV}.tar.gz
+  extract:http://sourceforge.net/projects/giflib/files/giflib-${PV}.tar.gz
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
