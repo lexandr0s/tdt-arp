@@ -5,7 +5,7 @@ package[[ target_mediaportal
 
 BDEPENDS_${P} = $(target_python)
 
-PV_${P} = git
+PV_${P} = 5.4.0
 PR_${P} = 1
 
 call[[ base ]]
