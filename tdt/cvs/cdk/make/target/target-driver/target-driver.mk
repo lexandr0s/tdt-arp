@@ -234,7 +234,6 @@ $(TARGET_${P}).do_package:
 	cp $(driverdir)/stgfb/stmfb/linux/drivers/video/stmfb.h $(PKDIR)/usr/include/linux
 	cp $(driverdir)/player2/linux/include/linux/dvb/stm_ioctls.h $(PKDIR)/usr/include/linux/dvb
 
-	cp $(driverdir)/include/player2/mme.h $(PKDIR)/usr/include/
 	cp $(driverdir)/include/player2/JPEG_VideoTransformerTypes.h $(PKDIR)/usr/include/
 	cp $(driverdir)/bpamem/bpamem.h $(PKDIR)/usr/include/
 	touch $@
