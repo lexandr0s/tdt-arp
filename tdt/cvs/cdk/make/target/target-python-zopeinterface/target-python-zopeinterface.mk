@@ -36,19 +36,10 @@ DESCRIPTION_python_zopeinterface =  Interface definitions for Zope products
 RDEPENDS_python_zopeinterface = python_core libc6
 FILES_python_zopeinterface = \
   $(PYTHON_DIR)/site-packages/zope/interface/common/*.* \
-  $(PYTHON_DIR)/site-packages/zope/interface/__init__.* \
-  $(PYTHON_DIR)/site-packages/zope/interface/_flatten.* \
+  $(PYTHON_DIR)/site-packages/zope/__init__.* \
   $(PYTHON_DIR)/site-packages/zope/interface/_zope_interface_coptimizations.so \
-  $(PYTHON_DIR)/site-packages/zope/interface/adapter.p* \
-  $(PYTHON_DIR)/site-packages/zope/interface/advice.* \
-  $(PYTHON_DIR)/site-packages/zope/interface/declarations.* \
-  $(PYTHON_DIR)/site-packages/zope/interface/document.* \
-  $(PYTHON_DIR)/site-packages/zope/interface/exceptions.* \
-  $(PYTHON_DIR)/site-packages/zope/interface/interface.* \
-  $(PYTHON_DIR)/site-packages/zope/interface/interfaces.* \
-  $(PYTHON_DIR)/site-packages/zope/interface/ro.p* \
-  $(PYTHON_DIR)/site-packages/zope/interface/verify.p* \
-  $(PYTHON_DIR)/site-packages/zope.interface-3.5.1-py2.7-nspkg.pth
+  $(PYTHON_DIR)/site-packages/zope/interface/*.p* \
+  $(PYTHON_DIR)/site-packages/zope.interface-${PV}-py2.7-nspkg.pth
 
 call[[ ipkbox ]]
 
