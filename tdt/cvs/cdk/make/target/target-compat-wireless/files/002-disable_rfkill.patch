@@ -1,0 +1,604 @@
+--- a/config.mk	2014-08-13 21:45:58.184384782 +0200
++++ b/config.mk	2012-12-06 22:14:19.000000000 +0100
+@@ -1,9 +1,9 @@
+ ifeq ($(wildcard $(KLIB_BUILD)/.config),)
+ # These will be ignored by compat autoconf
++# export CONFIG_PCI=y
+- export CONFIG_PCI=y
+  export CONFIG_USB=y
++# export CONFIG_PCMCIA=y
++# export CONFIG_SSB=m
+- export CONFIG_PCMCIA=y
+- export CONFIG_SSB=m
+ else
+ include $(KLIB_BUILD)/.config
+ endif
+@@ -99,9 +99,9 @@
+ ifeq ($(CONFIG_BT),y)
+ # we'll ignore compiling bluetooth
+ else
++# export CONFIG_COMPAT_BLUETOOTH=y
++# export CONFIG_COMPAT_BLUETOOTH_MODULES=m
++# export CONFIG_HID_GENERIC=m
+- export CONFIG_COMPAT_BLUETOOTH=y
+- export CONFIG_COMPAT_BLUETOOTH_MODULES=m
+- export CONFIG_HID_GENERIC=m
+ endif
+ endif #CONFIG_COMPAT_KERNEL_2_6_27
+ 
+@@ -197,40 +197,40 @@
+ export CONFIG_LIB80211_CRYPT_TKIP=m
+ # export CONFIG_LIB80211_DEBUG=y
+ 
++#export CONFIG_BT=m
++#export CONFIG_BT_RFCOMM=m
+-export CONFIG_BT=m
+-export CONFIG_BT_RFCOMM=m
+ ifndef CONFIG_COMPAT_KERNEL_2_6_33
++#export CONFIG_COMPAT_BT_RFCOMM_TTY=y
+-export CONFIG_COMPAT_BT_RFCOMM_TTY=y
+ endif #CONFIG_COMPAT_KERNEL_2_6_33
++#export CONFIG_BT_BNEP=m
++#export CONFIG_BT_BNEP_MC_FILTER=y
++#export CONFIG_BT_BNEP_PROTO_FILTER=y
+-export CONFIG_BT_BNEP=m
+-export CONFIG_BT_BNEP_MC_FILTER=y
+-export CONFIG_BT_BNEP_PROTO_FILTER=y
+ # CONFIG_BT_CMTP depends on ISDN_CAPI
+ ifdef CONFIG_ISDN_CAPI
++#export CONFIG_BT_CMTP=m
+-export CONFIG_BT_CMTP=m
+ endif #CONFIG_ISDN_CAPI
+ ifndef CONFIG_COMPAT_KERNEL_2_6_28
++#export CONFIG_COMPAT_BT_HIDP=m
+-export CONFIG_COMPAT_BT_HIDP=m
+ endif #CONFIG_COMPAT_KERNEL_2_6_28
+ 
++#export CONFIG_BT_HCIUART=m
++#export CONFIG_BT_HCIUART_H4=y
++#export CONFIG_BT_HCIUART_BCSP=y
++#export CONFIG_BT_HCIUART_ATH3K=y
++#export CONFIG_BT_HCIUART_LL=y
++#export CONFIG_BT_HCIUART_3WIRE=y
+-export CONFIG_BT_HCIUART=m
+-export CONFIG_BT_HCIUART_H4=y
+-export CONFIG_BT_HCIUART_BCSP=y
+-export CONFIG_BT_HCIUART_ATH3K=y
+-export CONFIG_BT_HCIUART_LL=y
+-export CONFIG_BT_HCIUART_3WIRE=y
+ 
++#export CONFIG_BT_HCIVHCI=m
++#export CONFIG_BT_MRVL=m
+-export CONFIG_BT_HCIVHCI=m
+-export CONFIG_BT_MRVL=m
+ ifndef CONFIG_COMPAT_KERNEL_2_6_39
++#export CONFIG_BT_WILINK=m
+-export CONFIG_BT_WILINK=m
+ endif #CONFIG_COMPAT_KERNEL_2_6_39
+ 
+ ifdef CONFIG_PCMCIA
++#export CONFIG_BT_HCIDTL1=m
++#export CONFIG_BT_HCIBT3C=m
++#export CONFIG_BT_HCIBLUECARD=m
++#export CONFIG_BT_HCIBTUART=m
+-export CONFIG_BT_HCIDTL1=m
+-export CONFIG_BT_HCIBT3C=m
+-export CONFIG_BT_HCIBLUECARD=m
+-export CONFIG_BT_HCIBTUART=m
+ endif #CONFIG_PCMCIA
+ 
+ 
+@@ -254,7 +254,7 @@
+ # mac80211 test driver
+ export CONFIG_MAC80211_HWSIM=m
+ 
++#export CONFIG_ATH5K=m
+-export CONFIG_ATH5K=m
+ # export CONFIG_ATH5K_DEBUG=y
+ # export CONFIG_ATH5K_TRACER=y
+ # export CONFIG_ATH5K_AHB=y
+@@ -276,69 +276,69 @@
+ export CONFIG_ATH9K_BTCOEX_SUPPORT=y
+ 
+ ifndef CONFIG_COMPAT_KERNEL_2_6_27
++# export CONFIG_ATH6KL=m
+-export CONFIG_ATH6KL=m
+ # export CONFIG_ATH6KL_DEBUG=y
+ endif #CONFIG_COMPAT_KERNEL_2_6_27
+ 
+ # PCI Drivers
+ ifdef CONFIG_PCI
+ 
++# export CONFIG_ATH5K_PCI=y
++# export CONFIG_ATH9K_PCI=y
+-export CONFIG_ATH5K_PCI=y
+-export CONFIG_ATH9K_PCI=y
+ 
++# export CONFIG_IWLWIFI=m
++# export CONFIG_IWLDVM=m
++# export CONFIG_IWLWIFI_P2P=y
+-export CONFIG_IWLWIFI=m
+-export CONFIG_IWLDVM=m
+-export CONFIG_IWLWIFI_P2P=y
+ # export CONFIG_IWLWIFI_DEBUG=y
+ # export CONFIG_IWLWIFI_DEBUGFS=y
+ # export CONFIG_IWLWIFI_DEVICE_TRACING=y
+ # export CONFIG_IWLWIFI_DEBUG_EXPERIMENTAL_UCODE=y
+ 
++# export CONFIG_IWLEGACY=m
++# export CONFIG_COMPAT_IWL4965=m
++# export CONFIG_IWL3945=m
+-export CONFIG_IWLEGACY=m
+-export CONFIG_COMPAT_IWL4965=m
+-export CONFIG_IWL3945=m
+ # export CONFIG_IWLEGACY_DEBUG=y
+ # export CONFIG_IWLEGACY_DEBUGFS=y
+ 
+ 
++# export CONFIG_B43=m
++# export CONFIG_B43_HWRNG=y
++# export CONFIG_B43_PCI_AUTOSELECT=y
+-export CONFIG_B43=m
+-export CONFIG_B43_HWRNG=y
+-export CONFIG_B43_PCI_AUTOSELECT=y
+ ifdef CONFIG_PCMCIA
++# export CONFIG_B43_PCMCIA=y
+-export CONFIG_B43_PCMCIA=y
+ endif #CONFIG_PCMCIA
+ ifdef CONFIG_MAC80211_LEDS
++# export CONFIG_B43_LEDS=y
+-export CONFIG_B43_LEDS=y
+ endif #CONFIG_MAC80211_LEDS
++# export CONFIG_B43_PHY_LP=y
++# export CONFIG_B43_PHY_N=y
++# export CONFIG_B43_PHY_HT=y
+-export CONFIG_B43_PHY_LP=y
+-export CONFIG_B43_PHY_N=y
+-export CONFIG_B43_PHY_HT=y
+ # export CONFIG_B43_PHY_LCN=y
+ # export CONFIG_B43_DEBUG=y
+ 
++# export CONFIG_B43LEGACY=m
++# export CONFIG_B43LEGACY_HWRNG=y
++# export CONFIG_B43LEGACY_PCI_AUTOSELECT=y
+-export CONFIG_B43LEGACY=m
+-export CONFIG_B43LEGACY_HWRNG=y
+-export CONFIG_B43LEGACY_PCI_AUTOSELECT=y
+ ifdef CONFIG_MAC80211_LEDS
++# export CONFIG_B43LEGACY_LEDS=y
+-export CONFIG_B43LEGACY_LEDS=y
+ endif #CONFIG_MAC80211_LEDS
+ # export CONFIG_B43LEGACY_DEBUG=y
++# export CONFIG_B43LEGACY_DMA=y
++# export CONFIG_B43LEGACY_PIO=y
+-export CONFIG_B43LEGACY_DMA=y
+-export CONFIG_B43LEGACY_PIO=y
+ 
+ ifdef CONFIG_WIRELESS_EXT
+ # The Intel ipws
++# export CONFIG_LIBIPW=m
+-export CONFIG_LIBIPW=m
+ # export CONFIG_LIBIPW_DEBUG=y
+ 
++# export CONFIG_IPW2100=m
++# export CONFIG_IPW2100_MONITOR=y
+-export CONFIG_IPW2100=m
+-export CONFIG_IPW2100_MONITOR=y
+ # export CONFIG_IPW2100_DEBUG=y
++# export CONFIG_IPW2200=m
++# export CONFIG_IPW2200_MONITOR=y
++# export CONFIG_IPW2200_RADIOTAP=y
++# export CONFIG_IPW2200_PROMISCUOUS=y
++# export CONFIG_IPW2200_QOS=y
+-export CONFIG_IPW2200=m
+-export CONFIG_IPW2200_MONITOR=y
+-export CONFIG_IPW2200_RADIOTAP=y
+-export CONFIG_IPW2200_PROMISCUOUS=y
+-export CONFIG_IPW2200_QOS=y
+ # export CONFIG_IPW2200_DEBUG=y
+ # The above enables use a second interface prefixed 'rtap'.
+ #           Example usage:
+@@ -356,44 +356,44 @@
+ 
+ ifdef CONFIG_SSB
+ # Sonics Silicon Backplane
++# export CONFIG_SSB_SPROM=y
+-export CONFIG_SSB_SPROM=y
+ 
++# export CONFIG_SSB_BLOCKIO=y
++# export CONFIG_SSB_PCIHOST=y
++# export CONFIG_SSB_B43_PCI_BRIDGE=y
+-export CONFIG_SSB_BLOCKIO=y
+-export CONFIG_SSB_PCIHOST=y
+-export CONFIG_SSB_B43_PCI_BRIDGE=y
+ ifdef CONFIG_PCMCIA
++# export CONFIG_SSB_PCMCIAHOST=y
+-export CONFIG_SSB_PCMCIAHOST=y
+ endif #CONFIG_PCMCIA
+ # export CONFIG_SSB_DEBUG=y
++# export CONFIG_SSB_DRIVER_PCICORE=y
++# export CONFIG_B43_SSB=y
+-export CONFIG_SSB_DRIVER_PCICORE=y
+-export CONFIG_B43_SSB=y
+ endif #CONFIG_SSB
+ 
++# export CONFIG_BCMA=m
++# export CONFIG_BCMA_BLOCKIO=y
++# export CONFIG_BCMA_HOST_PCI=y
+-export CONFIG_BCMA=m
+-export CONFIG_BCMA_BLOCKIO=y
+-export CONFIG_BCMA_HOST_PCI=y
+ # export CONFIG_BCMA_DEBUG=y
++# export CONFIG_B43_BCMA=y
++# export CONFIG_B43_BCMA_EXTRA=y
+-export CONFIG_B43_BCMA=y
+-export CONFIG_B43_BCMA_EXTRA=y
+ 
++# export CONFIG_P54_PCI=m
+-export CONFIG_P54_PCI=m
+ 
++# export CONFIG_B44=m
++# export CONFIG_B44_PCI=y
+-export CONFIG_B44=m
+-export CONFIG_B44_PCI=y
+ 
++# export CONFIG_RTL8180=m
+-export CONFIG_RTL8180=m
+ 
++# export CONFIG_ADM8211=m
+-export CONFIG_ADM8211=m
+ 
++# export CONFIG_RT2X00_LIB_PCI=m
++# export CONFIG_RT2400PCI=m
++# export CONFIG_RT2500PCI=m
+-export CONFIG_RT2X00_LIB_PCI=m
+-export CONFIG_RT2400PCI=m
+-export CONFIG_RT2500PCI=m
+ ifdef CONFIG_CRC_CCITT
++# export CONFIG_RT2800PCI=m
++# export CONFIG_RT2800PCI_RT3290=y
++# export CONFIG_RT2800PCI_RT33XX=y
++# export CONFIG_RT2800PCI_RT35XX=y
++# export CONFIG_RT2800PCI_RT53XX=y
+-export CONFIG_RT2800PCI=m
+-export CONFIG_RT2800PCI_RT3290=y
+-export CONFIG_RT2800PCI_RT33XX=y
+-export CONFIG_RT2800PCI_RT35XX=y
+-export CONFIG_RT2800PCI_RT53XX=y
+ endif #CONFIG_CRC_CCITT
+ NEED_RT2X00=y
+ 
+@@ -401,47 +401,47 @@
+ # CRC to check the firmware. We check here first for the PCI
+ # driver as we're in the PCI section.
+ ifdef CONFIG_CRC_ITU_T
++# export CONFIG_RT61PCI=m
+-export CONFIG_RT61PCI=m
+ endif #CONFIG_CRC_ITU_T
+ 
++# export CONFIG_MWL8K=m
+-export CONFIG_MWL8K=m
+ 
+ # Ethernet drivers go here
++# export CONFIG_ATL1=m
++# export CONFIG_ATL2=m
++# export CONFIG_ATL1E=m
+-export CONFIG_ATL1=m
+-export CONFIG_ATL2=m
+-export CONFIG_ATL1E=m
+ ifndef CONFIG_COMPAT_KERNEL_2_6_28
++# export CONFIG_ATL1C=m
++# export CONFIG_ALX=m
+-export CONFIG_ATL1C=m
+-export CONFIG_ALX=m
+ # If MDIO is needed for another driver feel free to
+ # make it not depend on 2.6.28
++# export CONFIG_COMPAT_MDIO=m
+-export CONFIG_COMPAT_MDIO=m
+ endif #CONFIG_COMPAT_KERNEL_2_6_28
+ 
+ ifdef CONFIG_WIRELESS_EXT
++# export CONFIG_HERMES=m
++# export CONFIG_HERMES_CACHE_FW_ON_INIT=y
+-export CONFIG_HERMES=m
+-export CONFIG_HERMES_CACHE_FW_ON_INIT=y
+ ifdef CONFIG_PPC_PMAC
++# export CONFIG_APPLE_AIRPORT=m
+-export CONFIG_APPLE_AIRPORT=m
+ endif #CONFIG_PPC_PMAC
++# export CONFIG_PLX_HERMES=m
++# export CONFIG_TMD_HERMES=m
++# export CONFIG_NORTEL_HERMES=m
++# export CONFIG_PCI_HERMES=m
+-export CONFIG_PLX_HERMES=m
+-export CONFIG_TMD_HERMES=m
+-export CONFIG_NORTEL_HERMES=m
+-export CONFIG_PCI_HERMES=m
+ ifdef CONFIG_PCMCIA
++# export CONFIG_PCMCIA_HERMES=m
++# export CONFIG_PCMCIA_SPECTRUM=m
+-export CONFIG_PCMCIA_HERMES=m
+-export CONFIG_PCMCIA_SPECTRUM=m
+ endif #CONFIG_PCMCIA
+ endif #CONFIG_WIRELESS_EXT
+ 
++# export CONFIG_RTL8192CE=m
++# export CONFIG_RTL8192SE=m
++# export CONFIG_RTL8192DE=m
++# export CONFIG_RTL8723AE=m
+-export CONFIG_RTL8192CE=m
+-export CONFIG_RTL8192SE=m
+-export CONFIG_RTL8192DE=m
+-export CONFIG_RTL8723AE=m
+ 
++# export CONFIG_BRCMSMAC=m
+-export CONFIG_BRCMSMAC=m
+ 
++# export CONFIG_MWIFIEX_PCIE=m
+-export CONFIG_MWIFIEX_PCIE=m
+ 
+ endif #CONFIG_PCI
+ ## end of PCI
+@@ -449,10 +449,10 @@
+ ifdef CONFIG_PCMCIA
+ 
+ ifdef CONFIG_COMPAT_KERNEL_2_6_27
++# export CONFIG_LIBERTAS=n
++# export CONFIG_LIBERTAS_CS=n
+-export CONFIG_LIBERTAS=n
+-export CONFIG_LIBERTAS_CS=n
+ else #CONFIG_COMPAT_KERNEL_2_6_27
++# export CONFIG_LIBERTAS_CS=m
+-export CONFIG_LIBERTAS_CS=m
+ NEED_LIBERTAS=y
+ endif #CONFIG_COMPAT_KERNEL_2_6_27
+ 
+@@ -495,13 +495,13 @@
+ endif #CONFIG_COMPAT_KERNEL_2_6_29
+ 
+ 
++# export CONFIG_P54_USB=m
++# export CONFIG_RTL8187=m
+-export CONFIG_P54_USB=m
+-export CONFIG_RTL8187=m
+ ifdef CONFIG_MAC80211_LEDS
+ export CONFIG_RTL8187_LEDS=y
+ endif #CONFIG_MAC80211_LEDS
+ 
++# export CONFIG_AT76C50X_USB=m
+-export CONFIG_AT76C50X_USB=m
+ 
+ ifndef CONFIG_COMPAT_KERNEL_2_6_29
+ export CONFIG_CARL9170=m
+@@ -522,18 +522,18 @@
+ 
+ export CONFIG_ATH6KL_USB=m
+ 
++# export CONFIG_AR5523=m
+-export CONFIG_AR5523=m
+ 
++# export CONFIG_BRCMFMAC_USB=y
+-export CONFIG_BRCMFMAC_USB=y
+ 
+ # RT2500USB does not require firmware
++# export CONFIG_RT2500USB=m
+-export CONFIG_RT2500USB=m
+ ifdef CONFIG_CRC_CCITT
++# export CONFIG_RT2800USB=m
++# export CONFIG_RT2800USB_RT33XX=y
++# export CONFIG_RT2800USB_RT35XX=y
++# export CONFIG_RT2800USB_RT53XX=y
++# export CONFIG_RT2800USB_UNKNOWN=y
+-export CONFIG_RT2800USB=m
+-export CONFIG_RT2800USB_RT33XX=y
+-export CONFIG_RT2800USB_RT35XX=y
+-export CONFIG_RT2800USB_RT53XX=y
+-export CONFIG_RT2800USB_UNKNOWN=y
+ endif #CONFIG_CRC_CCITT
+ export CONFIG_RT2X00_LIB_USB=m
+ NEED_RT2X00=y
+@@ -543,26 +543,26 @@
+ endif #CONFIG_CRC_ITU_T
+ 
+ ifdef CONFIG_COMPAT_KERNEL_2_6_27
++# export CONFIG_LIBERTAS_THINFIRM_USB=n
++# export CONFIG_LIBERTAS_USB=n
++# NEED_LIBERTAS=n
+-export CONFIG_LIBERTAS_THINFIRM_USB=n
+-export CONFIG_LIBERTAS_USB=n
+-NEED_LIBERTAS=n
+ else #CONFIG_COMPAT_KERNEL_2_6_27
++# export CONFIG_LIBERTAS_THINFIRM_USB=m
++# export CONFIG_LIBERTAS_USB=m
++# NEED_LIBERTAS=y
+-export CONFIG_LIBERTAS_THINFIRM_USB=m
+-export CONFIG_LIBERTAS_USB=m
+-NEED_LIBERTAS=y
+ endif #CONFIG_COMPAT_KERNEL_2_6_27
+ 
++# export CONFIG_ORINOCO_USB=m
+-export CONFIG_ORINOCO_USB=m
+ 
++# export CONFIG_BT_HCIBTUSB=m
++# export CONFIG_BT_HCIBCM203X=m
++# export CONFIG_BT_HCIBPA10X=m
++# export CONFIG_BT_HCIBFUSB=m
++# export CONFIG_BT_ATH3K=m
+-export CONFIG_BT_HCIBTUSB=m
+-export CONFIG_BT_HCIBCM203X=m
+-export CONFIG_BT_HCIBPA10X=m
+-export CONFIG_BT_HCIBFUSB=m
+-export CONFIG_BT_ATH3K=m
+ 
++# export CONFIG_RTL8192CU=m
+-export CONFIG_RTL8192CU=m
+ 
++# export CONFIG_MWIFIEX_USB=m
+-export CONFIG_MWIFIEX_USB=m
+ 
+ endif #CONFIG_USB end of USB driver list
+ 
+@@ -571,18 +571,18 @@
+ 
+ ifdef CONFIG_CRC7
+ ifndef CONFIG_COMPAT_KERNEL_2_6_37
++# export CONFIG_COMPAT_WL1251_SPI=m
+-export CONFIG_COMPAT_WL1251_SPI=m
+ endif #CONFIG_COMPAT_KERNEL_2_6_37
++# export CONFIG_WLCORE_SPI=m
+-export CONFIG_WLCORE_SPI=m
+ endif #CONFIG_CRC7
++# export CONFIG_P54_SPI=m
+-export CONFIG_P54_SPI=m
+ 
+ ifdef CONFIG_COMPAT_KERNEL_2_6_27
++# export CONFIG_LIBERTAS_SPI=n
++# NEED_LIBERTAS=n
+-export CONFIG_LIBERTAS_SPI=n
+-NEED_LIBERTAS=n
+ else #CONFIG_COMPAT_KERNEL_2_6_27
++# export CONFIG_LIBERTAS_SPI=m
++# NEED_LIBERTAS=y
+-export CONFIG_LIBERTAS_SPI=m
+-NEED_LIBERTAS=y
+ endif #CONFIG_COMPAT_KERNEL_2_6_27
+ 
+ endif #CONFIG_COMPAT_KERNEL_2_6_25
+@@ -590,38 +590,38 @@
+ 
+ ifdef CONFIG_MMC
+ 
++# export CONFIG_SSB_SDIOHOST=y
++# export CONFIG_B43_SDIO=y
+-export CONFIG_SSB_SDIOHOST=y
+-export CONFIG_B43_SDIO=y
+ 
+ ifdef CONFIG_CRC7
+ ifdef CONFIG_WL12XX_PLATFORM_DATA
+ ifndef CONFIG_COMPAT_KERNEL_2_6_37
++# export CONFIG_COMPAT_WL1251_SDIO=m
+-export CONFIG_COMPAT_WL1251_SDIO=m
+ endif #CONFIG_COMPAT_KERNEL_2_6_37
+ ifndef CONFIG_COMPAT_KERNEL_2_6_38
++# export CONFIG_WLCORE_SDIO=m
+-export CONFIG_WLCORE_SDIO=m
+ endif #CONFIG_COMPAT_KERNEL_2_6_38
+ endif #CONFIG_WL12XX_PLATFORM_DATA
+ endif #CONFIG_CRC7
+ 
++# export CONFIG_MWIFIEX_SDIO=m
+-export CONFIG_MWIFIEX_SDIO=m
+ 
+ ifndef CONFIG_COMPAT_KERNEL_2_6_32
++# export CONFIG_COMPAT_LIBERTAS_SDIO=m
++# NEED_LIBERTAS=y
+-export CONFIG_COMPAT_LIBERTAS_SDIO=m
+-NEED_LIBERTAS=y
+ endif #CONFIG_COMPAT_KERNEL_2_6_32
+ 
++# export CONFIG_BT_HCIBTSDIO=m
++# export CONFIG_BT_MRVL_SDIO=m
+-export CONFIG_BT_HCIBTSDIO=m
+-export CONFIG_BT_MRVL_SDIO=m
+ 
++# export CONFIG_ATH6KL_SDIO=m
+-export CONFIG_ATH6KL_SDIO=m
+ 
++# export CONFIG_BRCMFMAC_SDIO=y
+-export CONFIG_BRCMFMAC_SDIO=y
+ 
+ endif #CONFIG_MMC
+ 
++# export CONFIG_RTLWIFI=m
++# export CONFIG_RTL8192C_COMMON=m
+-export CONFIG_RTLWIFI=m
+-export CONFIG_RTL8192C_COMMON=m
+ 
+ # Common rt2x00 requirements
+ ifeq ($(NEED_RT2X00),y)
+@@ -643,54 +643,54 @@
+ endif
+ 
+ # p54
++# export CONFIG_P54_COMMON=m
+-export CONFIG_P54_COMMON=m
+ ifdef CONFIG_MAC80211_LEDS
++# export CONFIG_P54_LEDS=y
+-export CONFIG_P54_LEDS=y
+ endif #CONFIG_MAC80211_LEDS
+ 
+ # Atheros
+ export CONFIG_ATH_COMMON=m
+ # export CONFIG_ATH_DEBUG=y
+ 
++# export CONFIG_BRCMUTIL=m
+-export CONFIG_BRCMUTIL=m
+ # export CONFIG_BRCMDBG=y
+ 
+ ifndef CONFIG_COMPAT_KERNEL_2_6_29
++# export CONFIG_BRCMFMAC=m
+-export CONFIG_BRCMFMAC=m
+ endif #CONFIG_COMPAT_KERNEL_2_6_29
+ 
+ ifndef CONFIG_COMPAT_KERNEL_2_6_30
+ 
++# export CONFIG_WL_TI=y
++# export CONFIG_WLCORE=m
+-export CONFIG_WL_TI=y
+-export CONFIG_WLCORE=m
+ 
+ ifdef CONFIG_CRC7
++# export CONFIG_WL1251=m
++# export CONFIG_WL12XX=m
++# export CONFIG_WL18XX=m
+-export CONFIG_WL1251=m
+-export CONFIG_WL12XX=m
+-export CONFIG_WL18XX=m
+ endif #CONFIG_CRC7
+ 
+ endif #CONFIG_COMPAT_KERNEL_2_6_30
+ 
+ ifndef CONFIG_COMPAT_KERNEL_2_6_27
++# export CONFIG_COMPAT_MWIFIEX=m
+-export CONFIG_COMPAT_MWIFIEX=m
+ endif #CONFIG_COMPAT_KERNEL_2_6_27
+ 
+ ifndef CONFIG_CORDIC
++# export CONFIG_COMPAT_CORDIC=y
+-export CONFIG_COMPAT_CORDIC=y
+ endif #CONFIG_CORDIC
+ 
+ ifndef CONFIG_CRC8
++# export CONFIG_COMPAT_CRC8=y
+-export CONFIG_COMPAT_CRC8=y
+ endif #CONFIG_CRC8
+ 
+ ifdef CONFIG_COMPAT_KERNEL_2_6_27
++# export CONFIG_LIBERTAS=n
+-export CONFIG_LIBERTAS=n
+ else #CONFIG_COMPAT_KERNEL_2_6_27
+ ifeq ($(NEED_LIBERTAS),y)
++# export CONFIG_LIBERTAS_THINFIRM=m
++# export CONFIG_LIBERTAS=m
++# export CONFIG_LIBERTAS_MESH=y
+-export CONFIG_LIBERTAS_THINFIRM=m
+-export CONFIG_LIBERTAS=m
+-export CONFIG_LIBERTAS_MESH=y
+ # export CONFIG_LIBERTAS_DEBUG=y
+ endif
+ endif #CONFIG_COMPAT_KERNEL_2_6_27
+@@ -698,11 +698,11 @@
+ # We need the backported rfkill module on kernel < 2.6.31.
+ # In more recent kernel versions use the in kernel rfkill module.
+ ifdef CONFIG_COMPAT_KERNEL_2_6_31
++# export CONFIG_RFKILL_BACKPORT=m
+-export CONFIG_RFKILL_BACKPORT=m
+ ifdef CONFIG_LEDS_TRIGGERS
++# export CONFIG_RFKILL_BACKPORT_LEDS=y
+-export CONFIG_RFKILL_BACKPORT_LEDS=y
+ endif #CONFIG_LEDS_TRIGGERS
++# export CONFIG_RFKILL_BACKPORT_INPUT=y
+-export CONFIG_RFKILL_BACKPORT_INPUT=y
+ endif #CONFIG_COMPAT_KERNEL_2_6_31
+ 
+ # compilation has been tested down to 3.0 but run time

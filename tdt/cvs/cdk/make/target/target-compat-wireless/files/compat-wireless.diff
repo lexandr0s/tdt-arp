@@ -1,0 +1,52 @@
+This fixes the following warning:
+
+compat/compat-2.6.35.o
+compat/compat-2.6.35.c: In function ‘netif_set_real_num_tx_queues’:
+compat/compat-2.6.35.c:45:1: warning: control reaches end of non-void function [-Wreturn-type]
+
+Signed-off-by: Hauke Mehrtens <hauke@xxxxxxxxxx>
+---
+ compat/compat-2.6.35.c |    2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/compat/compat-2.6.35.c b/compat/compat-2.6.35.c
+index d33db46..0fc0db2 100644
+--- a/compat/compat-2.6.35.c
++++ b/compat/compat-2.6.35.c
+@@ -42,12 +42,14 @@ int netif_set_real_num_tx_queues(struct net_device *dev, unsigned int txq)
+ 		dev->real_num_tx_queues = txq;
+ 		qdisc_reset_all_tx_gt(dev, txq);
+ 	}
++	return 0;
+ }
+ #else
+ int netif_set_real_num_tx_queues(struct net_device *dev, unsigned int txq)
+ {
+ 	dev->egress_subqueue_count = txq;
+ 	/* XXX: consider qdisc reset for older kernels */
++	return 0;
+ }
+ #endif
+ EXPORT_SYMBOL_GPL(netif_set_real_num_tx_queues);
+--- a/drivers/net/wireless/ath/ath5k/Kconfig	2012-12-06 22:14:19.000000000 +0100
++++ b/drivers/net/wireless/ath/ath5k/Kconfig	2014-08-13 21:21:15.600349384 +0200
+@@ -54,7 +54,7 @@
+ 
+ config ATH5K_AHB
+ 	bool "Atheros 5xxx AHB bus support"
+-	depends on (ATHEROS_AR231X && !PCI)
++	depends on ATHEROS_AR231X
+ 	---help---
+ 	  This adds support for WiSoC type chipsets of the 5xxx Atheros
+ 	  family.
+--- a/drivers/net/wireless/ath/ath5k/led.c
++++ b/drivers/net/wireless/ath/ath5k/led.c
+@@ -173,7 +173,7 @@ int __devinit ath5k_init_leds(struct ath5k_hw *ah)
+ 	if (!ah->pdev)
+ 		return 0;
+ 
+-#ifdef CONFIG_ATHEROS_AR231X
++#if defined(CONFIG_ATHEROS_AR231X) || !defined(CONFIG_PCI)
+ 	match = NULL;
+ #else
+ 	match = pci_match_id(&ath5k_led_devices[0], pdev);

@@ -1,0 +1,33 @@
+Subject: [PATCH] net: mac80211: tx.c: be sure of 'sdata->vif.type' must be
+ NL80211_IFTYPE_AP when be in NL80211_IFTYPE_AP case
+
+In next-20131122 tree, if "sdata->vif.type != NL80211_IFTYPE_AP",
+'chanctx_conf' will be not initialized, so need check it. Related
+warning (with allmodconfig under hexagon):
+
+    CC [M]  net/mac80211/tx.o
+  net/mac80211/tx.c: In function 'ieee80211_subif_start_xmit':
+  net/mac80211/tx.c:1827:27: warning: 'chanctx_conf' may be used uninitialized in this function [-Wuninitialized]
+
+
+Signed-off-by: Chen Gang <gang.chen.5i5j@...il.com>
+---
+ net/mac80211/tx.c |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index c558b24..f3245d6 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -1794,8 +1794,9 @@
+ 		memcpy(hdr.addr2, sdata->vif.addr, ETH_ALEN);
+ 		memcpy(hdr.addr3, skb->data + ETH_ALEN, ETH_ALEN);
+ 		hdrlen = 24;
+-		if (sdata->vif.type == NL80211_IFTYPE_AP)
+-			chanctx_conf = rcu_dereference(sdata->vif.chanctx_conf);
++		if (sdata->vif.type != NL80211_IFTYPE_AP)
++			goto fail_rcu;
++		chanctx_conf = rcu_dereference(sdata->vif.chanctx_conf);
+ 		if (!chanctx_conf)
+ 			goto fail_rcu;
+ 		band = chanctx_conf->def.chan->band;
