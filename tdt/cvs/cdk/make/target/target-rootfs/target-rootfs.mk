@@ -4,7 +4,7 @@
 package[[ target_rootfs
 
 IPKBOX_LIST_${P} = $(target_glibc) $(target_gcc) $(target_gcc_lib) $(target_base_files) $(target_driver) $(target_netbase) $(target_opkg) $(target_busybox) $(target_base_passwd) \
-$(target_ustslave) $(target_sysvinit) $(target_devinit) $(target_udev) $(target_lirc) $(target_evremote2) $(target_vsftpd) $(target_ethtool) $(target_fonts) \
+$(target_ustslave) $(target_sysvinit) $(target_devinit) $(target_udev) $(target_lirc) $(target_vsftpd) $(target_ethtool) $(target_fonts) \
 $(target_fp_control) $(target_stfbcontrol) $(target_libfribidi) $(target_showiframe) $(target_portmap) $(target_firmware) $(target_bootelf) $(target_util_linux) $(target_e2fsprogs) \
 $(target_udev_rules) $(target_bootlogo) $(target_flash_tools) $(target_rfkill) $(target_distro_feed_configs) $(target_initscripts) $(target_update_rcd)
 
@@ -42,7 +42,7 @@ opkg_my_list += \
 	bootlogo \
 	firmware \
 	ustslave \
-	evremote2 \
+	lirc \
 	fp-control \
 	stfbcontrol \
 	showiframe \
@@ -155,7 +155,7 @@ opkg_my_list += wireless-tools \
 		kernel-module-rtl871x \
 		kernel-module-rtl8188eu \
 		kernel-module-ath9k-htc \
-		kernel-module-rt2x00
+		kernel-module-rt73usb
 endif
 
 ifdef CONFIG_3G_SUPPORT
