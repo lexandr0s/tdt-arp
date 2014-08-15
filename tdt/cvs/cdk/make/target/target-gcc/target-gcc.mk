@@ -39,7 +39,7 @@ FILES_libgcc = /lib/libgcc_s*
 NAME_libstdcxx = libstdc++6
 DESCRIPTION_libstdcxx = libstdc++
 RDEPENDS_libstdcxx = libgcc1
-FILES_libstdcxx = /usr/lib/libstdc++.so.*
+FILES_libstdcxx = /usr/lib/libstdc++.so.6 /usr/lib/libstdc++.so.6.0.19
 
 NAME_libstdcxx_dev = libstdc++6-dev
 DESCRIPTION_libstdcxx_dev = libstdc++
