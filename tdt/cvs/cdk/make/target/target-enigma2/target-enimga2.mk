@@ -4,7 +4,7 @@
 ifeq ($(strip $(CONFIG_BUILD_ENIGMA2)),y)
 package[[ target_enigma2
 
-BDEPENDS_${P} = $(target_libsigc) $(target_libdvbsipp) $(target_freetype) $(target_tuxtxt32bpp) $(target_libungif) $(target_libpng) $(target_libxmlccwrap) $(target_python) $(target_python_twisted) $(target_libdreamdvd) $(target_libmme_host) $(target_libmmeimage) $(target_libfribidi)
+BDEPENDS_${P} = $(target_libsigc) $(target_libdvbsipp) $(target_freetype) $(target_tuxtxt32bpp) $(target_libgif) $(target_libpng) $(target_libxmlccwrap) $(target_python) $(target_python_twisted) $(target_libdreamdvd) $(target_libmme_host) $(target_libmmeimage) $(target_libfribidi)
 
 PV_${P} = git
 PR_${P} = 6
@@ -199,7 +199,7 @@ PACKAGES_${P} = \
 	enigma2_plugin_skin_magic \
 	enigma2_plugin_skin_megamod
 
-RDEPENDS_enigma2 += libgcc1 libpython2.7 python-threading libtuxtxt0 libbz2 libungif4 libfreetype6 python-core python-twisted-core libdvbsi++1 python-re font-ae-almateen font-andale font-lcd font-md-khmurabi font-tuxtxt font-nmsbd libpng16 font-valis-enigma libstdc++6 libglib libsigc-1.2 python-fcntl python-netclient python-netserver python-codecs libcrypto1 libfribidi0 python-zopeinterface python-xml libtuxtxt32bpp0 python-pickle libxmlccwrap python-shell ethtool libjpeg8 libdreamdvd0 python-twisted-web python-zlib python-crypt python-lang python-subprocess enigma2_meta
+RDEPENDS_enigma2 += libgcc1 libpython2.7 python-threading libtuxtxt0 libbz2 libgif4 libfreetype6 python-core python-twisted-core libdvbsi++1 python-re font-ae-almateen font-andale font-lcd font-md-khmurabi font-tuxtxt font-nmsbd libpng16 font-valis-enigma libstdc++6 libglib libsigc-1.2 python-fcntl python-netclient python-netserver python-codecs libcrypto1 libfribidi0 python-zopeinterface python-xml libtuxtxt32bpp0 python-pickle libxmlccwrap python-shell ethtool libjpeg8 libdreamdvd0 python-twisted-web python-zlib python-crypt python-lang python-subprocess enigma2_meta
 FILES_enigma2 = \
 	/usr/bin \
 	/usr/lib/libopen.s* \
