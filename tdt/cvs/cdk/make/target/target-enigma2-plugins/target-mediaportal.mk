@@ -17,7 +17,6 @@ rule[[
 call[[ git ]]
 
 CONFIG_FLAGS_${P} = \
-	--with-libsdl=no \
 	--datadir=/usr/share \
 	--libdir=/usr/lib \
 	--bindir=/usr/bin \
