@@ -31,6 +31,11 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 
 call[[ ipk ]]
 
+DESCRIPTION_${P} = Twisted is an event-driven networking framework written in Python and \
+ licensed under the LGPL. Twisted supports TCP, UDP, SSL/TLS, multicast,\
+ Unix sockets, a large number of protocols (including \
+ HTTP, NNTP, IMAP, SSH, IRC, FTP, and others), and much more
+
 PACKAGES_${P} = \
 	python_twisted_conch \
 	python_twisted_core \
@@ -47,18 +52,10 @@ PACKAGES_${P} = \
 	python_twisted_zsh \
 	python_twisted
 
-DESCRIPTION_python_twisted = Twisted is an event-driven networking framework written in Python and \
- licensed under the LGPL. Twisted supports TCP, UDP, SSL/TLS, multicast,\
- Unix sockets, a large number of protocols (including \
- HTTP, NNTP, IMAP, SSH, IRC, FTP, and others), and much more
 RDEPENDS_python_twisted = python_twisted_news python_twisted_lore python_twisted_conch python_twisted_names python_twisted_words \
 python_twisted_runner python_core python_twisted_web python_twisted_mail
 FILES_python_twisted = \
 
-DESCRIPTION_python_twisted_conch = Twisted is an event-driven networking framework written in Python and \
- licensed under the LGPL. Twisted supports TCP, UDP, SSL/TLS, multicast,\
- Unix sockets, a large number of protocols (including \
- HTTP, NNTP, IMAP, SSH, IRC, FTP, and others), and much more
 RDEPENDS_python_twisted_conch = python_twisted_core python_twisted_protocols
 FILES_python_twisted_conch = \
   /usr/bin/cftp \
@@ -75,10 +72,7 @@ FILES_python_twisted_conch = \
   $(PYTHON_DIR)/site-packages/twisted/conch/ui \
   $(PYTHON_DIR)/site-packages/twisted/plugins/twisted_conch.p*
 
-DESCRIPTION_python_twisted_core = Twisted is an event-driven networking framework written in Python and \
- licensed under the LGPL. Twisted supports TCP, UDP, SSL/TLS, multicast,\
- Unix sockets, a large number of protocols (including HTTP, NNTP, IMAP, SSH, IRC, FTP, and others), and much more.
-RDEPENDS_python_twisted_core = python_core python_zopeinterface libc6
+RDEPENDS_python_twisted_core = python_core python_zopeinterface libc6 python_numbers python_pyopenssl
 FILES_python_twisted_core = \
   /usr/bin/manhole \
   /usr/bin/pyhtmlizer \
@@ -121,9 +115,6 @@ FILES_python_twisted_core = \
   $(PYTHON_DIR)/site-packages/twisted/copyright.p* \
   $(PYTHON_DIR)/site-packages/twisted/plugin.p*
 
-DESCRIPTION_python_twisted_lore = Twisted is an event-driven networking framework written in Python and \
- licensed under the LGPL. Twisted supports TCP, UDP, SSL/TLS, multicast,\
- Unix sockets, a large number of protocols (including HTTP, NNTP, IMAP, SSH, IRC, FTP, and others), and much more.
 RDEPENDS_python_twisted_lore = python_twisted_core
 FILES_python_twisted_lore = \
   /usr/bin/lore \
@@ -132,9 +123,6 @@ FILES_python_twisted_lore = \
   $(PYTHON_DIR)/site-packages/twisted/lore/topfiles \
   $(PYTHON_DIR)/site-packages/twisted/plugins/twisted_lore.*
 
-DESCRIPTION_python_twisted_mail = Twisted is an event-driven networking framework written in Python and \
- licensed under the LGPL. Twisted supports TCP, UDP, SSL/TLS, multicast,\
- Unix sockets, a large number of protocols (including HTTP, NNTP, IMAP, SSH, IRC, FTP, and others), and much more.
 RDEPENDS_python_twisted_mail = python_twisted_core python_twisted_protocols
 FILES_python_twisted_mail = \
   /usr/bin/mailmail \
@@ -143,51 +131,33 @@ FILES_python_twisted_mail = \
   $(PYTHON_DIR)/site-packages/twisted/mail/topfiles \
   $(PYTHON_DIR)/site-packages/twisted/plugins/twisted_mail.*
 
-DESCRIPTION_python_twisted_names = Twisted is an event-driven networking framework written in Python and \
- licensed under the LGPL. Twisted supports TCP, UDP, SSL/TLS, multicast,\
- Unix sockets, a large number of protocols (including HTTP, NNTP, IMAP, SSH, IRC, FTP, and others), and much more.
 RDEPENDS_python_twisted_names = python_twisted_core
 FILES_python_twisted_names = \
   $(PYTHON_DIR)/site-packages/twisted/names/*.* \
   $(PYTHON_DIR)/site-packages/twisted/names/topfiles \
   $(PYTHON_DIR)/site-packages/twisted/plugins/twisted_names.*
 
-DESCRIPTION_python_twisted_news = Twisted is an event-driven networking framework written in Python and \
- licensed under the LGPL. Twisted supports TCP, UDP, SSL/TLS, multicast,\
- Unix sockets, a large number of protocols (including HTTP, NNTP, IMAP, SSH, IRC, FTP, and others), and much more.
 RDEPENDS_python_twisted_news = python_twisted_core python_twisted_protocols
 FILES_python_twisted_news = \
   $(PYTHON_DIR)/site-packages/twisted/news/*.p* \
   $(PYTHON_DIR)/site-packages/twisted/news/topfiles \
   $(PYTHON_DIR)/site-packages/twisted/plugins/twisted_news.*
 
-DESCRIPTION_python_twisted_pair = Twisted is an event-driven networking framework written in Python and \
- licensed under the LGPL. Twisted supports TCP, UDP, SSL/TLS, multicast,\
- Unix sockets, a large number of protocols (including HTTP, NNTP, IMAP, SSH, IRC, FTP, and others), and much more.
 RDEPENDS_python_twisted_pair = python_twisted_core
 FILES_python_twisted_pair = \
   $(PYTHON_DIR)/site-packages/twisted/pair/*.p* \
   $(PYTHON_DIR)/site-packages/twisted/pair/topfiles
 
-DESCRIPTION_python_twisted_protocols = Twisted is an event-driven networking framework written in Python and \
- licensed under the LGPL. Twisted supports TCP, UDP, SSL/TLS, multicast,\
- Unix sockets, a large number of protocols (including HTTP, NNTP, IMAP, SSH, IRC, FTP, and others), and much more.
 FILES_python_twisted_protocols = \
   $(PYTHON_DIR)/site-packages/twisted/protocols/*.p* \
   $(PYTHON_DIR)/site-packages/twisted/protocols/mice \
   $(PYTHON_DIR)/site-packages/twisted/protocols/gps
 
-DESCRIPTION_python_twisted_runner = Twisted is an event-driven networking framework written in Python and \
- licensed under the LGPL. Twisted supports TCP, UDP, SSL/TLS, multicast,\
- Unix sockets, a large number of protocols (including HTTP, NNTP, IMAP, SSH, IRC, FTP, and others), and much more.
 RDEPENDS_python_twisted_runner = python_twisted_core python_twisted_protocols libc6
 FILES_python_twisted_runner = \
   $(PYTHON_DIR)/site-packages/twisted/runner/*.* \
   $(PYTHON_DIR)/site-packages/twisted/runner/topfiles
 
-DESCRIPTION_python_twisted_test = Twisted is an event-driven networking framework written in Python and \
- licensed under the LGPL. Twisted supports TCP, UDP, SSL/TLS, multicast,\
- Unix sockets, a large number of protocols (including HTTP, NNTP, IMAP, SSH, IRC, FTP, and others), and much more.
 RDEPENDS_python_twisted_test = python_twisted libc6
 FILES_python_twisted_test = \
   $(PYTHON_DIR)/site-packages/twisted/application/test \
@@ -209,9 +179,6 @@ FILES_python_twisted_test = \
   $(PYTHON_DIR)/site-packages/twisted/web/test \
   $(PYTHON_DIR)/site-packages/twisted/words/test
 
-DESCRIPTION_python_twisted_web = Twisted is an event-driven networking framework written in Python and \
- licensed under the LGPL. Twisted supports TCP, UDP, SSL/TLS, multicast,\
- Unix sockets, a large number of protocols (including HTTP, NNTP, IMAP, SSH, IRC, FTP, and others), and much more.
 RDEPENDS_python_twisted_web = python_twisted_core python_twisted_protocols
 FILES_python_twisted_web = \
   $(PYTHON_DIR)/site-packages/twisted/web/*.* \
@@ -219,9 +186,6 @@ FILES_python_twisted_web = \
   $(PYTHON_DIR)/site-packages/twisted/web/_auth \
   $(PYTHON_DIR)/site-packages/twisted/plugins/twisted_web.*
 
-DESCRIPTION_python_twisted_words = Twisted is an event-driven networking framework written in Python and \
- licensed under the LGPL. Twisted supports TCP, UDP, SSL/TLS, multicast,\
- Unix sockets, a large number of protocols (including HTTP, NNTP, IMAP, SSH, IRC, FTP, and others), and much more.
 RDEPENDS_python_twisted_words = python_twisted_core
 FILES_python_twisted_words = \
   $(PYTHON_DIR)/site-packages/twisted/words/*.* \
@@ -231,9 +195,6 @@ FILES_python_twisted_words = \
   $(PYTHON_DIR)/site-packages/twisted/words/xish \
   $(PYTHON_DIR)/site-packages/twisted/plugins/twisted_words.*
 
-DESCRIPTION_python_twisted_zsh = Twisted is an event-driven networking framework written in Python and \
- licensed under the LGPL. Twisted supports TCP, UDP, SSL/TLS, multicast,\
- Unix sockets, a large number of protocols (including HTTP, NNTP, IMAP, SSH, IRC, FTP, and others), and much more.
 FILES_python_twisted_zsh = \
   $(PYTHON_DIR)/site-packages/twisted/python/zshc* \
   $(PYTHON_DIR)/site-packages/twisted/python/zsh
