@@ -4,8 +4,6 @@ use warnings;
 use IO::File;
 use constant DEBUG => 0;
 
-my @allurls;
-
 # input makefile for processing
 my $filename = shift;
 
@@ -699,8 +697,6 @@ sub process_sources ($)
 
 sub process_download ($)
 {
-
-    my $head;
     my $output = "";
 
     my ($p, $f, $cmd, $url, $opts_ref) = process_rule($_);
@@ -712,35 +708,15 @@ sub process_download ($)
     my $file = $f;
     $file =~ s/\$\(archivedir\)//;
 
-   my $suburl = $url;
-    # omit duplicating urls
-# temporary disable
-=pod
-    my $suburl = subs_vars($url);
-    if( $suburl ~~ @allurls )
-    {
-       #warn $suburl . "\n";
-       next;
-    }
-=cut
-    push(@allurls, $suburl);
-    
     #warn "download: " . $url . "\n";
-    
-    $head .= " " . $f;
-    $output .= "$f :\n";
+    $output .= "_all_download += $f\n";
+    $output .= "$f:\n";
 
-    if ( $url =~ m#^ftp://# )
+    my $mirror = "\$(WGET_MIRROR)";
+
+    if ( $url =~ m#^(ftp|http|https)://# )
     {
-      $output .= "\t\$(WGET) \$(archivedir) $url";
-    }
-    elsif ( $url =~ m#^http://# )
-    {
-      $output .= "\t\$(WGET) \$(archivedir) $url";
-    }
-    elsif ( $url =~ m#^https://# )
-    {
-      $output .= "\t\$(WGET) \$(archivedir) $url";
+      $output .= "\t\$(WGET) \$(archivedir) $url || \$(WGET) \$(archivedir) $mirror/$file";
     }
     elsif ( $url =~ m#^svn://# )
     {
@@ -757,7 +733,7 @@ sub process_download ($)
       $output .= " -b " . $opts{"b"} if $opts{"b"};
     }
 
-    $output .= "\n\n";
+    $output .= "\n";
     return "$output"
 }
 
