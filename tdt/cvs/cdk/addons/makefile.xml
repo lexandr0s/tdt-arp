@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE language SYSTEM "language.dtd"
+[
+      <!ENTITY assign "[:+?]?">
+      <!ENTITY br1 ")">
+      <!ENTITY br2 "}">
+]>
+
+<!-- Makefile syntax mostly rewritten by Alex Maystrenko -->
+
+<!-- copy to ~/.kde4/share/apps/katepart/syntax/ -->
+
+<!-- Previous authors : -->
+<!-- Makefile syntaxfile v0.9 by Per Wigren <wigren@home.se> -->
+<!-- Modified by Joseph Wenninger <jowenn@kde.org> -->
+<!-- Modified by Rui Santana <santana.rui@gmail.com> -->
+<!-- v2.0 by Andreas Nordal <andreas.nordal@gmail.com> -->
+<!-- small priority to allow for example Makefile.cpp to be detected as cpp file -->
+
+
+<language name="Makefile" section="Other"
+          version="2.0" kateversion="2.4"
+          extensions="GNUmakefile;Makefile;makefile;GNUmakefile.*;Makefile.*;makefile.*;*.mk"
+          mimetype="text/x-makefile"
+          author="Per Wigren (wigren@home.se)" license="">
+  <highlighting>
+    <list name = "keywords">
+      <item> include </item>
+      <item> ifdef </item>
+      <item> ifeq </item>
+      <item> ifndef </item>
+      <item> ifneq </item>
+      <item> else </item>
+      <item> endif </item>
+      <item> override </item>
+      <item> export </item>
+    </list>
+    <list name = "functionsVar">
+      <item> call </item>
+      <item> foreach </item>
+      <item> value </item>
+      <item> origin </item>
+      <item> flavor </item>
+    </list>
+    <list name = "functions">
+      <item> subst </item>
+      <item> patsubst </item>
+      <item> strip </item>
+      <item> findstring </item>
+      <item> filter </item>
+      <item> filter-out </item>
+      <item> sort </item>
+      <item> word </item>
+      <item> wordlist </item>
+      <item> words </item>
+      <item> firstword </item>
+      <item> lastword </item>
+      <item> dir </item>
+      <item> notdir </item>
+      <item> suffix </item>
+      <item> basename </item>
+      <item> addsuffix </item>
+      <item> addprefix </item>
+      <item> join </item>
+      <item> wildcard </item>
+      <item> realpath </item>
+      <item> abspath </item>
+      <item> if </item>
+      <item> or </item>
+      <item> and </item>
+      <item> shell </item>
+      <item> error </item>
+      <item> warning </item>
+      <item> info </item>
+    </list>
+
+    <contexts>
+      
+      <!-- Main top level parsing rules -->
+      <context name="top0" attribute="Normal" lineEndContext="#stay">
+        <!--<DetectSpaces/>-->
+        <keyword attribute="Keyword" context="#stay" String="keywords"/>
+        <RegExpr attribute="Comment" context="rule0" String="^\t"/>
+        <RegExpr attribute="Comment" context="#stay" String="[^\t]*#.*$"/>
+        <RegExpr lookAhead="true" context="define0" String="^define[\s$]" />
+        <RegExpr lookAhead="true" context="assign0" String="^[^\t:+?=]+\s*(\+|:|\?|\?:)?="/>
+        <RegExpr lookAhead="true" context="target0" String="^[^\t\s]+::?[^:]*"/>
+        <IncludeRules context="general"/>
+      </context>
+
+      <context name="close0" attribute="Variable" lineEndContext="#stay">
+      </context>
+
+      <context name="defineVar0" attribute="Variable" lineEndContext="#pop">
+        <IncludeRules context="close0"/>
+        <IncludeRules context="general"/>
+      </context>
+
+      <context name="define0" attribute="Normal" lineEndContext="#stay">
+        <StringDetect attribute="Keyword" context="defineVar0" String="define" />
+        <IncludeRules context="close0" />
+        <StringDetect attribute="Keyword" context="#pop" String="endef" />
+        <IncludeRules context="general" />
+      </context>
+
+      <context name="value0" attribute="Normal" lineEndContext="#pop">
+        <IncludeRules context="close0"/>
+        <IncludeRules context="general"/>
+      </context>
+
+      <context name="assign0" attribute="Variable" lineEndContext="#pop">
+        <IncludeRules context="close0"/>
+        <RegExpr attribute="Operator" context="value0" String="[:+?]?="/>
+        <IncludeRules context="general"/>
+      </context>
+
+      <context name="target0" attribute="Target" lineEndContext="#pop">
+        <IncludeRules context="close0"/>
+        <RegExpr attribute="Target" context="value0" String="::?"/>
+        <IncludeRules context="general"/>
+      </context>
+
+      <context name="rule0" attribute="Normal" lineEndContext="#pop">
+        <IncludeRules context="close0"/>
+        <IncludeRules context="general"/>
+      </context>
+
+      
+      <!--Common parsing rules-->
+      <context name="general" attribute="Normal" lineEndContext="#pop">
+        <DetectSpaces/>
+        <LineContinue attribute="Operator" context="#stay"/>
+        <StringDetect attribute="Operator" context="open1" String="$(" />
+        <StringDetect attribute="Normal" context="openPlain1" String="(" />
+        <StringDetect attribute="Operator" context="open2" String="${" />
+        <RegExpr attribute="Operator" context="#stay" String="\$." />
+      </context>
+      
+      <!--Parsing rules inside $(...)-->
+      <context name="close1" attribute="Variable" lineEndContext="#stay">
+        <StringDetect lookAhead="true" context="#pop" String="&br1;"/>
+      </context>
+      
+      <!--Copy here-->
+      <context name="openPlain1" attribute="Normal" lineEndContext="#stay">
+        <StringDetect attribute="Normal" context="#pop" String="&br1;" />
+        <IncludeRules context="general"/>
+      </context>
+      <context name="open1" attribute="Variable" lineEndContext="#stay">
+        <StringDetect attribute="Operator" context="#pop" String="&br1;" />
+        <keyword lookAhead="true" context="func1" String="functions"/>
+        <keyword lookAhead="true" context="func1" String="functionsVar"/>
+        <StringDetect attribute="Keyword" context="eval1" String="eval"/>
+        <IncludeRules context="general"/>
+      </context>
+
+      <context name="func1" attribute="Normal" lineEndContext="#stay">
+        <IncludeRules context="close1"/>
+        <keyword attribute="Keyword" context="#stay" String="functions"/>
+        <keyword attribute="Keyword" context="funcVar1" String="functionsVar"/>
+        <IncludeRules context="general"/>
+      </context>
+
+      <context name="funcVar1" attribute="Variable" lineEndContext="#stay">
+        <IncludeRules context="close1"/>
+        <DetectChar attribute="Normal" context="#pop" char=","/>
+        <IncludeRules context="general"/>
+      </context>
+
+      <context name="eval1" attribute="Normal" lineEndContext="#stay">
+        <IncludeRules context="close1"/>
+        <keyword attribute="Keyword" context="#stay" String="keywords"/>
+        <RegExpr attribute="Comment" context="#stay" String="#.*$"/>
+        <RegExpr lookAhead="true" context="assign1" String="[^:+?]+\s*[:+?]?="/>
+        <RegExpr lookAhead="true" context="target1" String=".*::?"/>
+        <IncludeRules context="general"/>
+      </context>
+
+      <context name="value1" attribute="Normal" lineEndContext="#pop">
+        <IncludeRules context="close1"/>
+        <IncludeRules context="general"/>
+      </context>
+
+      <context name="assign1" attribute="Variable" lineEndContext="#pop">
+        <IncludeRules context="close1"/>
+        <RegExpr attribute="Operator" context="value1" String="[:+?]?="/>
+        <IncludeRules context="general"/>
+      </context>
+
+      <context name="target1" attribute="Target" lineEndContext="#pop">
+        <IncludeRules context="close1"/>
+        <RegExpr attribute="Target" context="value1" String="::?"/>
+        <IncludeRules context="general"/>
+      </context>
+
+      <!--End copy-->
+
+      <!--Parsing rules inside ${...}-->
+      <context name="close2" attribute="Variable" lineEndContext="#stay">
+        <StringDetect lookAhead="true" context="#pop" String="&br2;"/>
+      </context>
+
+      <!--Copy and replace 1 with 2-->
+      <context name="open2" attribute="Variable" lineEndContext="#stay">
+        <StringDetect attribute="Operator" context="#pop" String="&br2;" />
+        <keyword lookAhead="true" context="func2" String="functions"/>
+        <keyword lookAhead="true" context="func2" String="functionsVar"/>
+        <StringDetect attribute="Keyword" context="eval2" String="eval"/>
+        <IncludeRules context="general"/>
+      </context>
+
+      <context name="func2" attribute="Normal" lineEndContext="#stay">
+        <IncludeRules context="close2"/>
+        <keyword attribute="Keyword" context="#stay" String="functions"/>
+        <keyword attribute="Keyword" context="funcVar2" String="functionsVar"/>
+        <IncludeRules context="general"/>
+      </context>
+
+      <context name="funcVar2" attribute="Variable" lineEndContext="#stay">
+        <IncludeRules context="close2"/>
+        <DetectChar attribute="Normal" context="#pop" char=","/>
+        <IncludeRules context="general"/>
+      </context>
+
+      <context name="eval2" attribute="Normal" lineEndContext="#stay">
+        <IncludeRules context="close2"/>
+        <keyword attribute="Keyword" context="#stay" String="keywords"/>
+        <RegExpr attribute="Comment" context="#stay" String="#.*$"/>
+        <RegExpr lookAhead="true" context="assign2" String="[^:+?]+\s*[:+?]?="/>
+        <RegExpr lookAhead="true" context="target2" String=".*:"/>
+        <IncludeRules context="general"/>
+      </context>
+
+      <context name="value2" attribute="Normal" lineEndContext="#pop">
+        <IncludeRules context="close2"/>
+        <IncludeRules context="general"/>
+      </context>
+
+      <context name="assign2" attribute="Variable" lineEndContext="#pop">
+        <IncludeRules context="close2"/>
+        <RegExpr attribute="Operator" context="value2" String="[:+?]?="/>
+      </context>
+
+      <context name="target2" attribute="Target" lineEndContext="#pop">
+        <IncludeRules context="close2"/>
+        <RegExpr attribute="Target" context="value1" String="::?"/>
+        <IncludeRules context="general"/>
+      </context>
+      <!--End copy-->
+
+    </contexts>
+
+
+    <itemDatas>
+      <itemData name="Normal"    defStyleNum="dsNormal" spellChecking="0"/>
+      <itemData name="Keyword"   defStyleNum="dsKeyword" spellChecking="0"/>
+      <itemData name="Comment"   defStyleNum="dsComment"/>
+      <itemData name="String"    defStyleNum="dsString" spellChecking="0"/>
+      <itemData name="Variable"  defStyleNum="dsDataType" spellChecking="0"/>
+      <itemData name="Target"    defStyleNum="dsDecVal" spellChecking="0"/>
+<!--       <itemData name="Section"   defStyleNum="dsOthers" spellChecking="0"/> -->
+<!--       <itemData name="Prereq"    defStyleNum="dsDataType" spellChecking="0"/> -->
+<!--       <itemData name="FuncParam" defStyleNum="dsNormal" spellChecking="0"/> -->
+      <itemData name="Operator"  defStyleNum="dsChar" spellChecking="0"/>
+<!--       <itemData name="Silent"    defStyleNum="dsFunction" spellChecking="0"/> -->
+<!--       <itemData name="Special"   defStyleNum="dsFloat" spellChecking="0"/> -->
+      <itemData name="Error"     defStyleNum="dsError" spellChecking="0"/>
+    </itemDatas>
+  </highlighting>
+  <general>
+    <comments>
+      <comment name = "singleLine" start = "#"/>
+    </comments>
+    <!-- '-' is not a deliminator in function filter-out -->
+    <keywords casesensitive="1" weakDeliminator = "-"/>
+  </general>
+</language>
+<!-- kate: space-indent on; indent-width 2; replace-tabs on; -->
