@@ -708,7 +708,10 @@ sub process_download ($)
     my $file = $f;
     $file =~ s/\$\(archivedir\)//;
 
-    #warn "download: " . $url . "\n";
+    # Check if we already have rule for fetching this file
+    # sorry for gnu make magic...
+    $output .= "ifeq (\$(filter $f,\$(_all_download)),\$(empty))\n";
+    # add file to known list
     $output .= "_all_download += $f\n";
     $output .= "$f:\n";
 
@@ -732,8 +735,9 @@ sub process_download ($)
       $output .= "\tgit clone $tmpurl  $f";
       $output .= " -b " . $opts{"b"} if $opts{"b"};
     }
-
-    $output .= "\n";
+	$output .= "\n";
+    $output .= "endif\n";
+    # end Check
     return "$output"
 }
 
