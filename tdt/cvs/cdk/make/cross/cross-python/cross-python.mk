@@ -1,5 +1,5 @@
 #
-# CCACHE
+# AR-P buildsystem smart Makefile
 #
 package[[ cross_python
 
