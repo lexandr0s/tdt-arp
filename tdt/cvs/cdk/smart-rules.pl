@@ -459,7 +459,7 @@ sub process_prepare ($)
       # create git url with protocol
       my $tmpurl = $url;
       $tmpurl =~ s#git://#$opts{"protocol"}://#  if $opts{"protocol"} ;
-      $tmpurl =~ s#ssh://#git\@# if $opts{"protocol"} eq "ssh";
+      $tmpurl =~ s#ssh://#git\@# if $opts{"protocol"} and $opts{"protocol"} eq "ssh";
       # сd git directory
       $upd .= "cd $f && ";
       # check if url has changed
@@ -468,7 +468,7 @@ sub process_prepare ($)
       # fetch remote chages
       $upd .= " && git fetch";
       # checkout git tree
-      if ($rev eq "") {
+      if (not $rev) {
         $upd .= " && git checkout origin/$branch";
       } else {
         $upd .= " && git checkout $rev";
@@ -752,7 +752,7 @@ sub process_download ($)
     {
       my $tmpurl = $url;
       $tmpurl =~ s#git://#$opts{"protocol"}://#  if $opts{"protocol"} ;
-      $tmpurl =~ s#ssh://#git\@# if $opts{"protocol"} eq "ssh";
+      $tmpurl =~ s#ssh://#git\@# if $opts{"protocol"} and $opts{"protocol"} eq "ssh";
       $output .= "\tgit clone $tmpurl  $f";
       $output .= " -b " . $opts{"b"} if $opts{"b"};
     }
