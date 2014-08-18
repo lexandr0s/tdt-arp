@@ -1,8 +1,3 @@
 package[[ target_filesystem
 call[[ header ]]
-target_opkg_conf = $(targetprefix)/etc/opkg.conf
-
-targetsh4_opkg_conf = $(targetsh4prefix)/etc/opkg.conf
-targetbox_opkg_conf = $(targetboxprefix)/etc/opkg.conf
-box_opkg_conf = $(targetboxprefix)/etc/opkg-box.conf
 ]]package
