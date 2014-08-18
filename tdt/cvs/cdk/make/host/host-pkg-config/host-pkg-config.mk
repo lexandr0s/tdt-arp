@@ -3,7 +3,7 @@
 #
 package[[ host_pkg_config
 
-BDEPENDS_${P} = host-opkg-meta $(host_rpmconfig) $(host_autotools)
+BDEPENDS_${P} = $(host_opkg_meta) $(host_rpmconfig) $(host_autotools)
 
 PR_${P} = 1
 

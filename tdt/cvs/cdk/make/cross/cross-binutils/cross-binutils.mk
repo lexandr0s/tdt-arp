@@ -3,7 +3,7 @@
 #
 package[[ cross_binutils
 
-BDEPENDS_${P} = cross-filesystem
+BDEPENDS_${P} = $(cross_filesystem)
 
 PR_${P} = 1
 
