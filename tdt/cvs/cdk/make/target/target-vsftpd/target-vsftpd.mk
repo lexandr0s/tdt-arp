@@ -19,7 +19,7 @@ rule[[
   install_file:$(PKDIR)/etc/vsftpd.conf:file://vsftpd.conf
 ]]rule
 
-MAKE_FLAGS_${P} = $(MAKE_OPTS) CFLAGS="-pipe -Os -g0" PREFIX=$(PKDIR)
+MAKE_FLAGS_${P} = $(MAKE_ARGS) CFLAGS="-pipe -Os -g0" PREFIX=$(PKDIR)
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(PREPARE_${P})

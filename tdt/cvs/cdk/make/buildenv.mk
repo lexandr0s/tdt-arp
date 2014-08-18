@@ -190,21 +190,6 @@ EXPORT_BUILDENV := \
 build.env:
 	echo '$(EXPORT_BUILDENV)' |sed 's/&&/\n/g' |sed 's/^ //' > $@
 
-MAKE_OPTS := \
-	CC=$(target)-gcc \
-	CXX=$(target)-g++ \
-	LD=$(target)-ld \
-	NM=$(target)-nm \
-	AR=$(target)-ar \
-	AS=$(target)-as \
-	RANLIB=$(target)-ranlib \
-	STRIP=$(target)-strip \
-	OBJCOPY=$(target)-objcopy \
-	OBJDUMP=$(target)-objdump \
-	LN_S="ln -s" \
-	ARCH=sh \
-	CROSS_COMPILE=$(target)-
-
 MAKE_ARGS := \
 	CC=$(target)-gcc \
 	CXX=$(target)-g++ \

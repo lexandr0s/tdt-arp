@@ -47,7 +47,7 @@ MAKE_FLAGS_${P} = \
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(PREPARE_${P})
-#	$(MAKE) -C $(KERNEL_DIR) $(MAKE_OPTS) ARCH=sh modules_prepare
+#	$(MAKE) -C $(KERNEL_DIR) ${MAKE_FLAGS} ARCH=sh modules_prepare
 
 	echo "# Automatically generated config: don't edit" > ${DIR}/.config
 	echo "export CONFIG_PLAYER_191=y" >> ${DIR}/.config
