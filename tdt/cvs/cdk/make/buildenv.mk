@@ -3,6 +3,12 @@
 
 MAKE_DEBUG :=
 
+# Don't pass any toplevel flags to child make
+# such as make execution in do_compile
+# It is individual recipe
+unexport MAKEFLAGS
+
+
 # gnu make strings magic
 empty :=
 define newline
@@ -79,6 +85,8 @@ prefix := $(tdtdir)/tufsbox
 DEPDIR := $(prefix)/.deps
 $(shell mkdir -p $(DEPDIR))
 VPATH := $(DEPDIR)
+
+$(if $(shell test -d $(DEPDIR) || echo fail), $(error unable to create directory $(DEPDIR)) )
 
 # host
 hostprefix := $(prefix)/host
