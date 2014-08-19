@@ -227,7 +227,7 @@ PR_${P} = 1
 call[[ base ]]
 call[[ git ]]
 
-$(TARGET_${P}).do_package:
+$(TARGET_${P}).do_package: $(DEPENDS_${P})
 	$(PKDIR_clean)
 	install -d $(PKDIR)/usr/include/linux/dvb
 
