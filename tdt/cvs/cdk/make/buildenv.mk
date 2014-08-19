@@ -68,17 +68,18 @@ box_arch := $(TARGET)
 # directories
 archivedir = $(HOME)/Archive
 
-# root dir hack
+# FIXME: root dir hack
 buildprefix := $(shell pwd)
 tdtdir := $(patsubst %/cvs/cdk,%,$(buildprefix))
 
+# build root directories
+prefix := $(tdtdir)/tufsbox
+
 # dependency control dir
-DEPDIR := $(buildprefix)/.deps
+DEPDIR := $(prefix)/.deps
 $(shell mkdir -p $(DEPDIR))
 VPATH := $(DEPDIR)
 
-# build root directories
-prefix := $(tdtdir)/tufsbox
 # host
 hostprefix := $(prefix)/host
 ipkhost := $(prefix)/ipkhost
