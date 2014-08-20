@@ -8,6 +8,12 @@ MAKE_DEBUG :=
 # It is individual recipe
 unexport MAKEFLAGS
 
+# disable built in rules variables
+# print why target is rebuilt
+ifeq ($(MAKE_VERSION),4.0)
+MAKEFLAGS := -r -R --trace
+endif
+
 
 # gnu make strings magic
 empty :=
