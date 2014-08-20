@@ -236,8 +236,9 @@ PKDIR_clean = rm -rf $(PKDIR)/* && mkdir -p $(PKDIR)
 rpm_macros := --macros /usr/lib/rpm/macros:$(configprefix)/rpm/hosts/$(build):$(configprefix)/rpm/targets/$(target):$(configprefix)/rpm/common:$(buildprefix)/localmacros
 # --dbpath $(prefix)/rpmdb
 rpm_src_install := rpm $(rpm_macros) --ignorearch --nosignature -Uhv
-#rpm_build := rpmbuild $(rpm_macros) -bb -v --clean --target=$(target)
-rpm_build := rpmbuild $(rpm_macros) -bi -v --nodeps --target=$(target)
+# be careful PKDIR is dynamic variable related to current make target name
+rpm_compile = rpmbuild $(rpm_macros) -bc -v --nodeps --target=$(target)
+rpm_build = rpmbuild $(rpm_macros) -bi -v --nodeps --target=$(target) --buildroot=$(PKDIR)
 rpm_install := rpm $(rpm_macros)  --ignorearch --nodeps -Uhv
 
 # python helpers

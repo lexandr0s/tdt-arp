@@ -15,12 +15,7 @@ ${P}_SRCRPM = $(archivedir)/stlinux23-$(${P})-$(${P}_VERSION).src.rpm
 
 call[[ base ]]
 call[[ base_rpm ]]
-call[[ TARGET_rpm_do_compile ]]
-
-$(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
-	$(PKDIR_clean)
-	$(subst stlinux23,stlinux24,$(fromrpm_copy))
-	touch $@
+call[[ rpm ]]
 
 call[[ ipk ]]
 

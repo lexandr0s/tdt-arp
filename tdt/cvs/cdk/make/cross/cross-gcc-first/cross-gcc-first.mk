@@ -40,13 +40,11 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	touch $@
 
 $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
-#	rm -rf $(prefix)/BUILDROOT/*
+	$(PKDIR_clean)
 	$(rpm_build) $(specsprefix)/$(${P}_SPEC)
 	touch $@
 
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
-	$(PKDIR_clean)
-	$(fromrpm_copy)
 	
 	rm -f $(PKDIR)/$(crossprefix)/lib/libiberty.a
 	touch $@

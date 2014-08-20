@@ -17,11 +17,10 @@ ${P}_SRCRPM = $(archivedir)/$(STLINUX)-$(${P})-$(${P}_VERSION).src.rpm
 
 call[[ base ]]
 call[[ base_rpm ]]
-call[[ TARGET_rpm_do_compile ]]
+call[[ rpm_do_prepare ]]
+call[[ rpm_do_compile ]]
 
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
-	$(PKDIR_clean)
-	$(fromrpm_copy)
 	install -d $(PKDIR)/$(hostprefix)/
 	mv $(PKDIR)/opt/STM/STLinux-2.4/* $(PKDIR)/$(hostprefix)/
 	rm -rf $(PKDIR)/opt
