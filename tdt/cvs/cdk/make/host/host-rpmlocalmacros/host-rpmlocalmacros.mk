@@ -6,7 +6,7 @@ package[[ host_rpmlocalmacros
 BDEPENDS_${P} = $(host_opkg_meta)
 
 PV_${P} = 0.1
-PR_${P} = 9
+PR_${P} = 10
 
 call[[ base ]]
 
@@ -27,7 +27,7 @@ $(TARGET_${P}).do_install: $(DEPENDS_${P})
 	  echo "%_stm_devkit_dir $(devkitprefix)"; \
 	  echo "%_stm_cross_target_dir $(targetprefix)"; \
 	  #echo "%_stm_kernel_dir $kernelprefix"; \
-	  #echo "%_stm_sources_dir $kernelprefix"; \
+	  echo "%_stm_sources_dir %{_stm_cross_dir}/sources"; \
 	  #echo "%_stm_host_arch $(host_arch)"; \
 	  #echo "%_stm_host_cpu ${host_cpu}"; \
 	  #echo "%_stm_host_config ${host_alias:-${host}}"; \
