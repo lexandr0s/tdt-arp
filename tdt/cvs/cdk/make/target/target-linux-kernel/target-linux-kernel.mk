@@ -19,7 +19,7 @@ endif
 function[[ target_linux_kernel_in
 
 PV_${P} = $(KERNEL_VERSION)
-PR_${P} = 6
+PR_${P} = 7
 
 DIR_${P} = $(WORK_target_linux_kernel)/linux-$(KERNEL_MAJOR)
 PACKAGE_ARCH_${P} = $(box_arch)
@@ -50,7 +50,7 @@ ${P}_patches = \
 	linux-sh4-ext23_as_ext4_stm24_$(KERNEL_LABEL).patch \
 	bpa2_procfs_stm24_$(KERNEL_LABEL).patch
 
-ifeq ($(CONFIG_KERNEL_207),y)
+ifeq ($(CONFIG_KERNEL_0207),y)
 ${P}_patches += \
 	xchg_fix_stm24_$(KERNEL_LABEL).patch) \
 	mm_cache_update_stm24_$(KERNEL_LABEL).patch) \
@@ -61,27 +61,27 @@ ${P}_patches += \
 	linux-ftdi_sio.c_stm24_$(KERNEL_LABEL).patch \
 	linux-sh4-lzma-fix_stm24_$(KERNEL_LABEL).patch
 
-ifeq ($(CONFIG_KERNEL_209)$(CONFIG_KERNEL_210)$(CONFIG_KERNEL_211),y)
+ifeq ($(CONFIG_KERNEL_0209)$(CONFIG_KERNEL_0210)$(CONFIG_KERNEL_0211),y)
 ${P}_patches += linux-tune_stm24.patch
 endif
 
-ifeq ($(CONFIG_KERNEL_212),y)
+ifeq ($(CONFIG_KERNEL_0212),y)
 ${P}_patches += linux-tune_stm24_0212.patch
 endif
 
-ifeq ($(CONFIG_KERNEL_209)$(CONFIG_KERNEL_210)$(CONFIG_KERNEL_211)$(CONFIG_KERNEL_212),y)
+ifeq ($(CONFIG_KERNEL_0209)$(CONFIG_KERNEL_0210)$(CONFIG_KERNEL_0211)$(CONFIG_KERNEL_0212),y)
 ${P}_patches += linux-sh4-mmap_stm24.patch
 endif
 
-ifeq ($(CONFIG_KERNEL_209),y)
+ifeq ($(CONFIG_KERNEL_0209),y)
 ${P}_patches += linux-sh4-dwmac_stm24_0209.patch
 endif
 
-ifeq ($(CONFIG_KERNEL_207),y)
+ifeq ($(CONFIG_KERNEL_0207),y)
 ${P}_patches += linux-sh4-sti7100_missing_clk_alias_stm24_$(KERNEL_LABEL).patch
 endif
 
-ifeq ($(CONFIG_KERNEL_209)$(CONFIG_KERNEL_211)$(CONFIG_KERNEL_212),y)
+ifeq ($(CONFIG_KERNEL_0209)$(CONFIG_KERNEL_0211)$(CONFIG_KERNEL_0212),y)
 ${P}_patches += linux-sh4-directfb_stm24_$(KERNEL_LABEL).patch
 endif
 
