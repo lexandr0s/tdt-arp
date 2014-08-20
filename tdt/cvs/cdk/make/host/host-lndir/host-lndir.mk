@@ -3,10 +3,10 @@
 #
 package[[ host_lndir
 
-BDEPENDS_${P} = $(host_ccache)
+BDEPENDS_${P} = $(host_ccache) $(host_automake)
 
 PV_${P} = 1.0.3
-PR_${P} = 1
+PR_${P} = 2
 
 call[[ base ]]
 
@@ -26,7 +26,7 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 		./configure \
 			--prefix=$(hostprefix) \
 		&& \
-		$(MAKE) all
+		make all
 	touch $@
 
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
