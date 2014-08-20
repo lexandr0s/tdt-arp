@@ -79,7 +79,7 @@ $(TARGET_${P}).clean_compile:
 $(TARGET_${P}).clean_package:
 	rm -f $(TARGET_${P}).do_package
 
-$(TARGET_${P}).clean:
+$(TARGET_${P}).clean: $(TARGET_${P}).clean_prepare
 	rm -f $(TARGET_${P})
 
 # to add some build rules add prerequisites to this target
@@ -213,8 +213,8 @@ $(TARGET_${P}).do_install: $(TARGET_${P}).do_ipk
 	touch $@
 
 $(TARGET_${P}): $(TARGET_${P}).do_install
+$(TARGET_${P}).clean: $(TARGET_${P}).clean_install
 
-# currently not in use.
 $(TARGET_${P}).clean_install:
 	$(opkg) $($(SYSROOT_${P})_ipkg_args) --force-removal-of-dependent-packages remove $(${P})
 	rm -f $(TARGET_${P}).do_install
