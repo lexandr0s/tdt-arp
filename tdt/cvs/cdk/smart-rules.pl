@@ -492,26 +492,28 @@ sub process_prepare ($)
         $patch = "patch -p1 ";
       }
       $patch .= join " ", @args;
+      # we want make to throw error in case "unzip | patch" fails on uzip command
+      $patch = "($patch && exit \$\${PIPESTATUS[0]})";
 
       if ( $f =~ m#\.bz2$# )
       {
-        $output .= "( cd " . $dir . " && chmod +w -R .; bunzip2 -cd " . $f . " | $patch )";
+        $output .= "( cd $dir && chmod +w -R . && bunzip2 -cd $f | $patch )";
       }
       elsif ( $f =~ m#\.deb\.diff\.gz$# )
       {
-        $output .= "( cd " . $dir . "; gunzip -cd " . $f . " | $patch )";
+        $output .= "( cd $dir && gunzip -cd $f | $patch )";
       }
       elsif ( $f =~ m#\.gz$# )
       {
-        $output .= "( cd " . $dir . " && chmod +w -R .; gunzip -cd " . $f . " | $patch )";
+        $output .= "( cd $dir && chmod +w -R . && gunzip -cd  $f | $patch )";
       }
       elsif ( $f =~ m#\.spec\.diff$# )
       {
-        $output .= "( cd SPECS && $patch < " . $f . " )";
+        $output .= "( cd SPECS && $patch <  $f )";
       }
       else
       {
-        $output .= "( cd " . $dir . " && chmod +w -R .; $patch < " . $f . " )";
+        $output .= "( cd $dir && chmod +w -R . && $patch <  $f )";
       }
     }
     elsif ( $cmd eq "pmove" )
