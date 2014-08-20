@@ -25,10 +25,6 @@ call[[ TARGET_rpm_do_compile ]]
 # 	$(opkg_install_target) $(ipktarget)/$(IPK_${P})
 # 	touch $@
 
-$(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
-	$(PKDIR_clean)
-	$(fromrpm_copy)
-	mv $(PKDIR)/$(targetprefix)/* $(PKDIR)/
-	touch $@
+call[[ TARGET_rpm_do_package ]]
 
 ]]package

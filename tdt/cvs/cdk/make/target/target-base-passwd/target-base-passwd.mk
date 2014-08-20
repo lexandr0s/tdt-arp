@@ -15,14 +15,7 @@ ${P}_SRCRPM = $(archivedir)/$(STLINUX)-$(${P})-$(${P}_VERSION).src.rpm
 
 call[[ base ]]
 call[[ base_rpm ]]
-
-call[[ rpm_do_compile ]]
-
-$(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
-	$(PKDIR_clean)
-	$(fromrpm_copy)
-	mv $(PKDIR)/$(targetprefix)/* $(PKDIR)
-	touch $@
+call[[ rpm ]]
 
 define postinst_${P}
 #!/bin/sh
