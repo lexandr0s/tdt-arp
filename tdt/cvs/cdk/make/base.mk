@@ -122,8 +122,7 @@ INHERIT_VARIABLES := NAME VERSION DESCRIPTION SECTION PRIORITY MAINTAINER LICENS
 INHERIT_DEFINES := preinst postinst prerm postrm conffiles
 
 # makes run only one instance of opkg at a time
-lock := lock_run() { (flock --timeout 60 --exclusive 200 && $$@) 200>opkg.lock; } && lock_run
-opkg := $(lock) opkg
+opkg := $(call lock,opkg.lock) opkg
 
 # we have several dests, so dependencies are shared across them
 host_ipkg_args = -f $(prefix)/opkg.conf -o $(prefix) -d hostroot
