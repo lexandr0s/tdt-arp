@@ -127,6 +127,28 @@ defconfig: $(CONFIG)/conf
         menuconfig xconfig config oldconfig randconfig allyesconfig allnoconfig defconfig
 
 #
+# GNU make 4
+#
+
+make_PN := make
+make_PV := 4.0
+make_DIR := make-$(make_PV)
+
+$(make_PN)-$(make_PV).tar.gz:
+	wget http://ftp.gnu.org/gnu/$(make_PN)/$@
+
+$(make_DIR)/config.status: $(make_PN)-$(make_PV).tar.gz
+	rm -rf $(make_DIR)
+	tar -xzf $^
+	cd $(make_DIR) && ./configure && make
+
+make-clean:
+	$(MAKE) -C $(make_DIR) clean
+make-distclean:
+	rm -rf $(make_DIR)
+.PHONY: make-clean make-distclean
+
+#
 # create buildsystem Makefile
 #
 
