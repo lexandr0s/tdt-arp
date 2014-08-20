@@ -1,12 +1,27 @@
 #
 # LINUX KERNEL
 #
+
+KERNEL_UPSTREAM_SPLITED := $(subst ., ,$(KERNEL_UPSTREAM))
+KERNEL_MAJOR := \
+	$(word 1,$(KERNEL_UPSTREAM_SPLITED)).$(word 2,$(KERNEL_UPSTREAM_SPLITED)).$(word 3,$(KERNEL_UPSTREAM_SPLITED))
+KERNEL_MINOR := \
+	$(word 4,$(KERNEL_UPSTREAM_SPLITED))
+
+ifdef MAKE_DEBUG
+$(info '$(KERNEL_VERSION)')
+$(info '$(KERNEL_MAJOR)')
+$(info '$(KERNEL_MINOR)')
+$(info '$(KERNEL_RELEASE)')
+$(info '$(KERNEL_LABEL)')
+endif
+
 function[[ target_linux_kernel_in
 
 PV_${P} = $(KERNEL_VERSION)
 PR_${P} = 5
 
-DIR_${P} = $(WORK_target_linux_kernel)/linux-kernel-${PV}
+DIR_${P} = $(WORK_target_linux_kernel)/linux-$(KERNEL_MAJOR)
 PACKAGE_ARCH_${P} = $(box_arch)
 SRC_URI_${P} = stlinux.com
 
@@ -16,12 +31,65 @@ MAKE_FLAGS_${P} = ARCH=sh CROSS_COMPILE=$(target)-
 
 package[[ target_linux_kernel
 
-BDEPENDS_${P} = $(target_glibc) $(cross_kernel) $(host_u_boot_tools)
+BDEPENDS_${P} = $(target_glibc) $(host_u_boot_tools)
 
 call[[ target_linux_kernel_in ]]
 call[[ base ]]
 
-${P}_patches = 
+# common sh4 patches
+#############################################################################
+
+${P}_patches = \
+	linux-sh4-linuxdvb_stm24_$(KERNEL_LABEL).patch \
+	linux-sh4-sound_stm24_$(KERNEL_LABEL).patch \
+	linux-sh4-time_stm24_$(KERNEL_LABEL).patch \
+	linux-sh4-init_mm_stm24_$(KERNEL_LABEL).patch \
+	linux-sh4-copro_stm24_$(KERNEL_LABEL).patch \
+	linux-sh4-strcpy_stm24_$(KERNEL_LABEL).patch \
+	linux-squashfs-lzma_stm24_$(KERNEL_LABEL).patch \
+	linux-sh4-ext23_as_ext4_stm24_$(KERNEL_LABEL).patch \
+	bpa2_procfs_stm24_$(KERNEL_LABEL).patch
+
+ifeq ($(CONFIG_KERNEL_207),y)
+${P}_patches += \
+	xchg_fix_stm24_$(KERNEL_LABEL).patch) \
+	mm_cache_update_stm24_$(KERNEL_LABEL).patch) \
+	linux-sh4-ehci_stm24_$(KERNEL_LABEL).patch
+endif
+
+${P}_patches += \
+	linux-ftdi_sio.c_stm24_$(KERNEL_LABEL).patch \
+	linux-sh4-lzma-fix_stm24_$(KERNEL_LABEL).patch
+
+ifeq ($(CONFIG_KERNEL_209)$(CONFIG_KERNEL_210)$(CONFIG_KERNEL_211),y)
+${P}_patches += linux-tune_stm24.patch
+endif
+
+ifeq ($(CONFIG_KERNEL_212),y)
+${P}_patches += linux-tune_stm24_0212.patch
+endif
+
+ifeq ($(CONFIG_KERNEL_209)$(CONFIG_KERNEL_210)$(CONFIG_KERNEL_211)$(CONFIG_KERNEL_212),y)
+${P}_patches += linux-sh4-mmap_stm24.patch
+endif
+
+ifeq ($(CONFIG_KERNEL_209),y)
+${P}_patches += linux-sh4-dwmac_stm24_0209.patch
+endif
+
+ifeq ($(CONFIG_KERNEL_207),y)
+${P}_patches += linux-sh4-sti7100_missing_clk_alias_stm24_$(KERNEL_LABEL).patch
+endif
+
+ifeq ($(CONFIG_KERNEL_209)$(CONFIG_KERNEL_211)$(CONFIG_KERNEL_212),y)
+${P}_patches += linux-sh4-directfb_stm24_$(KERNEL_LABEL).patch
+endif
+
+${P}_patches += patch_swap_notify_core_support.diff
+
+
+# TARGET specific patches
+#############################################################################
 
 ifdef CONFIG_HL101
   ${P}_patches += linux-sh4-hl101_setup_stm24_$(KERNEL_LABEL).patch
@@ -57,13 +125,25 @@ ifeq ($(CONFIG_KERNEL_0211)$(CONFIG_KERNEL_0215),y)
 endif
 endif #CONFIG_SPARK7162
 
+#############################################################################
+# end patches
+
 ${P}_config = linux-sh4-$(KERNEL_UPSTREAM)-$(KERNEL_LABEL)_$(TARGET).config$(DEBUG_STR)
 
 DEPENDS_${P} += $(addprefix ${SDIR}/,$(${P}_patches) $(${P}_config))
 
+rule[[
+  dirextract:local://$(archivedir)/$(STLINUX)-host-kernel-source-sh4-$(KERNEL_VERSION)-$(KERNEL_RELEASE).src.rpm
+  extract:localwork://${DIR}/linux-$(KERNEL_MAJOR).tar.bz2
+# don't forget to check on version update, but usually .src.rpm has these 2 patches
+  patch:localwork://${DIR}/linux-$(KERNEL_UPSTREAM).patch.bz2
+  patch:localwork://${DIR}/linux-$(KERNEL_UPSTREAM)_$(KERNEL_STM)_sh4_$(KERNEL_LABEL).patch.bz2
+# TODO: add patches
+]]rule
+
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(PREPARE_${P})
-	cp -ar $(crossprefix)/sources/kernel $(DIR_${P})
+
 	cd $(DIR_${P}) && cat $(addprefix ${SDIR}/,$(${P}_patches)) | patch -p1
 	cd $(DIR_${P}) && $(MAKE) ${MAKE_FLAGS} mrproper
 # FIXME:
