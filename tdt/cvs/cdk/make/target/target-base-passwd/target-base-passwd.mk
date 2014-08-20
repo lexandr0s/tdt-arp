@@ -3,7 +3,7 @@
 #
 package[[ target_base_passwd
 
-BDEPENDS_${P} = $(target_filesystem) $(host_base_passwd)
+BDEPENDS_${P} = $(target_filesystem) $(host_base_passwd) $(target_glibc)
 
 PR_${P} = 2
 
