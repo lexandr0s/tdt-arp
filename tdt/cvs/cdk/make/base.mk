@@ -366,6 +366,7 @@ function[[ git
 
 # Check requirements
 GIT_DIR_${P} ?= $(error undefined GIT_DIR_${P})
+GIT_DIR_${P} := $(strip $(GIT_DIR_${P}))
 
 # Set file where we store srcrev
 SRCREV_${P} = $(TARGET_${P}).do_srcrev
@@ -376,9 +377,15 @@ $(TARGET_${P}).do_prepare: $(SRCREV_${P})
 # I assume you need GIT_VERSION variable at packaging time
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_git_version
 
+# In case more than one package use sources from same git
+ifdef UPDATE_${P}
+UPDATE_SAFE_${P} := update() { $(UPDATE_${P}); } && $(call lock, $(GIT_DIR_${P}).lock) update
+else
+UPDATE_SAFE_${P} :=
+endif
 # initial srcrev value
 $(SRCREV_${P}): $(GIT_DIR_${P})
-	$(UPDATE_${P})
+	$(UPDATE_SAFE_${P})
 	cd $(GIT_DIR_${P}) && $(git_log_srcrev) > ${SRCREV}
 
 # update stored srcrev if it has changed
