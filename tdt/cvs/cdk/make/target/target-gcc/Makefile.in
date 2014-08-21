@@ -2,6 +2,30 @@ package[[ target_gcc
 call[[ header ]]
 ]]package
 
-ifdef CONFIG_BUILD_TARGET_GCC
+# We don't need target_gcc but we need gcc libs like libstd++
+# however we can try to get them from cross build
+ifdef CONFIG_GCC_LIB_FROM_TARGET
 target_gcc_lib := $(target_gcc)
 endif
+ifdef CONFIG_GCC_LIB_FROM_CROSS
+target_gcc_lib := $(target_cross_gcc_lib)
+endif
+
+NAME_libgcc = libgcc1
+DESCRIPTION_libgcc =  The GNU cc and gcc C compilers.
+RDEPENDS_libgcc = libc6
+FILES_libgcc = /lib/libgcc_s*
+
+NAME_libstdcxx = libstdc++6
+DESCRIPTION_libstdcxx = libstdc++
+RDEPENDS_libstdcxx = libgcc1
+FILES_libstdcxx = /usr/lib/libstdc++.so.*
+
+NAME_libstdcxx_dev = libstdc++6-dev
+DESCRIPTION_libstdcxx_dev = libstdc++
+RDEPENDS_libstdcxx_dev = libstdc++6
+FILES_libstdcxx_dev = /usr/include /usr/lib/*.*
+
+function[[ target_gcc_lib_in
+PACKAGES_${P} = libgcc libstdcxx libstdcxx_dev
+]]function

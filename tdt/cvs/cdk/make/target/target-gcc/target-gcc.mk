@@ -25,22 +25,8 @@ call[[ rpm ]]
 
 call[[ ipk ]]
 
-PACKAGES_${P} = libgcc libstdcxx libstdcxx_dev
-
-NAME_libgcc = libgcc1
-DESCRIPTION_libgcc =  The GNU cc and gcc C compilers.
-RDEPENDS_libgcc = libc6
-FILES_libgcc = /lib/libgcc_s*
-
-NAME_libstdcxx = libstdc++6
-DESCRIPTION_libstdcxx = libstdc++
-RDEPENDS_libstdcxx = libgcc1
-FILES_libstdcxx = /usr/lib/libstdc++.so.*
-
-NAME_libstdcxx_dev = libstdc++6-dev
-DESCRIPTION_libstdcxx_dev = libstdc++
-RDEPENDS_libstdcxx_dev = libstdc++6
-FILES_libstdcxx_dev = /usr/include /usr/lib/*.*
+# Provides libs that comes with gcc
+call[[ target_gcc_lib_in ]]
 
 call[[ ipkbox ]]
 
