@@ -205,6 +205,7 @@ package[[ target_linux_kernel_headers
 
 DEPENDS_${P} = $(target_linux_kernel).do_prepare
 
+BDEPENDS_${P} = $(target_filesystem)
 BREPLACES_${P} = $(target_kernel_headers)
 
 call[[ target_linux_kernel_in ]]
