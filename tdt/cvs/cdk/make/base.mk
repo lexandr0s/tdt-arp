@@ -129,6 +129,17 @@ host_ipkg_args = -f $(prefix)/opkg.conf -o $(prefix) -d hostroot
 cross_ipkg_args = -f $(prefix)/opkg.conf -o $(prefix) -d crossroot
 target_ipkg_args = -f $(prefix)/opkg.conf -o $(prefix) -d targetroot
 
+opkg-check-target opkg-check-cross opkg-check-host: \
+opkg-check-%:
+	set -e; \
+	cat $($*prefix)/usr/lib/opkg/info/*.list |sort -u > db;  \
+	find $($*prefix)/ -type d -printf '%p/\n' -o -print | sed 's,$(prefix)/*,/,' | sort > fs; \
+	comm --check-order -23 fs db; \
+	true
+help::
+	@echo "run \'make opkg-check-{host|cross|target}\' to list opkg disowned files"
+.PHONY: opkg-check-target opkg-check-cross opkg-check-host
+
 # format list separated with spaces to list separeated with commas
 _ipk_control_list = $(subst $(space),$(comma),$(subst $(space)$(space),$(space),$(subst _,-,$(strip $1))))
 
