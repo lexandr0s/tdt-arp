@@ -69,9 +69,20 @@ mainmenu "global config"
 		bool "Multicom 4.0.6 (testing)"
 	endchoice
 
-	config BUILD_TARGET_GCC
-		bool "Build target-gcc ?"
-		default y
+	choice
+		prompt "gcc libs from:"
+		default GCC_LIB_FROM_TARGET
+
+		config GCC_LIB_FROM_CROSS
+		bool "cross-gcc"
+
+		config GCC_LIB_FROM_TARGET
+		bool "target-gcc"
+	endchoice
+
+	config AVOID_RPM_SPEC
+		bool "don't use rpm spec if possible"
+		default n
 
 	choice
 		prompt "Enigma2 source:"
