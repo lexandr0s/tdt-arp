@@ -23,12 +23,6 @@ call[[ base ]]
 call[[ base_rpm ]]
 call[[ ipk ]]
 
-call[[ TARGET_rpm_do_compile ]]
-
-# $(TARGET_${P}): $(TARGET_${P}).do_package
-# 	$(opkg_install_target) $(ipktarget)/$(IPK_${P})
-# 	touch $@
-
-call[[ TARGET_rpm_do_package ]]
+call[[ rpm ]]
 
 ]]package

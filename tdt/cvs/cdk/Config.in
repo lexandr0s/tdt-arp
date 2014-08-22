@@ -71,10 +71,22 @@ menu "Global Configuration"
 	endchoice
 
 
-	config BUILD_TARGET_GCC
-		bool "Build target-gcc ?"
+	choice
+		prompt "gcc libs from:"
+		default GCC_LIB_FROM_TARGET
 
-	  choice
+		config GCC_LIB_FROM_CROSS
+		bool "cross-gcc"
+
+		config GCC_LIB_FROM_TARGET
+		bool "target-gcc"
+	endchoice
+
+	config AVOID_RPM_SPEC
+		bool "don't use rpm spec if possible"
+		default n
+	
+	choice
 		prompt "Select GCC"
 		default GCC473
 
@@ -90,7 +102,6 @@ menu "Global Configuration"
 		bool "Build gcc 4.8.3"
 		depends on BUILD_TARGET_GCC
 	  endchoice
-
 
 	choice
 		prompt "Media Framework:"
