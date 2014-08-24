@@ -249,7 +249,7 @@ rpm_macros := --macros /usr/lib/rpm/macros:$(configprefix)/rpm/hosts/$(build):$(
 rpm_src_install := rpm $(rpm_macros) --ignorearch --nosignature -Uhv
 # be careful PKDIR is dynamic variable related to current make target name
 rpm_compile = rpmbuild $(rpm_macros) -bc -v --nodeps --target=$(target)
-rpm_build = rpmbuild $(rpm_macros) -bi -v --nodeps --target=$(target) --buildroot=$(PKDIR)
+rpm_build = rpmbuild $(rpm_macros) -bi -v --nodeps --target=$(target) --buildroot=$(PKDIR) -D '%_builddir $(WORK_${P})'
 rpm_install := rpm $(rpm_macros)  --ignorearch --nodeps -Uhv
 
 # python helpers
