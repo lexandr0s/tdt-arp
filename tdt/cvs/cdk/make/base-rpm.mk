@@ -36,6 +36,7 @@ DO_PACKAGE_${P} ?=
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 ifeq (${SYSROOT},target)
 	mv $(PKDIR)/$(targetprefix)/* $(PKDIR)
+	rmdir --ignore-fail-on-non-empty --parent $(PKDIR)/$(targetprefix)/
 endif
 	$(DO_PACKAGE_${P})
 	touch $@
