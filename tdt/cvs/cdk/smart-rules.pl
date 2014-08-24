@@ -737,7 +737,7 @@ sub process_download ($)
       $output .= "\tgit clone $tmpurl  $f";
       $output .= " -b " . $opts{"b"} if $opts{"b"};
     }
-	$output .= "\n";
+    $output .= "\n";
     $output .= "endif\n";
     # end Check
     return "$output"
