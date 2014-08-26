@@ -43,9 +43,7 @@ PACKAGES_${P} = liba52 a52dec
 RDEPENDS_liba52 = libc6
 define postinst_liba52
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_liba52 = /usr/lib/liba52.so.*
 

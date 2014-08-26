@@ -54,9 +54,7 @@ RDEPENDS_speex = libc6
 FILES_speex = /usr/lib/*.so.*
 define postinst_speex
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 call[[ ipkbox ]]

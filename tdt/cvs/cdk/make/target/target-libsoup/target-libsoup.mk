@@ -42,9 +42,7 @@ RDEPENDS_${P} = libz1 libxml2 libffi6 libsqlite3 libc6 libglib
 FILES_${P} = /usr/lib/*.so.*
 define postinst_${P}
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 call[[ ipkbox ]]

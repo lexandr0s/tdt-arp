@@ -25,9 +25,7 @@ PACKAGES_${P} = libc6
 DESCRIPTION_libc6 = ${P}
 define postinst_libc6
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libc6 = \
 	/etc/ld.so.conf \

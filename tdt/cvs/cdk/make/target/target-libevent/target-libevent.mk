@@ -24,45 +24,35 @@ RDEPENDS_libevent = libc6
 FILES_libevent = /usr/lib/libevent.s* /usr/lib/libevent-2.0.s*
 define postinst_libevent
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_libevent_core = libc6
 FILES_libevent_core = /usr/lib/libevent_core.s* /usr/lib/libevent_core-2.0.s*
 define postinst_libevent_core
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_libevent_extra = libc6
 FILES_libevent_extra = /usr/lib/libevent_extra.s* /usr/lib/libevent_extra-2.0.s*
 define postinst_libevent_extra
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_libevent_openssl = libc6
 FILES_libevent_openssl = /usr/lib/libevent_openssl.s* /usr/lib/libevent_openssl-2.0.s*
 define postinst_libevent_openssl
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_libevent_pthreads = libc6
 FILES_libevent_pthreads = /usr/lib/libevent_pthreads.s* /usr/lib/libevent_pthreads-2.0.s*
 define postinst_libevent_pthreads
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 call[[ ipkbox ]]

@@ -43,18 +43,14 @@ PACKAGES_${P} = liborc orc liborc_test
 RDEPENDS_liborc = libc6
 define postinst_liborc
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_liborc = /usr/lib/liborc*.so.*
 
 RDEPENDS_liborc_test = liborc libc6
 define postinst_liborc_test
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_liborc_test = /usr/lib/liborc-test*.so.*
 

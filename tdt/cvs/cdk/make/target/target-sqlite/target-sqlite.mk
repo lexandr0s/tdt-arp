@@ -44,9 +44,7 @@ DESCRIPTION_${P} = Embeddable SQL database engine \
 RDEPENDS_${P} = libc6
 define postinst_${P}
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_sqlite = /usr/lib/*.so*
 

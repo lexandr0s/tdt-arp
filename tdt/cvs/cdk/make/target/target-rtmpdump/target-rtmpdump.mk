@@ -41,9 +41,7 @@ DESCRIPTION_${P} = librtmp Real-Time Messaging Protocol API
 RDEPENDS_${P} = libssl1 libz1 libc6 libcrypto1
 define postinst_rtmpdump
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_${P} = /usr/lib/librtmp.s*
 

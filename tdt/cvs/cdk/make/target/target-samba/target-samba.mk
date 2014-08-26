@@ -128,9 +128,7 @@ FILES_samba_lib = \
 /usr/lib/*.so.*
 define postinst_samba_lib
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 call[[ ipkbox ]]

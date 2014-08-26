@@ -48,18 +48,14 @@ RDEPENDS_libcairo2 = libpng16 libpixman libz1 libfreetype6 libc6 libexpat1 libfo
 FILES_libcairo2 = /usr/lib/libcairo.so.*
 define postinst_libcairo2
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_libcairo_gobject2 = libgcc1 libz1 libpng16 libpixman libffi6 libfreetype6 libcairo2 libc6 libglib
 FILES_libcairo_gobject2 = /usr/lib/libcairo-gobject.so.*
 define postinst_libcairo_gobject2
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_libcairo_perf_utils = libgcc1 libz1 libc6
@@ -69,9 +65,7 @@ RDEPENDS_libcairo_script_interpreter2 = libgcc1 libpng16 libpixman libz1 libfree
 FILES_libcairo_script_interpreter2 = /usr/lib/libcairo-script-interpreter.so.*
 define postinst_libcairo_script_interpreter2
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 call[[ ipkbox ]]

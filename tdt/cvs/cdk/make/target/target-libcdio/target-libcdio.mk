@@ -54,27 +54,21 @@ PACKAGES_${P} = \
 RDEPENDS_libcdio12 = libc6
 define postinst_libcdio12
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libcdio12 = /usr/lib/libcdio.so.*
 
 RDEPENDS_libcdio_cdda0 = libcdio12 libc6
 define postinst_libcdio_cdda0
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libcdio_cdda0 = /usr/lib/libcdio_cdda.so.*
 
 RDEPENDS_libcdio_paranoia0 = libcdio12 libc6 libcdio_cdda0
 define postinst_libcdio_paranoia0
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libcdio_paranoia0 = /usr/lib/libcdio_paranoia.so.*
 
@@ -82,18 +76,14 @@ NAME_libcdioxx0 = libcdio++0
 RDEPENDS_libcdioxx0 = libgcc1 libstdc++6 libcdio12 libc6
 define postinst_libcdioxx0
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libcdioxx0 = /usr/lib/libcdio++.so.*
 
 RDEPENDS_libiso9660 = libcdio12 libc6
 define postinst_libiso9660
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libiso9660 = /usr/lib/libiso9660.so.*
 
@@ -101,18 +91,14 @@ NAME_libiso9660xx0 = libiso9660++0
 RDEPENDS_libiso9660xx0 = libgcc1 libiso9660 libcdio12 libstdc++6 libc6
 define postinst_libiso9660xx0
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libiso9660xx0 = /usr/lib/libiso9660++.so.*
 
 RDEPENDS_libudf0 = libcdio12 libc6
 define postinst_libudf0
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libudf0 = /usr/lib/libudf.so.*
 

@@ -44,9 +44,7 @@ PACKAGES_${P} = libexpat1 libexpat_bin
 RDEPENDS_libexpat1 = libc6
 define postinst_libexpat1
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libexpat1 = /usr/lib/libexpat.so*
 

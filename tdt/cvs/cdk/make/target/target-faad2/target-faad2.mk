@@ -45,9 +45,7 @@ FILES_faad2 = /usr/bin/*
 RDEPENDS_libfaad2 = libc6
 define postinst_libfaad2
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libfaad2 = /usr/lib/*.so.*
 

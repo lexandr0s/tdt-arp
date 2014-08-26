@@ -50,9 +50,7 @@ PACKAGES_${P} = libcap2 \
 RDEPENDS_libcap2 = libc6
 define postinst_libcap2
 #!/bin/sh
-if [ x"$$OPKG_OFFLINE_ROOT" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libcap2 = /lib/*.so*
 

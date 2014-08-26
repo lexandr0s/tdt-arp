@@ -124,117 +124,91 @@ RDEPENDS_libgstapp = libz1 libxml2 libffi6 gstreamer libc6 libglib
 FILES_libgstapp = /usr/lib/libgstapp*.so.*
 define postinst_libgstapp
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_libgstaudio = libffi6 libgstpbutils libxml2 libz1 gstreamer libgstinterfaces libc6 libglib
 FILES_libgstaudio = /usr/lib/libgstaudio*.so.*
 define postinst_libgstaudio
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_libgstcdda = libffi6 libxml2 libz1 gstreamer libgsttag libc6 libglib
 FILES_libgstcdda = /usr/lib/libgstcdda*.so.*
 define postinst_libgstcdda
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_libgstfft = libz1 libxml2 libffi6 gstreamer libc6 libglib
 FILES_libgstfft = /usr/lib/libgstfft*.so.*
 define postinst_libgstfft
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_libgstinterfaces = libz1 libxml2 libffi6 gstreamer libc6 libglib
 FILES_libgstinterfaces = /usr/lib/libgstinterfaces*.so.*
 define postinst_libgstinterfaces
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_libgstnetbuffer = libz1 libxml2 libffi6 gstreamer libc6 libglib
 FILES_libgstnetbuffer = /usr/lib/libgstnetbuffer*.so.*
 define postinst_libgstnetbuffer
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_libgstpbutils = libz1 libxml2 libffi6 gstreamer libc6 libglib
 FILES_libgstpbutils = /usr/lib/libgstpbutils*.so.*
 define postinst_libgstpbutils
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_libgstriff = gstreamer libgstpbutils libgstaudio libxml2 libz1 libgstinterfaces libffi6 libgsttag libc6 libglib
 FILES_libgstriff = /usr/lib/libgstriff*.so.*
 define postinst_libgstriff
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_libgstrtp = libz1 libxml2 libffi6 gstreamer libc6 libglib
 FILES_libgstrtp = /usr/lib/libgstrtp*.so.*
 define postinst_libgstrtp
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_libgstrtsp = libz1 libxml2 libffi6 gstreamer libc6 libglib
 FILES_libgstrtsp = /usr/lib/libgstrtsp*.so.*
 define postinst_libgstrtsp
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_libgstsdp = libz1 libxml2 libffi6 gstreamer libc6 libglib
 FILES_libgstsdp = /usr/lib/libgstsdp*.so.*
 define postinst_libgstsdp
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_libgsttag = libz1 libxml2 libffi6 gstreamer libc6 libglib
 FILES_libgsttag = /usr/lib/libgsttag*.so.*
 define postinst_libgsttag
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_libgstvideo = libffi6 libxml2 libz1 gstreamer libc6 libglib liborc
 FILES_libgstvideo = /usr/lib/libgstvideo*.so.*
 define postinst_libgstvideo
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_gst_plugins_base_adder = gstreamer libgstpbutils libgstaudio libxml2 libz1 libgstinterfaces libffi6 libc6 libglib liborc gst_plugins_base

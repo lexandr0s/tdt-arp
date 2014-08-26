@@ -29,9 +29,7 @@ RDEPENDS_libattr1 = libc6
 FILES_libattr1 = /usr/lib/libattr.s*
 define postinst_libattr1
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 call[[ ipkbox ]]

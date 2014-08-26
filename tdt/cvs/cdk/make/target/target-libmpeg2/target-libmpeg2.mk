@@ -42,18 +42,14 @@ PACKAGES_${P} = libmpeg2 libmpeg2convert0 mpeg2dec
 RDEPENDS_libmpeg2 = libc6
 define postinst_libmpeg2
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libmpeg2 = /usr/lib/libmpeg2.so.*
 
 RDEPENDS_libmpeg2convert0 = libc6
 define postinst_libmpeg2convert0
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libmpeg2convert0 = /usr/lib/libmpeg2convert.so.*
 

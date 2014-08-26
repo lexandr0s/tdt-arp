@@ -48,9 +48,7 @@ FILES_lame = /usr/bin/lame
 RDEPENDS_libmp3lame = libc6
 define postinst_libmp3lame
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libmp3lame = /usr/lib/libmp3lame.so.*
 

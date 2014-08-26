@@ -73,9 +73,7 @@ FILES_ntfsprogs = /sbin/mount.lowntfs-3g \
 RDEPENDS_libntfs_3g85 = libc6
 define postinst_libntfs_3g85
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libntfs_3g85 = /usr/lib/libntfs-3g.so.*
 

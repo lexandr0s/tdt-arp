@@ -69,9 +69,7 @@ RDEPENDS_${P} = libglib libxml2 libffi6 libz1 libc6 gstreamer
 FILES_${P} = /usr/lib/gstreamer-0.10/libgstsubsink.so
 define postinst_${P}
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 call[[ ipkbox ]]

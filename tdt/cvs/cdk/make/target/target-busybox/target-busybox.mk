@@ -65,46 +65,24 @@ FILES_busybox_cron = \
 	/etc/init.d/busybox-cron
 define postinst_busybox_cron
 #!/bin/sh
-if type update-rc.d >/dev/null 2>/dev/null; then
-	if [ -n "$$D" ]; then
-		OPT="-r $$D"
-	else
-		OPT="-s"
-	fi
-	update-rc.d $$OPT $$OPKG_OFFLINE_ROOT/ busybox-cron start 03 S . stop 99 0 6 .
-fi
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ busybox-cron start 03 S . stop 99 0 6 .
+
 endef
 define postrm_busybox_cron
 #!/bin/sh
-if type update-rc.d >/dev/null 2>/dev/null; then
-	if [ -n "$$D" ]; then
-		OPT="-r $$D"
-	else
-		OPT=""
-	fi
-	update-rc.d $$OPT $$OPKG_OFFLINE_ROOT/ busybox-cron remove
-fi
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ busybox-cron remove
 endef
 
 define preinst_busybox_cron
 #!/bin/sh
-if [ -z "$$D" -a -f "/etc/init.d/busybox-cron" ]; then
+if [ -z "$$OPKG_OFFLINE_ROOT" -a -f "/etc/init.d/busybox-cron" ]; then
 	/etc/init.d/busybox-cron stop
 fi
-if type update-rc.d >/dev/null 2>/dev/null; then
-	if [ -n "$$D" ]; then
-		OPT="-f -r $$D"
-	else
-		OPT="-f"
-	fi
-	update-rc.d $$OPT $$OPKG_OFFLINE_ROOT/ busybox-cron remove
-fi
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ busybox-cron remove
 endef
 define prerm_busybox_cron
 #!/bin/sh
-if [ -z "$$D" ]; then
-	/etc/init.d/busybox-cron stop
-fi
+$$OPKG_OFFLINE_ROOT/etc/init.d/busybox-cron stop
 endef
 
 call[[ ipkbox ]]

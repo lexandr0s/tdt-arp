@@ -52,9 +52,7 @@ DESCRIPTION_libfuse2 = With FUSE it is possible to implement a fully functional 
 RDEPENDS_libfuse2 = libc6
 define postinst_libfuse2
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libfuse2 = /usr/lib/libfuse.so.*
 
@@ -66,9 +64,7 @@ DESCRIPTION_libulockmgr1 = With FUSE it is possible to implement a fully functio
 RDEPENDS_libulockmgr1 = libc6
 define postinst_libulockmgr1
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libulockmgr1 = /usr/lib/libulockmgr.so.*
 

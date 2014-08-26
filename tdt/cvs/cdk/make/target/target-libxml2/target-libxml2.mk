@@ -57,9 +57,7 @@ DESCRIPTION_${P} = XML C Parser Library and Toolkit \
 RDEPENDS_${P} = libz1 libc6
 define postinst_${P}
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_${P} = /usr/bin/xmlcatalog /usr/bin/xmllint /usr/lib/libxml2.s*
 

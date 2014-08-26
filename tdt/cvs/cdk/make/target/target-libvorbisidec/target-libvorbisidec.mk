@@ -42,9 +42,7 @@ DESCRIPTION_${P} = Fixed-point decoder - Development files tremor is a fixed poi
 RDEPENDS_${P} = libogg0 libc6
 define postinst_${P}
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_${P} = /usr/lib/libvorbis*
 

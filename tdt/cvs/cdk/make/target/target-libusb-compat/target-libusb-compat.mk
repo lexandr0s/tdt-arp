@@ -43,9 +43,7 @@ DESCRIPTION_${P} = libusb-0.1 compatible layer for libusb1, a drop-in replacemen
 RDEPENDS_${P} = libusb-1.0 libc6
 define postinst_${P}
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_${P} = /usr/lib/libusb-0.1.so.*
 

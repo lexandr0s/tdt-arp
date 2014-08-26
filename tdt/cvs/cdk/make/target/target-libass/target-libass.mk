@@ -45,6 +45,10 @@ call[[ ipk ]]
 
 RDEPENDS_${P} += libfreetype6 libfribidi0
 FILES_${P} = /usr/lib/*.so*
+define postinst_${P}
+#!/bin/sh
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
+endef
 
 call[[ ipkbox ]]
 

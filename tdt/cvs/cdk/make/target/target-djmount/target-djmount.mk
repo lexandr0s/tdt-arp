@@ -44,48 +44,26 @@ FILES_${P} = /usr/bin/* /etc/init.d/djmount
 
 define postinst_${P}
 #!/bin/sh
-if type update-rc.d >/dev/null 2>/dev/null; then
-	if [ -n "$$D" ]; then
-		OPT="-r $$D"
-	else
-		OPT="-s"
-	fi
-	update-rc.d $$OPT $$OPKG_OFFLINE_ROOT/ djmount start 97 S .
-fi
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ djmount start 97 S .
 endef
 
 define postrm_${P}
 #!/bin/sh
-if type update-rc.d >/dev/null 2>/dev/null; then
-	if [ -n "$$D" ]; then
-		OPT="-r $$D"
-	else
-		OPT="-s"
-	fi
-	update-rc.d $$OPT $$OPKG_OFFLINE_ROOT/ djmount remove
-fi
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ djmount remove
 endef
 
 define preinst_${P}
 #!/bin/sh
-if [ -z "$$D" -a -f "/etc/init.d/djmount" ]; then
+if [ -z "$$OPKG_OFFLINE_ROOT" -a -f "/etc/init.d/djmount" ]; then
 	/etc/init.d/djmount stop
 fi
-if type update-rc.d >/dev/null 2>/dev/null; then
-	if [ -n "$$D" ]; then
-		OPT="-f -r $$D"
-	else
-		OPT="-f"
-	fi
-	update-rc.d $$OPT $$OPKG_OFFLINE_ROOT/ djmount remove
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ djmount remove
 fi
 endef
 
 define prerm_${P}
 #!/bin/sh
-if [ -z "$ $$D" ]; then
-	/etc/init.d/djmount stop
-fi
+$$OPKG_OFFLINE_ROOT/etc/init.d/djmount stop
 endef
 call[[ ipkbox ]]
 

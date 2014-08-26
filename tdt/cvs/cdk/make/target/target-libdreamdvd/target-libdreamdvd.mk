@@ -46,9 +46,7 @@ RDEPENDS_${P} = libdvdread4 libdvdnav4 libc6
 FILES_${P} = /usr/lib/libdreamdvd.s*
 define postinst_${P}
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 call[[ ipkbox ]]

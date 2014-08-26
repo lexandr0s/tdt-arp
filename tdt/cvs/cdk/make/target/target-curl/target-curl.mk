@@ -59,9 +59,7 @@ PACKAGES_${P} = libcurl4 \
 RDEPENDS_libcurl4 = libcap2 libz1 librtmp1 libc6
 define postinst_libcurl4
 #!/bin/sh
-if [ x"$$OPKG_OFFLINE_ROOT" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libcurl4 = /usr/lib/*.so*
 

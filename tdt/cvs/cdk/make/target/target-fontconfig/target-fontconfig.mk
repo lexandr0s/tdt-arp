@@ -61,9 +61,7 @@ PACKAGES_${P} = libfontconfig1 fontconfig_utils
 RDEPENDS_libfontconfig1 = libexpat1 libfreetype6 libc6
 define postinst_libfontconfig1
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libfontconfig1 = \
 	/etc/fonts/* \

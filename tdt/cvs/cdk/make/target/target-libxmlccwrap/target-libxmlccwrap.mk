@@ -40,9 +40,7 @@ DESCRIPTION_${P} = libxmlccwrap is a small C++ wrapper around libxml2 and libxsl
 RDEPENDS_${P} += libgcc1 libxml2 libz1 libstdc++6 libc6 libxslt
 define postinst_${P}
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_${P} = /usr/lib/*.so*
 

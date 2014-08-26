@@ -460,45 +460,35 @@ RDEPENDS_libgstbasecamerabinsrc = libffi6 libxml2 libz1 gstreamer libc6 libglib 
 FILES_libgstbasecamerabinsrc = /usr/lib/libgstbasecamerabinsrc*.so.*
 define postinst_libgstbasecamerabinsrc
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_libgstbasevideo = libffi6 libgstvideo libxml2 libz1 gstreamer libc6 libglib liborc
 FILES_libgstbasevideo = /usr/lib/libgstbasevideo*.so.*
 define postinst_libgstbasevideo
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_libgstcodecparsers = libz1 libxml2 libffi6 gstreamer libc6 libglib
 FILES_libgstcodecparsers = /usr/lib/libgstcodecparsers*.so.*
 define postinst_libgstcodecparsers
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_libgstphotography = libz1 libxml2 libffi6 gstreamer libc6 libglib
 FILES_libgstphotography = /usr/lib/libgstphotography*.so.*
 define postinst_libgstphotography
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 RDEPENDS_libgstsignalprocessor = gstreamer libgstpbutils libgstaudio libxml2 libz1 libgstinterfaces libffi6 libc6 libglib
 FILES_libgstsignalprocessor = /usr/lib/libgstsignalprocessor*.so.*
 define postinst_libgstsignalprocessor
 #!/bin/sh
-if [ x"$$D" = "x" ]; then
-	if [ -x /sbin/ldconfig ]; then /sbin/ldconfig ; fi
-fi
+$$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 
 call[[ ipkbox ]]
