@@ -37,6 +37,13 @@ $(TARGET_${P}): $(DEPENDS_${P})
 	$(opkg_rootfs) update && \
 	$(opkg_rootfs) install --force-postinstall $(opkg_my_list)
 
+# helps to fill DEPENDS list
+$(TARGET_${P}).print_depends:
+	#catch cat exitstatus and see stderr
+	@cd $(ipkbox) && cat $(addsuffix .origin,$(opkg_my_list)) > ${WORK}/list
+	cat ${WORK}/list
+
+
 #		$(opkg_system) $(opkg_os) $(opkg_enigma2) $(opkg_wireless) $(opkg_net_utils)
 
 # add version
