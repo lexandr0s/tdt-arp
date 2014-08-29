@@ -168,6 +168,7 @@ line2
 It does replacement in the body:
  - `${P}`  --> `package_name`
  - `${VARIABLE}` --> `$(VARIABLE_package_name)`
+
 ### purpose ###
 In make all variables are global, but in buildsystem we have a lot of pacakges with similar properties like version, release etc. So we must name variables like in output example, but we have a lot of same code for different packages and I want it to look the same ! Furthermore see next chapter about functions.
 
