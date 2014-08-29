@@ -27,17 +27,22 @@ Smart-rules is Makefile preprocessor written in perl, it helps to write simpler 
 
 You must understand that **firstly** it expands all **smart-rules** macroses, and **secondly** make evaluates **Makefile variables**.
 
-rules section
+It has following features:
+* [Rule definitions](#rule-section)
+* [Namespace workaround](#package-macro)
+* [Eval replacement](#smart-copy-paste)
+
+Rule section
 -----------------------
-##### example
+#### example ####
 ```
 rule[[
-   extract:http://project.com/prog-${PKGV}.tar.gz
-   file://hello_world.c;
+   extract:http://project.com/prog-${PV}.tar.gz
+   file://hello_world.c
    patch:file://fixqq.diff
 ]]rule
 ```
-##### format
+#### format ####
 Rules are separated by line break, all trailing white-spaces are ignored, use them for prettier indentation. Use `#` for comments, Makefile conditionals are not touched.
 ```
 rule[[
@@ -50,11 +55,10 @@ endif
   ...
 ]]rule
 ```
-##### purpose
+#### purpose #####
 This macro defines variables for future use in Makefile. They are `DEPENDS` , `PREPARE` , `INSTALL` and `SRC_URI`. Additional special targets and variables also printed to Makefile.
 
-rule format
-----------------------
+### rules format ###
 variants are
 ```
 command:arg1:arg2:...:url:url-arg1:url-arg2:....
@@ -64,8 +68,7 @@ command:arg1:arg2:...      # some commands doesn't require url.
 url is detected by `protocol://path` pattern.
 If `;` is found in rule it becomes a separator instead of `:`.
 
-stage prepare
--------------
+### stage prepare ###
 Commands that result in `PREPARE` variable
 
 *__nothing|extract|dirextract|patch(-(\\d+))?|pmove|premove|plink|pdircreate__*
@@ -86,8 +89,7 @@ Commands that result in `PREPARE` variable
 * __pdircreate__ <br>
   execute `mkdir -p arg1` url is not supported
 
-stage install
-------------
+### stage install ###
 Commands that result in `INSTALL` variable
 
 *__install|install_file|install_bin|make|move|remove|mkdir|link__*
@@ -113,8 +115,7 @@ Commands that result in `INSTALL` variable
 these are most common tasks, see smart-rules.pl for details and feel free to add more..
 However, some special rules is better to write directly to .mk file
 
-Fetch mechanisms
-----------------
+### fetch mechanisms ###
 Now consider sources that are supported. Each url creates rule for downloading file, and append it to `DEPENDS` variable. Also url is appended to `SRC_URI` variable for future use in opkg CONTROL file.
 
 *__https|http|ftp|file|git|svn|local|localwork__*
@@ -131,3 +132,69 @@ Now consider sources that are supported. Each url creates rule for downloading f
 * `file://` - file path prefixed with $(srcdir)/make/
 * `localwork://` - temporary file in ${DIR}
 * `local://` - not prefixed file name.
+
+
+Package macro
+-----------------------
+### example ###
+input
+```
+package[[ example_lib
+PV_${P} = 1
+PR_${P} = 2
+
+$(TARGET_${P}).do_package:
+  echo ${PV}-${PR} > $(PKDIR)/etc/version
+  touch $@
+]]package
+```
+output
+```
+PV_example_lib = 1
+PR_example_lib = 2
+
+$(TARGET_example_lib).do_package:
+  echo $(PV_example_lib)-$(PR_example_lib) > $(PKDIR)/etc/version
+  touch $@
+```
+### format ###
+```
+package[[ package_name
+line1
+line2
+...
+]]package
+```
+It does replacement in the body:
+ - `${P}`  --> `package_name`
+ - `${VARIABLE}` --> `$(VARIABLE_package_name)`
+### purpose ###
+In make all variables are global, but in buildsystem we have a lot of pacakges with similar properties like version, release etc. So we must name variables like in output example, but we have a lot of same code for different packages and I want it to look the same ! Furthermore see next chapter about functions.
+
+Smart copy paste
+------------------------
+#### example ####
+```
+function[[ common_code
+$(TARGET_${P}).do_compile:
+  cd ${DIR} && make
+  touch $@
+]]function
+
+package[[ pkg1
+call[[ common_code ]]
+$(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
+  install data1 $(PKDIR)/usr/share
+  touch $@
+]]package
+
+package[[ pkg2
+call[[ common_code ]]
+$(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
+  install 2.png $(PKDIR)/usr/share
+  touch $@
+]]package
+```
+
+#### purpose #####
+This macroses allows to define chunks of code for future use. Code block inside function is saved in memory and pasted instead of call.
