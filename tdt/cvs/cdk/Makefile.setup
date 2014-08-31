@@ -98,15 +98,19 @@ endif
 
 menuconfig: $(CONFIG)/mconf
 	@$(CONFIG)/mconf $(CONFIG_CONFIG_IN)
+	@echo Ctrl+C to abort
+	@$(CONFIG)/conf --oldconfig $(CONFIG_CONFIG_IN)
 
 xconfig: $(CONFIG)/qconf
 	test -f $(CONFIG)/qconf && $(CONFIG)/qconf $(CONFIG_CONFIG_IN) || $(CONFIG)/gconf $(CONFIG_CONFIG_IN)
+	@echo Ctrl+C to abort
+	@$(CONFIG)/conf --oldconfig $(CONFIG_CONFIG_IN)
 
 config: $(CONFIG)/conf
 	@$(CONFIG)/conf $(CONFIG_CONFIG_IN)
 
 oldconfig: $(CONFIG)/conf
-	@$(CONFIG)/conf -o $(CONFIG_CONFIG_IN)
+	@$(CONFIG)/conf --oldconfig $(CONFIG_CONFIG_IN)
 
 randconfig: $(CONFIG)/conf
 	@$(CONFIG)/conf -r $(CONFIG_CONFIG_IN)
@@ -192,6 +196,6 @@ Makefile: smart-rules.pl Makefile.pre
 	@echo or
 	@echo launch make -f Makefile.setup xconfig
 	@echo
-	@echo if you really shure that your .config is ok
-	@echo run \'touch .config\'
+	@echo if you are shure that your .config is ok
+	@echo launch make -f Makefile.setup oldconfig
 	@false
