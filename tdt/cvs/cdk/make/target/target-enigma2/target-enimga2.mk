@@ -6,7 +6,7 @@ package[[ target_enigma2
 BDEPENDS_${P} = $(target_glibc) $(target_gcc_lib) $(target_libsigc) $(target_libdvbsipp) $(target_freetype) $(target_tuxtxt32bpp) $(target_libgif) $(target_libpng) $(target_libjpeg) $(target_libxmlccwrap) $(target_libfribidi) $(target_python) $(target_python_twisted) $(target_linux_kernel_headers) $(target_libmmeimage) $(target_libmme_host) $(target_libdreamdvd)
 
 PV_${P} = git
-PR_${P} = 4
+PR_${P} = 5
 PACKAGE_ARCH_${P} = $(box_arch)
 
 DESCRIPTION_${P} = Framebuffer-based digital media application
@@ -162,7 +162,7 @@ RDEPENDS_enigma2_meta = enigma2
 FILES_enigma2_meta = /usr/share/meta
 
 DESCRIPTION_enigma2_fonts = Fonts for  enigma2
-RDEPENDS_enigma2_fonts = enigma2
+RDEPENDS_enigma2_fonts =
 FILES_enigma2_fonts = \
 	/usr/share/fonts/ae_AlMateen.ttf \
 	/usr/share/fonts/andale.ttf \
@@ -171,11 +171,11 @@ FILES_enigma2_fonts = \
 	/usr/share/fonts/nmsbd.ttf
 
 DESCRIPTION_font_valis_enigma = Fonts for  enigma2
-RDEPENDS_font_valis_enigma = enigma2
+RDEPENDS_font_valis_enigma =
 FILES_font_valis_enigma = /usr/share/fonts/valis_enigma.ttf
 
 DESCRIPTION_font_tuxtxt = Fonts for  enigma2
-RDEPENDS_font_tuxtxt = enigma2
+RDEPENDS_font_tuxtxt =
 FILES_font_tuxtxt = /usr/share/fonts/tuxtxt.ttf
 
 DESCRIPTION_enigma2_plugin_extensions_cutlisteditor = CutListEditor allows you to edit your movies

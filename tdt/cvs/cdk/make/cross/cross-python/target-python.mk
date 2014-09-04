@@ -5,7 +5,7 @@ package[[ target_python
 
 BDEPENDS_${P} = $(target_glibc) $(cross_python) $(target_zlib) $(target_openssl) $(target_libffi) $(target_libbz2)
 
-PR_${P} = 1
+PR_${P} = 2
 
 #FIXME: add /usr/include/python2.7/pyconfig.h
 
@@ -160,7 +160,7 @@ PACKAGES_${P} = \
 	python_zlib
 
 DESCRIPTION_python_core = Python Interpreter and core modules
-RDEPENDS_python_core = python_re libpython$(PYTHON_VERSION) python_lang libz1 libc6
+RDEPENDS_python_core = libpython$(PYTHON_VERSION) libz1 libc6
 FILES_python_core = \
   /usr/bin/python* \
   /usr/include/python$(PYTHON_VERSION)/pyconfig.h \
