@@ -36,6 +36,13 @@ $(TARGET_${P}): $(DEPENDS_${P})
 	export OPKG_OFFLINE_ROOT=$(DIR_${P}) && \
 	$(opkg_rootfs) update && \
 	$(opkg_rootfs) install --force-postinstall $(opkg_my_list)
+#		$(opkg_system) $(opkg_os) $(opkg_enigma2) $(opkg_wireless) $(opkg_net_utils)
+# add version
+	echo "version=OpenAR-P_`date +%d-%m-%y-%T`_git-`git rev-list --count HEAD`" > $(DIR_${P})/etc/image-version
+	echo "----------------------------------------------------------" >>          $(DIR_${P})/etc/image-version
+	echo "----------------------------------------------------------" >>          $(DIR_${P})/etc/image-version
+	cat $(buildprefix)/.config |grep -v '^#' |tr ' ' '\n' >>                      $(DIR_${P})/etc/image-version
+	touch $@
 
 # helps to fill DEPENDS list
 $(TARGET_${P}).print_depends:
@@ -43,15 +50,6 @@ $(TARGET_${P}).print_depends:
 	@cd $(ipkbox) && cat $(addsuffix .origin,$(opkg_my_list)) > ${WORK}/list
 	cat ${WORK}/list
 
-
-#		$(opkg_system) $(opkg_os) $(opkg_enigma2) $(opkg_wireless) $(opkg_net_utils)
-
-# add version
-	echo "version=OpenAR-P_`date +%d-%m-%y-%T`_git-`git rev-list --count HEAD`" > $(DIR_${P})/etc/image-version
-	echo "----------------------------------------------------------" >>          $(DIR_${P})/etc/image-version
-	echo "----------------------------------------------------------" >>          $(DIR_${P})/etc/image-version
-	cat $(buildprefix)/.config |grep -v '^#' |tr ' ' '\n' >>                      $(DIR_${P})/etc/image-version
-	touch $@
 
 # core system libraries, binaries and scripts
 opkg_my_list = \
