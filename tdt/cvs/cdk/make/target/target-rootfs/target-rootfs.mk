@@ -4,7 +4,7 @@
 package[[ target_rootfs
 
 IPKBOX_LIST_${P} = \
-$(target_firmware) $(target_bootelf) $(target_ustslave) $(target_driver) $(target_busybox) $(target_update_rcd) $(target_initscripts) $(target_sysvinit) $(target_devinit) $(target_udev) $(target_udev_rules) $(target_base_passwd) $(target_base_files) $(target_netbase) $(target_opkg) $(target_lirc) $(target_evremote2) $(target_vsftpd) $(target_enigma2) $(target_tuxbox_configs) $(target_ethtool)
+$(target_firmware) $(target_bootelf) $(target_ustslave) $(target_driver) $(target_busybox) $(target_update_rcd) $(target_initscripts) $(target_sysvinit) $(target_devinit) $(target_udev) $(target_udev_rules) $(target_base_passwd) $(target_base_files) $(target_netbase) $(target_opkg) $(target_lirc) $(target_evremote2) $(target_vsftpd) $(target_python_pyopenssl) $(target_enigma2) $(target_tuxbox_configs) $(target_ethtool)
 
 DEPENDS_${P} = $(addsuffix .do_ipkbox, $(IPKBOX_LIST_${P}))
 
