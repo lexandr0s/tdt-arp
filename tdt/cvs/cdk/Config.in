@@ -92,15 +92,15 @@ menu "Global Configuration"
 
 		config GCC473
 		bool "Build gcc 4.7.3"
-		depends on BUILD_TARGET_GCC
+		depends on GCC_LIB_FROM_TARGET
 
 		config GCC482
 		bool "Build gcc 4.8.2"
-		depends on BUILD_TARGET_GCC
+		depends on GCC_LIB_FROM_TARGET
 		
 		config GCC483
 		bool "Build gcc 4.8.3"
-		depends on BUILD_TARGET_GCC
+		depends on GCC_LIB_FROM_TARGET
 	  endchoice
 
 	choice
