@@ -104,11 +104,15 @@ $(TARGET_${P}).do_menuconfig $(TARGET_${P}).do_xconfig: \
 $(TARGET_${P}).do_%: $(TARGET_${P}).do_prepare
 	cd $(DIR_${P}) && make $(MAKE_FLAGS_${P}) $*
 	@echo
-	@echo "You have to edit m a n u a l l y Patches/...${PN}...config to make changes permanent !!!"
-	@echo ""
-	diff -u $(DIR_${P})/.config.old $(DIR_${P})/.config
-	@echo
-	touch $@
+	diff -u $(DIR_${P})/.config.old $(DIR_${P})/.config; \
+	  test $$? -ne 2
+	@echo ----------------------------------------------------------------------------
+	@echo You might have to COPY
+	@echo ${DIR}/.config
+	@echo to
+	@echo ${SDIR}
+	@echo to make changes permanent !!!
+	@echo ----------------------------------------------------------------------------
 ]]function
 
 
