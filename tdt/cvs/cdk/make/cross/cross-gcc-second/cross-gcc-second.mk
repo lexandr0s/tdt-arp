@@ -11,11 +11,11 @@ ST_PN_${P} = cross-gcc
 
 ifdef CONFIG_GCC483
  ST_PV_${P} = 4.8.3
- ST_PR_${P} = 133
+ ST_PR_${P} = 135
 endif
 ifdef CONFIG_GCC482
  ST_PV_${P} = 4.8.2
- ST_PR_${P} = 133
+ ST_PR_${P} = 135
 endif
 ifdef CONFIG_GCC473
  ST_PV_${P} = 4.7.3

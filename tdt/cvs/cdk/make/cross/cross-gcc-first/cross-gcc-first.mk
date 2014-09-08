@@ -8,16 +8,20 @@ BDEPENDS_${P} = $(target_kernel_headers) $(target_glibc_headers) $(cross_mpc) $(
 PR_${P} = 1
 
 ifdef CONFIG_GCC483
-${P}_VERSION = 4.8.3-133
+ST_PV_${P} = 4.8.3
+ST_PR_${P} = 135
 endif
 ifdef CONFIG_GCC482
-${P}_VERSION = 4.8.2-133
+ST_PV_${P} = 4.8.2
+ST_PR_${P} = 135
 endif
 ifdef CONFIG_GCC473
-${P}_VERSION = 4.7.3-124
+ST_PV_${P} = 4.7.3
+ST_PR_${P} = 124
 endif
 
 ST_PN_${P} = cross-gcc
+${P}_VERSION := ${ST_PV}-${ST_PR}
 ${P}_SPEC = stm-${ST_PN}.spec
 ${P}_SPEC_PATCH = $(${P}_SPEC).$(${P}_VERSION).first.diff
 ${P}_PATCHES = stm-${ST_PN}.$(${P}_VERSION).diff
