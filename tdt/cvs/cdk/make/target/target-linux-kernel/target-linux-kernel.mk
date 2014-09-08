@@ -19,7 +19,7 @@ endif
 function[[ target_linux_kernel_in
 
 PV_${P} = $(KERNEL_VERSION)
-PR_${P} = 5
+PR_${P} = 6
 
 DIR_${P} = $(WORK_target_linux_kernel)/linux-$(KERNEL_MAJOR)
 PACKAGE_ARCH_${P} = $(box_arch)
@@ -48,26 +48,25 @@ ${P}_patches = \
 	linux-sh4-strcpy_stm24_$(KERNEL_LABEL).patch \
 	linux-squashfs-lzma_stm24_$(KERNEL_LABEL).patch \
 	linux-sh4-ext23_as_ext4_stm24_$(KERNEL_LABEL).patch \
-	bpa2_procfs_stm24_$(KERNEL_LABEL).patch
-
-${P}_patches += \
+	bpa2_procfs_stm24_$(KERNEL_LABEL).patch \
 	linux-ftdi_sio.c_stm24_$(KERNEL_LABEL).patch \
 	linux-sh4-lzma-fix_stm24_$(KERNEL_LABEL).patch
 
-ifeq ($(CONFIG_KERNEL_211),y)
+ifeq ($(CONFIG_KERNEL_0211),y)
 ${P}_patches += linux-tune_stm24.patch
 endif
 
-ifeq ($(CONFIG_KERNEL_215),y)
-${P}_patches += linux-tune_stm24_0212.patch
+ifeq ($(CONFIG_KERNEL_0215),y)
+${P}_patches += \
+	linux-tune_stm24_$(KERNEL_LABEL).patch \
+	linux-sh4-ratelimit-bug_stm24_$(KERNEL_LABEL).patch \
+	fix_localversion_stm24_$(KERNEL_LABEL).diff
 endif
 
-ifeq ($(CONFIG_KERNEL_211)$(CONFIG_KERNEL_215),y)
-${P}_patches += linux-sh4-mmap_stm24.patch
-endif
-
-ifeq ($(CONFIG_KERNEL_211)$(CONFIG_KERNEL_215),y)
-${P}_patches += linux-sh4-directfb_stm24_$(KERNEL_LABEL).patch
+ifeq ($(CONFIG_KERNEL_0211)$(CONFIG_KERNEL_0215),y)
+${P}_patches += \
+	linux-sh4-mmap_stm24.patch \
+	linux-sh4-directfb_stm24_$(KERNEL_LABEL).patch
 endif
 
 ${P}_patches += patch_swap_notify_core_support.diff
@@ -93,10 +92,9 @@ ifdef CONFIG_SPARK
   ${P}_patches += bpa2-ignore-bigphysarea-kernel-parameter.patch
 
 ifeq ($(CONFIG_KERNEL_0211)$(CONFIG_KERNEL_0215),y)
-  ${P}_patches += linux-sh4-lirc_stm_stm24_$(KERNEL_LABEL).patch
-endif
-ifeq ($(CONFIG_KERNEL_0211)$(CONFIG_KERNEL_0215),y)
-  ${P}_patches += linux-sh4-fix-crash-usb-reboot_stm24_0211.diff
+  ${P}_patches += \
+	linux-sh4-lirc_stm_stm24_$(KERNEL_LABEL).patch \
+	linux-sh4-fix-crash-usb-reboot_stm24_0211.diff
 endif
 endif #CONFIG_SPARK
 
