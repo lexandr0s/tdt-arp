@@ -43,7 +43,7 @@ def debug(s):
 
 def process(s):
 	s = s.strip()
-	if s.find("Patches") > -1 or s.find("Archive") > -1 or s.startswith('root/'):
+	if s.find("files/") > -1 or s.find("Archive/") > -1:
 		return ''
 	l = s.split('/')
 	if s.find(".deps") < 0:
