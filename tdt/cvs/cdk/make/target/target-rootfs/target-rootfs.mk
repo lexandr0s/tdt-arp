@@ -37,7 +37,7 @@ $(TARGET_${P}): $(DEPENDS_${P})
 	$(opkg_rootfs) update && \
 	$(opkg_rootfs) install --force-postinstall $(opkg_my_list)
 #		$(opkg_system) $(opkg_os) $(opkg_enigma2) $(opkg_wireless) $(opkg_net_utils)
-# add version
+#	add version
 	echo "version=OpenAR-P_`date +%d-%m-%y-%T`_git-`git rev-list --count HEAD`" > $(DIR_${P})/etc/image-version
 	echo "----------------------------------------------------------" >>          $(DIR_${P})/etc/image-version
 	echo "----------------------------------------------------------" >>          $(DIR_${P})/etc/image-version
