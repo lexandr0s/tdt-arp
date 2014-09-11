@@ -3,7 +3,7 @@
 #
 package[[ target_fp_control
 
-BDEPENDS_${P} = $(target_glibc)
+BDEPENDS_${P} = $(target_glibc) $(target_driver_headers)
 
 PR_${P} = $(PR_tdt_tools).1
 
