@@ -10,11 +10,7 @@ PR_${P} = 1
 
 ifdef CONFIG_GCC483
 ${P}_VERSION = 4.8.3-143
-endif
-ifdef CONFIG_GCC482
-${P}_VERSION = 4.8.2-143
-endif
-ifdef CONFIG_GCC473
+else
 ${P}_VERSION = 4.7.3-129
 endif
 

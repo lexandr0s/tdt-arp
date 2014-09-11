@@ -1,5 +1,5 @@
---- stm-cross-gcc.spec.orig	2014-07-15 10:58:10.000000000 +0200
-+++ stm-cross-gcc.spec	2014-07-26 00:16:46.573871855 +0200
+--- stm-cross-gcc.spec.orig	2014-08-22 21:05:10.000000000 +0200
++++ stm-cross-gcc.spec	2014-09-08 23:12:49.125856212 +0200
 @@ -16,6 +16,7 @@
  Source3: gcc-protoize.1
  
@@ -75,10 +75,15 @@
  cd ..
  
  %compress_man %{buildroot}%{_stm_cross_info_dir}
-@@ -302,64 +303,14 @@
- 	%{buildroot}/%{_stm_cross_targetconf_dir}/lib/cpp
- 
+@@ -304,78 +305,14 @@
  mkdir -p %{buildroot}%{_stm_cross_target_dir}/lib
+ mkdir -p %{buildroot}%{_stm_cross_target_dir}%{_stm_target_lib_dir}/
+ 
+-mv %{buildroot}%{_stm_cross_targetconf_dir}/lib/libstdc++.a \
+-	%{buildroot}%{_stm_cross_target_dir}%{_stm_target_lib_dir}/
+-mv %{buildroot}%{_stm_cross_targetconf_dir}/lib/libsupc++.a \
+-	%{buildroot}%{_stm_cross_target_dir}%{_stm_target_lib_dir}/
+-
 -mv %{buildroot}%{_stm_cross_targetconf_dir}/lib/libgcc_s.so.1 \
 -	%{buildroot}%{_stm_cross_target_dir}/lib/libgcc_s-%{version}.so.1
  ln -s libgcc_s-%{version}.so.1 \
@@ -92,9 +97,17 @@
 -	%{buildroot}%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/libgcc_s.so
 -
 -%if %target_cpu sh
+-mkdir -p %{buildroot}%{_stm_cross_target_dir}/lib/m4-nofpu
+-mkdir -p %{buildroot}%{_stm_cross_target_dir}%{_stm_target_lib_dir}/m4-nofpu
+-
+-mv %{buildroot}%{_stm_cross_targetconf_dir}/lib/m4-nofpu/libstdc++.a \
+-	%{buildroot}%{_stm_cross_target_dir}%{_stm_target_lib_dir}/m4-nofpu/
+-mv %{buildroot}%{_stm_cross_targetconf_dir}/lib/m4-nofpu/libsupc++.a \
+-	%{buildroot}%{_stm_cross_target_dir}%{_stm_target_lib_dir}/m4-nofpu/
+-
 -mv %{buildroot}%{_stm_cross_targetconf_dir}/lib/m4-nofpu/libgcc_s.so \
 -	%{buildroot}%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu/libgcc_s.so
--mkdir -p %{buildroot}%{_stm_cross_target_dir}/lib/m4-nofpu
+-
 -mv %{buildroot}%{_stm_cross_targetconf_dir}/lib/m4-nofpu/libgcc_s.so.1 \
 -        %{buildroot}%{_stm_cross_target_dir}/lib/m4-nofpu/libgcc_s-%{version}.so.1
 -ln -s m4-nofpu/libgcc_s-%{version}.so.1 \
@@ -113,6 +126,7 @@
 -rm %{buildroot}%{_stm_cross_targetconf_dir}/lib/m4-nofpu/libstdc++.la
 -rm %{buildroot}%{_stm_cross_targetconf_dir}/lib/m4-nofpu/libsupc++.la
 -%endif
+-
 -find %{buildroot}%{_stm_cross_targetconf_dir}/lib \
 -	\( -name "libmudflap*" -o -name "libssp*" \) -print | \
 -	xargs --no-run-if-empty --verbose rm
@@ -140,19 +154,10 @@
  ##############################################################################
  %clean
  rm -rf %{buildroot}
-@@ -382,22 +333,9 @@
+@@ -398,54 +335,18 @@
  %dir %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}
  %dir %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}
  
--%{_stm_cross_targetconf_dir}/lib/libstdc++.a
--%{_stm_cross_targetconf_dir}/lib/libsupc++.a
--
--%if %target_cpu sh
--%dir %{_stm_cross_target_dir}/lib/m4-nofpu
--%{_stm_cross_targetconf_dir}/lib/m4-nofpu/libstdc++.a
--%{_stm_cross_targetconf_dir}/lib/m4-nofpu/libsupc++.a
--%endif
--
 -%{_stm_cross_targetconf_dir}/include/c++/%{version}/*
 -
  %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/include/
@@ -163,16 +168,30 @@
  %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/libgcov.a
  %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/crt*
  
-@@ -411,8 +349,6 @@
- %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu/libgcc-4-200.a
- %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu/libgcc-4-300.a
- %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu/libgcc-Os-4-200.a
+-%{_stm_cross_target_dir}%{_stm_target_lib_dir}/libstdc++.a
+-%{_stm_cross_target_dir}%{_stm_target_lib_dir}/libsupc++.a
+-
+-%if %target_cpu sh
+-%{_stm_cross_target_dir}%{_stm_target_lib_dir}/m4-nofpu/libstdc++.a
+-%{_stm_cross_target_dir}%{_stm_target_lib_dir}/m4-nofpu/libsupc++.a
+-
+-%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/libgcc-4-200.a
+-%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/libgcc-4-300.a
+-%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/libgcc-Os-4-200.a
+-
+-%dir %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu
+-%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu/libgcc.a
+-%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu/libgcc-4-200.a
+-%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu/libgcc-4-300.a
+-%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu/libgcc-Os-4-200.a
 -%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu/libgcc_eh.a
 -%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu/libgcc_s.so
- %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu/libgcov.a
- %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu/crt*
- %endif
-@@ -422,17 +358,6 @@
+-%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu/libgcov.a
+-%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/m4-nofpu/crt*
+-%endif
+ 
+ %if %target_cpu arm
+ #%dir %{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/arm-linux-gnueabi
  #%{_stm_cross_lib_dir}/gcc/%{_stm_target_config}/%{version}/arm-linux-gnueabi/*
  %endif
  
@@ -190,7 +209,7 @@
  %if_target_cpu arm
  %{_stm_cross_targetconf_dir}/lib/libasan.la
  %{_stm_cross_targetconf_dir}/lib/libasan.so*
-@@ -469,65 +394,17 @@
+@@ -482,65 +383,17 @@
  
  %doc COPYING COPYING.LIB ABOUT-NLS README
  
@@ -254,5 +273,5 @@
 -	%{_stm_cross_info_dir}/gcc.info
 -
  %changelog
- * Fri Jul 11 2014 Laurent Alfonsi <laurent.alfonsi@st.com> 134
- - Upgrade cross-arm to linaro 2014.04 - binutils 2.24
+ * Fri Aug 22 2014 Christian Bruel <christian.bruel@st.com> 135
+ - [Spec: Bugzilla 56275] Install libstdc++.a at the correct location for target gcc bootstrap.
