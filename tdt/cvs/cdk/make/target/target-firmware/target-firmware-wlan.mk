@@ -6,7 +6,7 @@ package[[ target_firmware_wlan
 BDEPENDS_${P} = $(target_filesystem)
 
 PV_${P} = git
-PR_${P} = 1
+PR_${P} = 2
 PACKAGE_ARCH_${P} = all
 
 DESCRIPTION_${P} = linux-firmware
@@ -69,7 +69,7 @@ RDEPENDS_firmware_rt3070 = \
 	firmware_rt2870
 
 FILES_firmware_rt5370 = \
-	/lib/firmware/rt5370.bin \
+	/lib/firmware/rt5370.bin
 RDEPENDS_firmware_rt5370 = \
 	firmware_rt2870
 
