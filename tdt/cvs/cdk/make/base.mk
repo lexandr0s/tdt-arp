@@ -141,7 +141,7 @@ opkg-check-%:
 	comm --check-order -23 fs db; \
 	true
 help::
-	@echo "run \'make opkg-check-{host|cross|target}\' to list opkg disowned files"
+	@echo "run 'make opkg-check-{host|cross|target}' to list opkg disowned files"
 .PHONY: opkg-check-target opkg-check-cross opkg-check-host
 
 # format list separated with spaces to list separeated with commas
