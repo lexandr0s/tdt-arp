@@ -67,7 +67,6 @@ CONFIG_FLAGS_${P} = \
 	--target=$(target) \
 	\
 	--program-prefix=$(target)- \
-	--with-local-prefix=$(crossprefix) \
 	--with-sysroot=$(targetprefix) \
 	--enable-target-optspace \
 	--enable-languages=c,c++ \
@@ -168,7 +167,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 
 	# In spec they removes these libs, but they are ok
 	install -d $(PKDIR)/$(targetprefix)
-	mv $(PKDIR)/$(crossprefix)/$(target)/* $(PKDIR)/$(targetprefix)
+	cp -ar $(PKDIR)/$(crossprefix)/$(target)/* $(PKDIR)/$(targetprefix)
 	install -d $(PKDIR)/$(targetprefix)/usr/lib
 	find $(PKDIR)/$(targetprefix)/lib -maxdepth 1 ! -type d -! -name 'libgcc*' \
 		-exec mv {} $(PKDIR)/$(targetprefix)/usr/lib \;

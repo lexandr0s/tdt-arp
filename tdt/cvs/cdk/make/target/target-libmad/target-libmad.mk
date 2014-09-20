@@ -6,7 +6,7 @@ package[[ target_libmad
 BDEPENDS_${P} = $(target_glibc) $(target_zlib)
 
 PV_${P} = 0.15.1b
-PR_${P} = 1
+PR_${P} = 2
 
 call[[ base ]]
 

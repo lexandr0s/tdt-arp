@@ -32,8 +32,8 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 
 $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 	cd $(DIR_${P}) && \
-		ACLOCAL_FLAGS="-I $(hostprefix)/share/aclocal" ./autogen.sh && \
 		$(BUILDENV) \
+		ACLOCAL_FLAGS="-I $(hostprefix)/share/aclocal" ./autogen.sh && \
 		./configure \
 			--host=$(target) \
 			--build=$(build) \
@@ -41,17 +41,15 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 			--enable-shared \
 			--with-target=cdk \
 			--with-boxtype=$(TARGET) \
-			PKG_CONFIG=$(hostprefix)/bin/pkg-config \
-			PKG_CONFIG_PATH=$(targetprefix)/usr/lib/pkgconfig \
 			$(PLATFORM_CPPFLAGS) \
-			CPPFLAGS="$(CPPFLAGS_N)" \
+			CPPFLAGS="$(CPPFLAGS_target_neutrino)" \
 		&& \
 		$(MAKE)
 	touch $@
 
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	$(PKDIR_clean)
-	$(MAKE) -C $(DIR_${P}) install DESTDIR=$(PKDIR)
+	cd $(DIR_${P}) && make install DESTDIR=$(PKDIR)
 	touch $@
 
 call[[ ipk ]]

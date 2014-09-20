@@ -3,7 +3,7 @@
 #
 package[[ target_curl
 
-BDEPENDS_${P} = 
+BDEPENDS_${P} = $(target_glibc) $(target_zlib)
 
 PV_${P} = 7.37.0
 PR_${P} = 1
@@ -20,41 +20,38 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 
 $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 	cd $(DIR_${P}) && \
-	export PATH=$(hostprefix)/bin:$(PATH) && \
-	$(BUILDENV) \
-	./configure \
-		--build=$(build) \
-		--host=$(target) \
-		--prefix=/usr \
-		--with-ssl \
-		--disable-debug \
-		--disable-file \
-		--disable-rtsp \
-		--disable-dict \
-		--disable-imap \
-		--disable-pop3 \
-		--disable-smtp \
-		--disable-verbose \
-		--disable-manual \
-		--mandir=/usr/share/man \
-		--with-random \
-	&& \
-	make all
+		$(BUILDENV) \
+		./configure \
+			--build=$(build) \
+			--host=$(target) \
+			--prefix=/usr \
+			--with-ssl \
+			--disable-debug \
+			--disable-file \
+			--disable-rtsp \
+			--disable-dict \
+			--disable-imap \
+			--disable-pop3 \
+			--disable-smtp \
+			--disable-verbose \
+			--disable-manual \
+			--mandir=/usr/share/man \
+			--with-random \
+		&& \
+		make all
 	touch $@
 
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	$(PKDIR_clean)
-	cd $(DIR_${P}) && \
-	sed -e "s,^prefix=,prefix=$(targetprefix)," < curl-config > $(hostprefix)/bin/curl-config; \
-	chmod 755 $(hostprefix)/bin/curl-config; \
-	$(MAKE) install DESTDIR=$(PKDIR)
+	cd $(DIR_${P}) && $(MAKE) install DESTDIR=$(PKDIR)
+	
+	$(call rewrite_config, $(PKDIR)/usr/bin/curl-config)
 	touch $@
 
 call[[ ipk ]]
 
 DESCRIPTION_${P} = Command line tool and library for client-side URL transfers
-PACKAGES_${P} = libcurl4 \
-		curl
+PACKAGES_${P} = libcurl4 curl
 
 RDEPENDS_libcurl4 = libcap2 libz1 librtmp1 libc6
 define postinst_libcurl4

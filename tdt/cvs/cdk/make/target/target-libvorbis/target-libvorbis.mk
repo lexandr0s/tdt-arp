@@ -22,9 +22,9 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 	cd $(DIR_${P}) && \
 		$(BUILDENV) \
 		./configure \
-		--build=$(build) \
-		--host=$(target) \
-		--prefix=/usr \
+			--build=$(build) \
+			--host=$(target) \
+			--prefix=/usr \
 		&& \
 		make
 	touch $@
@@ -36,7 +36,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 
 call[[ ipk ]]
 
-DESCRIPTION_${P} = "The libvorbis reference implementation provides both a standard encoder and decoder"
+DESCRIPTION_${P} = The libvorbis reference implementation provides both a standard encoder and decoder
 RDEPENDS_${P} = libogg0 libc6
 define postinst_${P}
 #!/bin/sh

@@ -61,15 +61,13 @@ menu "Global Configuration"
 		bool "Multicom 4.0.6 (testing)"
 	endchoice
 	
-		choice
+	choice
 		prompt "Player:"
 		default PLAYER191
 
 		config PLAYER191
 		bool "Player 191"
-
 	endchoice
-
 
 	choice
 		prompt "gcc libs from:"

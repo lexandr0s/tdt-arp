@@ -40,15 +40,14 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 
 call[[ ipk ]]
 
-PACKAGES_${P} = libfuse2 \
-		libulockmgr1 \
-		fuse_utils
+PACKAGES_${P} = libfuse2 libulockmgr1 fuse_utils
 
-DESCRIPTION_libfuse2 = With FUSE it is possible to implement a fully functional filesystem in a \
+DESCRIPTION_${P} = With FUSE it is possible to implement a fully functional filesystem in a \
  userspace program  FUSE (Filesystem in Userspace) is a simple interface \
  for userspace   programs to export a virtual filesystem to the Linux \
  kernel.  FUSE also   aims to provide a secure method for non privileged \
  users to create and   mount their own filesystem implementations.
+
 RDEPENDS_libfuse2 = libc6
 define postinst_libfuse2
 #!/bin/sh
@@ -56,11 +55,6 @@ $$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libfuse2 = /usr/lib/libfuse.so.*
 
-DESCRIPTION_libulockmgr1 = With FUSE it is possible to implement a fully functional filesystem in a \
- userspace program  FUSE (Filesystem in Userspace) is a simple interface \
- for userspace   programs to export a virtual filesystem to the Linux \
- kernel.  FUSE also   aims to provide a secure method for non privileged \
- users to create and   mount their own filesystem implementations.
 RDEPENDS_libulockmgr1 = libc6
 define postinst_libulockmgr1
 #!/bin/sh
@@ -68,26 +62,16 @@ $$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libulockmgr1 = /usr/lib/libulockmgr.so.*
 
-DESCRIPTION_fuse_utils = With FUSE it is possible to implement a fully functional filesystem in a \
- userspace program  FUSE (Filesystem in Userspace) is a simple interface \
- for userspace   programs to export a virtual filesystem to the Linux \
- kernel.  FUSE also   aims to provide a secure method for non privileged \
- users to create and   mount their own filesystem implementations.
 RDEPENDS_fuse_utils = libc6
-FILES_fuse_utils = /etc/init.d/fuse \
-		   /etc/udev/* \
-		   /sbin/mount.fuse \
-		   /usr/bin/*
-
 define postinst_fuse_utils
 #!/bin/sh
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ fuse start 34 S .
 endef
-
 define prerm_fuse_utils
 #!/bin/sh
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ fuse remove
 endef
+FILES_fuse_utils = /etc/init.d/fuse /etc/udev/* /sbin/mount.fuse /usr/bin/*
 
 call[[ ipkbox ]]
 

@@ -31,7 +31,6 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	$(PKDIR_clean)
 	cd $(DIR_${P}) && $(MAKE) install DESTDIR=$(PKDIR)
-	rm -f $(PKDIR)/usr/share/info/dir
 	touch $@
 
 call[[ ipk ]]

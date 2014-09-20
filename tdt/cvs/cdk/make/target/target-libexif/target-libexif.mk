@@ -22,9 +22,9 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 	cd $(DIR_${P}) && \
 		$(BUILDENV) \
 		./configure \
-		--build=$(build) \
-		--host=$(target) \
-		--prefix=/usr \
+			--build=$(build) \
+			--host=$(target) \
+			--prefix=/usr \
 		&& \
 		make
 	touch $@
@@ -37,7 +37,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 call[[ ipk ]]
 
 NAME_${P} = libexif12
-DESCRIPTION_${P} = "libexif is a library for parsing, editing, and saving EXIF data."
+DESCRIPTION_${P} = libexif is a library for parsing, editing, and saving EXIF data.
 RDEPENDS_${P} = libc6
 FILES_${P} = /usr/lib/libexif.*
 

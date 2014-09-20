@@ -12,6 +12,21 @@ ifdef CONFIG_ENIGMA2_PLUGINS
 IPKBOX_LIST_${P} += $(target_enigma2_plugins) $(target_openwebif) $(target_mediaportal) $(target_aio_grab) $(target_python_cheetah) $(target_python_pyopenssl) $(target_python_pycrypto) $(target_python_wifi) $(target_python_mechanize) $(target_oscam)
 endif
 
+# helps to fill DEPENDS list
+$(TARGET_${P}).print_depends:
+#	catch cat exitstatus and see stderr
+	@cd $(ipkbox) && cat $(addsuffix .origin,$(opkg_my_list)) > $(buildprefix)/list
+	cat $(buildprefix)/list
+
+# some packages are installed due to rdepends of other ones
+# we want to see all the installed packages and rebuild rootfs when any of them changes
+$(TARGET_${P}).print_depends_all: $(TARGET_${P})
+	set -e; \
+	list=`$(opkg_rootfs) list-installed | cut -d ' ' -f 1`; \
+	for x in $${list}; do \
+		cat $(ipkbox)/$${x}.origin || true; \
+	done
+
 # core system libraries, binaries and scripts
 opkg_my_list = \
 	sysvinit \

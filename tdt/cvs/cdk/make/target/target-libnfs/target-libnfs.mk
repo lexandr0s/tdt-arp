@@ -22,9 +22,8 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 
 $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 	cd $(DIR_${P}) && \
-	autoreconf --verbose --force --install -I$(hostprefix)/share/aclocal && \
-	libtoolize -f -c && \
 		$(BUILDENV) \
+		autoreconf --verbose --force --install -I$(hostprefix)/share/aclocal && \
 		./configure \
 			--host=$(target) \
 			--prefix=/usr \

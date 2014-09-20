@@ -7,7 +7,7 @@ BDEPENDS_${P} =
 
 PV_${P} = 0.1
 PR_${P} = 1
-SRC_URI_${P} = Open AR-P 
+SRC_URI_${P} = Open AR-P
 PACKAGE_ARCH_${P} = $(box_arch)
 
 DESCRIPTION_${P} = Configuration files for online package repositories aka feeds
@@ -15,7 +15,7 @@ DESCRIPTION_${P} = Configuration files for online package repositories aka feeds
 call[[ base ]]
 
 rule[[
-  pdircreate:${PN}-${PV}
+  pdircreate:${DIR}
   install:-d:$(PKDIR)/etc/opkg
 ]]rule
 

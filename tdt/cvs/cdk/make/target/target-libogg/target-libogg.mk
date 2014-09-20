@@ -22,9 +22,9 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 	cd $(DIR_${P}) && \
 		$(BUILDENV) \
 		./configure \
-		--build=$(build) \
-		--host=$(target) \
-		--prefix=/usr \
+			--build=$(build) \
+			--host=$(target) \
+			--prefix=/usr \
 		&& \
 		make
 	touch $@
@@ -37,11 +37,9 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 call[[ ipk ]]
 
 NAME_${P} = libogg0
-DESCRIPTION_${P} = libogg is the bitstream and framing library for the Ogg project.\
+DESCRIPTION_${P} = libogg is the bitstream and framing library for the Ogg project. \
 It provides functions which are necessary to codec libraries like libvorbis.
-
-FILES_${P} = \
-/usr/lib/*.so*
+FILES_${P} = /usr/lib/*.so*
 
 call[[ ipkbox ]]
 

@@ -23,9 +23,9 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 	cd $(DIR_${P}) && \
 		$(BUILDENV) \
 		./autogen.sh \
-		--build=$(build) \
-		--host=$(target) \
-		--prefix=/usr \
+			--build=$(build) \
+			--host=$(target) \
+			--prefix=/usr \
 		&& \
 		make
 	touch $@

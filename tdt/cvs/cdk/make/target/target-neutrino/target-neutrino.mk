@@ -14,7 +14,8 @@ DESCRIPTION_${P} = Framebuffer-based digital media application
 
 
 CONFIG_FLAGS_${P} = \
-		$(CONFIG_OPTS_${P}) \
+		--enable-silent-rules \
+		--enable-freesatepg \
 		--with-boxtype=$(TARGET) \
 		--enable-giflib \
 		--with-tremor \
@@ -28,24 +29,19 @@ CONFIG_FLAGS_${P} = \
 		--with-plugindir=/var/plugins \
 		--with-stb-hal-includes=$(workprefix)/target_libstb_hal/libstb-hal-git/include \
 		--with-stb-hal-build=$(workprefix)/target_libstb_hal/libstb-hal-git \
-		PKG_CONFIG=$(hostprefix)/bin/pkg-config \
-		PKG_CONFIG_PATH=$(targetprefix)/usr/lib/pkgconfig \
 		$(PLATFORM_CPPFLAGS) \
-		CXXFLAGS="$(N_CFLAGS)" \
-		CPPFLAGS="$(CPPFLAGS_N)"
+		CXXFLAGS="$(CXXFLAGS_${P})" \
+		CPPFLAGS="$(CPPFLAGS_${P})"
 
-CONFIG_OPTS_${P} = --enable-silent-rules --enable-freesatepg
-
-N_CFLAGS   += -Wall -W -Wshadow -fno-strict-aliasing -rdynamic -DNEW_LIBCURL -DCPU_FREQ -DMARTII -funsigned-char
-
-CPPFLAGS_N += -I$(driverdir)/bpamem
+CXXFLAGS_${P} += -Wall -W -Wshadow -fno-strict-aliasing -rdynamic -DNEW_LIBCURL -DCPU_FREQ -DMARTII -funsigned-char
+CPPFLAGS_${P} += -I$(driverdir)/bpamem
 
 ifdef CONFIG_SPARK
-CPPFLAGS_N += -I$(driverdir)/frontcontroller/aotom
+CPPFLAGS_${P} += -I$(driverdir)/frontcontroller/aotom
 endif
 
 ifdef CONFIG_SPARK7162
-CPPFLAGS_N += -I$(driverdir)/frontcontroller/aotom
+CPPFLAGS_${P} += -I$(driverdir)/frontcontroller/aotom
 endif
 
 #ifeq ($(CONFIG_SPARK)$(CONFIG_SPARK7162),y)
@@ -129,24 +125,29 @@ PACKAGES_${P} = \
 	font_micron_italic \
 	font_neutrino \
 	font_pakenham
-	
-	
+
 
 RDEPENDS_neutrino += neutrino-plugins neutrino-configs liblua libssl1 libcrypto1 libcurl4 libid3tag0 libmad0 libvorbisidec1 libpng16 libjpeg8 libgif4 font-md-khmurabi font-tuxtxt font-dejavulgcsansmono-bold font-micron font-micron-bold font-micron-italic font-neutrino font-pakenham libfreetype6 ffmpeg libdvbsi++1 libopenthreads libusb_1.0 libasound2 libstb_hal libc6
 
 FILES_neutrino = /usr/bin/* /usr/sbin/*
 FILES_neutrino_plugins = /usr/share/tuxbox /usr/share/iso-codes/*
 FILES_neutrino_configs = /var
+
 FILES_font_dejavulgcsansmono_bold = /usr/share/fonts/DejaVuLGCSansMono-Bold.ttf
 DESCRIPTION_font_dejavulgcsansmono_bold = ttf fonts
+
 FILES_font_micron = /usr/share/fonts/micron.ttf
 DESCRIPTION_font_micron = ttf fonts
+
 FILES_font_micron_bold = /usr/share/fonts/micron_bold.ttf
 DESCRIPTION_font_micron_bold = ttf fonts
+
 FILES_font_micron_italic = /usr/share/fonts/micron_italic.ttf
 DESCRIPTION_font_micron_italic = ttf fonts
+
 FILES_font_neutrino = /usr/share/fonts/neutrino.ttf
 DESCRIPTION_ont_neutrino = ttf fonts
+
 FILES_font_pakenham = /usr/share/fonts/pakenham.ttf
 DESCRIPTION_font_pakenham = ttf fonts
 

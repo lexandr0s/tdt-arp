@@ -22,11 +22,13 @@ SETUP: Makefile
 
 # '::' means you can append rules to help target
 help::
+	@echo
 	@echo ----------------------------------------------------------------------------
 	@echo run \'make\' to see some info about common targets and this system
 	@echo run \'make help-functions\' to see defined macroses.
 
 help-functions::
+	@echo
 	@echo ----------------------------------------------------------------------------
 	@echo list of documented functions and their parameters ...
 	@echo ... we are too lazy to complete this list
@@ -69,7 +71,8 @@ kconfig_PN := kconfig-frontends
 kconfig_PV := 3.12.0.0
 
 $(kconfig_PN)-$(kconfig_PV).tar.bz2:
-	wget http://ymorin.is-a-geek.org/download/$(kconfig_PN)/$@
+	wget http://ymorin.is-a-geek.org/download/$(kconfig_PN)/$@ || \
+	wget http://ptxdist.sat-universum.de/$@
 
 $(CONFIG)/config.status: $(kconfig_PN)-$(kconfig_PV).tar.bz2
 	tar -xjf $^

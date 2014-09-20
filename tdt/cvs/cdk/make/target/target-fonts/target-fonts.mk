@@ -48,25 +48,26 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_prepare
 
 	touch $@
 
-PACKAGES_${P} = font_ae_almateen \
-		font_allruk \
-		font_blue \
-		font_ds_digital \
-		font_goodtime \
-		font_md_khmurabi \
-		font_seg_internat \
-		font_symbols \
-		font_uhr_digital \
-		font_valis_lcd \
-		font_allruf \
-		font_allru \
-		font_dejavulgcsans_bold \
-		font_freesans \
-		font_lcd \
-		font_nmsbd \
-		font_seg \
-		font_tuxtxt \
-		font_valis_enigma
+PACKAGES_${P} = \
+	font_ae_almateen \
+	font_allruk \
+	font_blue \
+	font_ds_digital \
+	font_goodtime \
+	font_md_khmurabi \
+	font_seg_internat \
+	font_symbols \
+	font_uhr_digital \
+	font_valis_lcd \
+	font_allruf \
+	font_allru \
+	font_dejavulgcsans_bold \
+	font_freesans \
+	font_lcd \
+	font_nmsbd \
+	font_seg \
+	font_tuxtxt \
+	font_valis_enigma
 
 DESCRIPTION_${P} = ttf fonts
 

@@ -6,7 +6,7 @@ package[[ target_mediaportal
 BDEPENDS_${P} = $(target_python)
 
 PV_${P} = 5.4.0
-PR_${P} = 1
+PR_${P} = 2
 
 call[[ base ]]
 
@@ -30,8 +30,8 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 
 $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 	cd $(DIR_${P}) && \
-		./autogen.sh && \
 		$(BUILDENV) \
+		./autogen.sh && \
 		./configure \
 			--host=$(target) \
 			--prefix=/usr \

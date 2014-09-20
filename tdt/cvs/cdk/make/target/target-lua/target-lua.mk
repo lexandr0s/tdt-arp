@@ -20,19 +20,21 @@ call[[ git ]]
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(PREPARE_${P})
+	
+	set -e; \
+	cd $(DIR_${P})/luaposix.git/ext; cp posix/posix.c include/lua52compat.h ../../src/; cd ../..; \
+	sed -i 's/<config.h>/"config.h"/' src/posix.c; \
+	sed -i '/^#define/d' src/lua52compat.h; \
+	sed -i 's@^#define LUA_ROOT.*@#define LUA_ROOT "/"@' src/luaconf.h; \
+	sed -i '/^#define LUA_USE_READLINE/d' src/luaconf.h; \
+	sed -i 's/ -lreadline//' src/Makefile; \
+	
 	touch $@
 
 $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
-	export PATH=$(hostprefix)/bin:$(PATH) && \
 	cd $(DIR_${P}) && \
-	$(BUILDENV) \
-		cd $(DIR_${P})/luaposix.git/ext; cp posix/posix.c include/lua52compat.h ../../src/; cd ../..; \
-		sed -i 's/<config.h>/"config.h"/' src/posix.c; \
-		sed -i '/^#define/d' src/lua52compat.h; \
-		sed -i 's@^#define LUA_ROOT.*@#define LUA_ROOT "/"@' src/luaconf.h; \
-		sed -i '/^#define LUA_USE_READLINE/d' src/luaconf.h; \
-		sed -i 's/ -lreadline//' src/Makefile; \
-		$(MAKE) linux CC='$(target)-gcc' LDFLAGS="-L$(targetprefix)/usr/lib"
+		$(BUILDENV) \
+		$(MAKE) $(MAKE_ARGS) linux
 	touch $@
 
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile

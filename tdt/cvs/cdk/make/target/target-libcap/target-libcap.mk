@@ -17,35 +17,28 @@ rule[[
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(PREPARE_${P})
 	touch $@
-
-$(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
-	cd $(DIR_${P}) && \
-		$(MAKE) \
-		DESTDIR=$(PKDIR) \
-		LIBDIR=$(PKDIR)/lib \
-		PAM_CAP=no \
-		LIBATTR=no \
-		CC=$(target)-gcc \
-		BUILD_CC=gcc
-	touch $@
-
-$(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
-	$(PKDIR_clean)
-	cd $(DIR_${P}) && \
-	$(MAKE) install \
+	
+MAKE_FLAGS_${P} = \
 	DESTDIR=$(PKDIR) \
 	LIBDIR=$(PKDIR)/lib \
 	PAM_CAP=no \
 	LIBATTR=no \
 	CC=$(target)-gcc \
 	BUILD_CC=gcc
+
+$(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
+	cd $(DIR_${P}) && $(MAKE) ${MAKE_FLAGS}
+	touch $@
+
+$(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
+	$(PKDIR_clean)
+	cd $(DIR_${P}) && $(MAKE) ${MAKE_FLAGS} install
 	touch $@
 
 call[[ ipk ]]
 
 DESCRIPTION_${P} = Library for getting/setting POSIX.1e capabilities
-PACKAGES_${P} = libcap2 \
-		libcap_bin
+PACKAGES_${P} = libcap2 libcap_bin
 
 RDEPENDS_libcap2 = libc6
 define postinst_libcap2

@@ -24,9 +24,9 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 	cd $(DIR_${P}) && \
 		$(BUILDENV) \
 		./configure \
-		--build=$(build) \
-		--host=$(target) \
-		--prefix=/usr \
+			--build=$(build) \
+			--host=$(target) \
+			--prefix=/usr \
 		&& \
 		make
 	touch $@
@@ -39,8 +39,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 call[[ ipk ]]
 
 NAME_${P} = libsqlite3
-DESCRIPTION_${P} = Embeddable SQL database engine \
- Embeddable SQL database engine.
+DESCRIPTION_${P} = Embeddable SQL database engine
 RDEPENDS_${P} = libc6
 define postinst_${P}
 #!/bin/sh

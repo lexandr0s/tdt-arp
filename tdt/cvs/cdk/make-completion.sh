@@ -65,9 +65,20 @@ function _make_arp()
         [ -n "$makef" ] && makef="-f ${makef}"
         [ -n "$makef_dir" ] && makef_dir="-C ${makef_dir}"
 
-        COMPREPLY=( $( compgen -W "$( make -qrp $makef $makef_dir .DEFAULT 2>/dev/null | \
-            awk -F ':' '/^[A-z0-9_\/\-\.]+:([^=]|$)/ {len=split($1,A,/\//); print A[len];}' )" \
-            -- "$cur" ) )
+        list=$(make -qrp $makef $makef_dir .DEFAULT 2>/dev/null | \
+               awk -F ':' '/^[[:alnum:]_\/\-\.]+:([^=]|$)/ {len=split($1,A,/\//); print A[len];}')
+
+        case "$cur" in
+        *.*)
+            list=$(compgen -W "$list" -- "$cur")
+            ;;
+        *)
+            # replace all foo.* just with one foo.
+            list=$(compgen -W "$list" -- "$cur" |sed 's/\..*/\./')
+            compopt -o nospace
+            ;;
+        esac
+        COMPREPLY=( $list )
 
     fi
 } &&

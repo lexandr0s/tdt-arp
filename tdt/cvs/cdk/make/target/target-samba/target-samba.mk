@@ -83,21 +83,20 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	$(PKDIR_clean)
 	cd $(DIR_${P})/source3 && $(MAKE) install DESTDIR=$(PKDIR)
-		$(INSTALL) -d $(PKDIR)/etc/samba && \
-		$(INSTALL) -c -m644 $(DIR_${P})/examples/smb.conf.spark $(PKDIR)/etc/samba/smb.conf && \
-		$(INSTALL) -d $(PKDIR)/etc/init.d && \
-		$(INSTALL) -c -m755 $(DIR_${P})/examples/samba.spark $(PKDIR)/etc/init.d/samba
+
+	$(INSTALL) -d $(PKDIR)/etc/samba && \
+	$(INSTALL) -c -m644 $(DIR_${P})/examples/smb.conf.spark $(PKDIR)/etc/samba/smb.conf && \
+	$(INSTALL) -d $(PKDIR)/etc/init.d && \
+	$(INSTALL) -c -m755 $(DIR_${P})/examples/samba.spark $(PKDIR)/etc/init.d/samba
 	touch $@
 
 call[[ ipk ]]
 
 PACKAGES_${P} = samba_lib samba
+
 DESCRIPTION_samba = samba
 RDEPENDS_samba = libc6 libreadline6
-FILES_samba = \
-/usr/sbin/* \
-/etc/init.d/* \
-/etc/samba/smb.conf
+FILES_samba = /usr/sbin/* /etc/init.d/* /etc/samba/smb.conf
 define conffiles_samba
 	/etc/samba/smb.conf
 endef
@@ -123,9 +122,7 @@ endef
 
 DESCRIPTION_samba_lib = samba_lib
 RDEPENDS_samba = libc6
-FILES_samba_lib = \
-/usr/lib/*.so \
-/usr/lib/*.so.*
+FILES_samba_lib = /usr/lib/*.so /usr/lib/*.so.*
 define postinst_samba_lib
 #!/bin/sh
 $$OPKG_OFFLINE_ROOT/sbin/ldconfig

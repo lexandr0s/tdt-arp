@@ -6,7 +6,7 @@ package[[ target_openwebif
 BDEPENDS_${P} = $(target_python_setuptools)
 
 PV_${P} = git
-PR_${P} = 1
+PR_${P} = 2
 
 call[[ base ]]
 

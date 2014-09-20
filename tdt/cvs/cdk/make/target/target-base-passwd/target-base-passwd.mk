@@ -17,7 +17,6 @@ call[[ base ]]
 call[[ base_rpm ]]
 call[[ rpm ]]
 
-FILES_${P} = /etc/* /usr/*
 define postinst_${P}
 #!/bin/sh
 update-passwd -L \
