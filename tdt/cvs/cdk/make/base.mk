@@ -351,7 +351,7 @@ $(TARGET_${P}).do_ipkbox: $(TARGET_${P}).do_split
 	set -e; \
 	for pkg in `ls $(SPLITDIR_${P})`; do \
 		echo "building package $${pkg} ..."; \
-		echo ${P} > $(ipkbox)/$${pkg}.origin; \
+		echo ${P} > $(ipkorigin)/$${pkg}.origin; \
 		ipkg-build -o root -g root $(SPLITDIR_${P})/$${pkg} $(ipkbox); \
 	done
 
