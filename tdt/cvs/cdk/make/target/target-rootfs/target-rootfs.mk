@@ -15,7 +15,7 @@ endif
 # helps to fill DEPENDS list
 $(TARGET_${P}).print_depends:
 #	catch cat exitstatus and see stderr
-	@cd $(ipkbox) && cat $(addsuffix .origin,$(opkg_my_list)) > $(buildprefix)/list
+	@cd $(ipkorigin) && cat $(addsuffix .origin,$(opkg_my_list)) > $(buildprefix)/list
 	cat $(buildprefix)/list
 
 # some packages are installed due to rdepends of other ones
@@ -24,7 +24,7 @@ $(TARGET_${P}).print_depends_all: $(TARGET_${P})
 	set -e; \
 	list=`$(opkg_rootfs) list-installed | cut -d ' ' -f 1`; \
 	for x in $${list}; do \
-		cat $(ipkbox)/$${x}.origin || true; \
+		cat $(ipkorigin)/$${x}.origin || true; \
 	done
 
 # core system libraries, binaries and scripts

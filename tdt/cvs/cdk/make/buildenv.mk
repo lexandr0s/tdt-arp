@@ -116,6 +116,7 @@ ipktarget := $(prefix)/ipktarget
 kernelprefix := $(devkitprefix)/sources/kernel
 
 ipkbox := $(prefix)/ipkbox
+ipkorigin := $(prefix)/ipkbox-origin
 
 # strange directories
 configprefix := $(hostprefix)/config
