@@ -248,7 +248,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 
 call[[ ipk ]]
 
-RDEPENDS_ffmpeg = libass librtmp1
+RDEPENDS_ffmpeg = librtmp1
 FILES_ffmpeg = /usr/lib/*.so* /usr/bin/ffmpeg
 
 call[[ ipkbox ]]
