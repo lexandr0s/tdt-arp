@@ -12,21 +12,6 @@ ifdef CONFIG_ENIGMA2_PLUGINS
 IPKBOX_LIST_${P} += $(target_enigma2_plugins) $(target_openwebif) $(target_mediaportal) $(target_aio_grab) $(target_python_cheetah) $(target_python_pyopenssl) $(target_python_pycrypto) $(target_python_wifi) $(target_python_mechanize) $(target_oscam)
 endif
 
-# helps to fill DEPENDS list
-$(TARGET_${P}).print_depends:
-#	catch cat exitstatus and see stderr
-	@cd $(ipkorigin) && cat $(addsuffix .origin,$(opkg_my_list)) > $(buildprefix)/list
-	cat $(buildprefix)/list
-
-# some packages are installed due to rdepends of other ones
-# we want to see all the installed packages and rebuild rootfs when any of them changes
-$(TARGET_${P}).print_depends_all: $(TARGET_${P})
-	set -e; \
-	list=`$(opkg_rootfs) list-installed | cut -d ' ' -f 1`; \
-	for x in $${list}; do \
-		cat $(ipkorigin)/$${x}.origin || true; \
-	done
-
 # core system libraries, binaries and scripts
 opkg_my_list = \
 	sysvinit \
@@ -222,12 +207,6 @@ $(TARGET_${P}): $(DEPENDS_${P})
 	$(opkg_rootfs) update && \
 	$(opkg_rootfs) install --force-postinstall $(opkg_my_list)
 
-# helps to fill DEPENDS list
-$(TARGET_${P}).print_depends:
-	#catch cat exitstatus and see stderr
-	@cd $(ipkbox) && cat $(addsuffix .origin,$(opkg_my_list)) > ${WORK}/list
-	cat ${WORK}/list
-
 #		$(opkg_system) $(opkg_os) $(opkg_enigma2) $(opkg_wireless) $(opkg_net_utils)
 
 # add version
@@ -236,6 +215,20 @@ $(TARGET_${P}).print_depends:
 	echo "----------------------------------------------------------" >>          $(DIR_${P})/etc/image-version
 	cat $(buildprefix)/.config |grep -v '^#' |tr ' ' '\n' >>                      $(DIR_${P})/etc/image-version
 
+# helps to fill DEPENDS list
+$(TARGET_${P}).print_depends:
+#	catch cat exitstatus and see stderr
+	@cd $(ipkorigin) && cat $(addsuffix .origin,$(opkg_my_list)) > $(buildprefix)/list
+	cat $(buildprefix)/list
+
+# some packages are installed due to rdepends of other ones
+# we want to see all the installed packages and rebuild rootfs when any of them changes
+$(TARGET_${P}).print_depends_all: $(TARGET_${P})
+	set -e; \
+	list=`$(opkg_rootfs) list-installed | cut -d ' ' -f 1`; \
+	for x in $${list}; do \
+		cat $(ipkorigin)/$${x}.origin || true; \
+	done
 
 
 ]]package
