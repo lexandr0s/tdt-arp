@@ -100,6 +100,8 @@ PACKAGES="\
 	${UBUNTU:+bsdtar} \
 	${UBUNTU:+ruby} \
 	${UBUNTU:+cmake} \
+	${UBUNTU:+qt4-dev-tools} \
+	${UBUNTU:+libssl-dev} \
 ";
 if [ "$UBUVERSION" == "quantal" ];then
 	# we lock now the rpm-packages, so ubu not updating them!
