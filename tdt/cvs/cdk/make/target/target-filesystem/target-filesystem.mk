@@ -16,6 +16,7 @@ call[[ ipk ]]
 $(TARGET_${P}).do_package: $(DEPENDS_${P})
 	install -d $(ipktarget)
 	install -d $(ipkbox)
+	install -d $(ipkorigin)
 	install -d $(targetsh4prefix)
 
 # make aclocal happy
