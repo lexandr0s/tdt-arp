@@ -5,7 +5,7 @@ package[[ target_python_pyopenssl
 
 BDEPENDS_${P} = $(target_python_setuptools)
 
-PV_${P} = 0.13
+PV_${P} = 0.14
 PR_${P} = 1
 
 DIR_${P} = $(WORK_${P})/pyOpenSSL-${PV}
