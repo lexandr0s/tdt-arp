@@ -9,7 +9,7 @@ $(target_fp_control) $(target_stfbcontrol) $(target_libfribidi) $(target_showifr
 $(target_udev_rules) $(target_bootlogo) $(target_flash_tools) $(target_rfkill) $(target_distro_feed_configs) $(target_initscripts) $(target_update_rcd)
 
 ifdef CONFIG_ENIGMA2_PLUGINS
-IPKBOX_LIST_${P} += $(target_enigma2_plugins) $(target_openwebif) $(target_mediaportal) $(target_aio_grab) $(target_python_cheetah) $(target_python_pycrypto) $(target_python_serviceidentity) $(target_python_wifi) $(target_python_mechanize) $(target_oscam)
+IPKBOX_LIST_${P} += $(target_enigma2_plugins) $(target_openwebif) $(target_mediaportal) $(target_aio_grab) $(target_python_cheetah) $(target_python_pycrypto) $(target_python_serviceidentity) $(target_python_wifi) $(target_python_mechanize) $(target_python_singledispatch) $(target_oscam)
 endif
 
 # core system libraries, binaries and scripts
