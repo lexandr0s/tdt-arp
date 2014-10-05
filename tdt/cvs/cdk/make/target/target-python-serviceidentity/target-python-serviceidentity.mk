@@ -5,7 +5,7 @@ package[[ target_python_serviceidentity
 
 BDEPENDS_${P} = $(target_python_setuptools) $(target_python_pyopenssl) $(target_python_characteristic) $(target_python_pyasn1modules) $(target_python_pyasn1)
 
-PV_${P} = 14.0.0
+PV_${P} = 1.0.0
 PR_${P} = 1
 
 DIR_${P} = $(WORK_${P})/service_identity-${PV}
