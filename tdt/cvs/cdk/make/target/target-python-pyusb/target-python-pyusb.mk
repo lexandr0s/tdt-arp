@@ -13,7 +13,7 @@ DIR_${P} = $(WORK_${P})/pyusb-${PV}
 call[[ base ]]
 
 rule[[
-  extract:http://sourceforge.net/projects/pyusb/files/PyUSB%201.0/1.0.0-beta-2/pyusb-${PV}.tar.gz
+  extract:http://sourceforge.net/projects/pyusb/files/1.0.0-beta-2/pyusb-${PV}.tar.gz
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
@@ -36,7 +36,7 @@ Currently, it works out of the box with libusb 0.1, libusb 1.0, libusbx, libusb-
 2.4, including Python 3 releases.
 LICENSE_${P} = Take the official web page
 HOMEPAGE_${P} = http://walac.github.io/pyusb/
-RDEPENDS_${P} = python_core libc6
+RDEPENDS_${P} = python_core libc6 libusb-1.0
 FILES_${P} = \
 $(PYTHON_DIR)/site-packages/usb/*
 
