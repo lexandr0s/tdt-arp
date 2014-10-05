@@ -5,7 +5,7 @@ package[[ target_ffmpeg
 
 BDEPENDS_${P} = $(target_glibc) $(target_libbluray) $(target_rtmpdump)
 
-PV_${P} = 2.3.2
+PV_${P} = 2.4.2
 PR_${P} = 1
 
 DESCRIPTION_${P} = ffmpeg
@@ -211,6 +211,7 @@ CONFIG_FLAGS_${P} = \
 		--enable-protocol=file \
 		--enable-protocol=hls \
 		--enable-protocol=udp \
+		--enable-libbluray \
 		--disable-indevs \
 		--disable-outdevs \
 		--enable-avresample \
@@ -248,7 +249,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 
 call[[ ipk ]]
 
-RDEPENDS_ffmpeg = librtmp1
+RDEPENDS_ffmpeg = librtmp1 libbluray
 FILES_ffmpeg = /usr/lib/*.so* /usr/bin/ffmpeg
 
 call[[ ipkbox ]]
