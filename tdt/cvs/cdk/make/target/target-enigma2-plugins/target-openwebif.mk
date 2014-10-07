@@ -24,7 +24,13 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_prepare
 	$(PKDIR_clean)
 	cd $(DIR_${P}) && \
 	mkdir -p $(PKDIR)/usr/lib/enigma2/python/Plugins/Extensions && \
-		cp -a plugin $(PKDIR)/usr/lib/enigma2/python/Plugins/Extensions/OpenWebif
+		cp -a plugin $(PKDIR)/usr/lib/enigma2/python/Plugins/Extensions/OpenWebif && \
+	set -e; \
+	for f in $$(find $(DIR_${P})/locale -name *.po ); do  \
+	l=$$(echo $${f%} | sed 's/\.po//' | sed 's/.*locale\///'); \
+	mkdir -p $(PKDIR)/usr/lib/enigma2/python/Plugins/Extensions/OpenWebif/locale/$${l%}/LC_MESSAGES; \
+	msgfmt -o $(PKDIR)/usr/lib/enigma2/python/Plugins/Extensions/OpenWebif/locale/$${l%}/LC_MESSAGES/OpenWebif.mo ./locale/$$l.po; \
+	done
 	touch $@
 
 call[[ ipk ]]
