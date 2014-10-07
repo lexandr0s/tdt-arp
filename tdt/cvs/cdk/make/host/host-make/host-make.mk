@@ -19,16 +19,21 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(PREPARE_${P})
 	touch $@
 
-$(TARGET_${P}).do_install: $(TARGET_${P}).do_prepare
-	$(PREPARE_${P})
+$(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 	cd $(DIR_${P}) && \
 		./configure \
 			--prefix=$(hostprefix) \
 		&& \
-		$(MAKE) && \
-		$(MAKE) install
+		$(MAKE) all
 	touch $@
 
-$(TARGET_${P}): $(TARGET_${P}).do_install
+$(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
+	$(PKDIR_clean)
+	cd $(DIR_${P}) && $(MAKE) install DESTDIR=$(PKDIR) && \
+	rm $(PKDIR)/$(hostprefix)/share/info/dir
+
+	touch $@
+
+call[[ ipk ]]
 
 ]]package
