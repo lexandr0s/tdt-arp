@@ -3,7 +3,7 @@
 #
 package[[ target_libbluray
 
-BDEPENDS_${P} = $(target_glibc)
+BDEPENDS_${P} = $(target_glibc) $(target_libaacs)
 
 PV_${P} = 0.6.0
 PR_${P} = 1
