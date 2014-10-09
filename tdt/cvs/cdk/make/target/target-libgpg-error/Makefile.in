@@ -1,0 +1,3 @@
+package[[ target_libgpg_error
+call[[ header ]]
+]]package
