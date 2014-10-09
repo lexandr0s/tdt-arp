@@ -12,6 +12,7 @@ call[[ base ]]
 
 rule[[
   extract:http://mirror.linux.org.au/linux/libs/security/linux-privs/${PN}2/${PN}-${PV}.tar.bz2
+  patch:file://fix-CAP_LAST_CAP.patch
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
