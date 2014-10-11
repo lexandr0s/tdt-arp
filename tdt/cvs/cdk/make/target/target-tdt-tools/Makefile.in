@@ -91,6 +91,7 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 			--build=$(build) \
 			--host=$(target) \
 			--prefix= \
+			--includedir=${targetprefix}/usr/include \
 			$(CONFIG_FLAGS_${P}) \
 		&& \
 		make $(MAKE_FLAGS_${P})
