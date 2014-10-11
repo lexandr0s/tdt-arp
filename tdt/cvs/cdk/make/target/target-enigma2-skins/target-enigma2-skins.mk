@@ -54,7 +54,7 @@ $(TARGET_${P}).write_vars: $(TARGET_${P}).do_compile
 	cd ${DIR}/skins; \
 	list=`ls */Makefile |sed 's#/Makefile##'`; \
 	for dir in $${list}; do \
-		d=enigma2-plugin-skin-`echo $$dir |tr [:upper:] [:lower:]`; \
+		d=enigma2_plugin_skin_`echo $$dir |tr [:upper:] [:lower:] |tr .- _`; \
 		echo "PACKAGES_DYNAMIC_${P} += $$d" >> $@; \
 		echo -n "VERSION_$$d := " >> $@; \
 		cd $$dir && $(git_log_version) >> $@; \
@@ -83,6 +83,8 @@ FILES_${P} = /tmp
 
 FILES_enigma2_skins_meta := /usr/share/meta
 DESCRIPTION_enigma2_skins_meta := Enigma2 skins metadata
+
+RDEPENDS_enigma2_plugin_skin_megamod = enigma2 enigma2_plugin_systemplugins_libgisclubskin
 
 call[[ ipkbox ]]
 
