@@ -1,3 +1,15 @@
 package[[ target_enigma2_skins
 call[[ header ]]
 ]]package
+
+package[[ target_enigma2_skins_magic
+call[[ header ]]
+]]package
+
+package[[ target_enigma2_skins_plihd
+call[[ header ]]
+]]package
+
+package[[ target_enigma2_skins_metropolishd
+call[[ header ]]
+]]package

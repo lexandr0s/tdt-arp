@@ -3,7 +3,7 @@
 #
 package[[ target_enigma2_skins
 
-BDEPENDS_${P} = $(target_enigma2)
+BDEPENDS_${P} = $(target_enigma2) $(target_enigma2_skins_magic) $(target_enigma2_skins_plihd) $(target_enigma2_skins_metropolishd)
 
 PV_${P} = git
 PR_${P} = 1
