@@ -69,14 +69,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/configure.ac enigma
  
  AC_ARG_WITH(oldpvr,
  	AC_HELP_STRING([--with-oldpvr], [use /dev/misc/pvr instead of /dev/dvb/adapterX/dvrX, yes or no]),
-@@ -200,15 +249,12 @@
- lib/python/Plugins/Extensions/MediaPlayer/meta/Makefile
- lib/python/Plugins/Extensions/MediaScanner/Makefile
- lib/python/Plugins/Extensions/MediaScanner/meta/Makefile
--lib/python/Plugins/Extensions/Modem/Makefile
- lib/python/Plugins/Extensions/PicturePlayer/Makefile
- lib/python/Plugins/Extensions/PicturePlayer/meta/Makefile
- lib/python/Plugins/Extensions/PicturePlayer/data/Makefile
+@@ -206,8 +255,6 @@
  lib/python/Plugins/Extensions/SocketMMI/Makefile
  lib/python/Plugins/Extensions/SocketMMI/meta/Makefile
  lib/python/Plugins/Extensions/SocketMMI/src/Makefile
@@ -85,7 +78,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/configure.ac enigma
  lib/python/Plugins/PLi/Makefile
  lib/python/Plugins/SystemPlugins/CommonInterfaceAssignment/Makefile
  lib/python/Plugins/SystemPlugins/CommonInterfaceAssignment/meta/Makefile
-@@ -245,6 +291,10 @@
+@@ -244,6 +291,10 @@
  lib/python/Plugins/SystemPlugins/Videomode/meta/Makefile
  lib/python/Plugins/SystemPlugins/WirelessLan/Makefile
  lib/python/Plugins/SystemPlugins/WirelessLan/meta/Makefile
@@ -346,7 +339,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/base/etpm.cpp e
  	unsigned char buf[4];
  	void *val;
  
-@@ -111,10 +118,14 @@
+@@ -116,10 +123,14 @@
  	}
  
  	return val;
@@ -361,7 +354,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/base/etpm.cpp e
  	unsigned int i;
  	unsigned int tag;
  	unsigned int len;
-@@ -140,19 +151,23 @@
+@@ -145,19 +156,23 @@
  			break;
  		}
  	}
@@ -385,7 +378,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/base/etpm.cpp e
  	if (rnd.length() == 8)
  	{
  		if (!send_cmd(TPMD_CMD_COMPUTE_SIGNATURE, rnd.c_str(), 8))
-@@ -169,5 +184,6 @@
+@@ -174,5 +189,6 @@
  		free(val);
  		return ret;
  	}
@@ -627,7 +620,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/driver/vfd.cpp 
 +#include <lib/driver/vfd.h>
 +
 +#ifdef PLATFORM_TF7700
-+#include "../../tools/tffpctl/frontpanel.h"
++#include "/../../apps/tools/tffpctl/frontpanel.h"
 +#endif
 +
 +#define VFD_DEVICE "/dev/vfd"
@@ -1600,36 +1593,141 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/dvb/dvb.h enigm
 diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/dvb/epgcache.cpp enigma2-nightly/lib/dvb/epgcache.cpp
 --- enigma2-nightly.org/lib/dvb/epgcache.cpp	2014-06-13 21:45:21.744535791 +0200
 +++ enigma2-nightly/lib/dvb/epgcache.cpp	2014-06-21 13:05:30.079088431 +0200
-@@ -221,10 +221,22 @@
+--- epgcache.cpp.orig	2014-10-10 01:26:12.278298237 +0200
++++ epgcache.cpp	2014-09-07 01:46:21.000000000 +0200
+@@ -25,7 +25,7 @@
+ int eventData::CacheSize=0;
+ bool eventData::isCacheCorrupt = 0;
+ descriptorMap eventData::descriptors;
+-uint8_t eventData::data[2 * 4096 + 12];
++__u8 eventData::data[2 * 4096 + 12];
+ extern const uint32_t crc32_table[256];
+ 
+ const eServiceReference &handleGroup(const eServiceReference &ref)
+@@ -57,16 +57,16 @@
+ 	if (!e)
+ 		return;
+ 
+-	uint32_t descr[65];
+-	uint32_t *pdescr=descr;
++	__u32 descr[65];
++	__u32 *pdescr=descr;
+ 
+-	uint8_t *data = (uint8_t*)e;
++	__u8 *data = (__u8*)e;
+ 	int ptr=12;
+ 	size -= 12;
+ 
+ 	while(size > 1)
+ 	{
+-		uint8_t *descr = data+ptr;
++		__u8 *descr = data+ptr;
+ 		int descr_len = descr[1];
+ 		descr_len += 2;
+ 		if (size >= descr_len)
+@@ -79,7 +79,7 @@
+ 				case CONTENT_DESCRIPTOR:
+ 				case PARENTAL_RATING_DESCRIPTOR:
+ 				{
+-					uint32_t crc = 0;
++					__u32 crc = 0;
+ 					int cnt=0;
+ 					while(cnt++ < descr_len)
+ 						crc = (crc << 8) ^ crc32_table[((crc >> 24) ^ data[ptr++]) & 0xFF];
+@@ -88,7 +88,7 @@
+ 					if ( it == descriptors.end() )
+ 					{
+ 						CacheSize+=descr_len;
+-						uint8_t *d = new uint8_t[descr_len];
++						__u8 *d = new __u8[descr_len];
+ 						memcpy(d, descr, descr_len);
+ 						descriptors[crc] = descriptorPair(1, d);
+ 					}
+@@ -125,7 +125,7 @@
+ 						*/
+ 						eventNameUTF8len = truncateUTF8(eventNameUTF8, 255 - 6);
+ 						int title_len = 6 + eventNameUTF8len;
+-						uint8_t *title_data = new uint8_t[title_len + 2];
++						__u8 *title_data = new __u8[title_len + 2];
+ 						title_data[0] = SHORT_EVENT_DESCRIPTOR;
+ 						title_data[1] = title_len;
+ 						title_data[2] = descr[2];
+@@ -137,7 +137,7 @@
+ 						title_data[7 + eventNameUTF8len] = 0;
+ 
+ 						//Calculate the CRC, based on our new data
+-						uint32_t title_crc = 0;
++						__u32 title_crc = 0;
+ 						int cnt=0;
+ 						int tmpPtr = 0;
+ 						title_len += 2; //add 2 the length to include the 2 bytes in the header
+@@ -163,7 +163,7 @@
+ 					{
+ 						textUTF8len = truncateUTF8(textUTF8, 255 - 6);
+ 						int text_len = 6 + textUTF8len;
+-						uint8_t *text_data = new uint8_t[text_len + 2];
++						__u8 *text_data = new __u8[text_len + 2];
+ 						text_data[0] = SHORT_EVENT_DESCRIPTOR;
+ 						text_data[1] = text_len;
+ 						text_data[2] = descr[2];
+@@ -174,7 +174,7 @@
+ 						text_data[7] = 0x15; //identify text as UTF-8
+ 						memcpy(&text_data[8], textUTF8.data(), textUTF8len);
+ 
+-						uint32_t text_crc = 0;
++						__u32 text_crc = 0;
+ 						int cnt=0;
+ 						int tmpPtr = 0;
+ 						text_len += 2; //add 2 the length to include the 2 bytes in the header
+@@ -209,9 +209,9 @@
+ 	}
+ 	ASSERT(pdescr <= &descr[65]);
+ 	ByteSize = 10+((pdescr-descr)*4);
+-	EITdata = new uint8_t[ByteSize];
++	EITdata = new __u8[ByteSize];
+ 	CacheSize+=ByteSize;
+-	memcpy(EITdata, (uint8_t*) e, 10);
++	memcpy(EITdata, (__u8*) e, 10);
+ 	memcpy(EITdata+10, descr, ByteSize-10);
+ }
+ 
+@@ -221,10 +221,25 @@
  	int tmp = ByteSize - 10;
  	memcpy(data, EITdata, 10);
  	unsigned int descriptors_length = 0;
+-	uint32_t *p = (uint32_t*)(EITdata + 10);
 +#ifndef __sh__
- 	__u32 *p = (__u32*)(EITdata + 10);
++	__u32 *p = (__u32*)(EITdata + 10);
 +#else
-+	// Dagobert: fix not aligned access
++// Dagobert: fix not aligned access
 +	__u8 *p = (__u8*)(EITdata+10);
 +#endif
  	while (tmp > 3)
  	{
+-		descriptorMap::iterator it = descriptors.find(*p++);
 +#ifndef __sh__
- 		descriptorMap::iterator it = descriptors.find(*p++);
++		descriptorMap::iterator it =
++			descriptors.find(*p++);
 +#else
 +		__u32 index = p[3] << 24 | p[2] << 16 | p[1] << 8 | p[0];
-+		// eDebug("index %d %x, %x %x %x %x\n", index, index, p[0], p[1], p[2], p[3]);
-+		descriptorMap::iterator it = descriptors.find(index);
++// eDebug("index %d %x, %x %x %x %x\n", index, index, p[0], p[1], p[2], p[3]);
++		descriptorMap::iterator it =
++			descriptors.find(index);
++
 +		p += 4;
 +#endif
  		if (it != descriptors.end())
  		{
  			unsigned int b = it->second.second[1] + 2;
-@@ -249,12 +261,23 @@
+@@ -249,12 +264,26 @@
  	if ( ByteSize )
  	{
  		CacheSize -= ByteSize;
+-		uint32_t *d = (uint32_t*)(EITdata+10);
 +#ifndef __sh__
- 		__u32 *d = (__u32*)(EITdata+10);
-+#else	// Dagobert: fix not aligned access
++		__u32 *d = (__u32*)(EITdata+10);
++#else
++// Dagobert: fix not aligned access
 +		__u8 *d = (__u8*)(EITdata+10);
 +#endif
  		ByteSize -= 10;
@@ -1640,14 +1738,190 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/dvb/epgcache.cp
  				descriptors.find(*d++);
 +#else
 +			__u32 index = d[3] << 24 | d[2] << 16 | d[1] << 8 | d[0];
-+			// eDebug("index %d %x, %x %x %x %x\n", index, index, d[0], d[1], d[2], d[3]);
-+			descriptorMap::iterator it = descriptors.find(index);
++// eDebug("index %d %x, %x %x %x %x\n", index, index, d[0], d[1], d[2], d[3]);
++			descriptorMap::iterator it =
++				descriptors.find(index);
++				
 +			d += 4;
 +#endif
  			if ( it != descriptors.end() )
  			{
  				descriptorPair &p = it->second;
-@@ -1856,6 +1879,45 @@
+@@ -279,16 +308,16 @@
+ {
+ 	int size=0;
+ 	int id=0;
+-	uint8_t header[2];
++	__u8 header[2];
+ 	descriptorPair p;
+ 	fread(&size, sizeof(int), 1, f);
+ 	while(size)
+ 	{
+-		fread(&id, sizeof(uint32_t), 1, f);
++		fread(&id, sizeof(__u32), 1, f);
+ 		fread(&p.first, sizeof(int), 1, f);
+ 		fread(header, 2, 1, f);
+ 		int bytes = header[1]+2;
+-		p.second = new uint8_t[bytes];
++		p.second = new __u8[bytes];
+ 		p.second[0] = header[0];
+ 		p.second[1] = header[1];
+ 		fread(p.second+2, bytes-2, 1, f);
+@@ -307,7 +336,7 @@
+ 	fwrite(&size, sizeof(int), 1, f);
+ 	while(size)
+ 	{
+-		fwrite(&it->first, sizeof(uint32_t), 1, f);
++		fwrite(&it->first, sizeof(__u32), 1, f);
+ 		fwrite(&it->second.first, sizeof(int), 1, f);
+ 		fwrite(it->second.second, it->second.second[1]+2, 1, f);
+ 		++it;
+@@ -608,7 +637,7 @@
+ #endif
+ 			)
+ 		{
+-			uint16_t event_id = tmp->second->getEventID();
++			__u16 event_id = tmp->second->getEventID();
+ 			servicemap.first.erase(event_id);
+ #ifdef EPG_DEBUG
+ 			Event evt((uint8_t*)tmp->second->get());
+@@ -643,7 +672,7 @@
+ 	{
+ 		if (tmp->first != TM && tmp->second->type != PRIVATE)
+ 		{
+-			uint16_t event_id = tmp->second->getEventID();
++			__u16 event_id = tmp->second->getEventID();
+ 			servicemap.first.erase(event_id);
+ #ifdef EPG_DEBUG
+ 			Event evt((uint8_t*)tmp->second->get());
+@@ -667,7 +696,7 @@
+ 	return ret;
+ }
+ 
+-void eEPGCache::sectionRead(const uint8_t *data, int source, channel_data *channel)
++void eEPGCache::sectionRead(const __u8 *data, int source, channel_data *channel)
+ {
+ 	eit_t *eit = (eit_t*) data;
+ 
+@@ -735,7 +764,7 @@
+ 
+ 	while (ptr<len)
+ 	{
+-		uint16_t event_hash;
++		__u16 event_hash;
+ 		eit_event_size = HILO(eit_event->descriptors_loop_length)+EIT_LOOP_SIZE;
+ 
+ 		duration = fromBCD(eit_event->duration_1)*3600+fromBCD(eit_event->duration_2)*60+fromBCD(eit_event->duration_3);
+@@ -757,7 +786,7 @@
+ 		     ( (onid != 1714) || (duration != (24*3600-1)) )	// PlatformaHD invalid event
+ 		   )
+ 		{
+-			uint16_t event_id = HILO(eit_event->event_id);
++			__u16 event_id = HILO(eit_event->event_id);
+ 			eventData *evt = 0;
+ 			int ev_erase_count = 0;
+ 			int tm_erase_count = 0;
+@@ -859,7 +888,7 @@
+ 			{
+ 				// exempt memory
+ 				delete tm_it->second;
+-				ev_it=prevEventIt=servicemap.first.insert( prevEventIt, std::pair<const uint16_t, eventData*>( event_id, evt) );
++				ev_it=prevEventIt=servicemap.first.insert( prevEventIt, std::pair<const __u16, eventData*>( event_id, evt) );
+ 				tm_it->second=evt;
+ 			}
+ 			else // added new eventData
+@@ -867,7 +896,7 @@
+ #ifdef EPG_DEBUG
+ 				consistencyCheck=false;
+ #endif
+-				ev_it=prevEventIt=servicemap.first.insert( prevEventIt, std::pair<const uint16_t, eventData*>( event_id, evt) );
++				ev_it=prevEventIt=servicemap.first.insert( prevEventIt, std::pair<const __u16, eventData*>( event_id, evt) );
+ 				tm_it=prevTimeIt=servicemap.second.insert( prevTimeIt, std::pair<const time_t, eventData*>( TM, evt ) );
+ 			}
+ 
+@@ -924,7 +953,7 @@
+ 		}
+ #endif
+ 		ptr += eit_event_size;
+-		eit_event=(eit_event_struct*)(((uint8_t*)eit_event)+eit_event_size);
++		eit_event=(eit_event_struct*)(((__u8*)eit_event)+eit_event_size);
+ 	}
+ }
+ 
+@@ -1049,8 +1078,8 @@
+ 	messages.send(Message::quit);
+ 	kill(); // waiting for thread shutdown
+ 	singleLock s(cache_lock);
+-	for (eventCache::iterator evIt = eventDB.begin(); evIt != eventDB.end(); evIt++)
+-		for (eventMap::iterator It = evIt->second.first.begin(); It != evIt->second.first.end(); It++)
++	for (eventCache::iterator evIt = eventDB.begin(); evIt != eventDB.end(); ++evIt)
++		for (eventMap::iterator It = evIt->second.first.begin(); It != evIt->second.first.end(); ++It)
+ 			delete It->second;
+ }
+ 
+@@ -1248,13 +1277,12 @@
+ 				fread( &size, sizeof(int), 1, f);
+ 				while(size--)
+ 				{
+-					uint8_t len=0;
+-					uint8_t type=0;
+-					eventData *event=0;
+-					fread( &type, sizeof(uint8_t), 1, f);
+-					fread( &len, sizeof(uint8_t), 1, f);
+-					event = new eventData(0, len, type);
+-					event->EITdata = new uint8_t[len];
++					__u8 len=0;
++					__u8 type=0;
++					fread( &type, sizeof(__u8), 1, f);
++					fread( &len, sizeof(__u8), 1, f);
++					eventData *event = new eventData(0, len, type);
++					event->EITdata = new __u8[len];
+ 					eventData::CacheSize+=len;
+ 					fread( event->EITdata, len, 1, f);
+ 					evMap[ event->getEventID() ]=event;
+@@ -1288,11 +1316,11 @@
+ 						while(size--)
+ 						{
+ 							time_t time1, time2;
+-							uint16_t event_id;
++							__u16 event_id;
+ 							fread( &time1, sizeof(time_t), 1, f);
+ 							fread( &time2, sizeof(time_t), 1, f);
+-							fread( &event_id, sizeof(uint16_t), 1, f);
+-							content_time_tables[key][content_id][time1]=std::pair<time_t, uint16_t>(time2, event_id);
++							fread( &event_id, sizeof(__u16), 1, f);
++							content_time_tables[key][content_id][time1]=std::pair<time_t, __u16>(time2, event_id);
+ 							eventMap::iterator it =
+ 								evMap.find(event_id);
+ 							if (it != evMap.end())
+@@ -1382,9 +1410,9 @@
+ 		fwrite( &size, sizeof(int), 1, f);
+ 		for (timeMap::iterator time_it(timemap.begin()); time_it != timemap.end(); ++time_it)
+ 		{
+-			uint8_t len = time_it->second->ByteSize;
+-			fwrite( &time_it->second->type, sizeof(uint8_t), 1, f );
+-			fwrite( &len, sizeof(uint8_t), 1, f);
++			__u8 len = time_it->second->ByteSize;
++			fwrite( &time_it->second->type, sizeof(__u8), 1, f );
++			fwrite( &len, sizeof(__u8), 1, f);
+ 			fwrite( time_it->second->EITdata, len, 1, f);
+ 			++cnt;
+ 		}
+@@ -1412,7 +1440,7 @@
+ 			{
+ 				fwrite( &it->first, sizeof(time_t), 1, f);
+ 				fwrite( &it->second.first, sizeof(time_t), 1, f);
+-				fwrite( &it->second.second, sizeof(uint16_t), 1, f);
++				fwrite( &it->second.second, sizeof(__u16), 1, f);
+ 			}
+ 		}
+ 	}
+@@ -1852,10 +1880,50 @@
+ 	pthread_mutex_unlock(&channel_active);
+ }
+ 
+-void eEPGCache::channel_data::readData( const uint8_t *data, int source)
++void eEPGCache::channel_data::readData( const __u8 *data, int source)
  {
  	int map;
  	iDVBSectionReader *reader = NULL;
@@ -1662,14 +1936,15 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/dvb/epgcache.cp
 + * e2 and all libs into an IDE for better overview ;)
 + *
 + */
-+	const __u8 *aligned_data;
++	const __u8 *aligned_data = NULL;
 +	bool isNotAligned = false;
-+
++	
 +	if ((unsigned int) data % 4 != 0)
 +		isNotAligned = true;
-+
++		
 +	if (isNotAligned)
 +	{
++	
 +		/* see HILO macro and eit.h */
 +		int len = ((data[1] & 0x0F) << 8 | data[2]) -1;
 +
@@ -1693,64 +1968,658 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/dvb/epgcache.cp
  	switch (source)
  	{
  		case NOWNEXT:
-@@ -1980,6 +2042,10 @@
+@@ -1953,7 +2021,7 @@
+ 	else
+ 	{
+ 		eit_t *eit = (eit_t*) data;
+-		uint32_t sectionNo = data[0] << 24;
++		__u32 sectionNo = data[0] << 24;
+ 		sectionNo |= data[3] << 16;
+ 		sectionNo |= data[4] << 8;
+ 		sectionNo |= eit->section_number;
+@@ -1965,8 +2033,8 @@
+ 		{
+ 			seenSections.insert(sectionNo);
+ 			calcedSections.insert(sectionNo);
+-			uint32_t tmpval = sectionNo & 0xFFFFFF00;
+-			uint8_t incr = source == NOWNEXT ? 1 : 8;
++			__u32 tmpval = sectionNo & 0xFFFFFF00;
++			__u8 incr = source == NOWNEXT ? 1 : 8;
+ 			for ( int i = 0; i <= eit->last_section_number; i+=incr )
+ 			{
+ 				if ( i == eit->section_number )
+@@ -1980,16 +2048,20 @@
  			cache->sectionRead(data, source, this);
  		}
  	}
 +#ifdef __sh__
 +	if (isNotAligned)
 +		free((void *)aligned_data);
-+#endif
++#endif	
  }
  
  #if ENABLE_FREESAT
-@@ -3065,11 +3131,20 @@
+ 
+-freesatEITSubtableStatus::freesatEITSubtableStatus(u_char version, uint8_t maxSection) : version(version)
++freesatEITSubtableStatus::freesatEITSubtableStatus(u_char version, __u8 maxSection) : version(version)
+ {
+ 	initMap(maxSection);
+ }
+ 
+-void freesatEITSubtableStatus::initMap(uint8_t maxSection)
++void freesatEITSubtableStatus::initMap(__u8 maxSection)
+ {
+ 	int i, maxSectionIdx = maxSection / 8;
+ 	for (i = 0; i < 32; i++)
+@@ -1998,18 +2070,18 @@
+ 	}
+ }
+ 
+-bool freesatEITSubtableStatus::isSectionPresent(uint8_t sectionNo)
++bool freesatEITSubtableStatus::isSectionPresent(__u8 sectionNo)
+ {
+-	uint8_t sectionIdx = sectionNo / 8;
+-	uint8_t bitOffset = sectionNo % 8;
++	__u8 sectionIdx = sectionNo / 8;
++	__u8 bitOffset = sectionNo % 8;
+ 
+ 	return ((sectionMap[sectionIdx] & (1 << bitOffset)) != 0);
+ }
+ 
+ bool freesatEITSubtableStatus::isCompleted()
+ {
+-	uint32_t i = 0;
+-	uint8_t calc;
++	__u32 i = 0;
++	__u8 calc;
+ 
+ 	while ( i < 32 )
+ 	{
+@@ -2022,11 +2094,11 @@
+ 	return true; // All segments ok
+ }
+ 
+-void freesatEITSubtableStatus::seen(uint8_t sectionNo, uint8_t maxSegmentSection)
++void freesatEITSubtableStatus::seen(__u8 sectionNo, __u8 maxSegmentSection)
+ {
+-	uint8_t sectionIdx = sectionNo / 8;
+-	uint8_t bitOffset = sectionNo % 8;
+-	uint8_t maxBitOffset = maxSegmentSection % 8;
++	__u8 sectionIdx = sectionNo / 8;
++	__u8 bitOffset = sectionNo % 8;
++	__u8 maxBitOffset = maxSegmentSection % 8;
+ 
+ 	sectionMap[sectionIdx] &= 0x00FF; // Clear calc map
+ 	sectionMap[sectionIdx] |= ((0x01FF << maxBitOffset) & 0xFF00); // Set calc map
+@@ -2038,7 +2110,7 @@
+ 	return version != testVersion;
+ }
+ 
+-void freesatEITSubtableStatus::updateVersion(u_char newVersion, uint8_t maxSection)
++void freesatEITSubtableStatus::updateVersion(u_char newVersion, __u8 maxSection)
+ {
+ 	version = newVersion;
+ 	initMap(maxSection);
+@@ -2050,16 +2122,16 @@
+ 	m_FreesatTablesToComplete = 0;
+ }
+ 
+-void eEPGCache::channel_data::readFreeSatScheduleOtherData( const uint8_t *data)
++void eEPGCache::channel_data::readFreeSatScheduleOtherData( const __u8 *data)
+ {
+ 	eit_t *eit = (eit_t*) data;
+-	uint32_t subtableNo = data[0] << 24; // Table ID
++	__u32 subtableNo = data[0] << 24; // Table ID
+ 	subtableNo |= data[3] << 16; // Service ID Hi
+ 	subtableNo |= data[4] << 8; // Service ID Lo
+ 
+ 	// Check for sub-table version in map
+-	std::map<uint32_t, freesatEITSubtableStatus> &freeSatSubTableStatus = this->m_FreeSatSubTableStatus;
+-	std::map<uint32_t, freesatEITSubtableStatus>::iterator itmap = freeSatSubTableStatus.find(subtableNo);
++	std::map<__u32, freesatEITSubtableStatus> &freeSatSubTableStatus = this->m_FreeSatSubTableStatus;
++	std::map<__u32, freesatEITSubtableStatus>::iterator itmap = freeSatSubTableStatus.find(subtableNo);
+ 
+ 	freesatEITSubtableStatus *fsstatus;
+ 	if ( itmap == freeSatSubTableStatus.end() )
+@@ -2068,7 +2140,7 @@
+ 		//eDebug("[EPGC] New subtable (%x) version (%d) now/next (%d) tsid (%x/%x) onid (%x/%x)", subtableNo, eit->version_number, eit->current_next_indicator, eit->transport_stream_id_hi, eit->transport_stream_id_lo, eit->original_network_id_hi, eit->original_network_id_lo);
+ 		fsstatus = new freesatEITSubtableStatus(eit->version_number, eit->last_section_number);
+ 		m_FreesatTablesToComplete++;
+-		freeSatSubTableStatus.insert(std::pair<uint32_t,freesatEITSubtableStatus>(subtableNo, *fsstatus));
++		freeSatSubTableStatus.insert(std::pair<__u32,freesatEITSubtableStatus>(subtableNo, *fsstatus));
+ 	}
+ 	else
+ 	{
+@@ -2695,8 +2767,8 @@
+     evt->duration_3 = toBCD((time % 3600) % 60);
+ }
+ 
+-static inline uint8_t HI(int x) { return (uint8_t) ((x >> 8) & 0xFF); }
+-static inline uint8_t LO(int x) { return (uint8_t) (x & 0xFF); }
++static inline __u8 HI(int x) { return (__u8) ((x >> 8) & 0xFF); }
++static inline __u8 LO(int x) { return (__u8) (x & 0xFF); }
+ #define SET_HILO(x, val) {x##_hi = ((val) >> 8); x##_lo = (val) & 0xff; }
+ // convert from set of strings to DVB format (EIT)
+ void eEPGCache::submitEventData(const std::vector<eServiceReferenceDVB>& serviceRefs, long start,
+@@ -2706,8 +2778,8 @@
+ 	if (!title)
+ 		return;
+ 	static const int EIT_LENGTH = 4108;
+-	static const uint8_t codePage = 0x15; // UTF-8 encoding
+-	uint8_t data[EIT_LENGTH];
++	static const __u8 codePage = 0x15; // UTF-8 encoding
++	__u8 data[EIT_LENGTH];
+ 
+ 	eit_t *packet = (eit_t *) data;
+ 	packet->table_id = 0x50;
+@@ -2723,7 +2795,7 @@
+ 
+ 	eit_event_t *evt_struct = (eit_event_t*) (data + EIT_SIZE);
+ 
+-	uint16_t eventId = start & 0xFFFF;
++	__u16 eventId = start & 0xFFFF;
+ 	SET_HILO(evt_struct->event_id, eventId);
+ 
+ 	//6 bytes start time, 3 bytes duration
+@@ -2735,7 +2807,7 @@
+ 
+ 	//no support for different code pages, only DVB's latin1 character set
+ 	//TODO: convert text to correct character set (data is probably passed in as UTF-8)
+-	uint8_t *x = (uint8_t *) evt_struct;
++	__u8 *x = (__u8 *) evt_struct;
+ 	x += EIT_LOOP_SIZE;
+ 	int nameLength = strnlen(title, 246);
+ 	int descLength = short_summary ? strnlen(short_summary, 246 - nameLength) : 0;
+@@ -2749,7 +2821,7 @@
+ 	short_evt->language_code_2 = 'n';
+ 	short_evt->language_code_3 = 'g';
+ 	short_evt->event_name_length = nameLength ? nameLength + 1 : 0;
+-	x = (uint8_t *) short_evt;
++	x = (__u8 *) short_evt;
+ 	x += EIT_SHORT_EVENT_DESCRIPTOR_SIZE;
+ 	*x = codePage;
+ 	++x;
+@@ -2781,7 +2853,7 @@
+ 	}
+ 
+ 	//Long description
+-	int currentLoopLength = x - (uint8_t*)short_evt;
++	int currentLoopLength = x - (__u8*)short_evt;
+ 	static const int overheadPerDescriptor = 9; //increase if codepages are added!!!
+ 	static const int MAX_LEN = 256 - overheadPerDescriptor;
+ 
+@@ -2820,7 +2892,7 @@
+ 	}
+ 
+ 	//TODO: add age and more
+-	int desc_loop_length = x - ((uint8_t*)evt_struct + EIT_LOOP_SIZE);
++	int desc_loop_length = x - ((__u8*)evt_struct + EIT_LOOP_SIZE);
+ 	SET_HILO(evt_struct->descriptors_loop_length, desc_loop_length);
+ 
+ 	int packet_length = (x - data) - 3; //should add 1 for crc....
+@@ -2987,7 +3059,7 @@
+ {
+ 	ePyObject ret;
+ 	int descridx = -1;
+-	uint32_t descr[512];
++	__u32 descr[512];
+ 	int eventid = -1;
+ 	const char *argstring=0;
+ 	char *refstr=0;
+@@ -3063,18 +3135,29 @@
+ 						lookupEventId(ref, eventid, evData);
+ 						if (evData)
  						{
- 							__u8 *data = evData->EITdata;
+-							uint8_t *data = evData->EITdata;
++							__u8 *data = evData->EITdata;
  							int tmp = evData->ByteSize-10;
+-							uint32_t *p = (uint32_t*)(data+10);
 +#ifndef __sh__
- 							__u32 *p = (__u32*)(data+10);
-+#else	// Dagobert: Alignment fix
++							__u32 *p = (__u32*)(data+10);
++#else
++// Dagobert: Alignment fix
 +							__u8 *p = (__u8*)(data+10);
 +#endif
  							// search short and extended event descriptors
  							while(tmp>3)
  							{
+-								uint32_t crc = *p++;
 +#ifndef __sh__
- 								__u32 crc = *p++;
-+#else	// Dagobert: Alignment fix
++								__u32 crc = *p++;
++#else
++// Dagobert: Alignment fix
 +								__u32 crc = p[3] << 24 | p[2] << 16 | p[1] << 8 | p[0];
 +								p += 4;
 +#endif
  								descriptorMap::iterator it =
  									eventData::descriptors.find(crc);
  								if (it != eventData::descriptors.end())
-@@ -3248,12 +3323,21 @@
+ 								{
+-									uint8_t *descr_data = it->second.second;
++									__u8 *descr_data = it->second.second;
+ 									switch(descr_data[0])
+ 									{
+ 									case 0x4D ... 0x4E:
+@@ -3132,7 +3215,7 @@
+ 					for (descriptorMap::iterator it(eventData::descriptors.begin());
+ 						it != eventData::descriptors.end() && descridx < 511; ++it)
+ 					{
+-						uint8_t *data = it->second.second;
++						__u8 *data = it->second.second;
+ 						if ( data[0] == 0x4D ) // short event descriptor
+ 						{
+ 							const char *titleptr = (const char*)&data[6];
+@@ -3246,14 +3329,25 @@
+ 					if (evit->second->getEventID() == eventid)
+ 						continue;
  				}
- 				__u8 *data = evit->second->EITdata;
+-				uint8_t *data = evit->second->EITdata;
++				__u8 *data = evit->second->EITdata;
  				int tmp = evit->second->ByteSize-10;
+-				uint32_t *p = (uint32_t*)(data+10);
 +#ifndef __sh__
- 				__u32 *p = (__u32*)(data+10);
-+#else	// Dagobert: Alignment fix
++				__u32 *p = (__u32*)(data+10);
++#else
++// Dagobert: Alignment fix
 +				__u8 *p = (__u8*)(data+10);
 +#endif
  				// check if any of our descriptor used by this event
  				int cnt=-1;
  				while(tmp>3)
  				{
+-					uint32_t crc32 = *p++;
 +#ifndef __sh__
- 					__u32 crc32 = *p++;
-+#else	// Dagobert: Alignment fix
++					__u32 crc32 = *p++;
++#else
++// Dagobert: Alignment fix
 +					__u32 crc32 = p[3] << 24 | p[2] << 16 | p[1] << 8 | p[0];
 +					p += 4;
 +#endif
  					for ( int i=0; i <= descridx; ++i)
  					{
  						if (descr[i] == crc32)  // found...
+@@ -3398,7 +3492,7 @@
+ 							case 0xC2: // user defined
+ 								if ((*desc)->getLength() == 8)
+ 								{
+-									uint8_t buffer[10];
++									__u8 buffer[10];
+ 									(*desc)->writeToBuffer(buffer);
+ 									if (!memcmp((const char *)buffer+2, "EPGDATA", 7))
+ 									{
+@@ -3482,14 +3576,14 @@
+ 
+ struct date_time
+ {
+-	uint8_t data[5];
++	__u8 data[5];
+ 	time_t tm;
+ 	date_time( const date_time &a )
+ 	{
+ 		memcpy(data, a.data, 5);
+ 		tm = a.tm;
+ 	}
+-	date_time( const uint8_t data[5])
++	date_time( const __u8 data[5])
+ 	{
+ 		memcpy(this->data, data, 5);
+ 		tm = parseDVBtime(data[0], data[1], data[2], data[3], data[4]);
+@@ -3497,7 +3591,7 @@
+ 	date_time()
+ 	{
+ 	}
+-	const uint8_t& operator[](int pos) const
++	const __u8& operator[](int pos) const
+ 	{
+ 		return data[pos];
+ 	}
+@@ -3511,7 +3605,7 @@
+ 	}
+ };
+ 
+-void eEPGCache::privateSectionRead(const uniqueEPGKey &current_service, const uint8_t *data)
++void eEPGCache::privateSectionRead(const uniqueEPGKey &current_service, const __u8 *data)
+ {
+ 	contentMap &content_time_table = content_time_tables[current_service];
+ 	singleLock s(cache_lock);
+@@ -3539,14 +3633,14 @@
+ 	}
+ 	time_event_map.clear();
+ 
+-	uint8_t duration[3];
++	__u8 duration[3];
+ 	memcpy(duration, data+ptr, 3);
+ 	ptr+=3;
+ 	int duration_sec =
+ 		fromBCD(duration[0])*3600+fromBCD(duration[1])*60+fromBCD(duration[2]);
+ 
+-	const uint8_t *descriptors[65];
+-	const uint8_t **pdescr = descriptors;
++	const __u8 *descriptors[65];
++	const __u8 **pdescr = descriptors;
+ 
+ 	int descriptors_length = (data[ptr++]&0x0F) << 8;
+ 	descriptors_length |= data[ptr++];
+@@ -3588,7 +3682,7 @@
+ 				descr_len -= 6;
+ 				while( descr_len > 2 )
+ 				{
+-					uint8_t datetime[5];
++					__u8 datetime[5];
+ 					datetime[0] = data[ptr++];
+ 					datetime[1] = data[ptr++];
+ 					int tmp_len = data[ptr++];
+@@ -3615,13 +3709,13 @@
+ 		}
+ 	}
+ 	ASSERT(pdescr <= &descriptors[65]);
+-	uint8_t event[4098];
++	__u8 event[4098];
+ 	eit_event_struct *ev_struct = (eit_event_struct*) event;
+ 	ev_struct->running_status = 0;
+ 	ev_struct->free_CA_mode = 1;
+ 	memcpy(event+7, duration, 3);
+ 	ptr = 12;
+-	const uint8_t **d=descriptors;
++	const __u8 **d=descriptors;
+ 	while ( d < pdescr )
+ 	{
+ 		memcpy(event+ptr, *d, ((*d)[1])+2);
+@@ -3640,7 +3734,7 @@
+ 		for (std::list<uniqueEPGKey>::iterator i(it->second.begin()); i != it->second.end(); ++i)
+ 		{
+ 			event[bptr++] = 0x4A;
+-			uint8_t *len = event+(bptr++);
++			__u8 *len = event+(bptr++);
+ 			event[bptr++] = (i->tsid & 0xFF00) >> 8;
+ 			event[bptr++] = (i->tsid & 0xFF);
+ 			event[bptr++] = (i->onid & 0xFF00) >> 8;
+@@ -3659,12 +3753,12 @@
+ 		while( tmMap.find(stime) != tmMap.end() )
+ 			++stime;
+ 		event[6] += (stime - it->first.tm);
+-		uint16_t event_id = 0;
++		__u16 event_id = 0;
+ 		while( evMap.find(event_id) != evMap.end() )
+ 			++event_id;
+ 		event[0] = (event_id & 0xFF00) >> 8;
+ 		event[1] = (event_id & 0xFF);
+-		time_event_map[it->first.tm]=std::pair<time_t, uint16_t>(stime, event_id);
++		time_event_map[it->first.tm]=std::pair<time_t, __u16>(stime, event_id);
+ 		eventData *d = new eventData( ev_struct, bptr, PRIVATE );
+ 		evMap[event_id] = d;
+ 		tmMap[stime] = d;
+@@ -3693,7 +3787,7 @@
+ 	m_PrivateReader->start(mask);
+ }
+ 
+-void eEPGCache::channel_data::readPrivateData( const uint8_t *data)
++void eEPGCache::channel_data::readPrivateData( const __u8 *data)
+ {
+ 	if ( seenPrivateSections.find(data[6]) == seenPrivateSections.end() )
+ 	{
+@@ -3725,7 +3819,7 @@
+ 	m_program_ids.clear();
+ }
+ 
+-uint8_t *eEPGCache::channel_data::delimitName( uint8_t *in, uint8_t *out, int len_in )
++__u8 *eEPGCache::channel_data::delimitName( __u8 *in, __u8 *out, int len_in )
+ {
+ 	// Names in mhw structs are not strings as they are not '\0' terminated.
+ 	// This function converts the mhw name into a string.
+@@ -3760,7 +3854,7 @@
+ {
+ 	char tz_saved[1024];
+ 	// Remove offset in mhw time.
+-	uint8_t local_hours = hours;
++	__u8 local_hours = hours;
+ 	if ( hours >= 16 )
+ 		local_hours -= 4;
+ 	else if ( hours >= 8 )
+@@ -3811,10 +3905,10 @@
+ 	timeMHW2DVB( recdate.tm_hour, minutes, return_time+2 );
+ }
+ 
+-void eEPGCache::channel_data::storeMHWTitle(std::map<uint32_t, mhw_title_t>::iterator itTitle, std::string sumText, const uint8_t *data)
++void eEPGCache::channel_data::storeMHWTitle(std::map<__u32, mhw_title_t>::iterator itTitle, std::string sumText, const __u8 *data)
+ // data is borrowed from calling proc to save memory space.
+ {
+-	uint8_t name[34];
++	__u8 name[34];
+ 
+ 	// For each title a separate EIT packet will be sent to eEPGCache::sectionRead()
+ 	bool isMHW2 = itTitle->second.mhw2_mjd_hi || itTitle->second.mhw2_mjd_lo ||
+@@ -3837,7 +3931,7 @@
+ 	packet->segment_last_section_number = 0; // eEPGCache::sectionRead() will dig this for the moment
+ 	packet->segment_last_table_id = 0x50;
+ 
+-	uint8_t *title = isMHW2 ? ((uint8_t*)(itTitle->second.title))-4 : (uint8_t*)itTitle->second.title;
++	__u8 *title = isMHW2 ? ((__u8*)(itTitle->second.title))-4 : (__u8*)itTitle->second.title;
+ 	std::string prog_title = (char *) delimitName( title, name, isMHW2 ? 35 : 23 );
+ 	int prog_title_length = prog_title.length();
+ 
+@@ -3963,7 +4057,7 @@
+ 	m_MHWTimeoutet=false;
+ }
+ 
+-void eEPGCache::channel_data::startMHWReader(uint16_t pid, uint8_t tid)
++void eEPGCache::channel_data::startMHWReader(__u16 pid, __u8 tid)
+ {
+ 	m_MHWFilterMask.pid = pid;
+ 	m_MHWFilterMask.data[0] = tid;
+@@ -3971,7 +4065,7 @@
+ //	eDebug("start 0x%02x 0x%02x", pid, tid);
+ }
+ 
+-void eEPGCache::channel_data::startMHWReader2(uint16_t pid, uint8_t tid, int ext)
++void eEPGCache::channel_data::startMHWReader2(__u16 pid, __u8 tid, int ext)
+ {
+ 	m_MHWFilterMask2.pid = pid;
+ 	m_MHWFilterMask2.data[0] = tid;
+@@ -3990,7 +4084,7 @@
+ 	m_MHWReader2->start(m_MHWFilterMask2);
+ }
+ 
+-void eEPGCache::channel_data::readMHWData(const uint8_t *data)
++void eEPGCache::channel_data::readMHWData(const __u8 *data)
+ {
+ 	if ( m_MHWReader2 )
+ 		m_MHWReader2->stop();
+@@ -4029,9 +4123,9 @@
+ 		int record_size = sizeof( mhw_theme_name_t );
+ 		int nbr_records = int (len/record_size);
+ 		int idx_ptr = 0;
+-		uint8_t next_idx = (uint8_t) *(data + 3 + idx_ptr);
+-		uint8_t idx = 0;
+-		uint8_t sub_idx = 0;
++		__u8 next_idx = (__u8) *(data + 3 + idx_ptr);
++		__u8 idx = 0;
++		__u8 sub_idx = 0;
+ 		for ( int i = 0; i < nbr_records; i++ )
+ 		{
+ 			mhw_theme_name_t *theme = (mhw_theme_name_t*) &data[19 + i*record_size];
+@@ -4039,7 +4133,7 @@
+ 			{
+ 				idx = (idx_ptr<<4);
+ 				idx_ptr++;
+-				next_idx = (uint8_t) *(data + 3 + idx_ptr);
++				next_idx = (__u8) *(data + 3 + idx_ptr);
+ 				sub_idx = 0;
+ 			}
+ 			else
+@@ -4057,7 +4151,7 @@
+ 	// Titles table
+ 	{
+ 		mhw_title_t *title = (mhw_title_t*) data;
+-		uint8_t name[24];
++		__u8 name[24];
+ 		std::string prog_title = (char *) delimitName( title->title, name, 23 );
+ 
+ 		if ( title->channel_id == 0xFF || prog_title.substr(0,7) == "BIENTOT" )	// Separator or BIENTOT record
+@@ -4065,9 +4159,9 @@
+ 		else
+ 		{
+ 			// Create unique key per title
+-			uint32_t title_id = ((title->channel_id)<<16)|((title->dh.day)<<13)|((title->dh.hours)<<8)|
++			__u32 title_id = ((title->channel_id)<<16)|((title->dh.day)<<13)|((title->dh.hours)<<8)|
+ 				(title->ms.minutes);
+-			uint32_t program_id = ((title->program_id_hi)<<24)|((title->program_id_mh)<<16)|
++			__u32 program_id = ((title->program_id_hi)<<24)|((title->program_id_mh)<<16)|
+ 				((title->program_id_ml)<<8)|(title->program_id_lo);
+ 
+ 			if ( m_titles.find( title_id ) == m_titles.end() )
+@@ -4080,7 +4174,7 @@
+ 				m_titles[ title_id ] = *title;
+ 				if ( (title->ms.summary_available) && (m_program_ids.find(program_id) == m_program_ids.end()) )
+ 					// program_ids will be used to gather summaries.
+-					m_program_ids.insert(std::pair<uint32_t,uint32_t>(program_id,title_id));
++					m_program_ids.insert(std::pair<__u32,__u32>(program_id,title_id));
+ 				return;	// Continue reading of the current table.
+ 			}
+ 			else if (!checkMHWTimeout())
+@@ -4104,7 +4198,7 @@
+ 		mhw_summary_t *summary = (mhw_summary_t*) data;
+ 
+ 		// Create unique key per record
+-		uint32_t program_id = ((summary->program_id_hi)<<24)|((summary->program_id_mh)<<16)|
++		__u32 program_id = ((summary->program_id_hi)<<24)|((summary->program_id_mh)<<16)|
+ 			((summary->program_id_ml)<<8)|(summary->program_id_lo);
+ 		int len = ((data[1]&0xf)<<8) + data[2];
+ 
+@@ -4113,7 +4207,7 @@
+ 		memcpy(&tmp, &data, sizeof(void*));
+ 		tmp[len+3] = 0;	// Terminate as a string.
+ 
+-		std::multimap<uint32_t, uint32_t>::iterator itProgid( m_program_ids.find( program_id ) );
++		std::multimap<__u32, __u32>::iterator itProgid( m_program_ids.find( program_id ) );
+ 		if ( itProgid == m_program_ids.end() )
+ 		{ /*	This part is to prevent to looping forever if some summaries are not received yet.
+ 			There is a timeout of 4 sec. after the last successfully read summary. */
+@@ -4129,7 +4223,7 @@
+ 				the_text.replace(pos, 2, " ");
+ 
+ 			// Find corresponding title, store title and summary in epgcache.
+-			std::map<uint32_t, mhw_title_t>::iterator itTitle( m_titles.find( itProgid->second ) );
++			std::map<__u32, mhw_title_t>::iterator itTitle( m_titles.find( itProgid->second ) );
+ 			if ( itTitle != m_titles.end() )
+ 			{
+ 				startMHWTimeout(4000);
+@@ -4146,7 +4240,7 @@
+ 		m_program_ids.size());
+ 	// Summaries have been read, titles that have summaries have been stored.
+ 	// Now store titles that do not have summaries.
+-	for (std::map<uint32_t, mhw_title_t>::iterator itTitle(m_titles.begin()); itTitle != m_titles.end(); itTitle++)
++	for (std::map<__u32, mhw_title_t>::iterator itTitle(m_titles.begin()); itTitle != m_titles.end(); itTitle++)
+ 		storeMHWTitle( itTitle, "", data );
+ 	isRunning &= ~MHW;
+ 	m_MHWConn=0;
+@@ -4156,7 +4250,7 @@
+ 		finishEPG();
+ }
+ 
+-void eEPGCache::channel_data::readMHWData2(const uint8_t *data)
++void eEPGCache::channel_data::readMHWData2(const __u8 *data)
+ {
+ 	int dataLen = (((data[1]&0xf) << 8) | data[2]) + 3;
+ 
+@@ -4192,7 +4286,7 @@
+ 		else
+ 			goto abort;
+ 		// data seems consistent...
+-		const uint8_t *tmp = data+121;
++		const __u8 *tmp = data+121;
+ 		for (int i=0; i < num_channels; ++i)
+ 		{
+ 			mhw_channel_name_t channel;
+@@ -4273,17 +4367,17 @@
+ 			title.mhw2_duration_lo = duration&0xFF;
+ 
+ 			// Create unique key per title
+-			uint32_t title_id = (data[pos+7] << 24) | (data[pos+8] << 16) | (data[pos+9] << 8) | data[pos+10];
++			__u32 title_id = (data[pos+7] << 24) | (data[pos+8] << 16) | (data[pos+9] << 8) | data[pos+10];
+ 
+-			uint8_t slen = data[pos+18] & 0x3f;
+-			uint8_t *dest = ((uint8_t*)title.title)-4;
++			__u8 slen = data[pos+18] & 0x3f;
++			__u8 *dest = ((__u8*)title.title)-4;
+ 			memcpy(dest, &data[pos+19], slen>35 ? 35 : slen);
+ 			memset(dest+slen, 0, 35-slen);
+ 			pos += 19 + slen;
+ //			eDebug("%02x [%02x %02x]: %s", data[pos], data[pos+1], data[pos+2], dest);
+ 
+ //			not used theme id (data[7] & 0x3f) + (data[pos] & 0x3f);
+-			uint32_t summary_id = (data[pos+1] << 8) | data[pos+2];
++			__u32 summary_id = (data[pos+1] << 8) | data[pos+2];
+ 
+ //			if (title.channel_id > m_channels.size())
+ //				eDebug("channel_id(%d %02x) to big!!", title.channel_id);
+@@ -4295,7 +4389,7 @@
+ 
+ 			pos += 3;
+ 
+-			std::map<uint32_t, mhw_title_t>::iterator it = m_titles.find( title_id );
++			std::map<__u32, mhw_title_t>::iterator it = m_titles.find( title_id );
+ 			if ( it == m_titles.end() )
+ 			{
+ 				startMHWTimeout(5000);
+@@ -4303,7 +4397,7 @@
+ 				if (summary_id != 0xFFFF)
+ 				{
+ 					bool add=true;
+-					std::multimap<uint32_t, uint32_t>::iterator it(m_program_ids.lower_bound(summary_id));
++					std::multimap<__u32, __u32>::iterator it(m_program_ids.lower_bound(summary_id));
+ 					while (it != m_program_ids.end() && it->first == summary_id)
+ 					{
+ 						if (it->second == title_id) {
+@@ -4313,7 +4407,7 @@
+ 						++it;
+ 					}
+ 					if (add)
+-						m_program_ids.insert(std::pair<uint32_t,uint32_t>(summary_id,title_id));
++						m_program_ids.insert(std::pair<__u32,__u32>(summary_id,title_id));
+ 				}
+ 			}
+ 			else
+@@ -4377,7 +4471,7 @@
+ 			if (valid)
+ 			{
+ 				// data seems consistent...
+-				uint32_t summary_id = (data[3]<<8)|data[4];
++				__u32 summary_id = (data[3]<<8)|data[4];
+ //				eDebug ("summary id %04x\n", summary_id);
+ //				eDebug("[%02x %02x] %02x %02x %02x %02x %02x %02x %02x %02x XX\n", data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13] );
+ 
+@@ -4401,7 +4495,7 @@
+ 				else
+ 					tmp[pos+1] = 0;
+ 
+-				std::multimap<uint32_t, uint32_t>::iterator itProgId( m_program_ids.lower_bound(summary_id) );
++				std::multimap<__u32, __u32>::iterator itProgId( m_program_ids.lower_bound(summary_id) );
+ 				if ( itProgId == m_program_ids.end() || itProgId->first != summary_id)
+ 				{ /*	This part is to prevent to looping forever if some summaries are not received yet.
+ 					There is a timeout of 4 sec. after the last successfully read summary. */
+@@ -4419,7 +4513,7 @@
+ 					{
+ //						eDebug(".");
+ 						// Find corresponding title, store title and summary in epgcache.
+-						std::map<uint32_t, mhw_title_t>::iterator itTitle( m_titles.find( itProgId->second ) );
++						std::map<__u32, mhw_title_t>::iterator itTitle( m_titles.find( itProgId->second ) );
+ 						if ( itTitle != m_titles.end() )
+ 						{
+ 							storeMHWTitle( itTitle, the_text, data );
+@@ -4453,7 +4547,7 @@
+ 		{
+ 			// Summaries have been read, titles that have summaries have been stored.
+ 			// Now store titles that do not have summaries.
+-			for (std::map<uint32_t, mhw_title_t>::iterator itTitle(m_titles.begin()); itTitle != m_titles.end(); itTitle++)
++			for (std::map<__u32, mhw_title_t>::iterator itTitle(m_titles.begin()); itTitle != m_titles.end(); itTitle++)
+ 				storeMHWTitle( itTitle, "", data );
+ 			eDebug("[EPGC] mhw2 finished(%ld) %d summaries not found",
+ 				::time(0),
 diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/dvb/pmt.cpp enigma2-nightly/lib/dvb/pmt.cpp
 --- enigma2-nightly.org/lib/dvb/pmt.cpp	2014-06-13 21:45:21.748535791 +0200
 +++ enigma2-nightly/lib/dvb/pmt.cpp	2014-06-21 13:05:30.079088431 +0200
-@@ -785,6 +785,11 @@
+@@ -780,6 +780,11 @@
  			eDVBCIInterfaces::getInstance()->addPMTHandler(this);
  	} else if (!simulate) // no simulation of playback services
  	{
@@ -3090,7 +3959,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/gdi/gpixmap.cpp
  
  			col^=0xFF000000;
 @@ -234,6 +239,9 @@
- 			__u32 col;
+ 			uint32_t col;
  
  			col = color.argb();
 +#if defined(__sh__)
@@ -3305,6 +4174,42 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/gdi/lcd.h enigm
  #ifdef SWIG
  	eDBoxLCD();
  	~eDBoxLCD();
+diff --git a/lib/gdi/picload.cpp b/lib/gdi/picload.cpp
+index cb1d02b..aaca980 100644
+--- a/lib/gdi/picload.cpp
++++ b/lib/gdi/picload.cpp
+@@ -519,7 +519,7 @@ inline void m_rend_gif_decodecolormap(unsigned char *cmb, unsigned char *rgbb, C
+ static void gif_load(Cfilepara* filepara)
+ {
+ 	unsigned char *pic_buffer = NULL;
+-	int px, py, i, j;
++	int px, py, i, j, ErrorCode;
+ 	unsigned char *fbptr;
+ 	unsigned char *slb=NULL;
+ 	GifFileType *gft;
+@@ -529,7 +529,7 @@ static void gif_load(Cfilepara* filepara)
+ 	int cmaps;
+ 	int extcode;
+ 
+-	gft = DGifOpenFileName(filepara->file);
++	gft = DGifOpenFileName(filepara->file, &ErrorCode);
+ 	if (gft == NULL)
+ 		return;
+ 	do
+@@ -600,11 +600,11 @@ static void gif_load(Cfilepara* filepara)
+ 	}
+ 	while (rt != TERMINATE_RECORD_TYPE);
+ 
+-	DGifCloseFile(gft);
++	DGifCloseFile(gft, &ErrorCode);
+ 	return;
+ ERROR_R:
+ 	eDebug("[Picload] <Error gif>");
+-	DGifCloseFile(gft);
++	DGifCloseFile(gft, &ErrorCode);
+ }
+ 
+ //---------------------------------------------------------------------------------------------
 diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/gdi/Makefile.inc enigma2-nightly/lib/gdi/Makefile.inc
 --- enigma2-nightly.org/lib/gdi/Makefile.inc	2014-06-13 21:45:21.748535791 +0200
 +++ enigma2-nightly/lib/gdi/Makefile.inc	2014-06-21 13:05:30.087088431 +0200
@@ -3406,7 +4311,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/Makefile.am eni
  
 +if ENABLE_LIBEPLAYER3
 +AM_CPPFLAGS += \
-+	-I$(top_srcdir)/../tools/libeplayer3/include
++	-I$(top_srcdir)/../../apps/tools/libeplayer3/include
 +endif
 +
  # initialize these, to be filled with targets in the included files
@@ -3479,7 +4384,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Componen
  
  		print "new Harddisk", self.device, '->', self.dev_path, '->', self.disk_path
  		if not removable:
-@@ -679,6 +669,12 @@
+@@ -683,6 +673,12 @@
  		for item in getProcMounts():
  			if item[0] == dev:
  				return item[1]
@@ -3492,7 +4397,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Componen
  		return None
  
  	def addHotplugPartition(self, device, physdev = None):
-@@ -694,6 +690,10 @@
+@@ -698,6 +694,10 @@
  		error, blacklisted, removable, is_cdrom, partitions, medium_found = self.getBlockDevInfo(device)
  		if not blacklisted and medium_found:
  			description = self.getUserfriendlyDeviceName(device, physdev)
@@ -3530,25 +4435,24 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Componen
 diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Components/Renderer/Progress.py enigma2-nightly/lib/python/Components/Renderer/Progress.py
 --- enigma2-nightly.org/lib/python/Components/Renderer/Progress.py	2014-06-13 21:45:21.760535790 +0200
 +++ enigma2-nightly/lib/python/Components/Renderer/Progress.py	2014-06-21 13:05:30.087088431 +0200
-@@ -13,25 +13,40 @@
+@@ -13,23 +13,39 @@
  	GUI_WIDGET = eSlider
  
  	def changed(self, what):
 -		if what[0] == self.CHANGED_CLEAR:
 -			(self.range, self.value) = ((0, 1), 0)
 -			return
--
--		range = self.source.range or 100
--		value = self.source.value
--		if value is None:
--			value = 0
--		(self.range, self.value) = ((0, range), value)
 +#+++>
 +		try:
 +			if what[0] == self.CHANGED_CLEAR:
 +				(self.range, self.value) = ((0, 1), 0)
 +				return
-+
+ 
+-		range = self.source.range or 100
+-		value = self.source.value
+-		if value is None:
+-			value = 0
+-		(self.range, self.value) = ((0, range), value)
 +			range = (self.source and self.source.range) or 100
 +			value = (self.source and self.source.value) or 0
 +			if value is None:
@@ -3557,8 +4461,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Componen
 +		except:
 +			None
 +#+++<
- 
- 	GUI_WIDGET = eSlider
++ 
  
  	def postWidgetCreate(self, instance):
 -		instance.setRange(self.__start, self.__end)
@@ -3630,7 +4533,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Componen
 diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Components/UsageConfig.py enigma2-nightly/lib/python/Components/UsageConfig.py
 --- enigma2-nightly.org/lib/python/Components/UsageConfig.py	2014-06-21 13:05:24.143088681 +0200
 +++ enigma2-nightly/lib/python/Components/UsageConfig.py	2014-06-21 13:05:30.087088431 +0200
-@@ -178,7 +178,7 @@
+@@ -193,7 +193,7 @@
  	config.usage.recording_frontend_priority = ConfigSelection(default = "-2", choices = nims)
  	config.misc.disable_background_scan = ConfigYesNo(default = False)
  
@@ -3670,7 +4573,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Componen
 diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/enigma_python.i enigma2-nightly/lib/python/enigma_python.i
 --- enigma2-nightly.org/lib/python/enigma_python.i	2014-06-13 21:45:21.820535788 +0200
 +++ enigma2-nightly/lib/python/enigma_python.i	2014-06-21 13:05:30.087088431 +0200
-@@ -108,6 +108,7 @@
+@@ -109,6 +109,7 @@
  #include <lib/python/python.h>
  #include <lib/python/python_helpers.h>
  #include <lib/gdi/picload.h>
@@ -3678,7 +4581,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/enigma_p
  %}
  
  %feature("ref")   iObject "$this->AddRef(); /* eDebug(\"AddRef (%s:%d)!\", __FILE__, __LINE__); */ "
-@@ -250,6 +251,7 @@
+@@ -251,6 +252,7 @@
  %include <lib/python/python.h>
  %include <lib/python/pythonconfig.h>
  %include <lib/gdi/picload.h>
@@ -4037,10 +4940,11 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Plugins/
 diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Plugins/Extensions/Makefile.am enigma2-nightly/lib/python/Plugins/Extensions/Makefile.am
 --- enigma2-nightly.org/lib/python/Plugins/Extensions/Makefile.am	2014-06-13 21:45:21.780535790 +0200
 +++ enigma2-nightly/lib/python/Plugins/Extensions/Makefile.am	2014-06-21 13:05:30.087088431 +0200
-@@ -1,6 +1,14 @@
+@@ -1,7 +1,14 @@
  installdir = $(pkglibdir)/python/Plugins/Extensions
  
--SUBDIRS = TuxboxPlugins CutListEditor PicturePlayer MediaScanner MediaPlayer GraphMultiEPG SocketMMI DVDBurn Modem
+-SUBDIRS = TuxboxPlugins CutListEditor PicturePlayer MediaScanner MediaPlayer GraphMultiEPG SocketMMI
+-# SUBDIRS += DVDBurn
 +SUBDIRS = CutListEditor PicturePlayer MediaScanner MediaPlayer GraphMultiEPG SocketMMI DVDBurn
 +
 +if ENABLE_TF7700
@@ -4053,6 +4957,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Plugins/
  
  if HAVE_LIBDDVD
  SUBDIRS += DVDPlayer
+
 diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Plugins/Extensions/TopfieldVFD/__init__.py enigma2-nightly/lib/python/Plugins/Extensions/TopfieldVFD/__init__.py
 --- enigma2-nightly.org/lib/python/Plugins/Extensions/TopfieldVFD/__init__.py	1970-01-01 01:00:00.000000000 +0100
 +++ enigma2-nightly/lib/python/Plugins/Extensions/TopfieldVFD/__init__.py	2014-06-21 13:05:30.087088431 +0200
@@ -5010,18 +5915,17 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  from Components.ActionMap import NumberActionMap, ActionMap, HelpableActionMap
  from Components.MenuList import MenuList
  from Components.ServiceEventTracker import ServiceEventTracker, InfoBarBase
-@@ -483,7 +488,9 @@
- 		self.saved_title = None
- 		self.saved_root = None
- 		self.current_ref = None
--
+@@ -558,6 +563,9 @@
+ 		self.editMode = False
+ 		self.confirmRemove = True
+ 
 +#+++>
 +		self["title"] = StaticText()
 +#+++<
  		class ChannelSelectionEditActionMap(ActionMap):
- 			def __init__(self, csel, contexts = [ ], actions = { }, prio=0):
+ 			def __init__(self, csel, contexts=[ ], actions={ }, prio=0):
  				ActionMap.__init__(self, contexts, actions, prio)
-@@ -712,6 +719,9 @@
+@@ -833,6 +841,9 @@
  			else:
  				new_title += ' ' + _("[favourite edit]")
  		self.setTitle(new_title)
@@ -5031,7 +5935,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  		self.__marked = self.servicelist.getRootServices()
  		for x in self.__marked:
  			self.servicelist.addMarked(eServiceReference(x))
-@@ -739,6 +749,9 @@
+@@ -860,6 +871,9 @@
  		self.bouquet_mark_edit = OFF
  		self.mutableList = None
  		self.setTitle(self.saved_title)
@@ -5041,7 +5945,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  		self.saved_title = None
  		# self.servicePath is just a reference to servicePathTv or Radio...
  		# so we never ever do use the asignment operator in self.servicePath
-@@ -797,6 +810,9 @@
+@@ -936,6 +950,9 @@
  			self.mutableList.flushChanges() # FIXME add check if changes was made
  			self.mutableList = None
  			self.setTitle(self.saved_title)
@@ -5051,7 +5955,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  			self.saved_title = None
  			self.servicelist.resetRoot()
  		else:
-@@ -806,6 +822,9 @@
+@@ -946,6 +963,9 @@
  			self.saved_title = self.getTitle()
  			pos = self.saved_title.find(')')
  			self.setTitle(self.saved_title[:pos+1] + ' ' + _("[move mode]") + self.saved_title[pos+1:]);
@@ -5061,7 +5965,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  		self["Service"].editmode = True
  
  	def handleEditCancel(self):
-@@ -857,6 +876,11 @@
+@@ -997,6 +1017,11 @@
  		self["list"] = ServiceList(self)
  		self.servicelist = self["list"]
  
@@ -5073,7 +5977,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  		self.numericalTextInput = NumericalTextInput(handleTimeout=False)
  		self.numericalTextInput.setUseableChars(u'1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ')
  
-@@ -941,6 +965,9 @@
+@@ -1087,6 +1112,9 @@
  			title = title[:pos]
  		title += _(" (TV)")
  		self.setTitle(title)
@@ -5083,7 +5987,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  
  	def setRadioMode(self):
  		self.mode = MODE_RADIO
-@@ -952,6 +979,9 @@
+@@ -1098,6 +1126,9 @@
  			title = title[:pos]
  		title += _(" (Radio)")
  		self.setTitle(title)
@@ -5093,7 +5997,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  
  	def setRoot(self, root, justSet=False):
  		if self.startRoot is None:
-@@ -1006,6 +1036,9 @@
+@@ -1152,6 +1183,9 @@
  					end_ref = None
  				nameStr = self.getServiceName(base_ref)
  				titleStr += ' - ' + nameStr
@@ -5103,7 +6007,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  				if end_ref is not None:
  					if Len > 2:
  						titleStr += '/../'
-@@ -1013,7 +1046,13 @@
+@@ -1159,7 +1193,13 @@
  						titleStr += '/'
  					nameStr = self.getServiceName(end_ref)
  					titleStr += nameStr
@@ -5117,16 +6021,19 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  
  	def moveUp(self):
  		self.servicelist.moveUp()
-@@ -1979,6 +2018,9 @@
+@@ -2167,6 +2207,11 @@
  
  	def layoutFinished(self):
  		self.setModeTv()
++
 +#+++>
 +		self["title"].setText(self.title)
 +#+++<
- 
- 	def BouquetNumberActions(self, number):
- 		pass
++
+ 		if self.currentBouquet:
+ 			ref = Screens.InfoBar.InfoBar.instance.servicelist.getRoot()
+ 			if ref:
+
 diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/InfoBarGenerics.py enigma2-nightly/lib/python/Screens/InfoBarGenerics.py
 --- enigma2-nightly.org/lib/python/Screens/InfoBarGenerics.py	2014-06-21 13:05:24.143088681 +0200
 +++ enigma2-nightly/lib/python/Screens/InfoBarGenerics.py	2014-06-21 13:05:30.091088431 +0200
@@ -5134,12 +6041,12 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  from Components.PluginComponent import plugins
  from Components.ServiceEventTracker import ServiceEventTracker
  from Components.Sources.Boolean import Boolean
--from Components.config import config, ConfigBoolean, ConfigClock
+-from Components.config import config, ConfigBoolean, ConfigClock, ConfigText
 +from Components.config import config, ConfigBoolean, ConfigClock, ConfigSubsection, ConfigYesNo, ConfigText
  from Components.SystemInfo import SystemInfo
  from Components.UsageConfig import preferredInstantRecordPath, defaultMoviePath, ConfigSelection
- from Components.Sources.StaticText import StaticText
-@@ -36,6 +36,7 @@
+ from Components.VolumeControl import VolumeControl
+@@ -37,6 +37,7 @@
  
  from Tools import Notifications, ASCIItranslit
  from Tools.Directories import fileExists, getRecordingFilename, moveFiles
@@ -5147,7 +6054,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  
  from enigma import eTimer, eServiceCenter, eDVBServicePMTHandler, iServiceInformation, \
  	iPlayableService, eServiceReference, eEPGCache, eActionMap
-@@ -106,7 +107,7 @@
+@@ -107,7 +108,7 @@
  	global resumePointCache, resumePointCacheLast
  	import cPickle
  	try:
@@ -5156,7 +6063,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  		cPickle.dump(resumePointCache, f, cPickle.HIGHEST_PROTOCOL)
  	except Exception, ex:
  		print "[InfoBar] Failed to write resumepoints:", ex
-@@ -115,7 +116,7 @@
+@@ -116,7 +117,7 @@
  def loadResumePoints():
  	import cPickle
  	try:
@@ -5165,7 +6072,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  	except Exception, ex:
  		print "[InfoBar] Failed to load resumepoints:", ex
  		return {}
-@@ -223,6 +224,7 @@
+@@ -224,6 +225,7 @@
  	STATE_HIDING = 1
  	STATE_SHOWING = 2
  	STATE_SHOWN = 3
@@ -5173,9 +6080,9 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  
  	def __init__(self):
  		self["ShowHideActions"] = ActionMap( ["InfobarShowHideActions"] ,
-@@ -318,6 +320,12 @@
- 		if self.__state == self.STATE_SHOWN:
- 			self.hide()
+@@ -327,6 +329,12 @@
+ 		else:
+ 			self.toggleShow()
  
 +	def epg(self):
 +		self.__state = self.STATE_EPG
@@ -5186,7 +6093,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  	def toggleShow(self):
  		if self.__state == self.STATE_HIDDEN:
  			self.show()
-@@ -328,7 +336,9 @@
+@@ -337,7 +345,9 @@
  		elif self.secondInfoBarScreen and config.usage.show_second_infobar.value and not self.secondInfoBarScreen.shown:
  			self.secondInfoBarScreen.show()
  			self.startHideTimer()
@@ -5197,7 +6104,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  			self.hide()
  			self.hideTimer.stop()
  
-@@ -1886,7 +1896,7 @@
+@@ -1893,7 +1903,7 @@
  
  	def updateExtensions(self):
  		self.extensionsList = []
@@ -5206,7 +6113,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  		self.extensionKeys = {}
  		for x in self.list:
  			if x[0] == self.EXTENSION_SINGLE:
-@@ -2416,16 +2426,16 @@
+@@ -2442,16 +2452,16 @@
  				idx += 1
  
  			if self.bouquets and len(self.bouquets):
@@ -5230,7 +6137,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  
  			self.session.openWithCallback(self.subserviceSelected, ChoiceBox, title=_("Please select a sub service..."), list = tlist, selection = selection, keys = keys, skin_name = "SubserviceSelection")
  
-@@ -3012,6 +3022,143 @@
+@@ -3038,6 +3048,143 @@
  				if hasattr(self, "dishDialog") and not self.dishDialog.dishState():
  					Notifications.AddPopup(text = error, type = MessageBox.TYPE_ERROR, timeout = 5, id = "ZapError")
  
@@ -5393,19 +6300,19 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  	InfoBarSubtitleSupport, InfoBarPiP, InfoBarPlugins, InfoBarServiceErrorPopupSupport, InfoBarJobman, InfoBarPowersaver, \
 -	InfoBarHDMI, setResumePoint, delResumePoint
 +	InfoBarHDMI, InfoBarAspectSelection, InfoBarSleepTimer, setResumePoint, delResumePoint
+ from Screens.Hotkey import InfoBarHotkey
  
  profile("LOAD:InitBar_Components")
- from Components.ActionMap import HelpableActionMap
-@@ -37,7 +40,7 @@
+@@ -38,7 +41,7 @@
  	InfoBarSubserviceSelection, InfoBarTimeshift, InfoBarSeek, InfoBarCueSheetSupport,
  	InfoBarSummarySupport, InfoBarTimeshiftState, InfoBarTeletextPlugin, InfoBarExtensions,
  	InfoBarPiP, InfoBarPlugins, InfoBarSubtitleSupport, InfoBarServiceErrorPopupSupport, InfoBarJobman, InfoBarPowersaver,
--	InfoBarHDMI, Screen):
-+	InfoBarHDMI, InfoBarAspectSelection, InfoBarSleepTimer, Screen):
+-	InfoBarHDMI, InfoBarHotkey, Screen):
++	InfoBarHDMI, InfoBarHotkey, InfoBarAspectSelection, InfoBarSleepTimer, Screen):
  
  	ALLOW_SUSPEND = True
  	instance = None
-@@ -49,6 +52,11 @@
+@@ -50,6 +53,11 @@
  				"showMovies": (self.showMovies, _("Play recorded movies...")),
  				"showRadio": (self.showRadio, _("Show the radio player...")),
  				"showTv": (self.showTv, _("Show the tv player...")),
@@ -5417,16 +6324,16 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  			}, prio=2)
  
  		self.allowPiP = True
-@@ -60,7 +68,7 @@
+@@ -61,7 +69,7 @@
  				InfoBarAdditionalInfo, InfoBarNotifications, InfoBarDish, InfoBarSubserviceSelection, \
  				InfoBarTimeshift, InfoBarSeek, InfoBarCueSheetSupport, InfoBarSummarySupport, InfoBarTimeshiftState, \
  				InfoBarTeletextPlugin, InfoBarExtensions, InfoBarPiP, InfoBarSubtitleSupport, InfoBarJobman, InfoBarPowersaver, \
--				InfoBarPlugins, InfoBarServiceErrorPopupSupport, InfoBarHDMI:
-+				InfoBarAspectSelection, InfoBarSleepTimer, InfoBarPlugins, InfoBarServiceErrorPopupSupport, InfoBarHDMI:
+-				InfoBarPlugins, InfoBarServiceErrorPopupSupport, InfoBarHotkey, InfoBarHDMI:
++				InfoBarAspectSelection, InfoBarSleepTimer,InfoBarPlugins, InfoBarServiceErrorPopupSupport, InfoBarHotkey, InfoBarHDMI:
  			x.__init__(self)
  
  		self.helpList.append((self["actions"], "InfobarActions", [("showMovies", _("Watch recordings..."))]))
-@@ -75,6 +83,88 @@
+@@ -76,6 +84,88 @@
  		assert InfoBar.instance is None, "class InfoBar is a singleton class and just one instance of this class is allowed!"
  		InfoBar.instance = self
  
@@ -5515,7 +6422,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  	def __onClose(self):
  		InfoBar.instance = None
  
-@@ -93,6 +183,22 @@
+@@ -94,6 +184,22 @@
  		self.__serviceStarted(True)
  		self.onExecBegin.remove(self.__checkServiceStarted)
  
@@ -5538,7 +6445,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  	def serviceStarted(self):  #override from InfoBarShowHide
  		new = self.servicelist.newServicePlayed()
  		if self.execing:
-@@ -116,6 +222,19 @@
+@@ -117,6 +223,19 @@
  			from Screens.ChannelSelection import ChannelSelectionRadio
  			self.session.openWithCallback(self.ChannelSelectionRadioClosed, ChannelSelectionRadio, self)
  
@@ -5557,16 +6464,16 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
 +
  	def ChannelSelectionRadioClosed(self, *arg):
  		self.rds_display.show()  # in InfoBarRdsDecoder
- 
-@@ -135,6 +254,7 @@
+ 		self.servicelist.correctChannelNumber()
+@@ -137,6 +256,7 @@
  class MoviePlayer(InfoBarBase, InfoBarShowHide, InfoBarMenu, InfoBarSeek, InfoBarShowMovies, InfoBarInstantRecord,
  		InfoBarAudioSelection, HelpableScreen, InfoBarNotifications, InfoBarServiceNotifications, InfoBarPVRState,
  		InfoBarCueSheetSupport, InfoBarMoviePlayerSummarySupport, InfoBarSubtitleSupport, Screen, InfoBarTeletextPlugin,
 +		InfoBarAspectSelection, InfoBarSubserviceSelection,
- 		InfoBarServiceErrorPopupSupport, InfoBarExtensions, InfoBarPlugins, InfoBarPiP, InfoBarHDMI):
+ 		InfoBarServiceErrorPopupSupport, InfoBarExtensions, InfoBarPlugins, InfoBarPiP, InfoBarHDMI, InfoBarHotkey):
  
  	ENABLE_RESUME_SUPPORT = True
-@@ -143,6 +263,8 @@
+@@ -145,6 +265,8 @@
  	def __init__(self, session, service, slist=None, lastservice=None, infobar=None):
  		Screen.__init__(self, session)
  
@@ -5575,7 +6482,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  		self["actions"] = HelpableActionMap(self, "MoviePlayerActions",
  			{
  				"InfoButtonPressed": (self.openEventView, _("open Info...")),
-@@ -292,11 +414,21 @@
+@@ -294,11 +416,21 @@
  					return
  
  		if answer in ("quit", "quitanddeleteconfirmed"):
@@ -5597,10 +6504,12 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  			self.session.nav.stopService()
  			if not config.movielist.stop_service.value:
  				self.session.nav.playService(self.lastservice)
-@@ -515,3 +647,7 @@
+@@ -516,4 +648,8 @@
+ 		Notifications.AddPopup(text = _("%s/%s: %s") % (index, n, self.ref2HumanName(ref)), type = MessageBox.TYPE_INFO, timeout = 5)
  
  	def ref2HumanName(self, ref):
- 		return enigma.eServiceCenter.getInstance().info(ref).getName(ref)		
+-		return enigma.eServiceCenter.getInstance().info(ref).getName(ref)		
++		return enigma.eServiceCenter.getInstance().info(ref).getName(ref)
 +
 +	def sleepTimer(self):
 +		from Screens.SleepTimerEdit import SleepTimerEdit
@@ -5608,10 +6517,10 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
 diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/ScanSetup.py enigma2-nightly/lib/python/Screens/ScanSetup.py
 --- enigma2-nightly.org/lib/python/Screens/ScanSetup.py	2014-06-21 13:05:24.143088681 +0200
 +++ enigma2-nightly/lib/python/Screens/ScanSetup.py	2014-06-21 13:05:30.091088431 +0200
-@@ -741,7 +741,7 @@
+@@ -740,7 +740,7 @@
  			self.scan_type = ConfigSelection(default = defaultSatSearchType, choices = [("single_transponder", _("User defined transponder")), ("predefined_transponder", _("Predefined transponder")), ("single_satellite", _("Single satellite")), ("multisat", _("Multisat")), ("multisat_yes", _("Multisat all select"))])
- 			self.scan_typecable = ConfigSelection(default = "single_transponder", choices = [("single_transponder", _("Single transponder")), ("complete", _("Complete"))])
- 			self.scan_typeterrestrial = ConfigSelection(default = "single_transponder", choices = [("single_transponder", _("User defined transponder")), ("predefined_transponder", _("Predefined transponder")), ("complete", _("Complete"))])
+ 			self.scan_typecable = ConfigSelection(default = "single_transponder", choices = [("single_transponder", _("User defined transponder")), ("complete", _("Complete"))])
+ 			self.scan_typeterrestrial = ConfigSelection(default = defaultTerrSearchType, choices = [("single_transponder", _("User defined transponder")), ("predefined_transponder", _("Predefined transponder")), ("complete", _("Complete"))])
 -			self.scan_input_as = ConfigSelection(default = "channel", choices = [("frequency", _("Frequency")), ("channel", _("Channel"))])
 +			self.scan_input_as = ConfigSelection(default = "frequency", choices = [("frequency", _("Frequency")), ("channel", _("Channel"))])
  			self.scan_clearallservices = ConfigSelection(default = "no", choices = [("no", _("no")), ("yes", _("yes")), ("yes_hold_feeds", _("yes (keep feeds)"))])
@@ -5620,7 +6529,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
 diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/Standby.py enigma2-nightly/lib/python/Screens/Standby.py
 --- enigma2-nightly.org/lib/python/Screens/Standby.py	2014-06-21 13:05:24.143088681 +0200
 +++ enigma2-nightly/lib/python/Screens/Standby.py	2014-06-21 13:05:30.091088431 +0200
-@@ -14,6 +14,9 @@
+@@ -15,6 +15,9 @@
  class Standby(Screen):
  	def Power(self):
  		print "leave standby"
@@ -5630,7 +6539,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  		#set input to encoder
  		self.avswitch.setInput("ENCODER")
  		#restart last played service
-@@ -79,6 +82,9 @@
+@@ -86,6 +89,9 @@
  			self.avswitch.setInput("SCART")
  		else:
  			self.avswitch.setInput("AUX")
@@ -5640,6 +6549,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/
  
  		gotoShutdownTime = int(config.usage.standby_to_shutdown_timer.value)
  		if gotoShutdownTime:
+
 diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Screens/Wizard.py enigma2-nightly/lib/python/Screens/Wizard.py
 --- enigma2-nightly.org/lib/python/Screens/Wizard.py	2014-06-13 21:45:21.816535788 +0200
 +++ enigma2-nightly/lib/python/Screens/Wizard.py	2014-06-21 13:05:30.095088431 +0200
@@ -5738,7 +6648,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Tools/Ma
 diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/listboxservice.cpp enigma2-nightly/lib/service/listboxservice.cpp
 --- enigma2-nightly.org/lib/service/listboxservice.cpp	2014-06-16 15:29:24.267942989 +0200
 +++ enigma2-nightly/lib/service/listboxservice.cpp	2014-06-21 13:05:30.095088431 +0200
-@@ -143,14 +143,14 @@
+@@ -150,14 +150,14 @@
  	{
  		--i;
  		--index;
@@ -5755,7 +6665,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/listbox
  			break;
  	}
  	return cursorResolve(index);
-@@ -166,7 +166,7 @@
+@@ -173,7 +173,7 @@
  	{
  		++i;
  		++index;
@@ -5805,7 +6715,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/Makefil
 diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/servicedvb.cpp enigma2-nightly/lib/service/servicedvb.cpp
 --- enigma2-nightly.org/lib/service/servicedvb.cpp	2014-06-13 21:45:21.820535788 +0200
 +++ enigma2-nightly/lib/service/servicedvb.cpp	2014-06-21 13:05:30.095088431 +0200
-@@ -625,6 +625,9 @@
+@@ -641,6 +641,9 @@
  	if (sc)
  	{
  		std::list<std::string> extensions;
@@ -7482,7 +8392,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  	m_sourceinfo.is_video = FALSE;
  	m_sourceinfo.audiotype = atUnknown;
  	if ( (strcasecmp(ext, ".mpeg") && strcasecmp(ext, ".mpg") && strcasecmp(ext, ".vob") && strcasecmp(ext, ".bin") && strcasecmp(ext, ".dat") ) == 0 )
-@@ -592,10 +635,178 @@
+@@ -592,10 +635,182 @@
  		eDebug("eServiceMP3::sorry, can't play: %s",m_errorInfo.error_message.c_str());
  	}
  	g_free(uri);
@@ -7521,7 +8431,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
 +	}
 +
 +	//create playback path
-+	char file[800] = {""};
++	char file[1023] = {""};
 +
 +	if (!strncmp("http://", m_ref.path.c_str(), 7))
 +		;
@@ -7544,6 +8454,10 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
 +	else if (!strncmp("mms://", m_ref.path.c_str(), 6))
 +		;
 +	else if (!strncmp("file://", m_ref.path.c_str(), 7))
++		;
++	else if (!strncmp("udp://", m_ref.path.c_str(), 6))
++		;
++	else if (!strncmp("bluray://", m_ref.path.c_str(), 9))
 +		;
 +	else
 +		strcat(file, "file://");
@@ -7661,7 +8575,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  	// disconnect subtitle callback
  	GstElement *subsink = gst_bin_get_by_name(GST_BIN(m_gst_playbin), "subtitle_sink");
  
-@@ -604,10 +815,12 @@
+@@ -604,10 +819,12 @@
  		g_signal_handler_disconnect (subsink, m_subs_to_pull_handler_id);
  		gst_object_unref(subsink);
  	}
@@ -7674,7 +8588,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  	if (m_gst_playbin)
  	{
  		// disconnect sync handler callback
-@@ -619,10 +832,12 @@
+@@ -619,10 +836,12 @@
  #endif
  		gst_object_unref(bus);
  	}
@@ -7687,7 +8601,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  	if (m_stream_tags)
  		gst_tag_list_free(m_stream_tags);
  
-@@ -641,6 +856,7 @@
+@@ -641,6 +860,7 @@
  		gst_object_unref (GST_OBJECT (m_gst_playbin));
  		eDebug("eServiceMP3::destruct!");
  	}
@@ -7695,7 +8609,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  }
  
  void eServiceMP3::updateEpgCacheNowNext()
-@@ -690,25 +906,47 @@
+@@ -690,25 +910,47 @@
  
  DEFINE_REF(eServiceMP3);
  
@@ -7743,7 +8657,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  
  	m_event(this, evStart);
  
-@@ -723,13 +961,45 @@
+@@ -723,13 +965,45 @@
  
  RESULT eServiceMP3::stop()
  {
@@ -7789,7 +8703,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  	m_state = stStopped;
  	m_nownext_timer->stop();
  
-@@ -747,37 +1017,119 @@
+@@ -747,37 +1021,119 @@
  	return 0;
  }
  
@@ -7909,7 +8823,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  
  	return 0;
  }
-@@ -791,6 +1143,7 @@
+@@ -791,6 +1147,7 @@
  
  RESULT eServiceMP3::getLength(pts_t &pts)
  {
@@ -7917,7 +8831,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  	if (!m_gst_playbin)
  		return -1;
  
-@@ -808,11 +1161,23 @@
+@@ -808,11 +1165,23 @@
  		/* len is in nanoseconds. we have 90 000 pts per second. */
  
  	pts = len / 11111LL;
@@ -7941,7 +8855,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  		/* convert pts to nanoseconds */
  	gint64 time_nanoseconds = to * 11111LL;
  	if (!gst_element_seek (m_gst_playbin, m_currentTrickRatio, GST_FORMAT_TIME, (GstSeekFlags)(GST_SEEK_FLAG_FLUSH | GST_SEEK_FLAG_KEY_UNIT),
-@@ -822,6 +1187,7 @@
+@@ -822,6 +1191,7 @@
  		eDebug("eServiceMP3::seekTo failed");
  		return -1;
  	}
@@ -7949,7 +8863,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  
  	return 0;
  }
-@@ -830,17 +1196,25 @@
+@@ -830,17 +1200,25 @@
  {
  	RESULT ret = -1;
  
@@ -7975,7 +8889,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  RESULT eServiceMP3::trickSeek(gdouble ratio)
  {
  	if (!m_gst_playbin)
-@@ -881,28 +1255,41 @@
+@@ -881,28 +1259,41 @@
  	m_decoder_time_valid_state = 0;
  	return 0;
  }
@@ -8018,7 +8932,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  	gint64 pos;
  	pts = 0;
  
-@@ -932,6 +1319,27 @@
+@@ -932,6 +1323,27 @@
  
  	/* pos is in nanoseconds. we have 90 000 pts per second. */
  	pts = pos / 11111LL;
@@ -8046,7 +8960,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  	return 0;
  }
  
-@@ -943,6 +1351,7 @@
+@@ -943,6 +1355,7 @@
  
  RESULT eServiceMP3::isCurrentlySeekable()
  {
@@ -8054,7 +8968,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  	int ret = 3; /* just assume that seeking and fast/slow winding are possible */
  
  	if (!m_gst_playbin)
-@@ -951,6 +1360,9 @@
+@@ -951,6 +1364,9 @@
  		return 0;
  
  	return ret;
@@ -8064,7 +8978,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  }
  
  RESULT eServiceMP3::info(ePtr<iServiceInformation>&i)
-@@ -984,7 +1396,9 @@
+@@ -984,7 +1400,9 @@
  
  int eServiceMP3::getInfo(int w)
  {
@@ -8074,7 +8988,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  
  	switch (w)
  	{
-@@ -1024,7 +1438,9 @@
+@@ -1024,7 +1442,9 @@
  	case sTagKeywords:
  	case sTagChannelMode:
  	case sUser+12:
@@ -8084,7 +8998,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  	case sTagTrackGain:
  	case sTagTrackPeak:
  	case sTagAlbumGain:
-@@ -1035,6 +1451,7 @@
+@@ -1035,6 +1455,7 @@
  	case sTagPreviewImage:
  	case sTagAttachment:
  		return resIsPyObject;
@@ -8092,7 +9006,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  	case sTagTrackNumber:
  		tag = GST_TAG_TRACK_NUMBER;
  		break;
-@@ -1068,16 +1485,19 @@
+@@ -1068,16 +1489,19 @@
  	case sTagCRC:
  		tag = "has-crc";
  		break;
@@ -8112,7 +9026,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  
  	return 0;
  }
-@@ -1102,6 +1522,7 @@
+@@ -1102,6 +1526,7 @@
  		}
  	}
  
@@ -8120,7 +9034,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  	if ( !m_stream_tags && w < sUser && w > 26 )
  		return "";
  	const gchar *tag = 0;
-@@ -1214,9 +1635,69 @@
+@@ -1214,9 +1639,69 @@
  		g_free(value);
  		return res;
  	}
@@ -8190,7 +9104,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  ePtr<iServiceInfoContainer> eServiceMP3::getInfoObject(int w)
  {
  	eServiceMP3InfoContainer *container = new eServiceMP3InfoContainer;
-@@ -1280,6 +1761,7 @@
+@@ -1280,6 +1765,7 @@
  	}
  	return retval;
  }
@@ -8198,7 +9112,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  
  RESULT eServiceMP3::audioChannel(ePtr<iAudioChannelSelection> &ptr)
  {
-@@ -1312,13 +1794,16 @@
+@@ -1312,13 +1798,16 @@
  
  int eServiceMP3::getCurrentTrack()
  {
@@ -8215,7 +9129,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  	bool validposition = false;
  	pts_t ppos = 0;
  	if (getPlayPosition(ppos) >= 0)
-@@ -1328,8 +1813,10 @@
+@@ -1328,8 +1817,10 @@
  		if (ppos < 0)
  			ppos = 0;
  	}
@@ -8226,7 +9140,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  	if (!ret)
  	{
  		if (validposition)
-@@ -1338,12 +1825,14 @@
+@@ -1338,12 +1829,14 @@
  			seekTo(ppos);
  		}
  	}
@@ -8241,7 +9155,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  	int current_audio;
  	g_object_set (G_OBJECT (m_gst_playbin), "current-audio", i, NULL);
  	g_object_get (G_OBJECT (m_gst_playbin), "current-audio", &current_audio, NULL);
-@@ -1354,6 +1843,16 @@
+@@ -1354,6 +1847,16 @@
  		return 0;
  	}
  	return -1;
@@ -8258,7 +9172,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  }
  
  int eServiceMP3::getCurrentChannel()
-@@ -1371,6 +1870,7 @@
+@@ -1371,6 +1874,7 @@
  {
   	if (i >= m_audioStreams.size())
  		return -2;
@@ -8266,7 +9180,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  		info.m_description = m_audioStreams[i].codec;
  /*	if (m_audioStreams[i].type == atMPEG)
  		info.m_description = "MPEG";
-@@ -1390,11 +1890,28 @@
+@@ -1390,11 +1894,28 @@
  		info.m_description = "FLAC";
  	else
  		info.m_description = "???";*/
@@ -8295,7 +9209,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  subtype_t getSubtitleType(GstPad* pad, gchar *g_codec=NULL)
  {
  	subtype_t type = stUnknown;
-@@ -2122,9 +2639,11 @@
+@@ -2122,9 +2643,11 @@
  		}
  	}
  }
@@ -8307,7 +9221,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  void eServiceMP3::gstCBsubtitleAvail(GstElement *subsink, GstBuffer *buffer, gpointer user_data)
  {
  	eServiceMP3 *_this = (eServiceMP3*)user_data;
-@@ -2242,9 +2761,30 @@
+@@ -2245,9 +2768,30 @@
  		}
  	}
  }
@@ -8338,7 +9252,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  	pts_t running_pts = 0;
  	int32_t next_timer = 0, decoder_ms, start_ms, end_ms, diff_start_ms, diff_end_ms;
  	subtitle_pages_map_t::iterator current;
-@@ -2347,23 +2887,30 @@
+@@ -2350,23 +2894,30 @@
  	m_subtitle_sync_timer->start(next_timer, true);
  
  	eDebug("\n\n");
@@ -8370,7 +9284,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  		eDebug ("eServiceMP3::switched to subtitle stream %i", m_currentSubtitleStream);
  
  #ifdef GSTREAMER_SUBTITLE_SYNC_MODE_BUG
-@@ -2373,7 +2920,13 @@
+@@ -2376,7 +2927,13 @@
  		 */
  		seekRelative(-1, 90000);
  #endif
@@ -8384,7 +9298,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  
  	return 0;
  }
-@@ -2381,15 +2934,23 @@
+@@ -2384,15 +2941,23 @@
  RESULT eServiceMP3::disableSubtitles()
  {
  	eDebug("eServiceMP3::disableSubtitles");
@@ -8408,7 +9322,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  	return 0;
  }
  
-@@ -2456,7 +3017,9 @@
+@@ -2459,7 +3024,9 @@
  int eServiceMP3::setBufferSize(int size)
  {
  	m_buffer_size = size;
@@ -8418,7 +9332,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  	return 0;
  }
  
-@@ -2472,6 +3035,7 @@
+@@ -2475,6 +3042,7 @@
  
  void eServiceMP3::setAC3Delay(int delay)
  {
@@ -8426,7 +9340,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  	ac3_delay = delay;
  	if (!m_gst_playbin || m_state != stRunning)
  		return;
-@@ -2499,10 +3063,12 @@
+@@ -2502,10 +3070,12 @@
  			eTSMPEGDecoder::setHwAC3Delay(config_delay_int);
  		}
  	}
@@ -8439,7 +9353,7 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/service/service
  	pcm_delay = delay;
  	if (!m_gst_playbin || m_state != stRunning)
  		return;
-@@ -2530,4 +3096,5 @@
+@@ -2533,4 +3103,5 @@
  			eTSMPEGDecoder::setHwPCMDelay(config_delay_int);
  		}
  	}
