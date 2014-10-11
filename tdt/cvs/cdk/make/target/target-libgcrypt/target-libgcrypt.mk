@@ -44,7 +44,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 call[[ ipk ]]
 
 DESCRIPTION_${P} = This is a general purpose cryptographic library based on the code from GnuPG.
-RDEPENDS_${P} = libc6 libgpg_error
+RDEPENDS_${P} = libc6 libgpg_error libcap2
 define postinst_${P}
 #!/bin/sh
 $$OPKG_OFFLINE_ROOT/sbin/ldconfig
