@@ -25,3 +25,7 @@ call[[ header ]]
 package[[ target_gst_plugin_subsink
 call[[ header ]]
 ]]package
+
+package[[ target_gst_plugins_fluendo_mpegdemux
+call[[ header ]]
+]]package

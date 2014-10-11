@@ -3,7 +3,7 @@
 #
 package[[ target_gst_plugins_dvbmediasink
 
-BDEPENDS_${P} = $(target_glibc) $(target_gcc_lib) $(target_driver) $(target_gstreamer) $(target_gst_plugins_base) $(target_gst_plugins_good) $(target_gst_plugins_bad) $(target_gst_plugins_ugly) $(target_gst_plugin_subsink)
+BDEPENDS_${P} = $(target_glibc) $(target_gcc_lib) $(target_driver) $(target_gstreamer) $(target_gst_plugins_fluendo_mpegdemux) $(target_gst_plugins_base) $(target_gst_plugins_good) $(target_gst_plugins_bad) $(target_gst_plugins_ugly) $(target_gst_plugin_subsink)
 
 PV_${P} = git
 PR_${P} = 1
