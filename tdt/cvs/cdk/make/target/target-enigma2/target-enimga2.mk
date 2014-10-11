@@ -79,7 +79,7 @@ endif
 ifdef CONFIG_EPLAYER3
 BDEPENDS_${P} += $(target_libeplayer3)
 CONFIG_FLAGS_${P} += --enable-libeplayer3 LIBEPLAYER3_CPPFLAGS="-I$(appsdir)/misc/tools/libeplayer3/include"
-RDEPENDS_enigma2 = libeplayer3
+RDEPENDS_enigma2 += libeplayer3
 endif
 
 # box type
@@ -96,9 +96,10 @@ CONFIG_FLAGS_${P} += --enable-hl101
 keymap_${P} = keymap_hl101.xml
 endif
 
-# ???? lcd
-ifdef CONFIG_EXTERNALLCD
+ifdef CONFIG_EXTERNAL_LCD
+BDEPENDS_${P} += $(target_graphlcd)
 CONFIG_FLAGS_${P} += --with-graphlcd
+RDEPENDS_enigma2 = libgraphlcd
 endif
 
 call[[ base ]]

@@ -187,6 +187,11 @@ menu "GUI Configuration"
 		config OSCAM
 		bool  "enigma2-plugin-cams-oscam"
 		depends on ENIGMA2_PLUGINS
+
+		config EXTERNAL_LCD
+		bool  "External USB GraphLCD "
+		depends on ENIGMA2_PLUGINS
+
 	endif
 
 	config BUILD_NEUTRINO
