@@ -180,6 +180,10 @@ menu "GUI Configuration"
 		bool "enigma2-plugin-skin-megamod"
 		depends on ENIGMA2_PLUGINS
 
+		config ENIGMA2_SKIN_MAGIC
+		bool "enigma2-plugin-skin-magic"
+		depends on ENIGMA2_PLUGINS
+
 		config ENIGMA2_EXTENSION_ALTSOFTCAM
 		bool "enigma2-plugin-extensions-alternativesoftcammanager"
 		depends on ENIGMA2_PLUGINS
