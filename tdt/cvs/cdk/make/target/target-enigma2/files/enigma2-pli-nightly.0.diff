@@ -4302,21 +4302,32 @@ diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/gdi/stmfb.cpp e
 +{
 +//	printf("unimplemented bcm_accel_fill\n");
 +}
-diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/Makefile.am enigma2-nightly/lib/Makefile.am
---- enigma2-nightly.org/lib/Makefile.am	2014-06-13 21:45:21.736535791 +0200
-+++ enigma2-nightly/lib/Makefile.am	2014-06-21 13:05:30.087088431 +0200
-@@ -7,6 +7,11 @@
+diff --git a/lib/Makefile.am b/lib/Makefile.am
+index 597bd99..f9d4528 100644
+--- a/lib/Makefile.am
++++ b/lib/Makefile.am
+@@ -7,6 +7,12 @@
  	-include Python.h \
  	-include $(top_builddir)/enigma2_config.h
  
 +if ENABLE_LIBEPLAYER3
 +AM_CPPFLAGS += \
-+	-I$(top_srcdir)/../../apps/tools/libeplayer3/include
++       -I$(top_srcdir)/../misc/tools/libeplayer3/include
 +endif
++
 +
  # initialize these, to be filled with targets in the included files
  noinst_LIBRARIES=
  BUILT_SOURCES=
+@@ -19,6 +25,7 @@
+ include actions/Makefile.inc
+ include base/Makefile.inc
+ include components/Makefile.inc
++include dvb/lowlevel/Makefile.inc
+ include dvb/Makefile.inc
+ include dvb_ci/Makefile.inc
+ include gdi/Makefile.inc
+
 diff -Naur '--exclude-from=diff-exclude' enigma2-nightly.org/lib/python/Components/Converter/RemainingToText.py enigma2-nightly/lib/python/Components/Converter/RemainingToText.py
 --- enigma2-nightly.org/lib/python/Components/Converter/RemainingToText.py	2014-06-13 21:45:21.756535791 +0200
 +++ enigma2-nightly/lib/python/Components/Converter/RemainingToText.py	2014-06-21 13:05:30.087088431 +0200
