@@ -30,7 +30,7 @@
  
 --- a/mytube/src/ui.py	2013-09-28 16:25:39.464362524 +0300
 +++ b/mytube/src/ui.py	2013-10-18 18:30:18.763658799 +0300
-@@ -15,7 +15,7 @@
+@@ -17,7 +17,7 @@
  from Components.config import config, ConfigSelection, ConfigSubsection, ConfigText, ConfigYesNo, getConfigListEntry, ConfigPassword
  #, ConfigIP, ConfigNumber, ConfigLocations
  from MyTubeSearch import ConfigTextWithGoogleSuggestions, MyTubeSettingsScreen, MyTubeTasksScreen, MyTubeHistoryScreen
@@ -39,7 +39,7 @@
  from Screens.ChoiceBox import ChoiceBox
  from Screens.InfoBarGenerics import InfoBarNotifications, InfoBarSeek
  from Screens.MessageBox import MessageBox
-@@ -96,6 +96,7 @@
+@@ -98,6 +98,7 @@
  				 ("il", _("Israel")),
  				 ("it", _("Italy")),
  				 ("jp", _("Japan")),
@@ -47,7 +47,7 @@
  				 ("mx", _("Mexico")),
  				 ("nz", _("New Zealand")),
  				 ("pl", _("Poland")),
-@@ -397,47 +398,10 @@
+@@ -399,47 +400,10 @@
  		current = self["config"].getCurrent()
  		if current[1].help_window.instance is not None:
  			current[1].help_window.instance.hide()
@@ -95,7 +95,7 @@
  
  	def TimerFire(self):
  		self.Timer.stop()
-@@ -481,18 +445,7 @@
+@@ -483,18 +447,7 @@
  			self.statuslist = []
  			self.hideSuggestions()
  			result = None
