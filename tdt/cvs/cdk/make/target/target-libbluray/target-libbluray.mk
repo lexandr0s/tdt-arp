@@ -43,7 +43,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 call[[ ipk ]]
 
 DESCRIPTION_${P} = libbluray is an open-source library designed for Blu-Ray Discs playback for media players
-RDEPENDS_${P} = libdvdread4 libdvdnav4 libc6
+RDEPENDS_${P} = libdvdread4 libdvdnav4 libc6 libaacs
 FILES_${P} = /usr/lib/*.so*
 define postinst_${P}
 #!/bin/sh
