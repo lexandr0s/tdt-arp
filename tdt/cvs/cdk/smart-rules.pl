@@ -180,7 +180,8 @@ sub process_block ($)
   my $out;
 
   $out = process_depends($_);
-  output("DEPENDS_$P += $out \n") if $out;
+  # Oder-only dependencies. Don't check file timestamp, only check if it exists.
+  output("$target.do_prepare: | $out \n") if $out;
   $out = process_prepare($_);
   output("PREPARE_$P += $out \n") if $out;
   $out = process_sources($_);
@@ -292,8 +293,7 @@ sub process_rule($) {
 
 sub process_depends ($)
 {
-  my $output = "";
-
+    my $output = "";
     my ($p, $f) = process_rule($_);
     return if ( $p eq "none" || $p eq "localwork");
 
@@ -305,8 +305,7 @@ sub process_depends ($)
     {
       die "can't recognize protocol " . $p;
     }
-
-  return $output;
+    return $output;
 }
 
 sub process_begin ()
