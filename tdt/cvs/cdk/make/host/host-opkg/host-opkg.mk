@@ -3,7 +3,7 @@
 #
 package[[ host_opkg
 
-BDEPENDS_${P} = $(host_filesystem) $(host_make)
+BDEPENDS_${P} = $(host_filesystem)
 
 PV_${P} = 0.2.0
 PR_${P} = 1

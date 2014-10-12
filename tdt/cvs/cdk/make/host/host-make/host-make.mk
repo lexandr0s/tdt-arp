@@ -3,6 +3,8 @@
 #
 package[[ host_make
 
+BDEPENDS_${P} = $(host_opkg_meta)
+
 PV_${P} = 3.82
 PR_${P} = 1
 
