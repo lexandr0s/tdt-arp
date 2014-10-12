@@ -2,7 +2,6 @@
 *.pyo
 .config
 .config.old
-.deps/
 localmacros
 !Makefile.in
 Makefile
