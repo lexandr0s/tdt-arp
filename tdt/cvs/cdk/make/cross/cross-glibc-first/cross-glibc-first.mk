@@ -19,7 +19,7 @@ call[[ base ]]
 call[[ base_rpm ]]
 call[[ ipk ]]
 
-#call[[ rpm ]]
+#call[[ rpm_do_compile ]]
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(rpm_src_install) $(${P}_SRCRPM)
@@ -43,6 +43,6 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 # 	opkg $(target_ipkg_args) install $(IPK_${P})
 # 	touch $@
 
-call[[ rpm ]]
+call[[ rpm_do_package ]]
 
 ]]package

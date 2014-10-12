@@ -74,7 +74,7 @@ call[[ base ]]
 call[[ base_rpm ]]
 call[[ ipk ]]
 
-call[[ rpm ]]
+call[[ rpm_do_compile ]]
 
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile $(DEPENDS_${P})
 	$(PREPARE_${P})
