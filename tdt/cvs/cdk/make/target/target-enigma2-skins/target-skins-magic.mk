@@ -3,7 +3,7 @@
 #
 package[[ target_enigma2_skins_magic
 
-BDEPENDS_${P} = $(target_enigma2)
+BDEPENDS_${P} = $(target_filesystem)
 
 PV_${P} = git
 PR_${P} = 1
@@ -20,10 +20,9 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(PREPARE_${P})
 	touch $@
 
-
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_prepare
 	$(PKDIR_clean)
-	cd $(DIR_${P}) && cp -dpR $(DIR_${P})/usr  $(PKDIR)
+	cd $(DIR_${P}) && cp -a $(DIR_${P})/usr $(PKDIR)
 	touch $@
 
 call[[ ipk ]]

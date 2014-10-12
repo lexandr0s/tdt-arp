@@ -36,8 +36,7 @@ the most common attribute-related object protocols.
 LICENSE_${P} = Take the official web page
 HOMEPAGE_${P} = https://github.com/hynek/characteristic/
 RDEPENDS_${P} = python_core libc6
-FILES_${P} = \
-$(PYTHON_DIR)/site-packages/characteristic.p*
+FILES_${P} = $(PYTHON_DIR)/site-packages/characteristic.p*
 
 call[[ ipkbox ]]
 
