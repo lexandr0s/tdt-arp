@@ -153,6 +153,8 @@ KERNEL_RELEASE := $(subst ^0,,^$(KERNEL_LABEL))
 STLINUX := stlinux24
 #? TODO: STM_RELOCATE := /opt/STM/STLinux-2.4
 
+# save system default PATH
+HOST_PATH := $(PATH)
 # PATH is exported automatically
 PATH := $(crossprefix)/bin:$(hostprefix)/bin:$(PATH)
 ifdef ENABLE_CCACHE

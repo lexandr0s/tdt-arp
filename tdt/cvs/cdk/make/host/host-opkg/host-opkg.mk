@@ -3,7 +3,7 @@
 #
 package[[ host_opkg
 
-BDEPENDS_${P} = $(host_filesystem)
+BDEPENDS_${P} = $(host_filesystem) $(host_make)
 
 PV_${P} = 0.2.0
 PR_${P} = 1
@@ -21,6 +21,7 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 $(TARGET_${P}).do_install: $(TARGET_${P}).do_prepare
 	$(PREPARE_${P})
 	cd $(DIR_${P}) && \
+		export PATH=$(HOST_PATH) && \
 		./configure \
 			--prefix=$(hostprefix) \
 		&& \
