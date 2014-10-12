@@ -1,17 +1,16 @@
 #
-# OPKG-HOST
+# HOST MAKE
 #
-package[[ host_opkg
+package[[ host_make
 
-BDEPENDS_${P} = $(host_filesystem) $(host_make)
-
-PV_${P} = 0.2.0
+PV_${P} = 3.82
 PR_${P} = 1
 
 call[[ base ]]
 
 rule[[
-  extract:http://opkg.googlecode.com/files/${PN}-${PV}.tar.gz
+  extract:http://ftp.gnu.org/gnu/make/make-${PV}.tar.bz2
+  patch:file://make-3.82-upstream_fixes-3.patch
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
@@ -21,13 +20,11 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 $(TARGET_${P}).do_install: $(TARGET_${P}).do_prepare
 	$(PREPARE_${P})
 	cd $(DIR_${P}) && \
-		export PATH=$(HOST_PATH) && \
 		./configure \
 			--prefix=$(hostprefix) \
 		&& \
 		$(MAKE) && \
 		$(MAKE) install
-	ln -sf opkg-cl $(hostprefix)/bin/opkg
 	touch $@
 
 $(TARGET_${P}): $(TARGET_${P}).do_install

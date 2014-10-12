@@ -3,7 +3,7 @@
 #
 package[[ target_ffmpeg
 
-BDEPENDS_${P} = $(target_glibc) $(target_libass) $(target_rtmpdump)
+BDEPENDS_${P} = $(target_glibc) $(target_rtmpdump)
 
 PV_${P} = 2.1.3
 PR_${P} = 1
@@ -147,7 +147,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 
 call[[ ipk ]]
 
-RDEPENDS_ffmpeg = libass librtmp1
+RDEPENDS_ffmpeg = librtmp1
 FILES_ffmpeg = /usr/lib/*.so* /usr/bin/ffmpeg
 
 call[[ ipkbox ]]
