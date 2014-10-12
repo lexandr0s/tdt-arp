@@ -179,9 +179,7 @@ sub process_block ($)
   warn "==> $package, $version, $dir  :  $_" if DEBUG;
   my $out;
 
-  $out = process_depends($_);
-  # Oder-only dependencies. Don't check file timestamp, only check if it exists.
-  output("$target.do_prepare: | $out \n") if $out;
+  process_depends($_);
   $out = process_prepare($_);
   output("PREPARE_$P += $out \n") if $out;
   $out = process_sources($_);
@@ -293,19 +291,19 @@ sub process_rule($) {
 
 sub process_depends ($)
 {
-    my $output = "";
     my ($p, $f) = process_rule($_);
     return if ( $p eq "none" || $p eq "localwork");
 
-    if ( $p =~ m#^(file)$# or $p =~ m#^($supported_protocols)$#  )
-    {
-      $output .= "$f ";
+    if ( $p =~ m#^(file)$# ) {
+      # Oder-only dependencies. Don't check file timestamp, only check if it exists.
+      output("$target.do_prepare: | $f \n");
     }
-    else
-    {
+    elsif( $p =~ m#^($supported_protocols)$# ) {
+      output("$target.do_prepare: $f \n");
+    }
+    else {
       die "can't recognize protocol " . $p;
     }
-    return $output;
 }
 
 sub process_begin ()
