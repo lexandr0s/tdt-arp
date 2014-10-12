@@ -4,8 +4,9 @@ function[[ base_rpm
 # place after variables definitions in *.mk file and before targets definitions
 PV_${P} = $(${P}_VERSION)
 SRC_URI_${P} ?= stlinux.com
-DEPENDS_${P} += $(if $(${P}_SPEC_PATCH),${SDIR}/$(${P}_SPEC_PATCH))
-DEPENDS_${P} += $(if $(${P}_PATCHES),$(addprefix ${SDIR}/,$(${P}_PATCHES)))
+# only check file existance
+$(TARGET_${P}).do_prepare: |$(if $(${P}_SPEC_PATCH),${SDIR}/$(${P}_SPEC_PATCH))
+$(TARGET_${P}).do_prepare: |$(if $(${P}_PATCHES),$(addprefix ${SDIR}/,$(${P}_PATCHES)))
 DEPENDS_${P} += $(${P}_SRCRPM)
 
 ]]function
