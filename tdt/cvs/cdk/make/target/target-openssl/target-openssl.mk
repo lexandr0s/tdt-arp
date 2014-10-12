@@ -15,7 +15,7 @@ ${P}_SRCRPM = $(archivedir)/$(STLINUX)-$(${P})-$(${P}_VERSION).src.rpm
 
 call[[ base ]]
 call[[ base_rpm ]]
-call[[ TARGET_target_rpm ]]
+call[[ rpm ]]
 call[[ ipk ]]
 
 PACKAGES_${P} =  libcrypto1 libssl1

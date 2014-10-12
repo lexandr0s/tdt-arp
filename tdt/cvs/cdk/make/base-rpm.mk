@@ -1,7 +1,7 @@
 # for building rpms from stlinux
 function[[ base_rpm
 
-# place after variables definitions in *.mk file and before TARGET
+# place after variables definitions in *.mk file and before targets definitions
 PV_${P} = $(${P}_VERSION)
 SRC_URI_${P} ?= stlinux.com
 DEPENDS_${P} += $(if $(${P}_SPEC_PATCH),${SDIR}/$(${P}_SPEC_PATCH))
@@ -46,25 +46,5 @@ endif
 function[[ rpm
 call[[ rpm_do_prepare ]]
 call[[ rpm_do_compile ]]
-call[[ rpm_do_package ]]
-]]function
-
-# FIXME: rename
-function[[ TARGET_host_rpm
-call[[ rpm ]]
-]]function
-
-function[[ TARGET_cross_rpm
-call[[ rpm ]]
-]]function
-
-function[[ TARGET_target_rpm
-call[[ rpm ]]
-]]function
-
-function[[ TARGET_rpm_do_compile
-call[[ rpm_do_compile ]]
-]]function
-function[[ TARGET_rpm_do_package
 call[[ rpm_do_package ]]
 ]]function
