@@ -55,12 +55,14 @@ HOMEPAGE_${P} ?= unknown
 DEPENDS_${P} += $(TARGET_${P}).version_${PV}-${PR}
 DEPENDS_${P} += $(addprefix $(DEPDIR)/,$(BDEPENDS_${P}))
 
+ifdef MAKE_VERBOSE
 # pedantic dependecny check
 $(foreach dep, $(value BDEPENDS_${P}), \
 	$(if $(call undefined,$(patsubst $$(%),%,$(dep))), \
 		$(warning undefined $(dep) in BDEPENDS_${P}) \
 	) \
 )
+endif
 
 # Set new variables and targets
 PREPARE_${P} = (rm -rf $(WORK_${P}) || true) && mkdir -p $(WORK_${P})
@@ -81,6 +83,17 @@ $(TARGET_${P}).clean_package:
 
 $(TARGET_${P}).clean: $(TARGET_${P}).clean_prepare
 	rm -f $(TARGET_${P})
+
+ifdef MAKE_VERBOSE
+$(TARGET_${P}).help:
+	@echo
+	@echo ----------------------------------------------------------------------------
+	@echo 'Hello my name is ${P}'
+	@echo '$(subst ','\'',${DESCRIPTION})'
+	@echo 'I am from $(dir ${SDIR})'
+	@echo 'Bye!'
+	@echo ----------------------------------------------------------------------------
+endif
 
 # to add some build rules add prerequisites to this target
 $(TARGET_${P}):
