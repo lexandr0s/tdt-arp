@@ -137,6 +137,7 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 
 $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 	cd $(DIR_${P}) && $(MAKE) ${MAKE_FLAGS} uImage modules
+	cd $(DIR_${P})/tools/perf && $(MAKE) ${MAKE_FLAGS} $(MAKE_ARGS) all
 	touch $@
 
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
