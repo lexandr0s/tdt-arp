@@ -545,6 +545,7 @@ sub process_prepare ($)
   return $output;
 }
 
+=pod
 sub process_update ($$)
 {
   my ( $vcs, $d ) = @_;
@@ -554,6 +555,7 @@ sub process_update ($$)
   $out = "[ ! -d $d ] || (touch \$\@ -d `cd $d && \$(${vcs}_version_time)` && echo \$\@: `date -r \$\@`)";
   return $out;
 }
+=cut
 
 sub process_install ($)
 {
@@ -616,72 +618,6 @@ sub process_install ($)
 
   return $output;
 }
-
-=pod
-sub process_uninstall_rule ($)
-{
-  my $rule = shift;
-  my ($p, $f, $cmd) = process_rule($rule);
-  
-  if ( $cmd =~ m#$make_commands# )
-  {
-    return "";
-  }
-
-  @_ = split ( /:/, $rule );
-  $_ = shift @_;
-
-  my $output = "";
-
-  if ( $_ eq "make" )
-  {
-    $output .= "\$\(MAKE\) " . join " ", @_;
-  }
-  elsif ( $_ eq "install" )
-  {
-    $output .= "\$\(INSTALL\) " . join " ", @_;
-  }
-  elsif ( $_ eq "rpminstall" )
-  {
-    $output .= "rpm \${DRPM} --ignorearch -Uhv RPMS/sh4/" . join " ", @_;
-  }
-  elsif ( $_ eq "shellconfigdel" )
-  {
-    $output .= "export HCTDUNINST \&\& HOST/bin/target-shellconfig --del " . join " ", @_;
-  }
-  elsif ( $_ eq "initdconfigdel" )
-  {
-    $output .= "export HCTDUNINST \&\& HOST/bin/target-initdconfig --del " . join " ", @_;
-  }
-  elsif ( $_ eq "move" )
-  {
-    $output .= "mv " . join " ", @_;
-  }
-  elsif ( $_ eq "remove" )
-  {
-    $output .= "rm -rf " . join " ", @_;
-  }
-  elsif ( $_ eq "link" )
-  {
-    $output .= "ln -sf " . join " ", @_;
-  }
-  elsif ( $_ eq "archive" )
-  {
-    $output .= "TARGETNAME-ar cru " . join " ", @_;
-  }
-  elsif ( $_ =~ m/^rewrite-(libtool|pkgconfig)/ )
-  {
-    $output .= "perl -pi -e \"s,^libdir=.*\$\$,libdir='TARGET/lib',\"  ". join " ", @_ if $1 eq "libtool";
-    $output .= "perl -pi -e \"s,^prefix=.*\$\$,prefix=TARGET,\" " . join " ", @_ if $1 eq "pkgconfig";
-  }
-  else
-  {
-    die "can't recognize rule \"$rule\"";
-  }
-
-  return $output;
-}
-=cut
 
 sub process_sources ($)
 {
