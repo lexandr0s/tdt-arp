@@ -13,6 +13,8 @@ makefile_name = "Makefile.dump"
 if len(sys.argv) > 2:
 	makefile_name = sys.argv[2]
 else:
+	# update Makefile
+	os.system("export LANG=en_US; make")
 	# some non-existing target to do
 	os.system("export LANG=en_US; make nothing -prR > %s" % makefile_name)
 
