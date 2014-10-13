@@ -3,7 +3,7 @@
 #
 package[[ target_gst_plugins_good
 
-BDEPENDS_${P} = $(target_gst_plugins_base) $(target_cdparanoia) $(target_cairo) $(target_libpng)  $(target_zlib) $(target_libid3tag) $(target_flac) $(target_speex) $(target_libsoup)
+BDEPENDS_${P} = $(target_gstreamer) $(target_gst_plugins_base) $(target_cdparanoia) $(target_cairo) $(target_libpng)  $(target_zlib) $(target_libid3tag) $(target_flac) $(target_speex) $(target_libsoup)
 ifdef CONFIG_ENIGMA2_SRC_MAX
 BDEPENDS_${P} += $(target_libjpeg_turbo)
 RDEPENDS_gst_plugins_good_jpeg = libjpeg-turbo
@@ -41,9 +41,7 @@ call[[ base ]]
 
 rule[[
   extract:http://gstreamer.freedesktop.org/src/${PN}/${PN}-${PV}.tar.bz2
-  patch:file://0001-v4l2-fix-build-with-recent-kernels-the-v4l2_buffer-i.patch
-  patch:file://0001-v4l2_calls-define-V4L2_CID_HCENTER-and-V4L2_CID_VCEN.patch
-  patch:file://${PN}-0.10.29_avidemux_only_send_pts_on_keyframe.patch
+  patch:file://${PN}-0.10.29.patch
 ]]rule
 
 endif
@@ -68,15 +66,13 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 		--libexecdir=/usr/lib/gstreamer/ \
 		--prefix=/usr \
 		--disable-esd \
-		--disable-gtk-doc \
 		--disable-aalib \
 		--disable-esdtest \
 		--disable-aalib \
 		--disable-shout2 \
-		--disable-libcaca \
-		--disable-hal \
-		--disable-examples \
-		--disable-taglib \
+		--disable-debug \
+		--disable-gtk-doc \
+		--disable-x \
 	&& \
 	$(MAKE)
 	touch $@
