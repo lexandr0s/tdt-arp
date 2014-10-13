@@ -1,7 +1,13 @@
 # print '+' before each executed command
 # SHELL := $(SHELL) -x
 
-MAKE_DEBUG :=
+# trivial consts
+false :=
+true := y
+
+# some configuration (true/false)
+MAKE_DEBUG := $(false)
+MAKE_VERBOSE := $(true)
 
 # Don't pass any toplevel flags to child make
 # such as make execution in do_compile
@@ -38,10 +44,6 @@ eval_assign = $(eval $1 = $(value $2)) \
        $(if $(MAKE_DEBUG), \
               $(info $1 = $(value $2)) \
        )
-
-# trivial consts
-false :=
-true := y
 
 # check if variable is defined
 # - 1: variable name
