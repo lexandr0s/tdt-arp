@@ -1,0 +1,10 @@
+--- linux-2.6.32/tools/perf/Makefile.orig	2014-10-13 21:38:37.618953978 +0200
++++ linux-2.6.32/tools/perf/Makefile	2014-10-13 21:46:27.150954001 +0200
+@@ -190,6 +190,7 @@
+ EXTRA_WARNINGS := $(EXTRA_WARNINGS) -Wold-style-definition
+ EXTRA_WARNINGS := $(EXTRA_WARNINGS) -Wstrict-prototypes
+ EXTRA_WARNINGS := $(EXTRA_WARNINGS) -Wdeclaration-after-statement
++EXTRA_WARNINGS := $(EXTRA_WARNINGS) -Wno-unused-but-set-variable
+ 
+ ifeq ("$(origin DEBUG)", "command line")
+   PERF_DEBUG = $(DEBUG)
