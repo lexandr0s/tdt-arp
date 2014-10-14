@@ -7,7 +7,7 @@ import re
 DEBUG = False
 
 def print_help():
-	print "Usage ./dep-graph.py [target to study] [makefile dump]"
+	print "Usage %s target_to_study [makefile dump]" % sys.argv[0]
 
 makefile_name = "Makefile.dump"
 if len(sys.argv) > 2:
@@ -18,9 +18,11 @@ else:
 	# some non-existing target to do
 	os.system("export LANG=en_US; make nothing -prR > %s" % makefile_name)
 
-rootname = ""
 if len(sys.argv) > 1:
 	rootname = sys.argv[1]
+else:
+	print_help()
+	sys.exit(1);
 	
 fdot = open('dep.dot', 'w')
 
