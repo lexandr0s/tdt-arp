@@ -95,8 +95,15 @@ $(TARGET_${P}).help:
 	@echo ----------------------------------------------------------------------------
 endif
 
+# default value comes from .config
+# Either override it in *mk file or by passing to make like this: 'make target-foo RM_WORK_foo=n'
+RM_WORK_${P} ?= $(CONFIG_RM_WORK)
+
 # to add some build rules add prerequisites to this target
 $(TARGET_${P}):
+ifeq (${RM_WORK},y)
+	rm -rf $(WORK_${P}) || true
+endif
 	touch $@
 
 # add to list
