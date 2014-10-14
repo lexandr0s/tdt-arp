@@ -1,4 +1,8 @@
 mainmenu "global config"
+	
+	config RM_WORK
+	default n
+	bool "remove temporary files in work dir ?"
 
 menu "Global Configuration"
 	choice

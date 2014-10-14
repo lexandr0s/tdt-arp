@@ -19,10 +19,14 @@ $(TARGET_${P}).do_package: $(cross_gcc_second).do_package
 	touch $@
 
 call[[ ipk ]]
+# Ask to not RM_WORK util we finished
+$(cross_gcc_second): $(TARGET_${P}).do_ipk
 
 ifdef CONFIG_GCC_LIB_FROM_CROSS
 call[[ target_gcc_lib_in ]]
 call[[ ipkbox ]]
+# Ask to not RM_WORK util we finished
+$(cross_gcc_second): $(TARGET_${P}).do_ipkbox
 endif
 
 ]]package

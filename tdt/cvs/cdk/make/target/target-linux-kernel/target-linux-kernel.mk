@@ -32,6 +32,8 @@ MAKE_FLAGS_${P} = ARCH=sh CROSS_COMPILE=$(target)-
 package[[ target_linux_kernel
 
 BDEPENDS_${P} = $(target_glibc) $(host_u_boot_tools)
+# We need kernel dir for building modules
+RM_WORK_${P} = $(false)
 
 call[[ target_linux_kernel_in ]]
 call[[ base ]]
