@@ -194,6 +194,7 @@ Makefile: smart-rules.pl Makefile.pre
 	./smart-rules.pl Makefile.pre || (rm -f $@ && false)
 
 .config: Config.in
+	@echo ----------------------------------------------------------------------------
 	@echo outdated .config
 	@echo launch make -f Makefile.setup menuconfig
 	@echo or
@@ -201,4 +202,5 @@ Makefile: smart-rules.pl Makefile.pre
 	@echo
 	@echo if you are shure that your .config is ok
 	@echo launch make -f Makefile.setup oldconfig
+	@echo ----------------------------------------------------------------------------
 	@false
