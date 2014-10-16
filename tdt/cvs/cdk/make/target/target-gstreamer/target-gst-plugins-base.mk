@@ -59,9 +59,13 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 		--build=$(build) \
 		--libexecdir=/usr/lib/gstreamer/ \
 		--prefix=/usr \
-		--disable-freetypetest \
-		--disable-pango \
+		--disable-theora \
 		--disable-gnome_vfs \
+		--disable-pango \
+		--disable-x \
+		--disable-examples \
+		--disable-debug \
+		--disable-freetypetest \
 		--enable-orc \
 		--with-audioresample-format=int \
 	&& \
