@@ -5,13 +5,13 @@ package[[ target_libsoup
 
 BDEPENDS_${P} = $(target_glibc)
 
-PV_${P} = 2.33.90
+PV_${P} = 2.40.0
 PR_${P} = 1
 
 call[[ base ]]
 
 rule[[
-  extract:http://download.gnome.org/sources/${PN}/2.33/${PN}-${PV}.tar.gz
+  extract:http://download.gnome.org/sources/${PN}/2.40/${PN}-${PV}.tar.xz
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
@@ -23,6 +23,7 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 		$(BUILDENV) \
 		./configure \
 			--host=$(target) \
+			--prefix=/usr \
 			--disable-more-warnings \
 			--without-gnome \
 		&& \
