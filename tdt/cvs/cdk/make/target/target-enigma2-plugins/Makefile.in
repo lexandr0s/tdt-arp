@@ -14,3 +14,6 @@ package[[ target_oscam_config
 call[[ header ]]
 ]]package
 
+package[[ target_vfdicons
+call[[ header ]]
+]]package
