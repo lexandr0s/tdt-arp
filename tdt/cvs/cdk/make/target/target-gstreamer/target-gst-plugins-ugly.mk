@@ -3,7 +3,7 @@
 #
 package[[ target_gst_plugins_ugly
 
-BDEPENDS_${P} = $(target_gst_plugins_base) $(target_libid3tag) $(target_libmad) $(target_orc) $(target_libcdio) $(target_lame) $(target_a52dec) $(target_libmpeg2)
+BDEPENDS_${P} = $(target_gstreamer) $(target_gst_plugins_base) $(target_libid3tag) $(target_libmad) $(target_orc) $(target_libcdio) $(target_lame) $(target_a52dec) $(target_libmpeg2)
 
 ifeq ($(strip $(CONFIG_GSTREAMER_GIT)),y)
 
@@ -52,6 +52,8 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 		--host=$(target) \
 		--build=$(build) \
 		--prefix=/usr \
+		--disable-debug \
+		--disable-mpeg2dec \
 		--enable-orc \
 	&& \
 	$(MAKE)
