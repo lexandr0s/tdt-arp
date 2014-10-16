@@ -3,7 +3,7 @@
 #
 package[[ target_gst_plugins_bad
 
-BDEPENDS_${P} = $(target_gst_plugins_base) $(target_tremor) $(target_curl) $(target_rtmpdump) $(target_libmms) $(target_faad2)
+BDEPENDS_${P} = $(target_gstreamer) $(target_gst_plugins_base) $(target_tremor) $(target_rtmpdump) $(target_libass) $(target_libmms)
 
 
 ifeq ($(strip $(CONFIG_GSTREAMER_GIT)),y)
@@ -59,20 +59,25 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 		--build=$(build) \
 		--libexecdir=/usr/lib/gstreamer/ \
 		--prefix=/usr \
-		--disable-examples \
-		--disable-gtk-doc \
-		--disable-experimental \
 		--disable-sdl \
-		--disable-cdaudio \
-		--disable-directfb \
-		--enable-faad \
-		--disable-vdpau \
-		--disable-apexsink \
-		--enable-orc \
+		--disable-modplug \
 		--disable-mpeg2enc \
 		--disable-mplex \
+		--disable-vdpau \
+		--disable-apexsink \
+		--disable-cdaudio \
+		--disable-mpeg2enc \
+		--disable-mplex \
+		--disable-librfb \
+		--disable-vdpau \
+		--disable-examples \
+		--disable-sdltest \
+		--disable-curl \
 		--disable-rsvg \
-		--disable-uvch264 \
+		--disable-debug \
+		--enable-orc \
+		--disable-gtk-doc \
+		ac_cv_openssldir=no \
 	&& \
 	$(MAKE)
 	touch $@
