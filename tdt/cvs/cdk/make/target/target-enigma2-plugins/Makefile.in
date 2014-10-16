@@ -17,3 +17,7 @@ call[[ header ]]
 package[[ target_vfdicons
 call[[ header ]]
 ]]package
+
+package[[ target_networkbrowser
+call[[ header ]]
+]]package
