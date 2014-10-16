@@ -55,10 +55,10 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 		--libexecdir=/usr/lib/gstreamer/ \
 		--prefix=/usr \
 		--disable-dependency-tracking \
-		--with-check=no \
-		--disable-examples \
-		--disable-tests \
-		--disable-valgrind \
+		--disable-check \
+		--disable-gst-debug \
+		--disable-debug \
+		--enable-introspection=no \
 		ac_cv_func_register_printf_function=no \
 	&& \
 	$(MAKE)
