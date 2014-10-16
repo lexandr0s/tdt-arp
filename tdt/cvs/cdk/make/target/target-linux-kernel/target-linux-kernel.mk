@@ -50,7 +50,8 @@ ${P}_patches = \
 	linux-sh4-ext23_as_ext4_stm24_$(KERNEL_LABEL).patch \
 	bpa2_procfs_stm24_$(KERNEL_LABEL).patch \
 	linux-ftdi_sio.c_stm24_$(KERNEL_LABEL).patch \
-	linux-sh4-lzma-fix_stm24_$(KERNEL_LABEL).patch
+	linux-sh4-lzma-fix_stm24_$(KERNEL_LABEL).patch \
+	perf-warning-fix.diff
 
 ifeq ($(CONFIG_KERNEL_0211),y)
 ${P}_patches += linux-tune_stm24.patch
