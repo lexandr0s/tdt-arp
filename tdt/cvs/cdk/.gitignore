@@ -2,7 +2,6 @@
 *.pyo
 .config
 .config.old
-.deps/
 localmacros
 !Makefile.in
 Makefile
@@ -14,4 +13,6 @@ build.env
 make.log
 kconfig-frontends-*.tar.bz2
 kconfig_frontends/
+make-*.tar.gz
+make-4.0/
 opkg.lock

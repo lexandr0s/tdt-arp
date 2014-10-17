@@ -35,8 +35,7 @@ DESCRIPTION_${P} =  ASN.1 library for Python
 LICENSE_${P} = Take the official web page
 HOMEPAGE_${P} = http://pyasn1.sourceforge.net/
 RDEPENDS_${P} = python_core libc6
-FILES_${P} = \
-$(PYTHON_DIR)/site-packages/pyasn1/*
+FILES_${P} = $(PYTHON_DIR)/site-packages/pyasn1/*
 
 call[[ ipkbox ]]
 

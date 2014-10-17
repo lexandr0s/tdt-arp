@@ -21,6 +21,7 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 $(TARGET_${P}).do_install: $(TARGET_${P}).do_prepare
 	$(PREPARE_${P})
 	cd $(DIR_${P}) && \
+		export PATH=$(HOST_PATH) && \
 		./configure \
 			--prefix=$(hostprefix) \
 		&& \

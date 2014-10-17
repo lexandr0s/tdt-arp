@@ -28,15 +28,14 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	$(PKDIR_clean)
 	cd $(DIR_${P}) && $(python_install)
 	touch $@
-call[[ ipk ]]
 
+call[[ ipk ]]
 
 DESCRIPTION_${P} =  A collection of ASN.1-based protocols modules
 LICENSE_${P} = Take the official web page
 HOMEPAGE_${P} = http://pyasn1.sourceforge.net/
 RDEPENDS_${P} = python_core libc6 python_pyasn1
-FILES_${P} = \
-$(PYTHON_DIR)/site-packages/pyasn1_modules/*
+FILES_${P} = $(PYTHON_DIR)/site-packages/pyasn1_modules/*
 
 call[[ ipkbox ]]
 

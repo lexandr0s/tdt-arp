@@ -3,7 +3,7 @@
 #
 package[[ target_enigma2_skins_metropolishd
 
-BDEPENDS_${P} = $(target_enigma2)
+BDEPENDS_${P} = $(target_filesystem)
 
 PV_${P} = git
 PR_${P} = 1
