@@ -3,7 +3,7 @@
 #
 package[[ target_gstreamer
 
-BDEPENDS_${P} = $(target_glibc) $(target_glib2) $(target_libxml2)
+BDEPENDS_${P} = $(target_glibc) $(target_glib2) $(target_libxml2) $(target_libbluray)
 
 ifeq ($(strip $(CONFIG_GSTREAMER_GIT)),y)
 
@@ -73,7 +73,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 call[[ ipk ]]
 
 DESCRIPTION_${P} = GStreamer Multimedia Framework
-RDEPENDS_${P} = libglib libxml2 libffi6 libz1 libc6
+RDEPENDS_${P} = libglib libxml2 libffi6 libz1 libc6 libbluray
 FILES_${P} = \
 /usr/bin/gst-* \
 /usr/lib/libgstbase*.s* \
