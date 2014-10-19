@@ -101,6 +101,14 @@ menu "Global Configuration"
 		depends on GCC_LIB_FROM_TARGET
 	  endchoice
 
+	config TARGET_CFLAGS
+		string "Target Optimizations C Flags"
+		default "-O2"
+
+	config TARGET_CXXFLAGS
+		string "Target Optimizations C++ Flags"
+		default "-O2"
+
 	choice
 		prompt "Media Framework:"
 		default EPLAYER3
