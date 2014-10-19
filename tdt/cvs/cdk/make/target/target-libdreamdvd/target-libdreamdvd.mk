@@ -3,7 +3,7 @@
 #
 package[[ target_libdreamdvd
 
-BDEPENDS_${P} = $(target_glibc) $(target_libdvdread) $(target_libdvdnav)
+BDEPENDS_${P} = $(target_glibc) $(target_libdvdread) $(target_libdvdnav) $(target_libdvdcss)
 
 PV_${P} = git
 PR_${P} = 1
