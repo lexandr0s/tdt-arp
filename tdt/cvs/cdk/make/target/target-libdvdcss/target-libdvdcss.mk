@@ -1,21 +1,19 @@
 #
 # AR-P buildsystem smart Makefile
 #
-package[[ target_libdreamdvd
+package[[ target_libdvdcss
 
-BDEPENDS_${P} = $(target_glibc) $(target_libdvdread) $(target_libdvdnav)
+BDEPENDS_${P} = $(target_glibc)
 
-PV_${P} = git
+PV_${P} = 1.2.12
 PR_${P} = 1
 
 call[[ base ]]
 
 rule[[
-  nothing:git://github.com/mirakels/libdreamdvd.git:r=6aa22dd3f530ca4be49946e07e4a0bfe60427bdf
-  patch:file://libdreamdvd-1.0-support_sh4.patch
+  extract:http://download.videolan.org/pub/${PN}/${PV}/${PN}-${PV}.tar.bz2
 ]]rule
 
-call[[ git ]]
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(PREPARE_${P})
@@ -29,6 +27,7 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 			--build=$(build) \
 			--host=$(target) \
 			--prefix=/usr \
+			--disable-doc \
 		&& \
 		$(MAKE) all
 	touch $@
@@ -36,18 +35,16 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	$(PKDIR_clean)
 	cd $(DIR_${P}) && $(MAKE) install DESTDIR=$(PKDIR)
+
 	touch $@
 
 call[[ ipk ]]
 
-NAME_${P} = libdreamdvd0
-DESCRIPTION_${P} = libdvdnav wrapper for enigma2 based stbs.
-RDEPENDS_${P} = libdvdcss2 libdvdread4 libdvdnav4 libc6
-FILES_${P} = /usr/lib/libdreamdvd.so.*
-define postinst_${P}
-#!/bin/sh
-$$OPKG_OFFLINE_ROOT/sbin/ldconfig
-endef
+NAME_${P} = libdvdcss2
+DESCRIPTION_${P} = libdvdcss is a simple library designed for accessing DVDs like a block \
+ device without having to bother about the decryption.
+RDEPENDS_${P} = libc6
+FILES_${P} = /usr/lib/*.so.*
 
 call[[ ipkbox ]]
 
