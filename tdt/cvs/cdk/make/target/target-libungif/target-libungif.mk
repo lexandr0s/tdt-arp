@@ -40,7 +40,7 @@ call[[ ipk ]]
 DESCRIPTION_${P} = libungif
 NAME_${P} = libungif4
 RDEPENDS_${P} = libc6
-FILES_${P} = /usr/lib/*.so*
+FILES_${P} = /usr/lib/*.so.*
 
 call[[ ipkbox ]]
 

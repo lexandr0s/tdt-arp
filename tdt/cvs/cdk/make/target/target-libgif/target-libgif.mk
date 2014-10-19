@@ -41,7 +41,7 @@ call[[ ipk ]]
 
 NAME_${P} = libgif4
 DESCRIPTION_${P} =  shared library for GIF images
-FILES_${P} = /usr/lib/*.so*
+FILES_${P} = /usr/lib/*.so.*
 
 call[[ ipkbox ]]
 

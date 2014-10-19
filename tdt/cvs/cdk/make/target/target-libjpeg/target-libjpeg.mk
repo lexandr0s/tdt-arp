@@ -45,7 +45,7 @@ NAME_${P} = libjpeg8
 DESCRIPTION_${P} = libjpeg contains a library for handling the JPEG (JFIF) image format, as \
  well as related programs for accessing the libjpeg functions.
 RDEPENDS_${P} = libc6
-FILES_${P} = /usr/lib/*.so* 
+FILES_${P} = /usr/lib/*.so.* 
 
 call[[ ipkbox ]]
 

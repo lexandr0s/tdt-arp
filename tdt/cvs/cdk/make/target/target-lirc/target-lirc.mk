@@ -79,7 +79,7 @@ call[[ ipk ]]
 DESCRIPTION_${P} = lirc
 FILES_lirc = \
 	/usr/bin/lircd \
-	/usr/lib/*.so* \
+	/usr/lib/*.so.* \
 	/etc/lircd* \
 	/var/run/lirc/
 

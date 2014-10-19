@@ -24,7 +24,7 @@ RDEPENDS_acl = libacl libc6
 FILES_acl = /usr/bin
 
 RDEPENDS_libacl = libc6
-FILES_libacl = /usr/lib/libacl.s*
+FILES_libacl = /usr/lib/libacl.so.*
 define postinst_libacl
 #!/bin/sh
 $$OPKG_OFFLINE_ROOT/sbin/ldconfig

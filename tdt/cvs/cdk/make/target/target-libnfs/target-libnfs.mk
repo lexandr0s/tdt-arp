@@ -41,7 +41,7 @@ call[[ ipk ]]
 DESCRIPTION_${P} = LIBNFS is a client library for accessing NFS shares over a network.
 
 RDEPENDS_${P} = libc6
-FILES_${P} = /usr/lib/*.so*
+FILES_${P} = /usr/lib/*.so.*
 define postinst_${P}
 #!/bin/sh
 $$OPKG_OFFLINE_ROOT/sbin/ldconfig

@@ -48,9 +48,9 @@ DESCRIPTION_${P} = DVD navigation multimeda library - Development files  DVD nav
  multimeda library.  This package contains symbolic links,   header files, \
  and related items necessary for software development.
 RDEPENDS_libdvdnav4 = libdvdread4 libc6
-FILES_libdvdnav4 = /usr/lib/libdvdnav.so*
+FILES_libdvdnav4 = /usr/lib/libdvdnav.so.*
 RDEPENDS_libdvdnavmini4 = libc6
-FILES_libdvdnavmini4 = /usr/lib/libdvdnavmini.so*
+FILES_libdvdnavmini4 = /usr/lib/libdvdnavmini.so.*
 
 call[[ ipkbox ]]
 

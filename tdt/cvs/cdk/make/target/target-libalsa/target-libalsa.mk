@@ -56,7 +56,7 @@ define postinst_${P}
 #!/bin/sh
 $$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
-FILES_${P} = /usr/lib/libasound* /usr/share/alsa
+FILES_${P} = /usr/lib/*.so.* /usr/share/alsa
 
 call[[ ipkbox ]]
 

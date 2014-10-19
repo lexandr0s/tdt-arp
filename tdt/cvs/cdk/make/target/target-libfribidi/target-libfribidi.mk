@@ -43,7 +43,7 @@ PACKAGES_${P} = libfribidi0 libfribidi_bin
 DESCRIPTION_${P} = Fribidi library for bidirectional text
 
 RDEPENDS_libfribidi0 = libc6
-FILES_libfribidi0 = /usr/lib/*.so*
+FILES_libfribidi0 = /usr/lib/*.so.*
 
 RDEPENDS_libfribidi_bin = libfribidi0 libc6
 FILES_libfribidi_bin = /usr/bin/*

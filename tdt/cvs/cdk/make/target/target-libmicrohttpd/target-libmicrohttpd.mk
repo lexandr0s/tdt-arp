@@ -37,7 +37,7 @@ call[[ ipk ]]
 
 DESCRIPTION_${P} = library for embedding an HTTP(S) server into C applications
 RDEPENDS_${P} = libc6
-FILES_${P} = /usr/lib/*.so*
+FILES_${P} = /usr/lib/*.so.*
 define postinst_${P}
 #!/bin/sh
 $$OPKG_OFFLINE_ROOT/sbin/ldconfig

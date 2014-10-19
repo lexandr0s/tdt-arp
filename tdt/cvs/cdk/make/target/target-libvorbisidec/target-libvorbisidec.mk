@@ -44,7 +44,7 @@ define postinst_${P}
 #!/bin/sh
 $$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
-FILES_${P} = /usr/lib/libvorbis*
+FILES_${P} = /usr/lib/*.so.*
 
 call[[ ipkbox ]]
 

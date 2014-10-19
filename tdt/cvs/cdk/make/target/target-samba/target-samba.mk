@@ -122,7 +122,7 @@ endef
 
 DESCRIPTION_samba_lib = samba_lib
 RDEPENDS_samba = libc6
-FILES_samba_lib = /usr/lib/*.so /usr/lib/*.so.*
+FILES_samba_lib = /usr/lib/*.so.*
 define postinst_samba_lib
 #!/bin/sh
 $$OPKG_OFFLINE_ROOT/sbin/ldconfig

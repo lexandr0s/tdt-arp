@@ -14,7 +14,6 @@ call[[ base ]]
 
 rule[[
   extract:http://sourceforge.net/projects/${PN}/files/${PN}-${PV}.tar.gz
-  #patch:file://jpeg.diff
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
@@ -43,7 +42,7 @@ NAME_${P} = libjpeg-turbo
 DESCRIPTION_${P} = libjpeg contains a library for handling the JPEG (JFIF) image format, as \
  well as related programs for accessing the libjpeg functions.
 RDEPENDS_${P} = libc6
-FILES_${P} = /usr/lib/*.so* 
+FILES_${P} = /usr/lib/*.so.* 
 
 call[[ ipkbox ]]
 
