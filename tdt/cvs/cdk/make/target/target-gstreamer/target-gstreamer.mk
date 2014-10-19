@@ -76,12 +76,12 @@ DESCRIPTION_${P} = GStreamer Multimedia Framework
 RDEPENDS_${P} = libglib libxml2 libffi6 libz1 libc6 libbluray
 FILES_${P} = \
 /usr/bin/gst-* \
-/usr/lib/libgstbase*.s* \
-/usr/lib/libgstcheck*.s* \
-/usr/lib/libgstcontroller*.s* \
-/usr/lib/libgstdataprotocol*.s* \
-/usr/lib/libgstnet*.s* \
-/usr/lib/libgstreamer*.s* \
+/usr/lib/libgstbase*.so.* \
+/usr/lib/libgstcheck*.so.* \
+/usr/lib/libgstcontroller*.so.* \
+/usr/lib/libgstdataprotocol*.so.* \
+/usr/lib/libgstnet*.so.* \
+/usr/lib/libgstreamer*.so.* \
 /usr/lib/gstreamer/gstreamer-0.10/gst-plugin-scanner \
 /usr/lib/gstreamer-0.10/libgstcoreelements.so \
 /usr/lib/gstreamer-0.10/libgstcoreindexers.so
