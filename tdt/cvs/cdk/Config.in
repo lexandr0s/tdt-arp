@@ -25,12 +25,6 @@ menu "Global Configuration"
 		bool "SpiderBox HL-101 (TODO)"
 	endchoice
 		
-	config TARGET
-		string
-		default "spark"  if SPARK
-		default "spark7162"  if SPARK7162
-		default "hl101"  if HL101
-
 	choice
 		prompt "Kernel:"
 		default KERNEL_0211
