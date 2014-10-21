@@ -4,6 +4,10 @@ mainmenu "global config"
 	default n
 	bool "remove temporary files in work dir ?"
 
+	config DEBUG_ARP
+	default n
+	bool "Activate debug (y/N)?"
+
 menu "Global Configuration"
 	choice
 		prompt "Target:"
