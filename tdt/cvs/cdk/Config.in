@@ -8,7 +8,10 @@ mainmenu "global config"
 	default n
 	bool "Activate debug (y/N)?"
 
-menu "Global Configuration"
+	config ENABLE_CCACHE
+	default y
+	bool "Activate ccache (y/N)?"
+
 	choice
 		prompt "Target:"
 		default SPARK
