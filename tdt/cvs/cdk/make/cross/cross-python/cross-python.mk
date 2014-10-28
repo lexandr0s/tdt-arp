@@ -38,7 +38,7 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 		OPT="$(HOST_CFLAGS)" \
 		./configure \
 			--without-cxx-main \
-			--without-threads \
+			--with-threads \
 		&& \
 		make python Parser/pgen && \
 		mv python ./hostpython && \
@@ -48,7 +48,7 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 			--prefix=$(crossprefix) \
 			--sysconfdir=$(crossprefix)/etc \
 			--without-cxx-main \
-			--without-threads \
+			--with-threads \
 		&& \
 		make $(MAKE_FLAGS_${P}) all
 	touch $@
