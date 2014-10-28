@@ -170,7 +170,7 @@ STLINUX := stlinux24
 HOST_PATH := $(PATH)
 # PATH is exported automatically
 PATH := $(crossprefix)/bin:$(hostprefix)/bin:$(PATH)
-ifdef ENABLE_CCACHE
+ifdef CONFIG_ENABLE_CCACHE
 PATH := $(hostprefix)/ccache-bin:$(PATH)
 endif
 
