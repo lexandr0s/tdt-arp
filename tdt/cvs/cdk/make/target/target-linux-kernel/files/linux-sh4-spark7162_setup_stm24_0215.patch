@@ -254,7 +254,7 @@ diff -crp linux-sh4-2.6.32.59_stm24_0212/arch/sh/boards/mach-hdk7105/setup.c lin
   	.modalias       = "m25p80",
   	.bus_num        = 0,
   	.chip_select    = stm_gpio(2, 4),
-! 	.max_speed_hz   = 5000000,
+! 	.max_speed_hz   = 500000,
   	.mode           = SPI_MODE_3,
   	.platform_data  = &(struct flash_platform_data) {
   		.name = "m25p80",
