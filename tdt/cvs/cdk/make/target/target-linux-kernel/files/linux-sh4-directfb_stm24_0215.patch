@@ -1,6 +1,6 @@
 --- a/arch/sh/Kconfig
 +++ b/arch/sh/Kconfig
-@@ -944,6 +944,11 @@
+@@ -945,6 +945,11 @@
  	  power saving state, which causes issues with things like ptrace().
  
  	  If unsure, say N.
