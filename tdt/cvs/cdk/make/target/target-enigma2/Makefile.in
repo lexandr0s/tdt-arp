@@ -1,5 +1,3 @@
-ifeq ($(strip $(CONFIG_BUILD_ENIGMA2)),y)
 package[[ target_enigma2
 call[[ header ]]
 ]]package
-endif

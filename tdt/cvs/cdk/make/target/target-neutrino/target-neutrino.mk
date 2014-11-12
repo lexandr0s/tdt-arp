@@ -1,7 +1,7 @@
 #
 # NEUTRINO
 #
-ifeq ($(strip $(CONFIG_BUILD_NEUTRINO)),y)
+
 package[[ target_neutrino
 
 BDEPENDS_${P} = $(target_libjpeg) $(target_libstb_hal) $(target_libopenthreads) $(target_lua) $(target_curl) $(target_util_linux) $(target_libalsa) $(target_libdvbsipp) $(target_libgif) $(target_libmme_host) $(target_libmmeimage)
@@ -154,5 +154,3 @@ DESCRIPTION_font_pakenham = ttf fonts
 call[[ ipkbox ]]
 
 ]]package
-endif
-

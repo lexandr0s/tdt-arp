@@ -1,7 +1,7 @@
 #
 # ENIGMA2
 #
-ifeq ($(strip $(CONFIG_BUILD_ENIGMA2)),y)
+
 package[[ target_enigma2
 
 BDEPENDS_${P} = $(target_libsigc) $(target_libdvbsipp) $(target_freetype) $(target_tuxtxt32bpp) $(target_libpng) $(target_libxmlccwrap) $(target_python) $(target_python_twisted) $(target_libdreamdvd) $(target_libmme_host) $(target_libmmeimage) $(target_libfribidi)
@@ -364,5 +364,3 @@ FILES_enigma2_plugin_systemplugins_wirelesslan = /usr/lib/enigma2/python/Plugins
 call[[ ipkbox ]]
 
 ]]package
-endif
-
