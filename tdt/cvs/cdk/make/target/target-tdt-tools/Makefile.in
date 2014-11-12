@@ -41,6 +41,10 @@ package[[ target_ustslave
 call[[ header ]]
 ]]package
 
+package[[ target_libstgles
+call[[ header ]]
+]]package
+
 PR_tdt_tools = 1
 # end tdt tools packages
 
@@ -73,7 +77,8 @@ function[[ TARGET_tdt_tools
 CONFIG_FLAGS_${P} += \
 	--with-driver=$(driverdir) \
 	--with-dvbincludes=$(driverdir)/include \
-	--with-target=cdk
+	--with-target=cdk \
+	
 
 ifdef CONFIG_MULTICOM324
 CONFIG_FLAGS_${P} += --enable-multicom324
@@ -94,7 +99,7 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 		./configure \
 			--build=$(build) \
 			--host=$(target) \
-			--prefix= \
+			--prefix=/usr \
 			$(CONFIG_FLAGS_${P}) \
 		&& \
 		make $(MAKE_FLAGS_${P})
