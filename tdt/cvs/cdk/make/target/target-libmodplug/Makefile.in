@@ -1,0 +1,3 @@
+package[[ target_libmodplug
+call[[ header ]]
+]]package
