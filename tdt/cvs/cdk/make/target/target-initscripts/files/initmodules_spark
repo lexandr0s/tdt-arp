@@ -35,9 +35,9 @@ MODEL=`cat /proc/stb/info/model`
       modprobe /lib/modules/mme.ko pool_size=524288
       modprobe /lib/modules/mme_user.ko
    else
-      /bin/ustslave /dev/st231-1 /lib/firmware/audio.elf
+      /usr/bin/ustslave /dev/st231-1 /lib/firmware/audio.elf
    echo "load v firmware"
-      /bin/ustslave /dev/st231-0 /lib/firmware/video.elf
+      /usr/bin/ustslave /dev/st231-0 /lib/firmware/video.elf
 
    echo "init embx"
    modprobe embxshell
