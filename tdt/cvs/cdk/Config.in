@@ -44,11 +44,12 @@ mainmenu "global config"
 
 		config KERNEL_0217
 		bool "STM 24 2.6.32.61-0217"
-		select !GIT_KERNEL_ARP
+		select GIT_KERNEL_ARP
+
 	endchoice
 
 
-	config GIT_KERNEL_ARP
+		config GIT_KERNEL_ARP
 		bool  "Build kernel from Git STlinux"
 
 ###########################################################################
