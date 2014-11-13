@@ -12,6 +12,8 @@ mainmenu "global config"
 	default y
 	bool "Activate ccache (y/N)?"
 
+###########################################################################################
+  menu "Global Configuration"
 	choice
 		prompt "Target:"
 		default SPARK
@@ -39,8 +41,17 @@ mainmenu "global config"
 
 		config KERNEL_0215
 		bool "STM 24 2.6.32.61-0215"
+
+		config KERNEL_0217
+		bool "STM 24 2.6.32.61-0217"
+		select !GIT_KERNEL_ARP
 	endchoice
 
+
+	config GIT_KERNEL_ARP
+		bool  "Build kernel from Git STlinux"
+
+###########################################################################
 	choice
 		prompt "toolchain building:"
 		default GLIBC_SCRATCH
@@ -141,6 +152,7 @@ mainmenu "global config"
 
 endmenu
 
+############################################################################
 menu "GUI Configuration"
   choice
 	prompt "Apps:"
