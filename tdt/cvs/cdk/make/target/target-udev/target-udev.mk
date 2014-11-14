@@ -26,7 +26,7 @@ call[[ ipk ]]
 
 NAME_${P} = udev
 RDEPENDS_${P} = libattr1 libacl libusb-0.1 libglib util-linux-blkid util-linux-fdisk
-FILES_${P} = /etc/* /lib/* /sbin/* /usr/sbin/udevadm /usr/lib/*
+FILES_${P} = /etc/* /lib/* /sbin/* /usr/sbin/udevadm /usr/lib/*.so.*
 define postinst_${P}
 #!/bin/sh
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ udev start 5 S . stop 99 0 6 .

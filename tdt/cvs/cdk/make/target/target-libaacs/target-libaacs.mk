@@ -47,7 +47,7 @@ call[[ ipk ]]
 
 DESCRIPTION_${P} = libaacs is a research project to implement the Advanced Access Content System specification.
 RDEPENDS_${P} = libc6 libgcrypt libgpg_error
-FILES_${P} = /usr/lib/libaacs.s*
+FILES_${P} = /usr/lib/libaacs.so.*
 define postinst_${P}
 #!/bin/sh
 $$OPKG_OFFLINE_ROOT/sbin/ldconfig

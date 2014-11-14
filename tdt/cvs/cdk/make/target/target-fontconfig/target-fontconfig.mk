@@ -65,7 +65,7 @@ $$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libfontconfig1 = \
 	/etc/fonts/* \
-	/usr/lib/* \
+	/usr/lib/*.so.* \
 	/usr/share/* \
 	/var/cache/*
 

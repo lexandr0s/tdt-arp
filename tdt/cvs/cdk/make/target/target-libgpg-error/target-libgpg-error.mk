@@ -45,7 +45,7 @@ define postinst_${P}
 #!/bin/sh
 $$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
-FILES_${P} = /usr/lib/libgpg-error.s*
+FILES_${P} = /usr/lib/libgpg-error.so.*
 
 call[[ ipkbox ]]
 

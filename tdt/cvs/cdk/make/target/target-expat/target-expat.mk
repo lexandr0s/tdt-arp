@@ -46,7 +46,7 @@ define postinst_libexpat1
 #!/bin/sh
 $$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
-FILES_libexpat1 = /usr/lib/libexpat.so*
+FILES_libexpat1 = /usr/lib/libexpat.so.*
 
 RDEPENDS_libexpat_bin = libexpat1 libc6
 FILES_libexpat_bin = /usr/bin/xmlwf

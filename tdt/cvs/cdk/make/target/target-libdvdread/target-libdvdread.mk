@@ -48,7 +48,7 @@ DESCRIPTION_${P} = DVD navigation multimeda library - Development files  DVD nav
  multimeda library.  This package contains symbolic links,   header files, \
  and related items necessary for software development.
 RDEPENDS_${P} = libc6
-FILES_${P} = /usr/lib/*.so*
+FILES_${P} = /usr/lib/*.so.*
 
 call[[ ipkbox ]]
 

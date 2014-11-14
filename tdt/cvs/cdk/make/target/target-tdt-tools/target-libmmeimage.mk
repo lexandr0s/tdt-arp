@@ -12,7 +12,7 @@ endif
 PR_${P} = $(PR_tdt_tools).2
 
 DESCRIPTION_${P} = libmmeimage
-FILES_${P} = /lib/libmmeimage.s*
+FILES_${P} = /usr/lib/libmmeimage.s*
 
 MAKE_FLAGS_${P} = DRIVER_TOPDIR=$(DIR_target_driver)
 

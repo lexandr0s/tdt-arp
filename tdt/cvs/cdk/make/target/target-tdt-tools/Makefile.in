@@ -17,6 +17,10 @@ package[[ target_libeplayer3
 call[[ header ]]
 ]]package
 
+package[[ target_eplayer4
+call[[ header ]]
+]]package
+
 package[[ target_libmme_host
 call[[ header ]]
 ]]package
@@ -34,6 +38,10 @@ call[[ header ]]
 ]]package
 
 package[[ target_ustslave
+call[[ header ]]
+]]package
+
+package[[ target_libstgles
 call[[ header ]]
 ]]package
 
@@ -69,7 +77,8 @@ function[[ TARGET_tdt_tools
 CONFIG_FLAGS_${P} += \
 	--with-driver=$(driverdir) \
 	--with-dvbincludes=$(driverdir)/include \
-	--with-target=cdk
+	--with-target=cdk \
+	
 
 ifdef CONFIG_MULTICOM324
 CONFIG_FLAGS_${P} += --enable-multicom324
@@ -90,8 +99,7 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 		./configure \
 			--build=$(build) \
 			--host=$(target) \
-			--prefix= \
-			--includedir=${targetprefix}/usr/include \
+			--prefix=/usr \
 			$(CONFIG_FLAGS_${P}) \
 		&& \
 		make $(MAKE_FLAGS_${P})

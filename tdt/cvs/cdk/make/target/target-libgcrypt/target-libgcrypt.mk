@@ -49,7 +49,7 @@ define postinst_${P}
 #!/bin/sh
 $$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
-FILES_${P} = /usr/lib/libgcrypt.s*
+FILES_${P} = /usr/lib/libgcrypt.so.*
 
 call[[ ipkbox ]]
 

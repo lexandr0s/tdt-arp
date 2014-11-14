@@ -21,10 +21,10 @@ call[[ ipk ]]
 PACKAGES_${P} =  libcrypto1 libssl1
 DESCRIPTION_${P} = Secure Socket Layer (SSL) binary and related cryptographic tools.
 
-FILES_libcrypto1 = /usr/lib/libcrypto.s*
+FILES_libcrypto1 = /usr/lib/libcrypto.so.*
 
 RDEPENDS_libssl1 = libcrypto1
-FILES_libssl1 = /usr/lib/libssl.s*
+FILES_libssl1 = /usr/lib/libssl.so.*
 
 call[[ ipkbox ]]
 

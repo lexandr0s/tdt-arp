@@ -46,7 +46,7 @@ DESCRIPTION_${P} = Library for editing typed command lines \
  applications that allow users to edit command lines as they are typed in. \
  Both Emacs and vi editing modes are available
 RDEPENDS_${P} += libncurses5 libc6
-FILES_${P} = /usr/lib/*.so*
+FILES_${P} = /usr/lib/*.so.*
 define postinst_${P}
 #!/bin/sh
 $$OPKG_OFFLINE_ROOT/sbin/ldconfig

@@ -39,7 +39,7 @@ call[[ ipk ]]
 NAME_${P} = libexif12
 DESCRIPTION_${P} = libexif is a library for parsing, editing, and saving EXIF data.
 RDEPENDS_${P} = libc6
-FILES_${P} = /usr/lib/libexif.*
+FILES_${P} = /usr/lib/libexif.so.*
 
 call[[ ipkbox ]]
 

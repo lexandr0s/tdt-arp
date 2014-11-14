@@ -43,7 +43,7 @@ call[[ ipk ]]
 PACKAGES_${P} = libpng16
 DESCRIPTION_libpng16 = libpng
 RDEPENDS_libpng16 = libz1 libc6
-FILES_libpng16 = /usr/lib/*.so*
+FILES_libpng16 = /usr/lib/*.so.*
 
 call[[ ipkbox ]]
 

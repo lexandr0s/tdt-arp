@@ -3,7 +3,7 @@
 #
 package[[ target_python_pyasn1
 
-BDEPENDS_${P} = $(target_python_setuptools) $(target_python_pyasn1)
+BDEPENDS_${P} = $(target_python_setuptools)
 
 PV_${P} = 0.1.7
 PR_${P} = 1

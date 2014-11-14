@@ -39,7 +39,7 @@ call[[ ipk ]]
 NAME_${P} = libogg0
 DESCRIPTION_${P} = libogg is the bitstream and framing library for the Ogg project. \
 It provides functions which are necessary to codec libraries like libvorbis.
-FILES_${P} = /usr/lib/*.so*
+FILES_${P} = /usr/lib/*.so.*
 
 call[[ ipkbox ]]
 

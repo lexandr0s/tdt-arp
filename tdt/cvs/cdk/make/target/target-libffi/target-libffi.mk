@@ -53,7 +53,7 @@ call[[ ipk ]]
 
 NAME_${P} = libffi6
 RDEPENDS_${P} = libc6
-FILES_${P} = /usr/lib/libffi.so*
+FILES_${P} = /usr/lib/libffi.so.*
 
 call[[ ipkbox ]]
 

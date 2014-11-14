@@ -45,7 +45,7 @@ define postinst_${P}
 #!/bin/sh
 $$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
-FILES_sqlite = /usr/lib/*.so*
+FILES_sqlite = /usr/lib/*.so.*
 
 call[[ ipkbox ]]
 

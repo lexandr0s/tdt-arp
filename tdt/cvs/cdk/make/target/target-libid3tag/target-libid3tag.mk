@@ -42,7 +42,7 @@ DESCRIPTION_${P} = Library for interacting with ID3 tags in MP3 files  Library f
  interacting with ID3 tags in MP3 files.
 NAME_${P} = libid3tag0
 RDEPENDS_${P} = libz1 libc6
-FILES_${P} = /usr/lib/*.so*
+FILES_${P} = /usr/lib/*.so.*
 
 call[[ ipkbox ]]
 

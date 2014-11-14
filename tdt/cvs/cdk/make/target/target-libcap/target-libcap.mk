@@ -46,7 +46,7 @@ define postinst_libcap2
 #!/bin/sh
 $$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
-FILES_libcap2 = /lib/*.so*
+FILES_libcap2 = /lib/*.so.*
 
 RDEPENDS_libcap_bin = libc6 libcap2
 FILES_libcap_bin = /sbin/*

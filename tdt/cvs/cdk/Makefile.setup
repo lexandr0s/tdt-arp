@@ -167,6 +167,7 @@ Makefile.pre: \
   make/buildenv.mk \
   make/base.mk \
   make/base-rpm.mk \
+  make/config.mk \
   make/host/*.in \
   make/host/*/*.in \
   make/cross/*.in \

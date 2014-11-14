@@ -145,6 +145,10 @@ ifdef CONFIG_KERNEL_0215
 KERNEL_VERSION := 2.6.32.61_stm24_0215
 endif
 
+ifdef CONFIG_KERNEL_0217
+KERNEL_VERSION := 2.6.32.61_stm24_0217
+endif
+
 KERNEL_VERSION_SPLITED := $(subst _, ,$(KERNEL_VERSION))
 KERNEL_UPSTREAM := $(word 1,$(KERNEL_VERSION_SPLITED))
 KERNEL_STM := $(word 2,$(KERNEL_VERSION_SPLITED))
@@ -159,7 +163,7 @@ STLINUX := stlinux24
 HOST_PATH := $(PATH)
 # PATH is exported automatically
 PATH := $(crossprefix)/bin:$(hostprefix)/bin:$(PATH)
-ifdef ENABLE_CCACHE
+ifdef CONFIG_ENABLE_CCACHE
 PATH := $(hostprefix)/ccache-bin:$(PATH)
 endif
 
@@ -195,8 +199,8 @@ EXPORT_BUILDENV := \
 	export OBJCOPY=$(target)-objcopy && \
 	export OBJDUMP=$(target)-objdump && \
 	export LN_S="ln -s" && \
-	export CFLAGS="$(TARGET_CFLAGS)" && \
-	export CXXFLAGS="$(TARGET_CFLAGS)" && \
+	export CFLAGS="$(strip $(subst ", ,$(CONFIG_TARGET_CFLAGS)))" && \
+	export CXXFLAGS="$(strip $(subst ", ,$(CONFIG_TARGET_CXXFLAGS)))" && \
 	export LDFLAGS="$(TARGET_LDFLAGS) -Wl,-rpath-link,$(PKDIR)/usr/lib" && \
 	export PKG_CONFIG_SYSROOT_DIR="$(targetprefix)" && \
 	export PKG_CONFIG_PATH="$(targetprefix)/usr/lib/pkgconfig" && \

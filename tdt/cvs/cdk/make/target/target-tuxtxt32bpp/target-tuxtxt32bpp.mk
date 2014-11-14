@@ -55,7 +55,7 @@ NAME_${P} = libtuxtxt32bpp0
 DESCRIPTION_${P} = tuxbox tuxtxt for 32bit framebuffer
 RDEPENDS_${P} = libtuxtxt0 libfreetype6 libz1
 FILES_${P} = \
-	/usr/lib/libtuxtxt32bpp* \
+	/usr/lib/*.so.* \
 	/usr/lib/enigma2/python/Plugins/Extensions/Tuxtxt/* \
 	/etc/tuxtxt/tuxtxt2.conf
 

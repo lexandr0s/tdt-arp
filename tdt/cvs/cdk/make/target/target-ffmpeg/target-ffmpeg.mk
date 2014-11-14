@@ -250,7 +250,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 call[[ ipk ]]
 
 RDEPENDS_ffmpeg = librtmp1 libbluray
-FILES_ffmpeg = /usr/lib/*.so* /usr/bin/ffmpeg
+FILES_ffmpeg = /usr/lib/*.so.* /usr/bin/ffmpeg
 
 call[[ ipkbox ]]
 

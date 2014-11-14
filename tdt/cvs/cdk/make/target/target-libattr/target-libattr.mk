@@ -26,7 +26,7 @@ RDEPENDS_attr = libattr1 libc6
 FILES_attr = /usr/bin
 
 RDEPENDS_libattr1 = libc6
-FILES_libattr1 = /usr/lib/libattr.s*
+FILES_libattr1 = /usr/lib/libattr.so.*
 define postinst_libattr1
 #!/bin/sh
 $$OPKG_OFFLINE_ROOT/sbin/ldconfig

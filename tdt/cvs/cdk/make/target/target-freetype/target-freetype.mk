@@ -47,7 +47,7 @@ call[[ ipk ]]
 
 NAME_${P} = libfreetype6
 RDEPENDS_${P} = libc6
-FILES_${P} = /usr/lib/*.so*
+FILES_${P} = /usr/lib/*.so.*
 
 call[[ ipkbox ]]
 

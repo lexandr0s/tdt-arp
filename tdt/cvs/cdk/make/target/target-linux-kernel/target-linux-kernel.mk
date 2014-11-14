@@ -60,13 +60,16 @@ ${P}_patches += linux-tune_stm24.patch
 endif
 
 ifeq ($(CONFIG_KERNEL_0215),y)
-${P}_patches += \
-	linux-tune_stm24_$(KERNEL_LABEL).patch \
-	linux-sh4-ratelimit-bug_stm24_$(KERNEL_LABEL).patch \
-	fix_localversion_stm24_$(KERNEL_LABEL).diff
+${P}_patches += fix_localversion_stm24_$(KERNEL_LABEL).diff
 endif
 
-ifeq ($(CONFIG_KERNEL_0211)$(CONFIG_KERNEL_0215),y)
+ifeq ($(CONFIG_KERNEL_0215)$(CONFIG_KERNEL_0217),y)
+${P}_patches += \
+	linux-tune_stm24_$(KERNEL_LABEL).patch \
+	linux-sh4-ratelimit-bug_stm24_$(KERNEL_LABEL).patch
+endif
+
+ifeq ($(CONFIG_KERNEL_0211)$(CONFIG_KERNEL_0215)$(CONFIG_KERNEL_0217),y)
 ${P}_patches += \
 	linux-sh4-mmap_stm24.patch \
 	linux-sh4-directfb_stm24_$(KERNEL_LABEL).patch
@@ -84,7 +87,7 @@ ifdef CONFIG_HL101
   ${P}_patches += linux-sh4-stmmac_stm24_$(KERNEL_LABEL).patch
   ${P}_patches += linux-sh4-i2c-st40-pio_stm24_$(KERNEL_LABEL).patch
 ifeq ($(CONFIG_KERNEL_0211)$(CONFIG_KERNEL_0215),y)
-  ${P}_patches += linux-sh4-hl101_i2c_st40_stm24_$(KERNEL_LABEL).patch)
+  ${P}_patches += linux-sh4-hl101_i2c_st40_stm24_$(KERNEL_LABEL).patch
 endif
 endif #CONFIG_HL101
 
@@ -119,13 +122,29 @@ ${P}_config = linux-sh4-$(KERNEL_UPSTREAM)-$(KERNEL_LABEL)_$(TARGET).config$(DEB
 DEPENDS_${P} += $(addprefix ${SDIR}/,$(${P}_patches) $(${P}_config))
 
 rule[[
+ifdef CONFIG_GIT_KERNEL_ARP
+ifdef CONFIG_KERNEL_0211
+  git://git.stlinux.com/stm/linux-sh4-2.6.32.y.git;b=stmicro;r=3bce06ff873fb5098c8cd21f1d0e8d62c00a4903
+endif
+ifdef CONFIG_KERNEL_0215
+  git://git.stlinux.com/stm/linux-sh4-2.6.32.y.git;b=stmicro;r=5384bd391266210e72b2ca34590bd9f543cdb5a3
+endif
+ifdef CONFIG_KERNEL_0217
+  git://git.stlinux.com/stm/linux-sh4-2.6.32.y.git;b=stmicro;r=b43f8252e9f72e5b205c8d622db3ac97736351fc
+endif
+else
   dirextract:local://$(archivedir)/$(STLINUX)-host-kernel-source-sh4-$(KERNEL_VERSION)-$(KERNEL_RELEASE).src.rpm
   extract:localwork://${DIR}/linux-$(KERNEL_MAJOR).tar.bz2
 # don't forget to check on version update, but usually .src.rpm has these 2 patches
   patch:localwork://${DIR}/linux-$(KERNEL_UPSTREAM).patch.bz2
   patch:localwork://${DIR}/linux-$(KERNEL_UPSTREAM)_$(KERNEL_STM)_sh4_$(KERNEL_LABEL).patch.bz2
 # TODO: add patches
+endif
 ]]rule
+
+ifdef CONFIG_GIT_KERNEL_ARP
+call[[ git ]]
+endif
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(PREPARE_${P})
@@ -140,7 +159,9 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 
 $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 	cd $(DIR_${P}) && $(MAKE) ${MAKE_FLAGS} uImage modules
+ifdef CONFIG_DEBUG_ARP
 	cd $(DIR_${P})/tools/perf && $(MAKE) ${MAKE_FLAGS} $(MAKE_ARGS) all
+endif
 	touch $@
 
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile

@@ -43,7 +43,7 @@ define postinst_rtmpdump
 #!/bin/sh
 $$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
-FILES_${P} = /usr/lib/librtmp.s*
+FILES_${P} = /usr/lib/librtmp.so.*
 
 call[[ ipkbox ]]
 

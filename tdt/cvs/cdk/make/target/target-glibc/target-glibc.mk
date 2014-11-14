@@ -29,7 +29,7 @@ $$OPKG_OFFLINE_ROOT/sbin/ldconfig
 endef
 FILES_libc6 = \
 	/etc/ld.so.conf \
-	/lib/* \
+	/lib/*.s* \
 	/sbin/ldconfig
 
 call[[ ipkbox ]]

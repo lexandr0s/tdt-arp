@@ -4,7 +4,16 @@ mainmenu "global config"
 	default n
 	bool "remove temporary files in work dir ?"
 
-menu "Global Configuration"
+	config DEBUG_ARP
+	default n
+	bool "Activate debug (y/N)?"
+
+	config ENABLE_CCACHE
+	default y
+	bool "Activate ccache (y/N)?"
+
+###########################################################################################
+  menu "Global Configuration"
 	choice
 		prompt "Target:"
 		default SPARK
@@ -21,12 +30,6 @@ menu "Global Configuration"
 		bool "SpiderBox HL-101 (TODO)"
 	endchoice
 		
-	config TARGET
-		string
-		default "spark"  if SPARK
-		default "spark7162"  if SPARK7162
-		default "hl101"  if HL101
-
 	choice
 		prompt "Kernel:"
 		default KERNEL_0211
@@ -38,8 +41,18 @@ menu "Global Configuration"
 
 		config KERNEL_0215
 		bool "STM 24 2.6.32.61-0215"
+
+		config KERNEL_0217
+		bool "STM 24 2.6.32.61-0217"
+		select GIT_KERNEL_ARP
+
 	endchoice
 
+
+		config GIT_KERNEL_ARP
+		bool  "Build kernel from Git STlinux"
+
+###########################################################################
 	choice
 		prompt "toolchain building:"
 		default GLIBC_SCRATCH
@@ -101,6 +114,14 @@ menu "Global Configuration"
 		depends on GCC_LIB_FROM_TARGET
 	  endchoice
 
+	config TARGET_CFLAGS
+		string "Target Optimizations C Flags"
+		default "-O2"
+
+	config TARGET_CXXFLAGS
+		string "Target Optimizations C++ Flags"
+		default "-O2"
+
 	choice
 		prompt "Media Framework:"
 		default EPLAYER3
@@ -132,6 +153,7 @@ menu "Global Configuration"
 
 endmenu
 
+############################################################################
 menu "GUI Configuration"
   choice
 	prompt "Apps:"
