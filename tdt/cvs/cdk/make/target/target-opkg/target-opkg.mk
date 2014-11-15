@@ -18,13 +18,6 @@ rule[[
   install_file:$(PKDIR)/usr/share/opkg/intercept/:file://modprobe
 ]]rule
 
-CONFIG_FLAGS_${P} = \
-	--enable-maintainer-mode \
-	--disable-curl \
-	--disable-gpg \
-	--with-opkglibdir=/usr/lib
-
-
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(PREPARE_${P})
 	touch $@
@@ -36,7 +29,9 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 			--build=$(build) \
 			--host=$(target) \
 			--prefix=/usr \
-			$(CONFIG_FLAGS_${P}) \
+			--disable-curl \
+			--disable-gpg \
+			--with-opkglibdir=/usr/lib \
 		&& \
 		$(MAKE) all
 	touch $@
