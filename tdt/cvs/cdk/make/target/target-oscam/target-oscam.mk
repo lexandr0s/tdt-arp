@@ -11,7 +11,7 @@ PR_${P} = 1
 call[[ base ]]
 
 rule[[
-  svn://www.oscam.cc/svn/oscam-mirror/trunk/
+  svn://www.streamboard.tv/svn/oscam/trunk
 ]]rule
 
 call[[ svn ]]

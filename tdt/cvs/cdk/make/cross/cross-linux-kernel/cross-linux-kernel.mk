@@ -6,6 +6,9 @@ package[[ cross_kernel
 BDEPENDS_${P} = $(cross_filesystem)
 
 PR_${P} = 2
+ifdef CONFIG_GIT_KERNEL_ARP
+PV_${P} = $(KERNEL_VERSION)
+endif
 
 ${P}_patches = \
 	linux-sh4-linuxdvb_stm24_$(KERNEL_LABEL).patch \
@@ -24,16 +27,16 @@ ifeq ($(CONFIG_KERNEL_0211),y)
 ${P}_patches += linux-tune_stm24.patch
 endif
 
-ifeq ($(CONFIG_KERNEL_0215),y)
+ifeq ($(CONFIG_KERNEL_0215)$(CONFIG_KERNEL_0217),y)
 ${P}_patches += linux-tune_stm24_$(KERNEL_LABEL).patch
 ${P}_patches += linux-sh4-ratelimit-bug_stm24_$(KERNEL_LABEL).patch
 endif
 
-ifeq ($(CONFIG_KERNEL_0211)$(CONFIG_KERNEL_0215),y)
+ifeq ($(CONFIG_KERNEL_0211)$(CONFIG_KERNEL_0215)$(CONFIG_KERNEL_0217),y)
 ${P}_patches += linux-sh4-mmap_stm24.patch
 endif
 
-ifeq ($(CONFIG_KERNEL_0211)$(CONFIG_KERNEL_0215),y)
+ifeq ($(CONFIG_KERNEL_0211)$(CONFIG_KERNEL_0215)$(CONFIG_KERNEL_0217),y)
 ${P}_patches += linux-sh4-directfb_stm24_$(KERNEL_LABEL).patch
 endif
 
@@ -46,6 +49,28 @@ ${P}_patches += patch_swap_notify_core_support.diff
 # endif
 ${P}_config = linux-sh4-$(KERNEL_UPSTREAM)-$(KERNEL_LABEL)_$(TARGET).config$(DEBUG_STR)
 
+
+
+ifdef CONFIG_GIT_KERNEL_ARP
+DEPENDS_${P} += $(addprefix ${SDIR}/,$(${P}_patches) $(${P}_config))
+
+call[[ base ]]
+
+rule[[
+ifdef CONFIG_KERNEL_0211
+  git://git.stlinux.com/stm/linux-sh4-2.6.32.y.git;b=stmicro;r=3bce06ff873fb5098c8cd21f1d0e8d62c00a4903
+endif
+ifdef CONFIG_KERNEL_0215
+  git://git.stlinux.com/stm/linux-sh4-2.6.32.y.git;b=stmicro;r=5384bd391266210e72b2ca34590bd9f543cdb5a3
+endif
+ifdef CONFIG_KERNEL_0217
+  git://git.stlinux.com/stm/linux-sh4-2.6.32.y.git;b=stmicro;r=b43f8252e9f72e5b205c8d622db3ac97736351fc
+endif
+]]rule
+
+call[[ git ]]
+call[[ ipk ]]
+else
 ${P}_VERSION := $(KERNEL_VERSION)
 ${P}_SPEC = stm-host-kernel-sh4.spec
 ${P}_SPEC_PATCH =
@@ -57,8 +82,8 @@ DEPENDS_${P} += $(addprefix ${SDIR}/,$(${P}_patches) $(${P}_config))
 call[[ base ]]
 call[[ base_rpm ]]
 call[[ ipk ]]
-
 call[[ rpm_do_compile ]]
+endif
 
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile $(DEPENDS_${P})
 	$(PREPARE_${P})

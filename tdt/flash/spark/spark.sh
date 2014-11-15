@@ -40,6 +40,9 @@ fi
 if egrep  "^CONFIG_KERNEL_0215=y" $LAST > /dev/null; then
 kern='_215'
 fi
+if egrep  "^CONFIG_KERNEL_0217=y" $LAST > /dev/null; then
+kern='_217'
+fi
 
 echo "BOX          = $box "
 echo "KERN         = $kern"
