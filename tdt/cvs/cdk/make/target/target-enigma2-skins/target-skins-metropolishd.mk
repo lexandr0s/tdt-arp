@@ -7,6 +7,7 @@ BDEPENDS_${P} = $(target_filesystem)
 
 PV_${P} = git
 PR_${P} = 1
+PACKAGE_ARCH_${P} = all
 
 call[[ base ]]
 
