@@ -104,6 +104,7 @@ endif #CONFIG_PTINP_SRC
 call[[ ipk ]]
 
 RDEPENDS_${P} = linux-kernel
+RM_WORK_${P} = $(false)
 
 define postinst_${P}
 #!/bin/sh
