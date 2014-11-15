@@ -149,6 +149,11 @@ endif
 #endif
 
 ########################################################################################
+#xbmc
+ifdef CONFIG_BUILD_XBMC
+IPKBOX_LIST_${P} += $(target_xbmc) $(target_libid3tag) $(target_libvorbisidec) $(target_libcap) $(target_libmad)
+opkg_my_list += libblkid1
+endif
 #extras
 
 ifdef CONFIG_WLAN_SUPPORT
