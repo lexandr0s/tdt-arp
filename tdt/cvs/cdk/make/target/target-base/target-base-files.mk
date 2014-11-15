@@ -46,6 +46,7 @@ rule[[
   install:-d:$(PKDIR)/var/lock
   install:-d:$(PKDIR)/var/lib
   install:-d:$(PKDIR)/var/cache
+  install:-d:$(PKDIR)/var/lib/urandom
   install:-d:$(PKDIR)/etc
   install:-d:$(PKDIR)/mnt
   install:-d:$(PKDIR)/hdd
