@@ -2,26 +2,102 @@
 #
 # umountfs	Turn off swap and unmount all local file systems.
 #
-# Version:      @(#)umountfs  2.85-16  03-Jun-2004  miquels@cistron.nl
-#
-# chkconfig: 06 40 0
+# chkconfig: S 0 40
 #
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin
 
-echo -n "Deactivating swap..."
-umount -ttmpfs -a -r
-swapoff -a
-echo "done."
+exec 9<&0 </proc/mounts
+
+PROTECTED_MOUNTS="$(sed -n '0,/^\/[^ ]* \/ /p' /proc/mounts)"
+WEAK_MTPTS="" # be gentle, don't use force
+REG_MTPTS=""
+TMPFS_MTPTS=""
+NETFS_MTPTS=""
+
+while read -r DEV MTPT FSTYPE REST
+do
+	echo "$PROTECTED_MOUNTS" | grep -qs "^$DEV $MTPT " && continue
+	case "$MTPT" in
+	  /|/proc|/dev|/.dev|/dev/pts|/dev/shm|/dev/.static/dev|/proc/*|/sys|/lib/init/rw)
+		continue
+		;;
+	  /var/run)
+		continue
+		;;
+	  /var/lock)
+		continue
+		;;
+	esac
+	case "$FSTYPE" in 
+	  proc|procfs|linprocfs|devfs|sysfs|usbfs|usbdevfs|devpts)
+		continue
+		;;
+	  tmpfs)
+		TMPFS_MTPTS="$MTPT $TMPFS_MTPTS"
+		;;
+	  nfs|nfs4|smbfs|cifs)
+		NETFS_MTPTS="${DEV%:*}"="$MTPT $NETFS_MTPTS"
+		;;
+	  *)
+		if echo "$PROTECTED_MOUNTS" | grep -qs "^$DEV "; then
+			WEAK_MTPTS="$MTPT $WEAK_MTPTS"
+		else
+			REG_MTPTS="$MTPT $REG_MTPTS"
+		fi
+		;;
+	esac
+done
+
+exec 0<&9 9<&-
 
 #
-#	Umount all filesystems except the virtual ones.
+# Make sure tmpfs file systems are umounted before turning off
+# swap, to avoid running out of memory if the tmpfs filesystems
+# use a lot of space.
 #
-echo -n "Unmounting local filesystems..."
-umount -tnoproc,noprocfs,nodevfs,nosysfs,nousbfs,nousbdevfs,nodevpts,novar -d -a -r
-echo "done."
+if [ "$TMPFS_MTPTS" ]
+then
+	echo "Unmounting temporary filesystems"
+	umount $TMPFS_MTPTS
+fi
 
-# This is superfluous.
-mount -n -o remount,ro /
+#
+# Deactivate swap
+#
+echo "Deactivating swap"
+echo "swapoff -a >/dev/null"
+
+#
+# Unmount local filesystems
+#
+if [ "$WEAK_MTPTS" ]; then
+	echo "Unmounting weak filesystems"
+	umount -r $WEAK_MTPTS
+fi
+if [ "$REG_MTPTS" ]
+then
+	echo "Unmounting local filesystems"
+	umount -f -r $REG_MTPTS
+fi
+
+#
+# Unmount network filesystems
+# If there is no response from the ping, do not umount,
+# because umount freezes on a non working share
+#
+if [ "$NETFS_MTPTS" ]
+then
+	echo "Unmounting network filesystems"
+	for DEV in $NETFS_MTPTS
+	do
+		ping -c1 -W3 ${DEV%=*}
+		if [ $? -eq 0 ]
+		then
+			umount -f -r ${DEV#*=}
+		fi
+	done
+fi
 
 : exit 0
+
