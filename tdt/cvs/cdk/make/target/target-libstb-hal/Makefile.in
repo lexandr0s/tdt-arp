@@ -1,3 +1,5 @@
+ifeq ($(strip $(CONFIG_BUILD_NEUTRINO)),y)
 package[[ target_libstb_hal
 call[[ header ]]
 ]]package
+endif

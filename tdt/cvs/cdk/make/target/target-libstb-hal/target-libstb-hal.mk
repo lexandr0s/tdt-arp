@@ -1,6 +1,7 @@
 #
 # AR-P buildsystem smart Makefile
 #
+ifeq ($(strip $(CONFIG_BUILD_NEUTRINO)),y)
 
 package[[ target_libstb_hal
 
@@ -59,3 +60,5 @@ RDEPENDS_${P} = ffmpeg libpng16 libasound2
 call[[ ipkbox ]]
 
 ]]package
+
+endif
