@@ -23,7 +23,7 @@ $(TARGET_${P}).do_package: $(cross_gcc_second).do_package
 	touch $@
 
 # Ask to not RM_WORK util we finished
-$(cross_gcc_second): $(TARGET_${P}).do_package
+$(TARGET_cross_gcc_second): $(TARGET_${P}).do_package
 
 call[[ ipk ]]
 
