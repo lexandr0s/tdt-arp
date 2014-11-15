@@ -187,12 +187,15 @@ FILES_${P} = \
 
 define postinst_${P}
 #!/bin/sh
-if [ -z "$$OPKG_OFFLINE_ROOT" ]; then
+if grep -q root=/dev/mtdblock6 /proc/cmdline; then
   flash_eraseall /dev/mtd5
   nandwrite -p /dev/mtd5 /boot/uImage
   rm /boot/uImage
+else
+  flash_erase /dev/mtd5 0x400000 0x20
+  nandwrite -s 0x400000 -p /dev/mtd5 /boot/uImage
 fi
-depmod -b $$OPKG_OFFLINE_ROOT/ -a $(KERNEL_VERSION)
+depmod
 endef
 
 call[[ ipkbox ]]
