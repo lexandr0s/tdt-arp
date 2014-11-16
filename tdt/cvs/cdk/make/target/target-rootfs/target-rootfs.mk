@@ -46,8 +46,7 @@ $(TARGET_${P}): $(TARGET_${P}).do_install
 # helps to fill DEPENDS list
 $(TARGET_${P}).print_depends:
 #	catch cat exitstatus and see stderr
-	@cd $(ipkorigin) && cat $(addsuffix .origin,$(opkg_my_list)) > $(buildprefix)/list
-	cat $(buildprefix)/list
+	@cd $(ipkorigin) && cat $(addsuffix .origin,$(opkg_my_list)) 2>&1 |uniq
 
 # some packages are installed due to rdepends of other ones
 # we want to see all the installed packages and rebuild rootfs when any of them changes
