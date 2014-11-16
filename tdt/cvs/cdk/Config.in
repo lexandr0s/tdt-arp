@@ -6,11 +6,11 @@ mainmenu "global config"
 
 	config DEBUG_ARP
 	default n
-	bool "Activate debug (y/N)?"
+	bool "Activate debug ?"
 
 	config ENABLE_CCACHE
 	default y
-	bool "Activate ccache (y/N)?"
+	bool "Activate ccache ?"
 
 	choice
 		prompt "Target:"
