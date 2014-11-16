@@ -180,10 +180,10 @@ def DFS(start, do_cmd):
 		
 		# where can we go from here ?
 		if curr in targ:
-			child = targ[curr]
+			children = targ[curr]
 		else:
 			print "WARNING: unknown dependency", curr
-			child = []
+			children = []
 	
 		# have we been here before ?
 		if curr in last:
@@ -191,19 +191,19 @@ def DFS(start, do_cmd):
 		else:
 			idx = 0
 		
-		if idx >= len(child):
-			# visited all childs, go up
+		if idx >= len(children):
+			# visited all children, go up
 			if len(walk) == 0:
 				break
 			curr = walk.pop()
 			#print '<', curr
 		else:
 			# visit next child
-			ne = child[idx]
+			ne = children[idx]
 			print_dep(curr, ne)
 			if ne in walk:
 				print "ERROR: broke loop at", curr, '->', ne
-				last[curr] = idx + 1
+				last[curr] = idx
 				continue
 			last[curr] = idx
 			walk.append(curr)
