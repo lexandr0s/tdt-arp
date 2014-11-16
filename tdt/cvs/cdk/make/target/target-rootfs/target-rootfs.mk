@@ -3,15 +3,11 @@
 #
 package[[ target_rootfs
 
-IPKBOX_LIST_${P} = \
-$(target_firmware) $(target_bootelf) $(target_ustslave) $(target_driver) $(target_busybox) $(target_update_rcd) $(target_initscripts) $(target_sysvinit) $(target_devinit) $(target_udev) $(target_udev_rules) $(target_base_passwd) $(target_base_files) $(target_netbase) $(target_opkg) $(target_lirc) $(target_evremote2) $(target_vsftpd) $(target_python_pyopenssl) $(target_enigma2) $(target_tuxbox_configs) $(target_ethtool)
-
-DEPENDS_${P} = $(addsuffix .do_ipkbox, $(IPKBOX_LIST_${P}))
-
-#$(target_libmme_host) $(target_libmmeimage)
+BDEPENDS_${P} = \
+$(target_sysvinit) $(target_devinit) $(target_udev) $(target_udev_rules) $(target_initscripts) $(target_update_rcd) $(target_busybox) $(target_vsftpd) $(target_base_passwd) $(target_base_files) $(target_netbase) $(target_opkg) $(target_distro_feed_configs)  $(target_zlib) $(target_libbz2) $(target_glibc) $(target_gcc_lib) $(target_bootelf) $(target_firmware) $(target_ustslave) $(target_driver) $(target_bootlogo) $(target_showiframe) $(target_stfbcontrol) $(target_lirc) $(target_fp_control) $(target_tuxbox_configs) $(target_ethtool) $(target_enigma2)
 
 PV_${P} = 0.1
-PR_${P} = 5
+PR_${P} = 6
 
 RM_WORK_${P} = $(false)
 call[[ base ]]
@@ -72,11 +68,14 @@ opkg_my_list = \
 	initscripts \
 	update-rc.d \
 	busybox \
+	vsftpd \
 	base-passwd \
 	base-files \
 	netbase \
 	opkg \
+	distro-feed-configs \
 	libz1 \
+	libbz2 \
 	libc6 \
 	libgcc1
 
@@ -102,12 +101,21 @@ opkg_my_list += \
 	kernel-module-smartcard \
 	kernel-module-stgfb
 
+# specific box tools
+opkg_my_list += \
+	bootlogo \
+	showiframe \
+	stfbcontrol \
+	lirc \
+	fp-control
+
 # enigma2
 opkg_my_list += \
 	config-satellites \
 	config-cables \
 	config-terrestrial \
 	config-timezone \
+	ethtool \
 	enigma2
 
 # additional packages
