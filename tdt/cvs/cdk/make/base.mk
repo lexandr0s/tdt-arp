@@ -390,7 +390,7 @@ $(TARGET_${P}): $(TARGET_${P}).do_ipkbox
 # git staff related constants
 # you need first 'cd' to interesting directory
 git_log_srcrev := git log -1 --format=%H HEAD -- .
-git_log_version := echo `git rev-list --count HEAD -- .`-`git log -1 --format=%h HEAD -- .`
+git_log_version := git log -1 --format=%cd --date=short -- . |sed s/-//g
 
 help::
 	@echo run \'make all-update\' if you want to check all git/svn packages for updates
