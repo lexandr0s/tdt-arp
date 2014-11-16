@@ -19,7 +19,7 @@ WORK_${P} = $(prefix)/release
 DIR_${P} = $(WORK_${P})
 opkg_rootfs := opkg -f $(prefix)/opkg-box.conf -o $(DIR_${P})
 
-$(TARGET_${P}): $(DEPENDS_${P})
+$(TARGET_${P}).do_install: $(DEPENDS_${P})
 	$(PREPARE_${P})
 	( echo "dest root /"; \
 	  echo "arch $(box_arch) 16"; \
@@ -43,6 +43,8 @@ $(TARGET_${P}): $(DEPENDS_${P})
 	echo "----------------------------------------------------------" >>          $(DIR_${P})/etc/image-version
 	cat $(buildprefix)/.config |grep -v '^#' |tr ' ' '\n' >>                      $(DIR_${P})/etc/image-version
 	touch $@
+
+$(TARGET_${P}): $(TARGET_${P}).do_install
 
 # helps to fill DEPENDS list
 $(TARGET_${P}).print_depends:
