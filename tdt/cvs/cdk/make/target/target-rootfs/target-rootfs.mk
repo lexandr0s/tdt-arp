@@ -11,7 +11,7 @@ DEPENDS_${P} = $(addsuffix .do_ipkbox, $(IPKBOX_LIST_${P}))
 #$(target_libmme_host) $(target_libmmeimage)
 
 PV_${P} = 0.1
-PR_${P} = 4
+PR_${P} = 5
 
 call[[ base ]]
 
@@ -22,7 +22,7 @@ opkg_rootfs := opkg -f $(prefix)/opkg-box.conf -o $(DIR_${P})
 $(TARGET_${P}): $(DEPENDS_${P})
 	$(PREPARE_${P})
 	( echo "dest root /"; \
-	  echo "arch spark 16"; \
+	  echo "arch $(box_arch) 16"; \
 	  echo "arch sh4 10"; \
 	  echo "arch all 1"; \
 	  echo "src/gz box file://$(ipkbox)"; \
