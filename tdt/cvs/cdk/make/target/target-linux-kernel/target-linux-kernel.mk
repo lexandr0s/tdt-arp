@@ -187,15 +187,17 @@ FILES_${P} = \
 
 define postinst_${P}
 #!/bin/sh
-if grep -q root=/dev/mtdblock6 /proc/cmdline; then
-  flash_eraseall /dev/mtd5
-  nandwrite -p /dev/mtd5 /boot/uImage
-  rm /boot/uImage
-else
-  flash_erase /dev/mtd5 0x400000 0x20
-  nandwrite -s 0x400000 -p /dev/mtd5 /boot/uImage
+if [ -z "$$OPKG_OFFLINE_ROOT" ]; then
+  if grep -q root=/dev/mtdblock6 /proc/cmdline; then
+    flash_eraseall /dev/mtd5
+    nandwrite -p /dev/mtd5 /boot/uImage
+    rm /boot/uImage
+  else
+    flash_erase /dev/mtd5 0x400000 0x20
+    nandwrite -s 0x400000 -p /dev/mtd5 /boot/uImage
+  fi
 fi
-depmod
+depmod -b $$OPKG_OFFLINE_ROOT/ -a $(KERNEL_VERSION)
 endef
 
 call[[ ipkbox ]]
