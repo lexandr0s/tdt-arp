@@ -371,7 +371,8 @@ $(TARGET_${P}).do_ipkbox: $(TARGET_${P}).do_split
 	set -e; \
 	for pkg in `ls $(SPLITDIR_${P})`; do \
 		echo "building package $${pkg} ..."; \
-		echo ${P} > $(ipkorigin)/$${pkg}.origin; \
+		pkgn=`cat $(SPLITDIR_${P})/$${pkg}/CONTROL/control |sed -n '/^Package:/ s/Package: //p'`; \
+		echo ${P} > $(ipkorigin)/$${pkgn}.origin; \
 		ipkg-build -o root -g root $(SPLITDIR_${P})/$${pkg} $(ipkbox); \
 	done
 
