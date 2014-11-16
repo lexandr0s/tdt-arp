@@ -81,6 +81,7 @@ mainmenu "global config"
 
 		config GCC_LIB_FROM_CROSS
 		bool "cross-gcc"
+		depends on AVOID_RPM_SPEC
 
 		config GCC_LIB_FROM_TARGET
 		bool "target-gcc"
