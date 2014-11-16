@@ -111,7 +111,7 @@ all: $(TARGET_${P})
 
 ]]function
 
-function[[ TARGET_base_do_prepare
+function[[ base_do_prepare
 # place after variables and rule definitions
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(PREPARE_${P})
