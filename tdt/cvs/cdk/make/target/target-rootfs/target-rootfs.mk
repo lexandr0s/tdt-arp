@@ -13,14 +13,16 @@ DEPENDS_${P} = $(addsuffix .do_ipkbox, $(IPKBOX_LIST_${P}))
 PV_${P} = 0.1
 PR_${P} = 5
 
+RM_WORK_${P} = $(false)
 call[[ base ]]
-
+#overwrite workdir
 WORK_${P} = $(prefix)/release
 DIR_${P} = $(WORK_${P})
+
+call[[ base_do_prepare ]]
 opkg_rootfs := opkg -f $(prefix)/opkg-box.conf -o $(DIR_${P})
 
-$(TARGET_${P}).do_install: $(DEPENDS_${P})
-	$(PREPARE_${P})
+$(TARGET_${P}).do_install: $(TARGET_${P}).do_prepare
 	( echo "dest root /"; \
 	  echo "arch $(box_arch) 16"; \
 	  echo "arch sh4 10"; \
