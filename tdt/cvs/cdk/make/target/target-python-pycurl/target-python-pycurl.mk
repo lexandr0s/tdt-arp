@@ -3,7 +3,7 @@
 #
 package[[ target_python_pycurl
 
-BDEPENDS_${P} = $(target_python_setuptools)
+BDEPENDS_${P} = $(target_python_setuptools) $(target_curl)
 
 PV_${P} = 7.19.5
 PR_${P} = 1
