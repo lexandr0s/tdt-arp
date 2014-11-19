@@ -25,10 +25,6 @@ CONFIG_FLAGS_${P} = \
 		--disable-ffplay \
 		--disable-ffprobe \
 		--disable-doc \
-		--disable-htmlpages \
-		--disable-manpages \
-		--disable-podpages \
-		--disable-txtpages \
 		--disable-altivec \
 		--disable-amd3dnow \
 		--disable-amd3dnowext \
@@ -58,23 +54,7 @@ CONFIG_FLAGS_${P} = \
 		--disable-mipsfpu \
 		--disable-fast-unaligned \
 		--disable-muxers \
-		--enable-muxer=flac \
-		--enable-muxer=mp3 \
-		--enable-muxer=h261 \
-		--enable-muxer=h263 \
-		--enable-muxer=h264 \
-		--enable-muxer=image2 \
-		--enable-muxer=mpeg1video \
-		--enable-muxer=ogg \
 		--disable-encoders \
-		--enable-encoder=aac \
-		--enable-encoder=h261 \
-		--enable-encoder=h263 \
-		--enable-encoder=h263p \
-		--enable-encoder=ljpeg \
-		--enable-encoder=mjpeg \
-		--enable-encoder=mpeg1video \
-		--enable-encoder=png \
 		--disable-decoders \
 		--enable-decoder=aac \
 		--enable-decoder=aac_latm \
@@ -205,27 +185,22 @@ CONFIG_FLAGS_${P} = \
 		--enable-decoder=wmav2 \
 		--enable-decoder=wmavoice \
 		--enable-decoder=xan_dpcm \
-		--enable-demuxer=mjpeg \
-		--enable-demuxer=wav \
-		--enable-demuxer=hls \
-		--enable-protocol=file \
-		--enable-protocol=hls \
-		--enable-protocol=udp \
 		--enable-libbluray \
+		--enable-protocol=bluray \
 		--disable-indevs \
 		--disable-outdevs \
-		--enable-avresample \
 		--enable-bzlib \
 		--disable-zlib \
 		--disable-bsfs \
 		--enable-librtmp \
 		--pkg-config="pkg-config" \
-		--disable-parser=hevc \
 		--enable-cross-compile \
 		--cross-prefix=$(target)- \
 		--target-os=linux \
 		--arch=sh4 \
-		--disable-debug
+		--disable-debug \
+		--enable-pthreads \
+		--prefix=/usr
 
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
