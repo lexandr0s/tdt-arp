@@ -49,7 +49,6 @@ rule[[
   install:-d:$(PKDIR)/var/lib/urandom
   install:-d:$(PKDIR)/etc
   install:-d:$(PKDIR)/mnt
-  install:-d:$(PKDIR)/hdd
   install:-d:$(PKDIR)/media/hdd
   install:-d:$(PKDIR)/media/dvd
   install:-d:$(PKDIR)/media/net
