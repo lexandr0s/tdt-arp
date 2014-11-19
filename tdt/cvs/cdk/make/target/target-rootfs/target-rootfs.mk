@@ -39,6 +39,7 @@ $(TARGET_${P}).do_install: $(TARGET_${P}).do_prepare
 	echo "----------------------------------------------------------" >>          $(DIR_${P})/etc/image-version
 	echo "----------------------------------------------------------" >>          $(DIR_${P})/etc/image-version
 	cat $(buildprefix)/.config |grep -v '^#' |tr ' ' '\n' >>                      $(DIR_${P})/etc/image-version
+	echo "OpenAR-P \n \l" > $(DIR_${P})/etc/issue
 	touch $@
 
 $(TARGET_${P}): $(TARGET_${P}).do_install
