@@ -223,6 +223,7 @@ $(TARGET_${P}): $(DEPENDS_${P})
 	echo "----------------------------------------------------------" >>          $(DIR_${P})/etc/image-version
 	echo "----------------------------------------------------------" >>          $(DIR_${P})/etc/image-version
 	cat $(buildprefix)/.config |grep -v '^#' |tr ' ' '\n' >>                      $(DIR_${P})/etc/image-version
+	echo "OpenAR-P \n \l" > $(DIR_${P})/etc/issue
 
 # helps to fill DEPENDS list
 $(TARGET_${P}).print_depends:
