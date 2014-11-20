@@ -13,7 +13,7 @@ DIR_${P} = $(WORK_${P})/pyusb-${PV}
 call[[ base ]]
 
 rule[[
-  extract:http://sourceforge.net/projects/pyusb/files/1.0.0-beta-2/pyusb-${PV}.tar.gz
+  extract:https://pypi.python.org/packages/source/p/pyusb/pyusb-${PV}.tar.gz
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})

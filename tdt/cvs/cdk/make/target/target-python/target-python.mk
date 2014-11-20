@@ -97,7 +97,6 @@ PACKAGES_${P} = \
 	python_lang \
 	python_re \
 	python_audio \
-	python_bsddb \
 	python_codecs \
 	python_compile \
 	python_compiler \
@@ -115,7 +114,6 @@ PACKAGES_${P} = \
 	python_elementtree \
 	python_email \
 	python_fcntl \
-	python_gdbm \
 	python_hotshot \
 	python_html \
 	python_idle \
@@ -256,11 +254,6 @@ FILES_python_audio = \
   $(PYTHON_DIR)/toaiff.* \
   $(PYTHON_DIR)/wave.*
 
-DESCRIPTION_python_bsddb = Python Berkeley Database Bindings
-RDEPENDS_python_bsddb = python_core db libc6
-FILES_python_bsddb = \
-  $(PYTHON_DIR)/bsddb
-
 DESCRIPTION_python_codecs = Python Codecs, Encodings & i18n Support
 RDEPENDS_python_codecs = python_core python_lang libpython$(PYTHON_VERSION) libc6
 FILES_python_codecs = \
@@ -387,11 +380,6 @@ RDEPENDS_python_fcntl = python_core libpython$(PYTHON_VERSION) libc6
 FILES_python_fcntl = \
   $(PYTHON_DIR)/lib-dynload/fcntl.so
 
-DESCRIPTION_python_gdbm = Python GNU Database Support
-RDEPENDS_python_gdbm = python_core libpython$(PYTHON_VERSION) libgdbm4 libc6
-FILES_python_gdbm = \
-  $(PYTHON_DIR)/lib-dynload/gdbm.so
-
 DESCRIPTION_python_hotshot = Python Hotshot Profile
 RDEPENDS_python_hotshot = python_core libpython$(PYTHON_VERSION) libc6
 FILES_python_hotshot = \
@@ -422,7 +410,7 @@ FILES_python_image = \
   $(PYTHON_DIR)/imghdr.*
 
 DESCRIPTION_python_io =  Python Low-Level I/O
-RDEPENDS_python_io = libpython$(PYTHON_VERSION) libcrypto1 python_math python_core libssl1 python_textutils libc6
+RDEPENDS_python_io = libpython$(PYTHON_VERSION) libcrypto1 python_core libssl1 libc6
 FILES_python_io = \
   $(PYTHON_DIR)/lib-dynload/_io.so \
   $(PYTHON_DIR)/lib-dynload/_socket.so \
@@ -539,12 +527,12 @@ FILES_python_mmap = \
 DESCRIPTION_python_modules = All Python modules
 RDEPENDS_python_modules = python_profile python_threading python_distutils python_curses \
 python_ctypes python_datetime python_core python_io python_compiler python_compression python_re \
-python_ xmlrpc python_email python_image python_compile python_resource python_json python_difflib \
-python_math python_hotshot python_unixadmin python_textutils python_tkinter python_gdbm python_elementtree \
+python_email python_image python_compile python_resource python_json python_difflib \
+python_math python_hotshot python_unixadmin python_textutils python_tkinter python_elementtree \
 python_fcntl python_netclient python_pprint python_netserver python_codecs python_mime python_syslog python_html \
 python_readline python_subprocess python_pydoc python_logging python_mailbox python_xml python_terminal \
 python_sqlite3 python_sqlite3_tests python_unittest python_stringold python_robotparser python_pickle \
-python_multiprocessing python_pkgutil python_2to3 python_debugger python_bsddb python_numbers python_mmap \
+python_multiprocessing python_pkgutil python_2to3 python_debugger python_numbers python_mmap \
 python_smtpd python_shell python_idle python_zlib python_db python_crypt python_tests python_lang python_audio
 FILES_python_modules =
 

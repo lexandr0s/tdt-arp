@@ -5,11 +5,12 @@ package[[ target_rootfs
 
 IPKBOX_LIST_${P} = $(target_glibc) $(target_gcc) $(target_gcc_lib) $(target_base_files) $(target_driver) $(target_netbase) $(target_opkg) $(target_busybox) $(target_base_passwd) \
 $(target_ustslave) $(target_sysvinit) $(target_devinit) $(target_udev) $(target_lirc) $(target_vsftpd) $(target_ethtool) $(target_fonts) \
-$(target_fp_control) $(target_stfbcontrol) $(target_libfribidi) $(target_showiframe) $(target_portmap) $(target_firmware) $(target_bootelf) $(target_util_linux) $(target_e2fsprogs) \
-$(target_udev_rules) $(target_bootlogo) $(target_flash_tools) $(target_rfkill) $(target_distro_feed_configs) $(target_initscripts) $(target_update_rcd)
+$(target_fp_control) $(target_stfbcontrol) $(target_libfribidi) $(target_showiframe) $(target_portmap) $(target_firmware) $(target_bootelf) $(target_util_linux) $(target_e2fsprogs) $(target_wget) \
+$(target_udev_rules) $(target_bootlogo) $(target_flash_tools) $(target_rfkill) $(target_distro_feed_configs) $(target_initscripts) $(target_update_rcd) \
+$(target_streamripper)
 
 ifdef CONFIG_ENIGMA2_PLUGINS
-IPKBOX_LIST_${P} += $(target_enigma2_plugins) $(target_openwebif) $(target_mediaportal) $(target_aio_grab) $(target_python_cheetah) $(target_python_pycrypto) $(target_python_serviceidentity) $(target_python_wifi) $(target_python_mechanize) $(target_python_singledispatch) $(target_python_requests) $(target_python_livestreamer) $(target_oscam) $(target_enigma2_skins)
+IPKBOX_LIST_${P} += $(target_enigma2_plugins) $(target_openwebif) $(target_mediaportal) $(target_aio_grab) $(target_python_cheetah) $(target_python_pycrypto) $(target_python_serviceidentity) $(target_python_wifi) $(target_python_mechanize) $(target_python_singledispatch) $(target_python_requests) $(target_python_livestreamer) $(target_oscam) $(target_python_futures) $(target_enigma2_skins)
 endif
 
 # core system libraries, binaries and scripts
@@ -29,7 +30,8 @@ opkg_my_list = \
 	libz1 \
 	libc6 \
 	libgcc1 \
-	libncurses5
+	libncurses5 \
+	wget
 
 # netutils binaries and tools
 opkg_my_list += \
@@ -223,6 +225,7 @@ $(TARGET_${P}): $(DEPENDS_${P})
 	echo "----------------------------------------------------------" >>          $(DIR_${P})/etc/image-version
 	echo "----------------------------------------------------------" >>          $(DIR_${P})/etc/image-version
 	cat $(buildprefix)/.config |grep -v '^#' |tr ' ' '\n' >>                      $(DIR_${P})/etc/image-version
+	echo "OpenAR-P \n \l" > $(DIR_${P})/etc/issue
 
 # helps to fill DEPENDS list
 $(TARGET_${P}).print_depends:

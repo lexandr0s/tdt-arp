@@ -19,6 +19,7 @@ call[[ base_rpm ]]
 
 define DO_PACKAGE_${P}
 	chmod +x $(PKDIR)/etc/init.d/*
+	rm -f $(PKDIR)/etc/init.d/udevstop
 endef
 
 call[[ rpm ]]
