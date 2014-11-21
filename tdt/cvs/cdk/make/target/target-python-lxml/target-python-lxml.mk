@@ -3,7 +3,7 @@
 #
 package[[ target_python_lxml
 
-BDEPENDS_${P} = $(target_python_setuptools)
+BDEPENDS_${P} = $(target_python_setuptools) $(target_libxslt)
 
 PV_${P} = 3.3.6
 PR_${P} = 1
