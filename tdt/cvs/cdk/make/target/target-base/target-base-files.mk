@@ -40,7 +40,6 @@ rule[[
   install:-d:$(PKDIR)/proc
   install:-d:$(PKDIR)/sys
   install:-d:$(PKDIR)/tmp
-  install:-d:$(PKDIR)/var/tmp
   install:-d:$(PKDIR)/var/run
   install:-d:$(PKDIR)/var/log
   install:-d:$(PKDIR)/var/lock
