@@ -3,10 +3,10 @@
 #
 package[[ target_python_twisted
 
-BDEPENDS_${P} = $(target_python_zopeinterface)
+BDEPENDS_${P} = $(target_python_zopeinterface) $(target_python_pyopenssl)
 
 PV_${P} = 12.0.0
-PR_${P} = 1
+PR_${P} = 2
 
 DIR_${P} = $(WORK_${P})/Twisted-${PV}
 
