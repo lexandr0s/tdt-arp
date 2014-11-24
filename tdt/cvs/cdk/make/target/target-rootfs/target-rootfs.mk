@@ -101,8 +101,8 @@ opkg_my_list += \
 	enigma2-plugin-systemplugins-videoclippingsetup \
 	enigma2-plugin-systemplugins-videoenhancement \
 	enigma2-plugin-systemplugins-videotune \
-	enigma2-plugin-systemplugins-videomode \
-	enigma2-plugin-skin-magic
+	enigma2-plugin-systemplugins-videomode
+
 ifdef CONFIG_WLAN_SUPPORT
 IPKBOX_LIST_${P} += $(target_wireless_tools) $(target_firmware_wlan) $(target_compat_wireless)
 opkg_my_list += enigma2-plugin-systemplugins-wirelesslan
