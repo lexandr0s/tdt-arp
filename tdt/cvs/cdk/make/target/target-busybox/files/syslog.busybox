@@ -1,0 +1,44 @@
+#!/bin/sh
+#
+# syslogd
+#
+#chkconfig: S 36 0
+#
+
+PATH=/sbin:/bin:/usr/sbin:/usr/bin
+DAEMON="/sbin/syslogd"
+IP="192.168.0.109"
+OPTIONS="-l7 -s200 -b0 -O /tmp/messages -L -R $IP:9514"
+DESC="syslogd/klogd"
+
+# Defaults
+CONFIGFILE="/etc/syslogd.conf"
+
+set -e
+
+case "$1" in
+  start)
+	echo "Starting $DESC... "
+	start-stop-daemon --start --exec /sbin/syslogd -- $OPTIONS
+	start-stop-daemon --start --exec /sbin/klogd
+		#--exec $DAEMON -- -f $CONFIGFILE
+	echo "done."
+	;;
+  stop)
+	echo "Stopping $DESC... "
+	start-stop-daemon --stop --exec /sbin/syslogd
+	start-stop-daemon --stop --exec /sbin/klogd
+	echo "done."
+	;;
+  restart)
+	echo "Restarting $DESC... "
+	$0 stop
+	$0 start
+	;;
+  *)
+	echo "Usage: $0 {start|stop|restart}" >&2
+	exit 1
+	;;
+esac
+
+exit 0

@@ -6,7 +6,7 @@ package[[ target_busybox
 BDEPENDS_${P} = $(target_glibc) $(target_zlib) $(target_libffi)
 
 PV_${P} = 1.22.1
-PR_${P} = 1
+PR_${P} = 2
 
 DESCRIPTION_${P} = Tiny versions of many common UNIX utilities in a single small executable.
 
@@ -16,6 +16,7 @@ rule[[
   extract:http://www.${PN}.net/downloads/${PN}-${PV}.tar.bz2
   nothing:file://${PN}-${PV}.config
   nothing:file://busybox-cron
+  nothing:file://syslog.busybox
   nothing:file://autologin
   pmove:${DIR}/${PN}-${PV}.config:${DIR}/.config
   patch:file://${PN}-${PV}-ash.patch
@@ -48,6 +49,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	install -d $(PKDIR)/etc/init.d/
 	install -m755 $(DIR_${P})/busybox-cron $(PKDIR)/etc/init.d
 	install -d $(PKDIR)/etc/cron/crontabs/
+	install -m755 $(DIR_${P})/syslog.busybox $(PKDIR)/etc/init.d
 # FIXME:
 	install -d $(PKDIR)/bin
 	install -m755 $(DIR_${P})/autologin $(PKDIR)/bin/autologin
@@ -56,13 +58,17 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 
 call[[ TARGET_base_do_config ]]
 
-PACKAGES_${P} = busybox_cron busybox
+PACKAGES_${P} = busybox_cron busybox_syslog busybox
 
 FILES_busybox = /
 
 FILES_busybox_cron = \
 	/etc/cron/crontabs \
 	/etc/init.d/busybox-cron
+
+FILES_busybox_syslog = \
+	/etc/init.d/syslog.busybox
+
 define postinst_busybox_cron
 #!/bin/sh
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ busybox-cron start 03 S . stop 99 0 6 .
@@ -83,6 +89,28 @@ endef
 define prerm_busybox_cron
 #!/bin/sh
 $$OPKG_OFFLINE_ROOT/etc/init.d/busybox-cron stop
+endef
+
+define postinst_busybox_syslog
+#!/bin/sh
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ syslog.busybox start 36 S .
+
+endef
+define postrm_busybox_syslog
+#!/bin/sh
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ syslog.busybox remove
+endef
+
+define preinst_busybox_syslog
+#!/bin/sh
+if [ -z "$$OPKG_OFFLINE_ROOT" -a -f "/etc/init.d/syslog.busybox" ]; then
+	/etc/init.d/syslog.busybox stop
+fi
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ syslog.busybox remove
+endef
+define prerm_busybox_syslog
+#!/bin/sh
+$$OPKG_OFFLINE_ROOT/etc/init.d/syslog.busybox stop
 endef
 
 call[[ ipkbox ]]
