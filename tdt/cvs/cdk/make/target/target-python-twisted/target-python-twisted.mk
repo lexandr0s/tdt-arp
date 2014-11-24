@@ -3,7 +3,7 @@
 #
 package[[ target_python_twisted
 
-BDEPENDS_${P} = $(target_python_zopeinterface)
+BDEPENDS_${P} = $(target_python_zopeinterface) $(target_python_pyopenssl)
 
 PV_${P} = 14.0.0
 PR_${P} = 1
