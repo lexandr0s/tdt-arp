@@ -6,7 +6,7 @@ package[[ target_python_gdata
 BDEPENDS_${P} = $(target_python_setuptools)
 
 PV_${P} = 2.0.18
-PR_${P} = 1
+PR_${P} = 2
 
 DIR_${P} = $(WORK_${P})/gdata-${PV}
 
@@ -33,17 +33,17 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 DESCRIPTION_${P} = "The Google Data APIs (Google Data) provide a simple protocol for reading and writing data on the web. \
 Though it is possible to use these services with a simple HTTP client, this library provides helpful tools to streamline \
 your code and keep up with server-side changes. "
-RDEPENDS_${P} =
+RDEPENDS_${P} = python-json
 FILES_${P} =   \
-$(PYTHON_DIR)/site-packages/atom/*.py \
-$(PYTHON_DIR)/site-packages/gdata/*.py \
-$(PYTHON_DIR)/site-packages/gdata/youtube/*.py \
-$(PYTHON_DIR)/site-packages/gdata/geo/*.py \
-$(PYTHON_DIR)/site-packages/gdata/media/*.py \
-$(PYTHON_DIR)/site-packages/gdata/oauth/*.py \
-$(PYTHON_DIR)/site-packages/gdata/tlslite/*.py \
-$(PYTHON_DIR)/site-packages/gdata/tlslite/integration/*.py \
-$(PYTHON_DIR)/site-packages/gdata/tlslite/utils/*.py
+$(PYTHON_DIR)/site-packages/atom/*.p* \
+$(PYTHON_DIR)/site-packages/gdata/*.p* \
+$(PYTHON_DIR)/site-packages/gdata/youtube/*.p* \
+$(PYTHON_DIR)/site-packages/gdata/geo/*.p* \
+$(PYTHON_DIR)/site-packages/gdata/media/*.p* \
+$(PYTHON_DIR)/site-packages/gdata/oauth/*.p* \
+$(PYTHON_DIR)/site-packages/gdata/tlslite/*.p* \
+$(PYTHON_DIR)/site-packages/gdata/tlslite/integration/*.p* \
+$(PYTHON_DIR)/site-packages/gdata/tlslite/utils/*.p*
 
 call[[ ipkbox ]]
 
