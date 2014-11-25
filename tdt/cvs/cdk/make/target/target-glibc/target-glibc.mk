@@ -6,7 +6,7 @@ package[[ target_glibc
 BDEPENDS_${P} = $(target_zlib) $(target_libelf)
 BREPLACES_${P} = $(target_glibc_first) $(target_glibc_headers)
 
-PR_${P} = 1
+PR_${P} = 2
 
 ${P}_VERSION := 2.14.1-48
 ${P}_SPEC = stm-$(${P}).spec
@@ -16,6 +16,9 @@ ${P}_SRCRPM = $(archivedir)/$(STLINUX)-$(${P})-$(${P}_VERSION).src.rpm
 
 call[[ base ]]
 call[[ base_rpm ]]
+
+DO_PACKAGE_${P} = $(target)-strip $(PKDIR)/sbin/ldconfig
+
 call[[ rpm ]]
 
 call[[ ipk ]]
