@@ -5,24 +5,23 @@ package[[ target_busybox
 
 BDEPENDS_${P} = $(target_glibc) $(target_zlib) $(target_libffi)
 
-PV_${P} = 1.22.1
-PR_${P} = 2
+PV_${P} = git
+PR_${P} = 1
 
 DESCRIPTION_${P} = Tiny versions of many common UNIX utilities in a single small executable.
 
 call[[ base ]]
 
 rule[[
-  extract:http://www.${PN}.net/downloads/${PN}-${PV}.tar.bz2
-  nothing:file://${PN}-${PV}.config
+  git://git.busybox.net/${PN}.git
+  nothing:file://${PN}.config
   nothing:file://busybox-cron
   nothing:file://syslog.busybox
   nothing:file://autologin
-  pmove:${DIR}/${PN}-${PV}.config:${DIR}/.config
-  patch:file://${PN}-${PV}-ash.patch
-  patch:file://${PN}-${PV}-date.patch
-  patch:file://${PN}-${PV}-iplink.patch
+  pmove:${DIR}/${PN}.config:${DIR}/.config
 ]]rule
+
+call[[ git ]]
 
 MAKE_FLAGS_${P} = \
 	CROSS_COMPILE=$(target)- \
