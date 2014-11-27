@@ -1,10 +1,8 @@
 #!/bin/sh
 #
-#
-#
-#
 # syslogd
-#chkconfig: S 03 0
+#
+#chkconfig: S 36 0
 #
 
 PATH=/sbin:/bin:/usr/sbin:/usr/bin

@@ -29,7 +29,6 @@ rule[[
   install_bin:$(PKDIR)/etc/init.d:file://reboot
   install_bin:$(PKDIR)/etc/init.d:file://sendsigs
   install_bin:$(PKDIR)/etc/init.d:file://telnetd
-  install_bin:$(PKDIR)/etc/init.d:file://syslogd
   install_bin:$(PKDIR)/etc/init.d:file://umountfs
   install_bin:$(PKDIR)/etc/init.d:file://lircd
 # FIXME avahi mess
