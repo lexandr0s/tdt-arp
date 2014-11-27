@@ -1,0 +1,49 @@
+Index: ntp-4.2.2p3-r0/ntp-4.2.2p3/util/tickadj.c
+===================================================================
+--- ntp-4.2.2p3/util/tickadj.c	2004-02-25 06:58:33.000000000 +0100
++++ ntp-4.2.2p3/util/tickadj.c	2007-07-07 01:00:54.000000000 +0200
+@@ -21,7 +21,8 @@
+ # include <unistd.h>
+ #endif /* HAVE_UNISTD_H */
+ 
+-#ifdef HAVE___ADJTIMEX		/* Linux */
++/* proper handling here has been moved to upstream ntp bugzilla */
++#ifdef linux
+ 
+ #include <sys/timex.h>
+ struct timex txc;
+@@ -91,7 +92,7 @@
+ 	}
+ 
+ 	if (!errflg) {
+-		if (__adjtimex(&txc) < 0)
++		if (adjtimex(&txc) < 0)
+ 			perror("adjtimex");
+ 		else if (!quiet)
+ 			printf("tick     = %ld\ntick_adj = %d\n",
+@@ -146,7 +147,7 @@
+ #endif
+ 	}
+     
+-	if (__adjtimex(&txc) < 0)
++	if (adjtimex(&txc) < 0)
+ 	{
+ 		perror("adjtimex");
+ 	}
+--- a/include/ntp_syscall.h.orig	2009-05-19 16:44:55.048156467 -0400
++++ b/include/ntp_syscall.h	2009-05-19 16:46:19.293323686 -0400
+@@ -14,6 +14,14 @@
+ # include <sys/timex.h>
+ #endif
+ 
++#if defined(ADJ_NANO) && !defined(MOD_NANO)
++#define MOD_NANO ADJ_NANO
++#endif
++
++#if defined(ADJ_TAI) && !defined(MOD_TAI)
++#define MOD_TAI ADJ_TAI
++#endif
++
+ #ifndef NTP_SYSCALLS_LIBC
+ #ifdef NTP_SYSCALLS_STD
+ # define ntp_adjtime(t)		syscall(SYS_ntp_adjtime, (t))
