@@ -46,7 +46,7 @@ function[[ base_tdt_tools
 # you can append some more rule after call to this function
 
 PV_${P} ?= git
-SRC_URI_${P} ?= https://code.google.com/p/tdt-amiko/
+SRC_URI_${P} ?= https://github.com/OpenAR-P/tdt-arp
 NAME_${P} ?= ${PN}
 
 call[[ base ]]
