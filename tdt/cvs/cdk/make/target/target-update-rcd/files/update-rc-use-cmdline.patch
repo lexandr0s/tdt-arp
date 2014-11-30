@@ -1,0 +1,13 @@
+--- a/update-rc.d	2014-11-30 21:36:15.074781119 +0200
++++ b/update-rc.d	2014-11-30 21:36:58.882998352 +0200
+@@ -164,8 +164,8 @@
+ fi
+ 
+ if [ $dostart -eq 1 ]; then
+-	#RUNLEVEL=`sed 's/.*\[\(.*\)\]/\1/' < /proc/1/cmdline`
+-	RUNLEVEL=`runlevel | cut -d" " -f2`
++	RUNLEVEL=`sed 's/.*\[\(.*\)\]/\1/' < /proc/1/cmdline`
++	#RUNLEVEL=`runlevel | cut -d" " -f2`
+ 	if [ "x$RUNLEVEL" = "x" ]; then
+ 		echo "Unable to determine current runlevel" >&2
+ 		exit 1
