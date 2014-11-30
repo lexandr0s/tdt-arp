@@ -82,7 +82,7 @@ $(TARGET_${P}).clean_package:
 	rm -f $(TARGET_${P}).do_package
 
 $(TARGET_${P}).clean: $(TARGET_${P}).clean_prepare
-	rm -f $(TARGET_${P})
+	rm -f $(TARGET_${P}).do_*
 
 ifdef MAKE_VERBOSE
 $(TARGET_${P}).help:
