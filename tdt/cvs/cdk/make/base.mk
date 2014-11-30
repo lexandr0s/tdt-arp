@@ -456,7 +456,7 @@ $(TARGET_${P}).include_git_version: $(TARGET_${P}).write_git_version
 
 # Here we specify the main code of generating dynamic variables
 # output file will be included by make at run time
-$(TARGET_${P}).write_git_version: $(GIT_DIR_${P})
+$(TARGET_${P}).write_git_version: ${SRCREV}
 	echo -n "GIT_VERSION_${P} := " > $@
 	cd $(GIT_DIR_${P}) && $(git_log_version) >> $@
 
