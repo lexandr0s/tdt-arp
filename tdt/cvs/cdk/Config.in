@@ -122,21 +122,6 @@ mainmenu "global config"
 		string "Target Optimizations C++ Flags"
 		default "-O2"
 
-	choice
-		prompt "Media Framework:"
-		default EPLAYER3
-
-		config GSTREAMER
-		bool "gstreamer (TODO)"
-
-		config EPLAYER3
-		bool "eplayer3"
-	endchoice
-
-	config GSTREAMER_GIT
-		bool "gstreamer git version"
-		depends on GSTREAMER
-
 	comment	"Equipment:"
 
 		config WLAN_SUPPORT
@@ -155,6 +140,20 @@ endmenu
 
 ############################################################################
 menu "GUI Configuration"
+	choice
+		prompt "Media Framework:"
+		default EPLAYER3
+
+		config GSTREAMER
+		bool "gstreamer (TODO)"
+
+		config EPLAYER3
+		bool "eplayer3"
+	endchoice
+	
+	config GSTREAMER_GIT
+		bool "gstreamer git version"
+		depends on GSTREAMER
 
 	config FEED_SPARK
 		string "General URL for feed server"
@@ -185,33 +184,33 @@ menu "GUI Configuration"
 	config BUILD_ENIGMA2
 			bool
 			prompt "Enigma2"
-	if BUILD_ENIGMA2 || BUILD_HYBRID
+	if BUILD_ENIGMA2
 		choice
 		  prompt "Enigma2 source:"
 		  default ENIGMA2_SRC_MASTER
 
 		  config ENIGMA2_SRC_MASTER 
 		  bool "non-public branch master"
-		  depends on BUILD_ENIGMA2 || BUILD_HYBRID
+		  depends on BUILD_ENIGMA2
 
 		  config ENIGMA2_SRC_STAGING
 		  bool "non-public branch staging"
-		  depends on BUILD_ENIGMA2 || BUILD_HYBRID
+		  depends on BUILD_ENIGMA2
 
 		  config ENIGMA2_SRC_LAST
 		  bool "non-public branch last"
-		  depends on BUILD_ENIGMA2 || BUILD_HYBRID
+		  depends on BUILD_ENIGMA2
 
 		  config ENIGMA2_SRC_MAX
 		  bool "public enigma2 max10  diff0"
-		  depends on BUILD_ENIGMA2 || BUILD_HYBRID
+		  depends on BUILD_ENIGMA2
 
 		endchoice
 
 	config ENIGMA2_PLUGINS
 	bool "enigma2-plugins-extra"
 	default y
-	depends on BUILD_ENIGMA2 || BUILD_HYBRID
+	depends on BUILD_ENIGMA2
 
 		config ENIGMA2_EXTENSION_OPENWEBIF
 		bool "enigma2-plugin-extensions-openwebif"
@@ -251,18 +250,18 @@ menu "GUI Configuration"
 		bool
 		prompt "Neutrino"
 
-		if BUILD_NEUTRINO || BUILD_HYBRID
+		if BUILD_NEUTRINO
 		      choice
 			prompt "Neutrino source:"
 			default NEUTRINO_SRC_MASTER
 
 			config NEUTRINO_SRC_MASTER
 			bool "public branch master"
-			depends on BUILD_NEUTRINO || BUILD_HYBRID
+			depends on BUILD_NEUTRINO
 
 			config NEUTRINO_SRC_MARTII
 			bool "public branch Martii"
-			depends on BUILD_NEUTRINO || BUILD_HYBRID
+			depends on BUILD_NEUTRINO
 
 		      endchoice
 		endif
@@ -274,10 +273,6 @@ menu "GUI Configuration"
 	config BUILD_VDR
 		tristate "VDR"
 
-	config BUILD_HYBRID
-		tristate "Hybrid Enigma2 and Neutrino"
-		select BUILD_ENIGMA2 
-		select BUILD_NEUTRINO
   endchoice
 
 endmenu
