@@ -5,7 +5,7 @@ package[[ target_distro_feed_configs
 
 BDEPENDS_${P} =
 
-PV_${P} = 0.1
+PV_${P} = 0.2
 PR_${P} = 1
 SRC_URI_${P} = Open AR-P
 PACKAGE_ARCH_${P} = $(box_arch)
@@ -26,12 +26,8 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_prepare
 	$(PKDIR_clean)
 	cd $(DIR_${P}) && $(INSTALL_${P})
-ifeq ($(strip $(CONFIG_GSTREAMER)),y)
-	echo "src/gz spark-all http://gst.sat-universum.de" > $(PKDIR)/etc/opkg/all-spark-feed.conf
-else
-	echo "src/gz spark-all http://eplay.sat-universum.de" > $(PKDIR)/etc/opkg/all-spark-feed.conf
-endif
-	echo "src/gz non-free-feed http://nonfree.sat-universum.de" > $(PKDIR)/etc/opkg/nonfree-feed.conf
+	echo $(CONFIG_FEED_SPARK)$(CONFIG_FEED_SPARK7162)$(CONFIG_FEED_HL101) > $(PKDIR)/etc/opkg/all-spark-feed.conf
+	echo $(CONFIG_NONFREE_FEED) > $(PKDIR)/etc/opkg/nonfree-feed.conf
 
 	touch $@
 

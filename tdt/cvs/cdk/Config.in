@@ -155,6 +155,29 @@ endmenu
 
 ############################################################################
 menu "GUI Configuration"
+
+	config FEED_SPARK
+		string "General URL for feed server"
+		depends on SPARK
+		default "src/gz spark-all http://gst.sat-universum.de" if GSTREAMER
+		default "src/gz spark-all http://eplay.sat-universum.de" if EPLAYER3
+
+	config FEED_SPARK7162
+		string "General URL for feed server"
+		depends on SPARK7162
+		default "src/gz spark-all http://gst7162.sat-universum.de" if GSTREAMER
+		default "src/gz spark-all http://eplay7162.sat-universum.de" if EPLAYER3
+
+	config FEED_HL101
+		string "General URL for feed server"
+		depends on HL101
+		default "src/gz hl101-all http://gsthl101.sat-universum.de" if GSTREAMER
+		default "src/gz hl101-all http://eplayhl101.sat-universum.de" if EPLAYER3
+
+	config NONFREE_FEED
+		string "URL for nonfree plugins"
+		default "src/gz non-free-feed http://nonfree.sat-universum.de"
+
   choice
 	prompt "Apps:"
 	default BUILD_ENIGMA2
