@@ -3,10 +3,8 @@
 #
 package[[ target_livestreamersrv
 
-BDEPENDS_${P} = $(target_python_setuptools)
-
 PV_${P} = git
-PR_${P} = 1
+PR_${P} = 2
 
 DIR_${P} = $(WORK_${P})/livestreamersrv-${PV}
 
@@ -16,8 +14,7 @@ rule[[
   git://github.com/athoik/livestreamersrv.git
   install:-d:$(PKDIR)/usr/sbin
   install:-d:$(PKDIR)/etc/init.d
-  install:-d:$(PKDIR)/etc/rc.d/rc3.d
-  install:-d:$(PKDIR)/etc/rc.d/rc6.d
+  install:-d:$(PKDIR)/usr/share
 ]]rule
 
 call[[ git ]]
@@ -31,8 +28,8 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_prepare
 	cd $(DIR_${P}) && $(INSTALL_${P})
 	$(INSTALL_BIN) ${DIR}/livestreamersrv $(PKDIR)/usr/sbin/livestreamersrv
 	ln -sf /usr/sbin/livestreamersrv $(PKDIR)/etc/init.d/livestreamersrv
-	ln -sf /etc/init.d/livestreamersrv $(PKDIR)/etc/rc.d/rc3.d/S50livestreamersrv
-	ln -sf /etc/init.d/livestreamersrv $(PKDIR)/etc/rc.d/rc6.d/K50livestreamersrv
+	$(INSTALL_FILE) $(DIR_${P})/offline.mp4 $(PKDIR)/usr/share/offline.mp4
+
 	touch $@
 
 call[[ ipk ]]
@@ -40,6 +37,15 @@ call[[ ipk ]]
 
 DESCRIPTION_${P} = Livestreamersrv is a helper deamon for livestreamer.
 RDEPENDS_${P} = python_core livestreamer
+define postinst_${P}
+#!/bin/sh
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ livestreamersrv start 50 3 . stop 50 6 .
+endef
+
+define prerm_${P}
+#!/bin/sh
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ livestreamersrv remove
+endef
 
 call[[ ipkbox ]]
 
