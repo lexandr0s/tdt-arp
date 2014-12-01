@@ -34,7 +34,7 @@ call[[ ipk ]]
 DESCRIPTION_${P} = Livestreamer is command-line utility that extracts streams from various services and pipes them into a video player of choice.
 LICENSE_${P} = Take the official web page
 HOMEPAGE_${P} = http://livestreamer.tanuki.se/
-RDEPENDS_${P} = python_core python_requests
+RDEPENDS_${P} = python_core python_requests python_futures python_singledispatch
 FILES_${P} = \
 $(PYTHON_DIR)/site-packages/livestreamer/*
 
