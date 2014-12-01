@@ -5,7 +5,7 @@ package[[ target_gst_plugins_fluendo_mpegdemux
 
 BDEPENDS_${P} = $(target_glibc) $(target_gstreamer) $(target_gst_plugins_base)
 
-PV_${P} = 0.10.81
+PV_${P} = 0.10.85
 PR_${P} = 1
 
 PN_${P} = gst-fluendo-mpegdemux
