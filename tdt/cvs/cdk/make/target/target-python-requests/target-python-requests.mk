@@ -6,7 +6,7 @@ package[[ target_python_requests
 BDEPENDS_${P} = $(target_python_setuptools)
 
 PV_${P} = 2.4.1
-PR_${P} = 1
+PR_${P} = 2
 
 DIR_${P} = $(WORK_${P})/requests-${PV}
 
@@ -34,7 +34,7 @@ call[[ ipk ]]
 DESCRIPTION_${P} =  Python HTTP for Humans
 LICENSE_${P} = Take the official web page
 HOMEPAGE_${P} =  http://python-requests.org
-RDEPENDS_${P} = python_core libc6
+RDEPENDS_${P} = python_core python_email
 FILES_${P} = \
 $(PYTHON_DIR)/site-packages/requests/*
 
