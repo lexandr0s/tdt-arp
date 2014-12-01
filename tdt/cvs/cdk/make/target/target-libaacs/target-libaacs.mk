@@ -41,13 +41,16 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	$(PKDIR_clean)
 	cd $(DIR_${P}) && $(MAKE) install DESTDIR=$(PKDIR)
+	$(INSTALL_DIR) $(PKDIR)/root/.config/aacs/
+	$(INSTALL_FILE) $(DIR_${P})/KEYDB.cfg $(PKDIR)/root/.config/aacs/ 
+	
 	touch $@
 
 call[[ ipk ]]
 
 DESCRIPTION_${P} = libaacs is a research project to implement the Advanced Access Content System specification.
 RDEPENDS_${P} = libc6 libgcrypt libgpg_error
-FILES_${P} = /usr/lib/libaacs.so.*
+FILES_${P} = /usr/lib/libaacs.so.* /root/.config/aacs/KEYDB.cfg
 define postinst_${P}
 #!/bin/sh
 $$OPKG_OFFLINE_ROOT/sbin/ldconfig
