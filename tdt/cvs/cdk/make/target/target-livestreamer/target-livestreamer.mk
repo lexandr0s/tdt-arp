@@ -1,7 +1,7 @@
 #
 # AR-P buildsystem smart Makefile
 #
-package[[ target_python_livestreamer
+package[[ target_livestreamer
 
 BDEPENDS_${P} = $(target_python_setuptools)
 
@@ -34,7 +34,7 @@ call[[ ipk ]]
 DESCRIPTION_${P} = Livestreamer is command-line utility that extracts streams from various services and pipes them into a video player of choice.
 LICENSE_${P} = Take the official web page
 HOMEPAGE_${P} = http://livestreamer.tanuki.se/
-RDEPENDS_${P} = python_core libc6
+RDEPENDS_${P} = python_core python_requests
 FILES_${P} = \
 $(PYTHON_DIR)/site-packages/livestreamer/*
 
