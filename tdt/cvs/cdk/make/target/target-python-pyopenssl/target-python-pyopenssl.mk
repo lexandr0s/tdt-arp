@@ -35,7 +35,7 @@ call[[ ipk ]]
 PACKAGES_${P} = python_pyopenssl python_pyopenssl_tests
 DESCRIPTION_${P} = Simple Python wrapper around the OpenSSL library
 
-RDEPENDS_python_pyopenssl = python_threading libssl1 libcrypto1 libc6
+RDEPENDS_python_pyopenssl = python_threading python_serviceidentity libssl1 libcrypto1 libc6
 FILES_python_pyopenssl = \
   $(PYTHON_DIR)/site-packages/OpenSSL/*p* \
   $(PYTHON_DIR)/site-packages/OpenSSL/*so
