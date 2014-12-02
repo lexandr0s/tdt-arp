@@ -72,7 +72,7 @@ FILES_python_twisted_conch = \
   $(PYTHON_DIR)/site-packages/twisted/conch/ui \
   $(PYTHON_DIR)/site-packages/twisted/plugins/twisted_conch.p*
 
-RDEPENDS_python_twisted_core = python_core python_zopeinterface libc6 python_numbers python_pyopenssl
+RDEPENDS_python_twisted_core = python_core python_compression python_misc python_netserver python_shell python_zlib python_zopeinterface libc6 python_numbers python_pyopenssl python_serviceidentity
 FILES_python_twisted_core = \
   /usr/bin/manhole \
   /usr/bin/pyhtmlizer \
