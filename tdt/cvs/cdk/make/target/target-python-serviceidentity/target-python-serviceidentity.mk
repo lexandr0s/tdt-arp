@@ -34,7 +34,7 @@ call[[ ipk ]]
 DESCRIPTION_${P} =  Service Identity Verification for pyOpenSSL
 LICENSE_${P} = Take the official web page
 HOMEPAGE_${P} = https://github.com/pyca/service_identity
-RDEPENDS_${P} = python_characteristic python_pyasn1modules python_pyasn1 python_pyopenssl
+RDEPENDS_${P} = python_characteristic python_pyasn1modules
 FILES_${P} = \
 $(PYTHON_DIR)/site-packages/service_identity/*
 
