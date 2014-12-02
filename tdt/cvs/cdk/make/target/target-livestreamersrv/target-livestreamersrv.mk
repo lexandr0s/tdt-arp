@@ -40,10 +40,12 @@ RDEPENDS_${P} = python_core livestreamer
 define postinst_${P}
 #!/bin/sh
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ livestreamersrv start 50 3 . stop 50 6 .
+/etc/init.d/livestreamersrv start
 endef
 
 define prerm_${P}
 #!/bin/sh
+/etc/init.d/livestreamersrv stop
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ livestreamersrv remove
 endef
 
