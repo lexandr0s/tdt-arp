@@ -46,7 +46,7 @@ endef
 define prerm_${P}
 #!/bin/sh
 /etc/init.d/livestreamersrv stop
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ livestreamersrv remove
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ -f livestreamersrv remove
 endef
 
 call[[ ipkbox ]]
