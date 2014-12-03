@@ -77,7 +77,7 @@ function[[ TARGET_tdt_tools
 CONFIG_FLAGS_${P} += \
 	--with-driver=$(driverdir) \
 	--with-dvbincludes=$(driverdir)/include \
-	--with-target=cdk \
+	--with-target=cdk
 	
 
 ifdef CONFIG_MULTICOM324
@@ -99,7 +99,7 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 		./configure \
 			--build=$(build) \
 			--host=$(target) \
-			--prefix=/usr \
+			--prefix=/ \
 			$(CONFIG_FLAGS_${P}) \
 		&& \
 		make $(MAKE_FLAGS_${P})

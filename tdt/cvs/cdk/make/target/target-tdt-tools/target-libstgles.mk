@@ -9,8 +9,9 @@ PR_${P} = $(PR_tdt_tools).1
 
 DESCRIPTION_${P} = libstgles
 RDEPENDS_${P} = kernel_module_player2 kernel_module_stgfb directfb
+CONFIG_FLAGS_${P} += --prefix=/usr
 FILES_${P} = \
-	/lib/*.so
+	/usr/lib/*.so
 
 
 call[[ base_tdt_tools ]]
