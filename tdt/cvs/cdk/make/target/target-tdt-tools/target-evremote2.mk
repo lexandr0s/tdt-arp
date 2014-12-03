@@ -9,7 +9,7 @@ PR_${P} = $(PR_tdt_tools).1
 
 DESCRIPTION_${P} = evremote2
 RDEPENDS_${P} = lirc initscripts
-FILES_${P} = /usr/bin/evremote2 /usr/bin/evtest
+FILES_${P} = /bin/evremote2 /bin/evtest
 
 
 call[[ base_tdt_tools ]]

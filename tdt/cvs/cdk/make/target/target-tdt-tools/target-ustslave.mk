@@ -8,7 +8,7 @@ BDEPENDS_${P} = $(target_glibc)
 PR_${P} = $(PR_tdt_tools).1
 
 DESCRIPTION_${P} = ustslave
-FILES_${P} = /usr/bin/ustslave
+FILES_${P} = /bin/ustslave
 
 call[[ base_tdt_tools ]]
 

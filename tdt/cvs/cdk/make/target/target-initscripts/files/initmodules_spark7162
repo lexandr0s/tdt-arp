@@ -30,9 +30,9 @@ modprobe e2_proc
       modprobe /lib/modules/mme.ko pool_size=524288
       modprobe /lib/modules/mme_user.ko
    else
-      /usr/bin/ustslave /dev/st231-1 /lib/firmware/audio.elf
+      /bin/ustslave /dev/st231-1 /lib/firmware/audio.elf
    echo "load v firmware"
-      /usr/bin/ustslave /dev/st231-0 /lib/firmware/video.elf
+      /bin/ustslave /dev/st231-0 /lib/firmware/video.elf
 
    echo "init embx"
    modprobe embxshell

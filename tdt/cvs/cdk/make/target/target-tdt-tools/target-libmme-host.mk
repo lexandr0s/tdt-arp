@@ -8,7 +8,7 @@ BDEPENDS_${P} = $(target_glibc)
 PR_${P} = $(PR_tdt_tools).1
 
 DESCRIPTION_${P} = libmme-host
-FILES_${P} = /usr/lib/libmme_host.s*
+FILES_${P} = /lib/libmme_host.s*
 
 MAKE_FLAGS_${P} = DRIVER_TOPDIR=$(DIR_target_driver)
 
