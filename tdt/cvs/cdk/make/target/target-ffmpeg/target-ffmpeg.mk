@@ -187,6 +187,8 @@ CONFIG_FLAGS_${P} = \
 		--enable-decoder=xan_dpcm \
 		--enable-libbluray \
 		--enable-protocol=bluray \
+		--enable-nonfree \
+		--enable-openssl \
 		--disable-indevs \
 		--disable-outdevs \
 		--enable-bzlib \
