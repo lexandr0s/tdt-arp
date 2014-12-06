@@ -262,7 +262,7 @@ python_build = \
 	CC='$(target)-gcc' LDSHARED='$(target)-gcc -shared' \
 	CPPFLAGS="-I$(targetprefix)/usr/include/python$(PYTHON_VERSION)" \
 	PYTHONPATH=$(targetprefix)$(PYTHON_DIR)/site-packages \
-	$(crossprefix)/bin/python ./setup.py build
+	$(crossprefix)/bin/python ./setup.py build --executable=/usr/bin/python
 
 #	$(crossprefix)/bin/python -c "import setuptools; execfile('setup.py')" build
 
