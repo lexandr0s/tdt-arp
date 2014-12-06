@@ -11,7 +11,7 @@ ST_PN_${P} = cross-gcc
 
 ifdef CONFIG_GCC483
  ST_PV_${P} = 4.8.3
- ST_PR_${P} = 135
+ ST_PR_${P} = 137
 else
  ST_PV_${P} = 4.7.3
  ST_PR_${P} = 124

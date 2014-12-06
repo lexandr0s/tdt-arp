@@ -9,7 +9,7 @@ BREPLACES_${P} = $(target_cross_gcc_lib)
 PR_${P} = 1
 
 ifdef CONFIG_GCC483
-${P}_VERSION = 4.8.3-143
+${P}_VERSION = 4.8.3-146
 else
 ${P}_VERSION = 4.7.3-129
 endif
