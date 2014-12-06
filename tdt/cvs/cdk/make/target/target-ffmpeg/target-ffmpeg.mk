@@ -5,7 +5,7 @@ package[[ target_ffmpeg
 
 BDEPENDS_${P} = $(target_glibc) $(target_libbluray) $(target_rtmpdump)
 
-PV_${P} = 2.4.2
+PV_${P} = 2.5
 PR_${P} = 1
 
 DESCRIPTION_${P} = ffmpeg
