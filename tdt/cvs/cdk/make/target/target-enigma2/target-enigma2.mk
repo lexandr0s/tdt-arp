@@ -206,7 +206,8 @@ PACKAGES_${P} = \
 	enigma2_plugin_systemplugins_videoenhancement \
 	enigma2_plugin_systemplugins_videotune \
 	enigma2_plugin_systemplugins_videomode \
-	enigma2_plugin_systemplugins_wirelesslan
+	enigma2_plugin_systemplugins_wirelesslan \
+	enigma2_plugin_systemplugins_uniontunertype
 
 RDEPENDS_enigma2 += libgcc1 libpython2.7 python-threading libtuxtxt0 libbz2 libgif4 libfreetype6 python-core python-twisted-core libdvbsi++1 python-re font-ae-almateen font-andale font-lcd font-md-khmurabi font-tuxtxt font-nmsbd libpng16 font-valis-enigma libstdc++6 libglib libsigc-1.2 python-fcntl python-netclient python-netserver python-math python-codecs libcrypto1 libfribidi0 python-zopeinterface python-xml libtuxtxt32bpp0 python-pickle libxmlccwrap python-shell ethtool libdreamdvd0 python-twisted-web python-zlib python-crypt python-lang python-subprocess enigma2_meta python-compression
 FILES_enigma2 = \
@@ -360,6 +361,11 @@ FILES_enigma2_plugin_systemplugins_videomode = /usr/lib/enigma2/python/Plugins/S
 DESCRIPTION_enigma2_plugin_systemplugins_wirelesslan = The wireless lan plugin helps you configuring your WLAN network interface.
 RDEPENDS_enigma2_plugin_systemplugins_wirelesslan = enigma2 python_wifi
 FILES_enigma2_plugin_systemplugins_wirelesslan = /usr/lib/enigma2/python/Plugins/SystemPlugins/WirelessLan
+
+ifdef CONFIG_SPARK7162
+DESCRIPTION_enigma2_plugin_systemplugins_uniontunertype = The Tuner mode switch  DVB-T to DVB-C
+FILES_enigma2_plugin_systemplugins_uniontunertype = /usr/lib/enigma2/python/Plugins/SystemPlugins/UnionTunerType
+endif
 
 call[[ ipkbox ]]
 

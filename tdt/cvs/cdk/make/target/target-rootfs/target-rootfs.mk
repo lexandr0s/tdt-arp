@@ -102,6 +102,10 @@ opkg_my_list += \
 	enigma2-plugin-systemplugins-videoenhancement \
 	enigma2-plugin-systemplugins-videotune \
 	enigma2-plugin-systemplugins-videomode
+ifdef CONFIG_SPARK7162
+opkg_my_list += \
+	enigma2-plugin-systemplugins-uniontunertype
+endif
 
 ifdef CONFIG_WLAN_SUPPORT
 IPKBOX_LIST_${P} += $(target_wireless_tools) $(target_firmware_wlan) $(target_compat_wireless)
