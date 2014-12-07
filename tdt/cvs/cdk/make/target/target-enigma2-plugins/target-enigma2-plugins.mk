@@ -57,21 +57,22 @@ $(TARGET_${P}).write_vars: $(TARGET_${P}).do_compile
 	for d in $${list}; do \
 		echo "PACKAGES_DYNAMIC_${P} += $$d" >> $@; \
 		\
-		awk -v d=$$d -F ': ' '/Package: /{print "NAME_" d " := " tolower($$2)}' $$d/CONTROL/control >> $@; \
-		awk -v d=$$d -F ': ' '/Version: /{print "VERSION_" d " := " $$2}' $$d/CONTROL/control >> $@; \
-		awk -v d=$$d -F ': ' '/Architecture: /{print "PACKAGE_ARCH_" d " := " $$2}' $$d/CONTROL/control >> $@; \
-		awk -v d=$$d -F ': ' '/Depends: /{print "RDEPENDS_" d " := " $$2}' $$d/CONTROL/control >> $@; \
-		awk -v d=$$d -F ': ' '/Replaces: /{print "RREPLACES_" d " := " $$2}' $$d/CONTROL/control >> $@; \
-		awk -v d=$$d -F ': ' '/Conflicts: /{print "RCONFLICTS_" d " := " $$2}' $$d/CONTROL/control >> $@; \
+		awk -v d=$$d -F ':' '\
+		/^Package:/ {$$1=""; print "NAME_" d " :=" tolower($$0)} \
+		/^Version:/ {$$1=""; gsub(/ +/,""); print "VERSION_" d " := " $$0 "-" ${PR}} \
+		/^Architecture:/ {$$1=""; print "PACKAGE_ARCH_" d " :=" $$0} \
+		/^Depends:/ {$$1=""; gsub(/, */," "); print "RDEPENDS_" d " :=" $$0} \
+		/^Replaces:/ {$$1=""; gsub(/, */," "); print "RREPLACES_" d " :=" $$0} \
+		/^Conflicts:/ {$$1=""; gsub(/, */," "); print "RCONFLICTS_" d " :=" $$0} \
 		\
-		awk -v d=$$d -F ': ' '/Description: /{print "DESCRIPTION_" d " := " $$2}' $$d/CONTROL/control >> $@; \
-		awk -v d=$$d -F ': ' '/Section: /{print "SECTION_" d " := " $$2}' $$d/CONTROL/control >> $@; \
-		awk -v d=$$d -F ': ' '/Priority: /{print "PRIORITY_" d " := " $$2}' $$d/CONTROL/control >> $@; \
-		awk -v d=$$d -F ': ' '/Maintainer: /{print "MAINTAINER_" d " := " $$2}' $$d/CONTROL/control >> $@; \
-		awk -v d=$$d -F ': ' '/License: /{print "LICENSE_" d " := " $$2}' $$d/CONTROL/control >> $@; \
-		awk -v d=$$d -F ': ' '/Homepage: /{print "HOMEPAGE_" d " := " $$2}' $$d/CONTROL/control >> $@; \
-		awk -v d=$$d -F ': ' '/Source: /{print "SRC_URI_" d " := " $$2}' $$d/CONTROL/control >> $@; \
-		\
+		/^Description:/ {$$1=""; print "DESCRIPTION_" d " :=" $$0} \
+		/^Section:/ {$$1=""; "SECTION_" d " :=" $$0} \
+		/^Priority:/ {$$1=""; print "PRIORITY_" d " :=" $$0} \
+		/^Maintainer:/ {$$1=""; print "MAINTAINER_" d " :=" $$0} \
+		/^License:/ {$$1=""; print "LICENSE_" d " :=" $$0} \
+		/^Homepage:/ {$$1=""; print "HOMEPAGE_" d " :=" $$0} \
+		/^Source:/ {$$1=""; print "SRC_URI_" d " :=" $$0} '\
+		$$d/CONTROL/control >> $@; \
 		echo >> $@; \
 	done || (rm $@ && false)
 	
