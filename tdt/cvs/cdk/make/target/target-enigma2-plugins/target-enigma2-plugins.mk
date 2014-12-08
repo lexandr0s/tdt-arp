@@ -59,7 +59,7 @@ $(TARGET_${P}).write_vars: $(TARGET_${P}).do_compile
 		\
 		awk -v d=$$d -F ':' '\
 		/^Package:/ {$$1=""; print "NAME_" d " :=" tolower($$0)} \
-		/^Version:/ {$$1=""; gsub(/ +/,""); print "VERSION_" d " := " $$0 "-" ${PR}} \
+		/^Version:/ {$$1=""; gsub(/ +/,""); print "VERSION_" d " := " $$0 "-${PR}"} \
 		/^Architecture:/ {$$1=""; print "PACKAGE_ARCH_" d " :=" $$0} \
 		/^Depends:/ {$$1=""; gsub(/, */," "); print "RDEPENDS_" d " :=" $$0} \
 		/^Replaces:/ {$$1=""; gsub(/, */," "); print "RREPLACES_" d " :=" $$0} \
