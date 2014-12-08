@@ -3,7 +3,7 @@
 #
 package[[ target_python_livestreamer
 
-BDEPENDS_${P} = $(target_python_setuptools)
+BDEPENDS_${P} = $(target_python_setuptools) $(target_python_futures) $(target_python_singledispatch) $(target_python_requests)
 
 PV_${P} = 1.10.2
 PR_${P} = 2

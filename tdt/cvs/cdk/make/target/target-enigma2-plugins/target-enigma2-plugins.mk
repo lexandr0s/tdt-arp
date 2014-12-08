@@ -3,7 +3,7 @@
 #
 package[[ target_enigma2_plugins
 
-BDEPENDS_${P} = $(target_enigma2) $(target_python_gdata)
+BDEPENDS_${P} = $(target-enigma2) $(target_python_gdata) $(target_aio_grab)
 
 PV_${P} = git
 PR_${P} = 1

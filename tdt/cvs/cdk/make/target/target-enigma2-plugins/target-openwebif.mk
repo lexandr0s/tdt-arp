@@ -3,7 +3,7 @@
 #
 package[[ target_openwebif
 
-BDEPENDS_${P} = $(target_python_setuptools)
+BDEPENDS_${P} = $(target_python_setuptools) $(target_aio_grab) $(target_python_cheetah)
 
 PV_${P} = git
 PR_${P} = 2

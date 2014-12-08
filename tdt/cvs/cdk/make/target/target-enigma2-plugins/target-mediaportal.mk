@@ -3,7 +3,7 @@
 #
 package[[ target_mediaportal
 
-BDEPENDS_${P} = $(target_python)
+BDEPENDS_${P} = $(target_python) $(target_python_mechanize)
 
 PV_${P} = 5.4.0
 PR_${P} = 2

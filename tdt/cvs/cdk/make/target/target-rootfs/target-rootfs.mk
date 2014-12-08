@@ -9,10 +9,6 @@ $(target_fp_control) $(target_stfbcontrol) $(target_libfribidi) $(target_showifr
 $(target_udev_rules) $(target_bootlogo) $(target_flash_tools) $(target_rfkill) $(target_distro_feed_configs) $(target_initscripts) $(target_update_rcd) \
 $(target_streamripper)
 
-ifdef CONFIG_ENIGMA2_PLUGINS
-IPKBOX_LIST_${P} += $(target_enigma2_plugins) $(target_openwebif) $(target_mediaportal) $(target_aio_grab) $(target_python_cheetah) $(target_python_pycrypto) $(target_python_serviceidentity) $(target_python_wifi) $(target_python_mechanize) $(target_python_singledispatch) $(target_python_requests) $(target_python_livestreamer) $(target_oscam) $(target_python_futures) $(target_enigma2_skins)
-endif
-
 # core system libraries, binaries and scripts
 opkg_my_list = \
 	sysvinit \
@@ -65,10 +61,41 @@ opkg_my_list += \
 	kernel-module-simu-button \
 	kernel-module-smartcard \
 	kernel-module-stgfb
+#extras
+
+ifdef CONFIG_WLAN_SUPPORT
+IPKBOX_LIST_${P} += $(target_wireless_tools) $(target_firmware_wlan) $(target_compat_wireless)
+opkg_my_list += \
+	wireless-tools \
+	kernel-module-rt2870sta \
+	kernel-module-rt3070sta \
+	kernel-module-rt5370sta \
+	kernel-module-rtl8192cu \
+	kernel-module-rtl871x \
+	kernel-module-rtl8188eu \
+	kernel-module-ath9k-htc \
+	kernel-module-rt73usb
+endif
+
+ifdef CONFIG_3G_SUPPORT
+IPKBOX_LIST_${P} += $(target_modem_scripts) $(target_usb_modeswitch) $(target_pppd)
+opkg_my_list += modem-scripts
+endif
+
+ifdef CONFIG_NTFS_3G_SUPPORT
+IPKBOX_LIST_${P} += $(target_ntfs_3g)
+opkg_my_list += ntfs-3g
+endif
+
+ifdef CONFIG_IPTABLES_SUPPORT
+IPKBOX_LIST_${P} += $(target_iptables)
+opkg_my_list += iptables
+endif
+
 #########################################################################################
 # enigma2
 ifdef CONFIG_BUILD_ENIGMA2
-IPKBOX_LIST_${P} += $(target_enigma2) $(target_tuxbox_configs) $(target_hotplug_e2_helper)
+IPKBOX_LIST_${P} += $(target_enigma2) $(target_tuxbox_configs) $(target_hotplug_e2_helper) $(target_python_pycrypto)
 opkg_my_list += \
 	config-satellites \
 	config-cables \
@@ -108,12 +135,21 @@ opkg_my_list += \
 endif
 
 ifdef CONFIG_WLAN_SUPPORT
-IPKBOX_LIST_${P} += $(target_wireless_tools) $(target_firmware_wlan) $(target_compat_wireless)
+IPKBOX_LIST_${P} += $(target_python_wifi)
 opkg_my_list += enigma2-plugin-systemplugins-wirelesslan
 endif
 endif
 
+ifdef CONFIG_ENIGMA2_PLUGINS
+IPKBOX_LIST_${P} += $(target_enigma2_plugins)
+endif
+
+ifdef CONFIG_ENIGMA2_SKINS
+IPKBOX_LIST_${P} += $(target_enigma2_skins)
+endif
+
 ifdef CONFIG_ENIGMA2_EXTENSION_OPENWEBIF
+IPKBOX_LIST_${P} += $(target_openwebif)
 opkg_my_list += enigma2-plugin-extensions-openwebif
 endif
 
@@ -122,7 +158,13 @@ opkg_my_list += enigma2-plugin-extensions-webinterface
 endif
 
 ifdef CONFIG_ENIGMA2_EXTENSION_MEDIAPORTAL
+IPKBOX_LIST_${P} += $(target_mediaportal)
 opkg_my_list += enigma2-plugin-extensions-mediaportal
+endif
+
+ifdef CONFIG_PYTHON_LIVESTREAMER
+IPKBOX_LIST_${P} += $(target_python_livestreamer)
+opkg_my_list += livestreamer
 endif
 
 ifdef CONFIG_ENIGMA2_SKIN_MEGAMOD
@@ -130,7 +172,18 @@ opkg_my_list += enigma2-plugin-skin-megamod
 endif
 
 ifdef CONFIG_ENIGMA2_SKIN_MAGIC
+IPKBOX_LIST_${P} += $(target_enigma2_skins_magic)
 opkg_my_list += enigma2-plugin-skin-magic
+endif
+
+ifdef CONFIG_ENIGMA2_SKIN_PLIHD
+IPKBOX_LIST_${P} += $(target_enigma2_skins_plihd)
+opkg_my_list += enigma2-plugin-skin-plihd
+endif
+
+ifdef CONFIG_ENIGMA2_SKIN_METROPOLISHD
+IPKBOX_LIST_${P} += $(target_enigma2_skins_metropolishd)
+opkg_my_list += enigma2-plugin-skin-metropolishd
 endif
 
 ifdef CONFIG_ENIGMA2_EXTENSION_ALTSOFTCAM
@@ -138,6 +191,7 @@ opkg_my_list += enigma2-plugin-extensions-alternativesoftcammanager
 endif
 
 ifdef CONFIG_OSCAM
+IPKBOX_LIST_${P} += $(target_oscam)
 opkg_my_list += enigma2-plugin-cams-oscam
 endif
 
@@ -160,34 +214,6 @@ ifdef CONFIG_BUILD_XBMC
 IPKBOX_LIST_${P} += $(target_xbmc) $(target_libid3tag) $(target_libvorbisidec) $(target_libcap) $(target_libmad)
 opkg_my_list += libblkid1
 endif
-#extras
-
-ifdef CONFIG_WLAN_SUPPORT
-opkg_my_list += wireless-tools \
-		kernel-module-rt2870sta \
-		kernel-module-rt3070sta \
-		kernel-module-rt5370sta \
-		kernel-module-rtl8192cu \
-		kernel-module-rtl871x \
-		kernel-module-rtl8188eu \
-		kernel-module-ath9k-htc \
-		kernel-module-rt73usb
-endif
-
-ifdef CONFIG_3G_SUPPORT
-IPKBOX_LIST_${P} += $(target_modem_scripts) $(target_usb_modeswitch) $(target_pppd)
-opkg_my_list += modem-scripts
-endif
-
-ifdef CONFIG_NTFS_3G_SUPPORT
-IPKBOX_LIST_${P} += $(target_ntfs_3g)
-opkg_my_list += ntfs-3g
-endif
-
-ifdef CONFIG_IPTABLES_SUPPORT
-IPKBOX_LIST_${P} += $(target_iptables)
-opkg_my_list += iptables
-endif
 
 #########################################################################################
 
@@ -196,7 +222,7 @@ DEPENDS_${P} = $(addsuffix .do_ipkbox, $(IPKBOX_LIST_${P}))
 #########################################################################################
 
 PV_${P} = 0.1
-PR_${P} = 5
+PR_${P} = 6
 
 call[[ base ]]
 
