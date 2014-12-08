@@ -59,7 +59,6 @@ update-rc.d -r $$OPKG_OFFLINE_ROOT/ mountsysfs start 02 S .
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ networking start 40 S . stop 40 0 6 .
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ reboot start 90 6 .
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ sendsigs start 20 0 6 .
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ syslogd start 03 S .
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ telnetd start 43 S . stop 30 0 6 .
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ lircd start 36 S . stop 80 0 6 .
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ umountfs start 40 0 6 .
@@ -78,7 +77,6 @@ update-rc.d -r $$OPKG_OFFLINE_ROOT/ mountsysfs remove
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ networking remove
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ reboot remove
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ sendsigs remove
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ syslogd remove
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ telnetd remove
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ lircd remove
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ umountfs remove
