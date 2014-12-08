@@ -212,37 +212,47 @@ menu "GUI Configuration"
 	default y
 	depends on BUILD_ENIGMA2
 
-		config ENIGMA2_EXTENSION_OPENWEBIF
-		bool "enigma2-plugin-extensions-openwebif"
+		config ENIGMA2_EXTENSION_ALTSOFTCAM
+		bool "enigma2-plugin-extensions-alternativesoftcammanager"
 		depends on ENIGMA2_PLUGINS
-		
+
 		config ENIGMA2_EXTENSION_WEBIF
 		bool "enigma2-plugin-extensions-webinterface"
 		depends on ENIGMA2_PLUGINS
 
+		config ENIGMA2_EXTENSION_OPENWEBIF
+		bool "enigma2-plugin-extensions-openwebif"
+
+
 		config ENIGMA2_EXTENSION_MEDIAPORTAL
 		bool "enigma2-plugin-extensions-mediaportal"
-		depends on ENIGMA2_PLUGINS
 
-		config ENIGMA2_SKIN_MEGAMOD
-		bool "enigma2-plugin-skin-megamod"
-		depends on ENIGMA2_PLUGINS
-
-		config ENIGMA2_SKIN_MAGIC
-		bool "enigma2-plugin-skin-magic"
-		depends on ENIGMA2_PLUGINS
-
-		config ENIGMA2_EXTENSION_ALTSOFTCAM
-		bool "enigma2-plugin-extensions-alternativesoftcammanager"
-		depends on ENIGMA2_PLUGINS
+		config PYTHON_LIVESTREAMER
+		bool  "Livestreamer"
 		
 		config OSCAM
 		bool  "enigma2-plugin-cams-oscam"
-		depends on ENIGMA2_PLUGINS
 
 		config EXTERNAL_LCD
 		bool  "External USB GraphLCD "
-		depends on ENIGMA2_PLUGINS
+
+	config ENIGMA2_SKINS
+	bool "enigma2-skins-extra"
+	default y
+	depends on BUILD_ENIGMA2
+
+		config ENIGMA2_SKIN_MEGAMOD
+		bool "enigma2-plugin-skin-megamod"
+		depends on ENIGMA2_SKINS
+
+		config ENIGMA2_SKIN_MAGIC
+		bool "enigma2-plugin-skin-magic"
+
+		config ENIGMA2_SKIN_PLIHD
+		bool "enigma2-plugin-skin-plihd"
+
+		config ENIGMA2_SKIN_METROPOLISHD
+		bool "enigma2-plugin-skin-metropolishd"
 
 	endif
 
