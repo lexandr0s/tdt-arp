@@ -64,7 +64,6 @@ $(TARGET_${P}).write_vars: $(TARGET_${P}).do_compile
 		/^Depends:/ {$$1=""; gsub(/, */," "); print "RDEPENDS_" d " :=" $$0} \
 		/^Replaces:/ {$$1=""; gsub(/, */," "); print "RREPLACES_" d " :=" $$0} \
 		/^Conflicts:/ {$$1=""; gsub(/, */," "); print "RCONFLICTS_" d " :=" $$0} \
-		\
 		/^Description:/ {$$1=""; print "DESCRIPTION_" d " :=" $$0} \
 		/^Section:/ {$$1=""; "SECTION_" d " :=" $$0} \
 		/^Priority:/ {$$1=""; print "PRIORITY_" d " :=" $$0} \
@@ -73,6 +72,7 @@ $(TARGET_${P}).write_vars: $(TARGET_${P}).do_compile
 		/^Homepage:/ {$$1=""; print "HOMEPAGE_" d " :=" $$0} \
 		/^Source:/ {$$1=""; print "SRC_URI_" d " :=" $$0} '\
 		$$d/CONTROL/control >> $@; \
+		\
 		echo >> $@; \
 	done || (rm $@ && false)
 	
@@ -103,7 +103,7 @@ $(TARGET_${P}).do_split_post: $(TARGET_${P}).do_split
 	for p in $(PACKAGES_DYNAMIC_${P}); do \
 		cd ${DIR}/$$p && $(MAKE) install DESTDIR=${SPLITDIR}/$$p; \
 		mv ${SPLITDIR}/$$p/usr/share/meta/* ${SPLITDIR}/enigma2_plugins_meta/usr/share/meta || true; \
-		rm -rf ${SPLITDIR}/$$p/usr/share/meta; \
+		rmdir --ignore-fail-on-non-empty --parents ${SPLITDIR}/$$p/usr/share/meta; \
 		for f in preinst postinst prerm postrm; do \
 			test -f ${DIR}/$$p/CONTROL/$$f \
 				&& install -m755 ${DIR}/$$p/CONTROL/$$f ${SPLITDIR}/$$p/CONTROL/$$f \
