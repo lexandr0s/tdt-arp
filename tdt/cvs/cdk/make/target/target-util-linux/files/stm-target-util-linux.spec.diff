@@ -1,0 +1,27 @@
+--- stm-target-util-linux.spec.orig	2013-03-04 12:56:25.000000000 +0200
++++ stm-target-util-linux.spec	2014-12-09 19:52:56.147105748 +0200
+@@ -79,7 +79,7 @@
+ %if %target_arch_uclibc
+ export LDFLAGS="-lintl"
+ %endif
+-%target_configure --disable-use-tty-group
++%target_configure --disable-use-tty-group --disable-fsck
+ %if %target_cpu arm
+ %make ARCH=%{_stm_target_cpu} %{makeflags}
+ %else
+@@ -162,7 +162,6 @@
+ %{_stm_cross_target_dir}/bin/more
+ %{_stm_cross_target_dir}/sbin/blkid
+ %{_stm_cross_target_dir}/sbin/findfs
+-%{_stm_cross_target_dir}/sbin/fsck
+ %{_stm_cross_target_dir}%{_stm_target_sbin_dir}/ldattach
+ %{_stm_cross_target_dir}%{_stm_target_sbin_dir}/rtcwake
+ %{_stm_cross_target_dir}%{_stm_target_sbin_dir}/uuidd
+@@ -252,7 +251,6 @@
+ %doc %{_stm_cross_target_dir}%{_stm_target_man_dir}/man3/uuid_unparse.3.gz
+ %doc %{_stm_cross_target_dir}%{_stm_target_man_dir}/man8/blkid.8.gz
+ %doc %{_stm_cross_target_dir}%{_stm_target_man_dir}/man8/findfs.8.gz
+-%doc %{_stm_cross_target_dir}%{_stm_target_man_dir}/man8/fsck.8.gz
+ %doc %{_stm_cross_target_dir}%{_stm_target_man_dir}/man8/ldattach.8.gz
+ %doc %{_stm_cross_target_dir}%{_stm_target_man_dir}/man8/linux32.8.gz
+ %doc %{_stm_cross_target_dir}%{_stm_target_man_dir}/man8/linux64.8.gz
