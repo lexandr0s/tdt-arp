@@ -5,7 +5,7 @@ package[[ target_e2fsprogs
 
 BDEPENDS_${P} = $(target_glibc) $(target_util_linux)
 
-PV_${P} = 1.42.9
+PV_${P} = 1.42.12
 PR_${P} = 1
 
 call[[ base ]]
@@ -33,7 +33,6 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 			--disable-quota \
 			--disable-defrag \
 			--disable-nls \
-			--disable-fsck \
 			--disable-libuuid \
 			--disable-libblkid \
 			--enable-elf-shlibs \
@@ -70,7 +69,9 @@ RDEPENDS_2fsprogs_badblocks = libcom-err2 libext2fs2 libc6
 FILES_e2fsprogs_badblocks = /sbin/badblocks
 
 RDEPENDS_e2fsprogs_e2fsck = libblkid1 libcom_err2 libe2p2 libc6 libext2fs2 libuuid1
-FILES_e2fsprogs_e2fsck = /sbin/e2fsck
+FILES_e2fsprogs_e2fsck = /sbin/e2fsck \
+			/sbin/fsck \
+			/sbin/fsck*
 
 RDEPENDS_e2fsprogs_mke2fs = libblkid1 libcom_err2 libe2p2 libc6 libext2fs2 libuuid1
 FILES_e2fsprogs_mke2fs = /etc/mke2fs.conf \
