@@ -6,7 +6,7 @@ package[[ target_busybox
 BDEPENDS_${P} = $(target_glibc) $(target_zlib) $(target_libffi)
 
 PV_${P} = git
-PR_${P} = 1
+PR_${P} = 2
 
 DESCRIPTION_${P} = Tiny versions of many common UNIX utilities in a single small executable.
 
@@ -71,45 +71,21 @@ FILES_busybox_syslog = \
 define postinst_busybox_cron
 #!/bin/sh
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ busybox-cron start 03 S . stop 99 0 6 .
-
-endef
-define postrm_busybox_cron
-#!/bin/sh
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ -f busybox-cron remove
-endef
-
-define preinst_busybox_cron
-#!/bin/sh
-if [ -z "$$OPKG_OFFLINE_ROOT" -a -f "/etc/init.d/busybox-cron" ]; then
-	/etc/init.d/busybox-cron stop
-fi
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ -f busybox-cron remove
 endef
 define prerm_busybox_cron
 #!/bin/sh
 $$OPKG_OFFLINE_ROOT/etc/init.d/busybox-cron stop
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ -f syslog.busybox remove
 endef
 
 define postinst_busybox_syslog
 #!/bin/sh
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ syslog.busybox start 36 S .
-
-endef
-define postrm_busybox_syslog
-#!/bin/sh
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ -f syslog.busybox remove
-endef
-
-define preinst_busybox_syslog
-#!/bin/sh
-if [ -z "$$OPKG_OFFLINE_ROOT" -a -f "/etc/init.d/syslog.busybox" ]; then
-	/etc/init.d/syslog.busybox stop
-fi
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ -f syslog.busybox remove
 endef
 define prerm_busybox_syslog
 #!/bin/sh
 $$OPKG_OFFLINE_ROOT/etc/init.d/syslog.busybox stop
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ -f syslog.busybox remove
 endef
 
 call[[ ipkbox ]]
