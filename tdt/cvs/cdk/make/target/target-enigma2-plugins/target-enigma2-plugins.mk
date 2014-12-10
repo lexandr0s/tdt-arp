@@ -103,7 +103,7 @@ $(TARGET_${P}).do_split_post: $(TARGET_${P}).do_split
 	for p in $(PACKAGES_DYNAMIC_${P}); do \
 		cd ${DIR}/$$p && $(MAKE) install DESTDIR=${SPLITDIR}/$$p; \
 		mv ${SPLITDIR}/$$p/usr/share/meta/* ${SPLITDIR}/enigma2_plugins_meta/usr/share/meta || true; \
-		rmdir --ignore-fail-on-non-empty --parents ${SPLITDIR}/$$p/usr/share/meta; \
+		rmdir --parents ${SPLITDIR}/$$p/usr/share/meta || true; \
 		for f in preinst postinst prerm postrm; do \
 			test -f ${DIR}/$$p/CONTROL/$$f \
 				&& install -m755 ${DIR}/$$p/CONTROL/$$f ${SPLITDIR}/$$p/CONTROL/$$f \
