@@ -2,7 +2,7 @@ diff --git a/libopkg/pkg.c b/libopkg/pkg.c
 index d8c3984..cdcd39a 100644
 --- a/libopkg/pkg.c
 +++ b/libopkg/pkg.c
-@@ -738,6 +738,7 @@ pkg_formatted_field(FILE *fp, pkg_t *pkg, const char *field)
+@@ -739,6 +739,7 @@ pkg_formatted_field(FILE *fp, pkg_t *pkg, const char *field)
  	       if (pkg->provides_count > 1) {
                    fprintf(fp, "Provides:");
  		  for(i = 1; i < pkg->provides_count; i++) {
@@ -10,40 +10,6 @@ index d8c3984..cdcd39a 100644
                        fprintf(fp, "%s %s", i == 1 ? "" : ",",
  				      pkg->provides[i]->name);
                    }
-diff --git a/libbb/unarchive.c b/libbb/unarchive.c
-index d583767..703d8d0 100644
---- a/libbb/unarchive.c
-+++ b/libbb/unarchive.c
-@@ -448,12 +448,12 @@ static bool update_unamecache(char *uname) {
- 	struct passwd *passwd;
- 	if (!uname)
- 		return FALSE;
--	if (!uname_cache[0] && strcmp(uname_cache, uname) == 0)
-+	if (strcmp(uname_cache, uname) == 0)
- 		return TRUE;
- 	passwd = getpwnam(uname);
- 	if (passwd) {
- 		uid_cache = passwd->pw_uid;
--		strncpy(uname, uname_cache, 32);
-+		strncpy(uname_cache, uname, 32);
- 		return TRUE;
- 	}
- 	return FALSE;
-@@ -466,12 +466,12 @@ static bool update_gnamecache(char *gname) {
- 	struct group *group;
- 	if (!gname)
- 		return FALSE;
--	if (!gname_cache[0] && strcmp(gname_cache, gname) == 0)
-+	if (strcmp(gname_cache, gname) == 0)
- 		return TRUE;
- 	group = getgrnam(gname);
- 	if (group) {
- 		gid_cache = group->gr_gid;
--		strncpy(gname, gname_cache, 32);
-+		strncpy(gname_cache, gname, 32);
- 		return TRUE;
- 	}
- 	return FALSE;
 From 6d451766c5114593b67e1be8c19610f7d377edb5 Mon Sep 17 00:00:00 2001
 From: pieterg <pieterg@users.sourceforge.net>
 Date: Sun, 1 Sep 2013 19:29:56 +0200
@@ -75,7 +41,7 @@ diff --git a/libopkg/pkg_hash.c b/libopkg/pkg_hash.c
 index a99cf6b..96c299e 100644
 --- a/libopkg/pkg_hash.c
 +++ b/libopkg/pkg_hash.c
-@@ -774,3 +774,21 @@ file_hash_set_file_owner(const char *file_name, pkg_t *owning_pkg)
+@@ -767,3 +767,21 @@ file_hash_set_file_owner(const char *file_name, pkg_t *owning_pkg)
  		owning_pkg->state_flag |= SF_FILELIST_CHANGED;
  	}
  }
