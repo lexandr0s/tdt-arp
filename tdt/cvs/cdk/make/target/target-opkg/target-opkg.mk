@@ -5,7 +5,7 @@ package[[ target_opkg
 
 BDEPENDS_${P} = $(target_glibc) $(target_zlib)
 
-PV_${P} = 0.2.3
+PV_${P} = 0.2.4
 PR_${P} = 1
 PACKAGE_ARCH_${P} = $(box_arch)
 
