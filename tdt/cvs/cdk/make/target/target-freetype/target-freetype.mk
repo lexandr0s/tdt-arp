@@ -5,7 +5,7 @@ package[[ target_freetype
 
 BDEPENDS_${P} = $(target_glibc)
 
-PV_${P} = 2.4.9
+PV_${P} = 2.5.4
 PR_${P} = 2
 
 DESCRIPTION_${P} = Freetype font rendering library \
