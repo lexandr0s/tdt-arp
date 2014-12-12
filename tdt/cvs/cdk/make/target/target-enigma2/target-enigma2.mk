@@ -7,7 +7,7 @@ package[[ target_enigma2
 BDEPENDS_${P} = $(target_libsigc) $(target_libdvbsipp) $(target_freetype) $(target_tuxtxt32bpp) $(target_libpng) $(target_libxmlccwrap) $(target_python) $(target_python_twisted) $(target_libreadline) $(target_libdreamdvd) $(target_libmme_host) $(target_libmmeimage) $(target_libfribidi)
 
 PV_${P} = git
-PR_${P} = 7
+PR_${P} = 8
 PACKAGE_ARCH_${P} = $(box_arch)
 
 DESCRIPTION_${P} = Framebuffer-based digital media application
@@ -235,6 +235,31 @@ FILES_enigma2_meta = /usr/share/meta
 
 DESCRIPTION_font_andale = ttf fonts
 FILES_font_andale = /usr/share/fonts/andale.ttf
+
+ifdef CONFIG_ENIGMA2_SRC_MAX
+PACKAGES_${P} += \
+	font_verdana \
+	font_verdanab \
+	font_verdanai \
+	font_verdanaz
+RDEPENDS_enigma2 += \
+	font_verdana \
+	font_verdanab \
+	font_verdanai \
+	font_verdanaz
+
+DESCRIPTION_font_verdana = ttf fonts
+FILES_font_verdana = /usr/share/fonts/verdana.ttf
+
+DESCRIPTION_font_verdanab = ttf fonts
+FILES_font_verdanab = /usr/share/fonts/verdanab.ttf
+
+DESCRIPTION_font_verdanai = ttf fonts
+FILES_font_verdanai = /usr/share/fonts/verdanai.ttf
+
+DESCRIPTION_font_verdanaz = ttf fonts
+FILES_font_verdanaz = /usr/share/fonts/verdanaz.ttf
+endif
 
 DESCRIPTION_enigma2_plugin_extensions_cutlisteditor = CutListEditor allows you to edit your movies
 RDEPENDS_enigma2_plugin_extensions_cutlisteditor = enigma2
