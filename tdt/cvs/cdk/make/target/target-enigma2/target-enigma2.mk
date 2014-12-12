@@ -126,7 +126,7 @@ ifdef CONFIG_ENIGMA2_SRC_LAST
   git://github.com:schpuntik/enigma2-pli-arp.git;b=last;protocol=ssh
 endif
 ifdef CONFIG_ENIGMA2_SRC_MAX
-  git://git.code.sf.net/p/openpli/enigma2.git;b=master;r=7a063b
+  git://git.code.sf.net/p/openpli/enigma2.git;b=master;r=4ed1cd
   patch:file://enigma2-pli-nightly.0.diff
 endif
 
