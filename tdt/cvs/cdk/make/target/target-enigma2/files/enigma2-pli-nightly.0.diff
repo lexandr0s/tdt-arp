@@ -5253,7 +5253,7 @@ index 27c6135..8d13ac5 100644
 +		from Screens.SleepTimerEdit import SleepTimerEdit
 +		self.session.open(SleepTimerEdit)
 diff --git a/lib/python/Screens/InfoBarGenerics.py b/lib/python/Screens/InfoBarGenerics.py
-index 6723801..1a49ea9 100644
+index 6723801..0c1f1d5 100644
 --- a/lib/python/Screens/InfoBarGenerics.py
 +++ b/lib/python/Screens/InfoBarGenerics.py
 @@ -9,7 +9,7 @@ from Components.MovieList import AUDIO_EXTENSIONS, MOVIE_EXTENSIONS, DVD_EXTENSI
@@ -5265,15 +5265,7 @@ index 6723801..1a49ea9 100644
  from Components.SystemInfo import SystemInfo
  from Components.UsageConfig import preferredInstantRecordPath, defaultMoviePath, ConfigSelection
  from Components.VolumeControl import VolumeControl
-@@ -37,6 +37,7 @@ from ServiceReference import ServiceReference, isPlayableForCur
- 
- from Tools import Notifications, ASCIItranslit
- from Tools.Directories import fileExists, getRecordingFilename, moveFiles
-+from Tools.Command import command
- 
- from enigma import eTimer, eServiceCenter, eDVBServicePMTHandler, iServiceInformation, \
- 	iPlayableService, eServiceReference, eEPGCache, eActionMap
-@@ -107,7 +108,7 @@ def saveResumePoints():
+@@ -107,7 +107,7 @@ def saveResumePoints():
  	global resumePointCache, resumePointCacheLast
  	import cPickle
  	try:
@@ -5282,7 +5274,7 @@ index 6723801..1a49ea9 100644
  		cPickle.dump(resumePointCache, f, cPickle.HIGHEST_PROTOCOL)
  	except Exception, ex:
  		print "[InfoBar] Failed to write resumepoints:", ex
-@@ -116,7 +117,7 @@ def saveResumePoints():
+@@ -116,7 +116,7 @@ def saveResumePoints():
  def loadResumePoints():
  	import cPickle
  	try:
@@ -5291,7 +5283,7 @@ index 6723801..1a49ea9 100644
  	except Exception, ex:
  		print "[InfoBar] Failed to load resumepoints:", ex
  		return {}
-@@ -224,6 +225,7 @@ class InfoBarShowHide(InfoBarScreenSaver):
+@@ -224,6 +224,7 @@ class InfoBarShowHide(InfoBarScreenSaver):
  	STATE_HIDING = 1
  	STATE_SHOWING = 2
  	STATE_SHOWN = 3
@@ -5299,7 +5291,7 @@ index 6723801..1a49ea9 100644
  
  	def __init__(self):
  		self["ShowHideActions"] = ActionMap( ["InfobarShowHideActions"] ,
-@@ -327,6 +329,12 @@ class InfoBarShowHide(InfoBarScreenSaver):
+@@ -327,6 +328,12 @@ class InfoBarShowHide(InfoBarScreenSaver):
  		else:
  			self.toggleShow()
  
@@ -5312,7 +5304,7 @@ index 6723801..1a49ea9 100644
  	def toggleShow(self):
  		if self.__state == self.STATE_HIDDEN:
  			self.showFirstInfoBar()
-@@ -341,7 +349,9 @@ class InfoBarShowHide(InfoBarScreenSaver):
+@@ -341,7 +348,9 @@ class InfoBarShowHide(InfoBarScreenSaver):
  			self.show()
  			self.secondInfoBarScreen.show()
  			self.startHideTimer()
@@ -5323,7 +5315,7 @@ index 6723801..1a49ea9 100644
  			self.hide()
  			self.hideTimer.stop()
  
-@@ -1933,7 +1943,7 @@ class InfoBarExtensions:
+@@ -1933,7 +1942,7 @@ class InfoBarExtensions:
  
  	def updateExtensions(self):
  		self.extensionsList = []
@@ -5332,7 +5324,7 @@ index 6723801..1a49ea9 100644
  		self.extensionKeys = {}
  		for x in self.list:
  			if x[0] == self.EXTENSION_SINGLE:
-@@ -2484,16 +2494,16 @@ class InfoBarSubserviceSelection:
+@@ -2484,16 +2493,16 @@ class InfoBarSubserviceSelection:
  				idx += 1
  
  			if self.bouquets and len(self.bouquets):
@@ -5356,7 +5348,7 @@ index 6723801..1a49ea9 100644
  
  			self.session.openWithCallback(self.subserviceSelected, ChoiceBox, title=_("Please select a sub service..."), list = tlist, selection = selection, keys = keys, skin_name = "SubserviceSelection")
  
-@@ -3083,6 +3093,143 @@ class InfoBarServiceErrorPopupSupport:
+@@ -3083,6 +3092,143 @@ class InfoBarServiceErrorPopupSupport:
  				if hasattr(self, "dishDialog") and not self.dishDialog.dishState():
  					Notifications.AddPopup(text = error, type = MessageBox.TYPE_ERROR, timeout = 5, id = "ZapError")
  
