@@ -32,6 +32,8 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 			--build=$(build) \
 			--host=$(target) \
 			--prefix=/usr \
+			--with-zlib=no \
+			--with-png=no \
 		&& \
 		$(MAKE)
 	touch $@
