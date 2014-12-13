@@ -39,7 +39,7 @@ call[[ ipk ]]
 NAME_${P} = libz1
 DESCRIPTION_${P} = Zlib Compression Library Zlib is a general-purpose, patent-free, lossless data compression library \
 which is used by many different programs.
-FILES_${P} = /usr/lib/libz.so.*
+FILES_${P} = /usr/lib/libz.so*
 
 call[[ ipkbox ]]
 
