@@ -40,6 +40,11 @@ DESCRIPTION_${P} = open webinteface plugin for enigma2 by openpli team
 RDEPENDS_${P} = python_cheetah aio_grab python_pyopenssl python_json python_serviceidentity
 FILES_${P} = /usr/lib/enigma2/python/Plugins/Extensions/OpenWebif
 
+define postrm_target_openwebif
+#!/bin/sh
+rm -fR /usr/lib/enigma2/python/Plugins/Extensions/OpenWebif
+endef
+
 call[[ ipkbox ]]
 
 ]]package
