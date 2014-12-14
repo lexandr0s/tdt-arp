@@ -1021,6 +1021,192 @@ index 0000000..15f6c17
 +};
 +
 +#endif
+diff --git a/lib/dvb/db.cpp b/lib/dvb/db.cpp
+index 87764b2..3d2a4d6 100644
+--- a/lib/dvb/db.cpp
++++ b/lib/dvb/db.cpp
+@@ -401,15 +401,17 @@ static ePtr<eDVBFrontendParameters> parseFrontendData(const char* line, int vers
+ 				system=eDVBFrontendParametersSatellite::System_DVB_S,
+ 				modulation=eDVBFrontendParametersSatellite::Modulation_QPSK,
+ 				rolloff=eDVBFrontendParametersSatellite::RollOff_alpha_0_35,
+-				pilot=eDVBFrontendParametersSatellite::Pilot_Unknown;
++				pilot=eDVBFrontendParametersSatellite::Pilot_Unknown,
++				is_id = -1, pls_code = 1, pls_mode = 0;
+ 			if (version == 3)
+ 				sscanf(line+2, "%d:%d:%d:%d:%d:%d:%d:%d:%d:%d",
+ 					&frequency, &symbol_rate, &polarisation, &fec, &orbital_position,
+ 					&inversion, &system, &modulation, &rolloff, &pilot);
+ 			else
+-				sscanf(line+2, "%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d",
++				sscanf(line+2, "%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d",
+ 					&frequency, &symbol_rate, &polarisation, &fec, &orbital_position,
+-					&inversion, &flags, &system, &modulation, &rolloff, &pilot);
++					&inversion, &flags, &system, &modulation, &rolloff, &pilot,
++					&is_id, &pls_code, &pls_mode);
+ 			sat.frequency = frequency;
+ 			sat.symbol_rate = symbol_rate;
+ 			sat.polarisation = polarisation;
+@@ -420,6 +422,9 @@ static ePtr<eDVBFrontendParameters> parseFrontendData(const char* line, int vers
+ 			sat.modulation = modulation;
+ 			sat.rolloff = rolloff;
+ 			sat.pilot = pilot;
++			sat.is_id = is_id;
++			sat.pls_mode = pls_mode & 3;
++			sat.pls_code = pls_code & 0x3FFFF;
+ 			ePtr<eDVBFrontendParameters> feparm = new eDVBFrontendParameters;
+ 			feparm->setDVBS(sat);
+ 			feparm->setFlags(flags);
+@@ -429,11 +434,11 @@ static ePtr<eDVBFrontendParameters> parseFrontendData(const char* line, int vers
+ 		{
+ 			eDVBFrontendParametersTerrestrial ter;
+ 			int frequency, bandwidth, code_rate_HP, code_rate_LP, modulation, transmission_mode,
+-				guard_interval, hierarchy, inversion, flags = 0, plpid = 0;
++				guard_interval, hierarchy, inversion, flags = 0, plp_id = 0;
+ 			int system = eDVBFrontendParametersTerrestrial::System_DVB_T;
+ 			sscanf(line+2, "%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d",
+ 				&frequency, &bandwidth, &code_rate_HP, &code_rate_LP, &modulation,
+-				&transmission_mode, &guard_interval, &hierarchy, &inversion, &flags, &system, &plpid);
++				&transmission_mode, &guard_interval, &hierarchy, &inversion, &flags, &system, &plp_id);
+ 			ter.frequency = frequency;
+ 			switch (bandwidth)
+ 			{
+@@ -454,7 +459,7 @@ static ePtr<eDVBFrontendParameters> parseFrontendData(const char* line, int vers
+ 			ter.hierarchy = hierarchy;
+ 			ter.inversion = inversion;
+ 			ter.system = system;
+-			ter.plpid = plpid;
++			ter.plp_id = plp_id;
+ 			ePtr<eDVBFrontendParameters> feparm = new eDVBFrontendParameters;
+ 			feparm->setDVBT(ter);
+ 			feparm->setFlags(flags);
+@@ -629,7 +634,7 @@ void eDVBDB::saveServicelist(const char *file)
+ 		{
+ 			if (sat.system == eDVBFrontendParametersSatellite::System_DVB_S2)
+ 			{
+-				fprintf(f, "\ts %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d\n",
++				fprintf(f, "\ts %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d\n",
+ 					sat.frequency, sat.symbol_rate,
+ 					sat.polarisation, sat.fec,
+ 					sat.orbital_position > 1800 ? sat.orbital_position - 3600 : sat.orbital_position,
+@@ -638,7 +643,8 @@ void eDVBDB::saveServicelist(const char *file)
+ 					sat.system,
+ 					sat.modulation,
+ 					sat.rolloff,
+-					sat.pilot);
++					sat.pilot,
++					sat.is_id, sat.pls_code & 0x3FFFF, sat.pls_mode & 3);
+ 			}
+ 			else
+ 			{
+@@ -679,7 +685,7 @@ void eDVBDB::saveServicelist(const char *file)
+ 			fprintf(f, "\tt %d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d:%d\n",
+ 				ter.frequency, bandwidth, ter.code_rate_HP,
+ 				ter.code_rate_LP, ter.modulation, ter.transmission_mode,
+-				ter.guard_interval, ter.hierarchy, ter.inversion, flags, ter.system, ter.plpid);
++				ter.guard_interval, ter.hierarchy, ter.inversion, flags, ter.system, ter.plp_id);
+ 		}
+ 		else if (!ch.m_frontendParameters->getDVBC(cab))
+ 		{
+@@ -1066,7 +1072,7 @@ PyObject *eDVBDB::readSatellites(ePyObject sat_list, ePyObject sat_dict, ePyObje
+ 		return Py_False;
+ 	}
+ 	int tmp, *dest = NULL,
+-		modulation, system, freq, sr, pol, fec, inv, pilot, rolloff, tsid, onid;
++		modulation, system, freq, sr, pol, fec, inv, pilot, rolloff, is_id, pls_code, pls_mode, tsid, onid;
+ 	char *end_ptr;
+ 	const Attribute *at;
+ 	std::string name;
+@@ -1131,6 +1137,9 @@ PyObject *eDVBDB::readSatellites(ePyObject sat_list, ePyObject sat_dict, ePyObje
+ 				inv = eDVBFrontendParametersSatellite::Inversion_Unknown;
+ 				pilot = eDVBFrontendParametersSatellite::Pilot_Unknown;
+ 				rolloff = eDVBFrontendParametersSatellite::RollOff_alpha_0_35;
++				is_id = -1;
++				pls_code = 1;
++				pls_mode = 0;
+ 				tsid = -1;
+ 				onid = -1;
+ 
+@@ -1148,6 +1157,9 @@ PyObject *eDVBDB::readSatellites(ePyObject sat_list, ePyObject sat_dict, ePyObje
+ 					else if (name == "inversion") dest = &inv;
+ 					else if (name == "rolloff") dest = &rolloff;
+ 					else if (name == "pilot") dest = &pilot;
++					else if (name == "is_id") dest = &is_id;
++					else if (name == "pls_code") dest = &pls_code;
++					else if (name == "pls_mode") dest = &pls_mode;
+ 					else if (name == "tsid") dest = &tsid;
+ 					else if (name == "onid") dest = &onid;
+ 					else continue;
+@@ -1161,7 +1173,7 @@ PyObject *eDVBDB::readSatellites(ePyObject sat_list, ePyObject sat_dict, ePyObje
+ 				}
+ 				if (freq && sr && pol != -1)
+ 				{
+-					tuple = PyTuple_New(12);
++					tuple = PyTuple_New(13);
+ 					PyTuple_SET_ITEM(tuple, 0, PyInt_FromLong(0));
+ 					PyTuple_SET_ITEM(tuple, 1, PyInt_FromLong(freq));
+ 					PyTuple_SET_ITEM(tuple, 2, PyInt_FromLong(sr));
+@@ -1172,8 +1184,11 @@ PyObject *eDVBDB::readSatellites(ePyObject sat_list, ePyObject sat_dict, ePyObje
+ 					PyTuple_SET_ITEM(tuple, 7, PyInt_FromLong(inv));
+ 					PyTuple_SET_ITEM(tuple, 8, PyInt_FromLong(rolloff));
+ 					PyTuple_SET_ITEM(tuple, 9, PyInt_FromLong(pilot));
+-					PyTuple_SET_ITEM(tuple, 10, PyInt_FromLong(tsid));
+-					PyTuple_SET_ITEM(tuple, 11, PyInt_FromLong(onid));
++					PyTuple_SET_ITEM(tuple, 10, PyInt_FromLong(is_id));
++					PyTuple_SET_ITEM(tuple, 11, PyInt_FromLong(pls_mode & 3));
++					PyTuple_SET_ITEM(tuple, 12, PyInt_FromLong(pls_code & 0x3FFFF));
++					PyTuple_SET_ITEM(tuple, 11, PyInt_FromLong(tsid));
++					PyTuple_SET_ITEM(tuple, 12, PyInt_FromLong(onid));
+ 					PyList_Append(tplist, tuple);
+ 					Py_DECREF(tuple);
+ 				}
+@@ -1342,7 +1357,7 @@ PyObject *eDVBDB::readTerrestrials(ePyObject ter_list, ePyObject tp_dict)
+ 	const Attribute *at;
+ 	std::string name;
+ 	int tmp, *dest,
+-		freq, bw, constellation, crh, crl, guard, transm, hierarchy, inv, system, plpid;
++		freq, bw, constellation, crh, crl, guard, transm, hierarchy, inv, system, plp_id;
+ 	char *end_ptr;
+ 	const ElementList &root_elements = root->getElementList();
+ 	for (ElementConstIterator it(root_elements.begin()); it != root_elements.end(); ++it)
+@@ -1393,7 +1408,7 @@ PyObject *eDVBDB::readTerrestrials(ePyObject ter_list, ePyObject tp_dict)
+ 				hierarchy = eDVBFrontendParametersTerrestrial::Hierarchy_Auto;
+ 				inv = eDVBFrontendParametersTerrestrial::Inversion_Unknown;
+ 				system = eDVBFrontendParametersTerrestrial::System_DVB_T_T2;
+-				plpid = 0;
++				plp_id = 0;
+ 				for (AttributeConstIterator it(tp_attributes.begin()); it != end; ++it)
+ 				{
+ //					eDebug("\t\tattr: %s", at->name().c_str());
+@@ -1410,7 +1425,7 @@ PyObject *eDVBDB::readTerrestrials(ePyObject ter_list, ePyObject tp_dict)
+ 					else if (name == "hierarchy_information") dest = &hierarchy;
+ 					else if (name == "inversion") dest = &inv;
+ 					else if (name == "system") dest = &system;
+-					else if (name == "plp_id") dest = &plpid;
++					else if (name == "plp_id") dest = &plp_id;
+ 					else continue;
+ 					if (dest)
+ 					{
+@@ -1432,9 +1447,9 @@ PyObject *eDVBDB::readTerrestrials(ePyObject ter_list, ePyObject tp_dict)
+ 					case eDVBFrontendParametersTerrestrial::Bandwidth_1_712MHz: bw = 1712000; break;
+ 					case eDVBFrontendParametersTerrestrial::Bandwidth_10MHz: bw = 10000000; break;
+ 					}
+-					if (crh > eDVBFrontendParametersTerrestrial::FEC_8_9)
++					if (crh > eDVBFrontendParametersTerrestrial::FEC_4_5)
+ 						crh = eDVBFrontendParametersTerrestrial::FEC_Auto;
+-					if (crl > eDVBFrontendParametersTerrestrial::FEC_8_9)
++					if (crl > eDVBFrontendParametersTerrestrial::FEC_4_5)
+ 						crl = eDVBFrontendParametersTerrestrial::FEC_Auto;
+ 					tuple = PyTuple_New(12);
+ 					PyTuple_SET_ITEM(tuple, 0, PyInt_FromLong(2));
+@@ -1448,7 +1463,7 @@ PyObject *eDVBDB::readTerrestrials(ePyObject ter_list, ePyObject tp_dict)
+ 					PyTuple_SET_ITEM(tuple, 8, PyInt_FromLong(hierarchy));
+ 					PyTuple_SET_ITEM(tuple, 9, PyInt_FromLong(inv));
+ 					PyTuple_SET_ITEM(tuple, 10, PyInt_FromLong(system));
+-					PyTuple_SET_ITEM(tuple, 11, PyInt_FromLong(plpid));
++					PyTuple_SET_ITEM(tuple, 11, PyInt_FromLong(plp_id));
+ 					PyList_Append(tplist, tuple);
+ 					Py_DECREF(tuple);
+ 				}
 diff --git a/lib/dvb/decoder.cpp b/lib/dvb/decoder.cpp
 index 9176ba1..638331d 100644
 --- a/lib/dvb/decoder.cpp
@@ -1216,7 +1402,7 @@ index 9176ba1..638331d 100644
  			close(f);
  		}
 diff --git a/lib/dvb/dvb.cpp b/lib/dvb/dvb.cpp
-index 9c20f95..27496c4 100644
+index 5102a98..8731a8b 100644
 --- a/lib/dvb/dvb.cpp
 +++ b/lib/dvb/dvb.cpp
 @@ -115,6 +115,68 @@ eDVBResourceManager::eDVBResourceManager()
@@ -1297,7 +1483,7 @@ index 9c20f95..27496c4 100644
  	eDebug("found %zd adapter, %zd frontends(%zd sim) and %zd demux, boxtype %d",
  		m_adapter.size(), m_frontend.size(), m_simulate_frontend.size(), m_demux.size(), m_boxtype);
  
-@@ -951,6 +1013,58 @@ RESULT eDVBResourceManager::allocateDemux(eDVBRegisteredFrontend *fe, ePtr<eDVBA
+@@ -925,6 +987,58 @@ RESULT eDVBResourceManager::allocateDemux(eDVBRegisteredFrontend *fe, ePtr<eDVBA
  			}
  		}
  	}
@@ -1356,7 +1542,7 @@ index 9c20f95..27496c4 100644
  	else
  	{
  		iDVBAdapter *adapter = fe ? fe->m_adapter : m_adapter.begin(); /* look for a demux on the same adapter as the frontend, or the first adapter for dvr playback */
-@@ -2106,6 +2220,12 @@ RESULT eDVBChannel::playSource(ePtr<iTsSource> &source, const char *streaminfo_f
+@@ -2080,6 +2194,12 @@ RESULT eDVBChannel::playSource(ePtr<iTsSource> &source, const char *streaminfo_f
  			return -ENODEV;
  		}
  #else
@@ -1369,7 +1555,7 @@ index 9c20f95..27496c4 100644
  		ePtr<eDVBAllocatedDemux> &demux = m_demux ? m_demux : m_decoder_demux;
  		if (demux)
  		{
-@@ -2122,6 +2242,7 @@ RESULT eDVBChannel::playSource(ePtr<iTsSource> &source, const char *streaminfo_f
+@@ -2096,6 +2216,7 @@ RESULT eDVBChannel::playSource(ePtr<iTsSource> &source, const char *streaminfo_f
  			return -ENODEV;
  		}
  #endif
@@ -2429,39 +2615,380 @@ index 5e589e8..e8fcc48 100644
  			eDebug("[EPGC] mhw2 finished(%ld) %d summaries not found",
  				::time(0),
 diff --git a/lib/dvb/frontend.cpp b/lib/dvb/frontend.cpp
-index 9668634..7ca822a 100644
+index 9613b93..57cc6f5 100644
 --- a/lib/dvb/frontend.cpp
 +++ b/lib/dvb/frontend.cpp
-@@ -527,7 +527,7 @@ int eDVBFrontend::openFrontend()
- 				return -1;
- 			}
- 			strncpy(m_description, fe_info.name, sizeof(m_description));
--
-+#ifdef DTV_ENUM_DELSYS
- 			struct dtv_property p[1];
- 			p[0].cmd = DTV_ENUM_DELSYS;
- 			struct dtv_properties cmdseq;
-@@ -542,7 +542,7 @@ int eDVBFrontend::openFrontend()
- 					m_delsys[delsys] = true;
- 				}
- 			}
--			else if (errno == EINVAL)
-+#else
+@@ -98,21 +98,26 @@ void eDVBFrontendParametersSatellite::set(const SatelliteDeliverySystemDescripto
+ 		orbital_position = 3600 - orbital_position;
+ 	system = descriptor.getModulationSystem();
+ 	modulation = descriptor.getModulation();
+-	if (system == System_DVB_S && modulation == Modulation_8PSK)
++	if (system == System_DVB_S && modulation == Modulation_QPSK)
+ 	{
+ 		eDebug("satellite_delivery_descriptor invalid modulation type.. force QPSK");
+ 		modulation = Modulation_QPSK;
+ 	}
+ 	rolloff = descriptor.getRollOff();
++	is_id = NO_STREAM_ID_FILTER;
++	pls_mode = 0; pls_code = 1;
+ 	if (system == System_DVB_S2)
+ 	{
+-		eDebug("SAT DVB-S2 freq %d, %s, pos %d, sr %d, fec %d, modulation %d, rolloff %d",
++		eDebug("SAT DVB-S2 freq %d, %s, pos %d, sr %d, fec %d, modulation %d, rolloff %d, is_id %d, pls_mode %d, pls_code %d",
+ 			frequency,
+ 			polarisation ? "hor" : "vert",
+ 			orbital_position,
+ 			symbol_rate, fec,
+ 			modulation,
+-			rolloff);
++			rolloff,
++			is_id,
++			pls_mode,
++			pls_code);
+ 	}
+ 	else
+ 	{
+@@ -187,7 +192,7 @@ void eDVBFrontendParametersTerrestrial::set(const TerrestrialDeliverySystemDescr
+ 		modulation = Modulation_Auto;
+ 	inversion = Inversion_Unknown;
+ 	system = System_DVB_T;
+-	plpid = 0;
++	plp_id = 0;
+ 	eDebug("Terr freq %d, bw %d, cr_hp %d, cr_lp %d, tm_mode %d, guard %d, hierarchy %d, const %d",
+ 		frequency, bandwidth, code_rate_HP, code_rate_LP, transmission_mode,
+ 		guard_interval, hierarchy, modulation);
+@@ -291,6 +296,12 @@ RESULT eDVBFrontendParameters::calculateDifference(const iDVBFrontendParameters
+ 				diff = 1<<29;
+ 			else if (sat.polarisation != osat.polarisation)
+ 				diff = 1<<28;
++			else if (sat.is_id != osat.is_id)
++				diff = 1<<27;
++			else if (sat.pls_mode != osat.pls_mode)
++				diff = 1<<27;
++			else if (sat.pls_code != osat.pls_code)
++				diff = 1<<27;
+ 			else if (exact && sat.fec != osat.fec && sat.fec != eDVBFrontendParametersSatellite::FEC_Auto && osat.fec != eDVBFrontendParametersSatellite::FEC_Auto)
+ 				diff = 1<<27;
+ 			else if (exact && sat.modulation != osat.modulation && sat.modulation != eDVBFrontendParametersSatellite::Modulation_Auto && osat.modulation != eDVBFrontendParametersSatellite::Modulation_Auto)
+@@ -354,7 +365,7 @@ RESULT eDVBFrontendParameters::calculateDifference(const iDVBFrontendParameters
+ 				oterrestrial.code_rate_HP != eDVBFrontendParametersTerrestrial::FEC_Auto &&
+ 				terrestrial.code_rate_HP != eDVBFrontendParametersTerrestrial::FEC_Auto)
+ 				diff = 1 << 30;
+-			else if (oterrestrial.plpid != terrestrial.plpid)
++			else if (oterrestrial.plp_id != terrestrial.plp_id)
+ 				diff = 1 << 27;
+ 			else if (oterrestrial.system != terrestrial.system)
+ 				diff = 1 << 30;
+@@ -780,7 +791,11 @@ void eDVBFrontend::calculateSignalQuality(int snr, int &signalquality, int &sign
+ {
+ 	int sat_max = 1600; // for stv0288 / bsbe2
+ 	int ret = 0x12345678;
+-	if (!strcmp(m_description, "AVL2108")) // ET9000
++	if (strstr(m_description, "STV090x Multistandard"))
++	{
++		ret = (int)(snr / 32.768);
++	}
++	else if (!strcmp(m_description, "AVL2108")) // ET9000
+ 	{
+ 		ret = (int)(snr / 40.5);
+ 		sat_max = 1618;
+@@ -1679,7 +1694,8 @@ void eDVBFrontend::setFrontend(bool recvEvents)
  			{
- 				/* old DVB API, fill delsys map with some defaults */
- 				switch (fe_info.type)
-@@ -578,10 +578,7 @@ int eDVBFrontend::openFrontend()
- 					}
+ 				case eDVBFrontendParametersSatellite::Modulation_QPSK: modulation = QPSK; break;
+ 				case eDVBFrontendParametersSatellite::Modulation_8PSK: modulation = PSK_8; break;
+-				case eDVBFrontendParametersSatellite::Modulation_QAM16: modulation = QAM_16; break;
++				case eDVBFrontendParametersSatellite::Modulation_16APSK: modulation = APSK_16; break;
++				case eDVBFrontendParametersSatellite::Modulation_32APSK: modulation = APSK_32; break;
+ 			}
+ 			switch (parm.pilot)
+ 			{
+@@ -1723,8 +1739,9 @@ void eDVBFrontend::setFrontend(bool recvEvents)
+ 			{
+ 				p[cmdseq.num].cmd = DTV_ROLLOFF, p[cmdseq.num].u.data = rolloff, cmdseq.num++;
+ 				p[cmdseq.num].cmd = DTV_PILOT, p[cmdseq.num].u.data = pilot, cmdseq.num++;
++				p[cmdseq.num].cmd = DTV_STREAM_ID, p[cmdseq.num].u.data = parm.is_id | (parm.pls_code << 8) | (parm.pls_mode << 26), cmdseq.num++;
++			}
+ 			}
+-		}
+ 		else if (type == iDVBFrontend::feCable)
+ 		{
+ 			eDVBFrontendParametersCable parm;
+@@ -1822,12 +1839,12 @@ void eDVBFrontend::setFrontend(bool recvEvents)
+ 			switch (parm.code_rate_LP)
+ 			{
+ 				case eDVBFrontendParametersTerrestrial::FEC_1_2: p[cmdseq.num].u.data = FEC_1_2; break;
++				case eDVBFrontendParametersTerrestrial::FEC_3_5: p[cmdseq.num].u.data = FEC_3_5; break;
+ 				case eDVBFrontendParametersTerrestrial::FEC_2_3: p[cmdseq.num].u.data = FEC_2_3; break;
+ 				case eDVBFrontendParametersTerrestrial::FEC_3_4: p[cmdseq.num].u.data = FEC_3_4; break;
++				case eDVBFrontendParametersTerrestrial::FEC_4_5: p[cmdseq.num].u.data = FEC_4_5; break;
+ 				case eDVBFrontendParametersTerrestrial::FEC_5_6: p[cmdseq.num].u.data = FEC_5_6; break;
+-				case eDVBFrontendParametersTerrestrial::FEC_6_7: p[cmdseq.num].u.data = FEC_6_7; break;
+ 				case eDVBFrontendParametersTerrestrial::FEC_7_8: p[cmdseq.num].u.data = FEC_7_8; break;
+-				case eDVBFrontendParametersTerrestrial::FEC_8_9: p[cmdseq.num].u.data = FEC_8_9; break;
+ 				default:
+ 				case eDVBFrontendParametersTerrestrial::FEC_Auto: p[cmdseq.num].u.data = FEC_AUTO; break;
+ 			}
+@@ -1837,12 +1854,12 @@ void eDVBFrontend::setFrontend(bool recvEvents)
+ 			switch (parm.code_rate_HP)
+ 			{
+ 				case eDVBFrontendParametersTerrestrial::FEC_1_2: p[cmdseq.num].u.data = FEC_1_2; break;
++				case eDVBFrontendParametersTerrestrial::FEC_3_5: p[cmdseq.num].u.data = FEC_3_5; break;
+ 				case eDVBFrontendParametersTerrestrial::FEC_2_3: p[cmdseq.num].u.data = FEC_2_3; break;
+ 				case eDVBFrontendParametersTerrestrial::FEC_3_4: p[cmdseq.num].u.data = FEC_3_4; break;
++				case eDVBFrontendParametersTerrestrial::FEC_4_5: p[cmdseq.num].u.data = FEC_4_5; break;
+ 				case eDVBFrontendParametersTerrestrial::FEC_5_6: p[cmdseq.num].u.data = FEC_5_6; break;
+-				case eDVBFrontendParametersTerrestrial::FEC_6_7: p[cmdseq.num].u.data = FEC_6_7; break;
+ 				case eDVBFrontendParametersTerrestrial::FEC_7_8: p[cmdseq.num].u.data = FEC_7_8; break;
+-				case eDVBFrontendParametersTerrestrial::FEC_8_9: p[cmdseq.num].u.data = FEC_8_9; break;
+ 				default:
+ 				case eDVBFrontendParametersTerrestrial::FEC_Auto: p[cmdseq.num].u.data = FEC_AUTO; break;
+ 			}
+@@ -1911,9 +1928,9 @@ void eDVBFrontend::setFrontend(bool recvEvents)
+ 				if (m_dvbversion >= DVB_VERSION(5, 3))
+ 				{
+ #if defined DTV_STREAM_ID
+-					p[cmdseq.num].cmd = DTV_STREAM_ID, p[cmdseq.num].u.data = parm.plpid, cmdseq.num++;
++					p[cmdseq.num].cmd = DTV_STREAM_ID, p[cmdseq.num].u.data = parm.plp_id, cmdseq.num++;
+ #elif defined DTV_DVBT2_PLP_ID
+-					p[cmdseq.num].cmd = DTV_DVBT2_PLP_ID, p[cmdseq.num].u.data = parm.plpid, cmdseq.num++;
++					p[cmdseq.num].cmd = DTV_DVBT2_PLP_ID, p[cmdseq.num].u.data = parm.plp_id, cmdseq.num++;
+ #endif
  				}
  			}
--			else
--			{
--				eDebug("FE_GET_PROPERTY DTV_ENUM_DELSYS failed (%m)");
--			}
-+#endif
+@@ -1966,7 +1983,6 @@ void eDVBFrontend::setFrontend(bool recvEvents)
  		}
+ 	}
+ }
+-
+ RESULT eDVBFrontend::prepare_sat(const eDVBFrontendParametersSatellite &feparm, unsigned int tunetimeout)
+ {
+ 	int res;
+@@ -1979,7 +1995,7 @@ RESULT eDVBFrontend::prepare_sat(const eDVBFrontendParametersSatellite &feparm,
+ 	res = m_sec->prepare(*this, feparm, satfrequency, 1 << m_slotid, tunetimeout);
+ 	if (!res)
+ 	{
+-		eDebugNoSimulate("prepare_sat System %d Freq %d Pol %d SR %d INV %d FEC %d orbpos %d system %d modulation %d pilot %d, rolloff %d",
++		eDebugNoSimulate("prepare_sat System %d Freq %d Pol %d SR %d INV %d FEC %d orbpos %d system %d modulation %d pilot %d, rolloff %d, is_id %d, pls_mode %d, pls_code %d",
+ 			feparm.system,
+ 			feparm.frequency,
+ 			feparm.polarisation,
+@@ -1990,7 +2006,10 @@ RESULT eDVBFrontend::prepare_sat(const eDVBFrontendParametersSatellite &feparm,
+ 			feparm.system,
+ 			feparm.modulation,
+ 			feparm.pilot,
+-			feparm.rolloff);
++			feparm.rolloff,
++			feparm.is_id,
++			feparm.pls_mode,
++			feparm.pls_code);
+ 		if ((unsigned int)satfrequency < fe_info.frequency_min || (unsigned int)satfrequency > fe_info.frequency_max)
+ 		{
+ 			eDebugNoSimulate("%d mhz out of tuner range.. dont tune", satfrequency / 1000);
+diff --git a/lib/dvb/frontendparms.cpp b/lib/dvb/frontendparms.cpp
+index 92eda4e..dfacc48 100644
+--- a/lib/dvb/frontendparms.cpp
++++ b/lib/dvb/frontendparms.cpp
+@@ -158,6 +158,21 @@ int eDVBTransponderData::getSystem() const
+ 	return -1;
+ }
  
- 		if (m_simulate_fe)
++int eDVBTransponderData::getIsId() const
++{
++	return -1;
++}
++
++int eDVBTransponderData::getPLSMode() const
++{
++	return -1;
++}
++
++int eDVBTransponderData::getPLSCode() const
++{
++	return -1;
++}
++
+ int eDVBTransponderData::getBandwidth() const
+ {
+ 	return -1;
+@@ -273,6 +288,8 @@ int eDVBSatelliteTransponderData::getModulation() const
+ 	default: eDebug("got unsupported modulation from frontend! report as QPSK!");
+ 	case QPSK: return eDVBFrontendParametersSatellite::Modulation_QPSK;
+ 	case PSK_8: return eDVBFrontendParametersSatellite::Modulation_8PSK;
++	case APSK_16: return eDVBFrontendParametersSatellite::Modulation_16APSK;
++	case APSK_32: return eDVBFrontendParametersSatellite::Modulation_32APSK;
+ 	}
+ }
+ 
+@@ -320,6 +337,27 @@ int eDVBSatelliteTransponderData::getSystem() const
+ 	}
+ }
+ 
++int eDVBSatelliteTransponderData::getIsId() const
++{
++	if (originalValues) return transponderParameters.is_id;
++
++	return getProperty(DTV_STREAM_ID) & 0xFF;
++}
++
++int eDVBSatelliteTransponderData::getPLSMode() const
++{
++	if (originalValues) return transponderParameters.pls_mode;
++
++	return (getProperty(DTV_STREAM_ID) >> 26) & 0x3;
++}
++
++int eDVBSatelliteTransponderData::getPLSCode() const
++{
++	if (originalValues) return transponderParameters.pls_code;
++
++	return (getProperty(DTV_STREAM_ID) >> 8) & 0x3FFFF;
++}
++
+ DEFINE_REF(eDVBCableTransponderData);
+ 
+ eDVBCableTransponderData::eDVBCableTransponderData(struct dtv_property *dtvproperties, unsigned int propertycount, eDVBFrontendParametersCable &transponderparms, bool original)
+@@ -458,8 +496,10 @@ int eDVBTerrestrialTransponderData::getCodeRateLp() const
+ 	switch (getProperty(DTV_CODE_RATE_LP))
+ 	{
+ 	case FEC_1_2: return eDVBFrontendParametersTerrestrial::FEC_1_2;
++	case FEC_3_5: return eDVBFrontendParametersTerrestrial::FEC_3_5;
+ 	case FEC_2_3: return eDVBFrontendParametersTerrestrial::FEC_2_3;
+ 	case FEC_3_4: return eDVBFrontendParametersTerrestrial::FEC_3_4;
++	case FEC_4_5: return eDVBFrontendParametersTerrestrial::FEC_4_5;
+ 	case FEC_5_6: return eDVBFrontendParametersTerrestrial::FEC_5_6;
+ 	case FEC_7_8: return eDVBFrontendParametersTerrestrial::FEC_7_8;
+ 	default:
+@@ -474,8 +514,10 @@ int eDVBTerrestrialTransponderData::getCodeRateHp() const
+ 	switch (getProperty(DTV_CODE_RATE_HP))
+ 	{
+ 	case FEC_1_2: return eDVBFrontendParametersTerrestrial::FEC_1_2;
++	case FEC_3_5: return eDVBFrontendParametersTerrestrial::FEC_3_5;
+ 	case FEC_2_3: return eDVBFrontendParametersTerrestrial::FEC_2_3;
+ 	case FEC_3_4: return eDVBFrontendParametersTerrestrial::FEC_3_4;
++	case FEC_4_5: return eDVBFrontendParametersTerrestrial::FEC_4_5;
+ 	case FEC_5_6: return eDVBFrontendParametersTerrestrial::FEC_5_6;
+ 	case FEC_7_8: return eDVBFrontendParametersTerrestrial::FEC_7_8;
+ 	default:
+@@ -508,6 +550,7 @@ int eDVBTerrestrialTransponderData::getTransmissionMode() const
+ 	case TRANSMISSION_MODE_8K: return eDVBFrontendParametersTerrestrial::TransmissionMode_8k;
+ #if DVB_API_VERSION > 5 || DVB_API_VERSION == 5 && DVB_API_VERSION_MINOR >= 5
+ 	case TRANSMISSION_MODE_1K: return eDVBFrontendParametersTerrestrial::TransmissionMode_1k;
++	case TRANSMISSION_MODE_4K: return eDVBFrontendParametersTerrestrial::TransmissionMode_4k;
+ 	case TRANSMISSION_MODE_16K: return eDVBFrontendParametersTerrestrial::TransmissionMode_16k;
+ 	case TRANSMISSION_MODE_32K: return eDVBFrontendParametersTerrestrial::TransmissionMode_32k;
+ #endif
+@@ -553,7 +596,7 @@ int eDVBTerrestrialTransponderData::getHierarchyInformation() const
+ 
+ int eDVBTerrestrialTransponderData::getPlpId() const
+ {
+-	if (originalValues) return transponderParameters.plpid;
++	if (originalValues) return transponderParameters.plp_id;
+ 
+ #if defined DTV_STREAM_ID
+ 	return getProperty(DTV_STREAM_ID);
+diff --git a/lib/dvb/frontendparms.h b/lib/dvb/frontendparms.h
+index c105cbb..d240f17 100644
+--- a/lib/dvb/frontendparms.h
++++ b/lib/dvb/frontendparms.h
+@@ -12,6 +12,14 @@
+ 
+ #include <linux/dvb/frontend.h>
+ 
++#ifndef DTV_STREAM_ID
++	#define DTV_STREAM_ID DTV_ISDBS_TS_ID
++#endif
++
++#ifndef NO_STREAM_ID_FILTER
++	#define NO_STREAM_ID_FILTER	(~0U)
++#endif
++
+ struct eDVBFrontendParametersSatellite
+ {
+ #ifndef SWIG
+@@ -35,7 +43,7 @@ struct eDVBFrontendParametersSatellite
+ 	};
+ 
+ 	enum {
+-		Modulation_Auto, Modulation_QPSK, Modulation_8PSK, Modulation_QAM16
++		Modulation_Auto, Modulation_QPSK, Modulation_8PSK, Modulation_16APSK, Modulation_32APSK
+ 	};
+ 
+ 	// dvb-s2
+@@ -47,9 +55,13 @@ struct eDVBFrontendParametersSatellite
+ 		Pilot_Off, Pilot_On, Pilot_Unknown
+ 	};
+ 
++	enum {
++		PLS_Root, PLS_Gold, PLS_Combo, PLS_Unknown
++	};
++
+ 	bool no_rotor_command_on_tune;
+ 	unsigned int frequency, symbol_rate;
+-	int polarisation, fec, inversion, orbital_position, system, modulation, rolloff, pilot;
++	int polarisation, fec, inversion, orbital_position, system, modulation, rolloff, pilot, is_id, pls_mode, pls_code;
+ };
+ SWIG_ALLOW_OUTPUT_SIMPLE(eDVBFrontendParametersSatellite);
+ 
+@@ -98,7 +110,7 @@ struct eDVBFrontendParametersTerrestrial
+ 	 * (and it's too late to fix this now, we would break backward compatibility)
+ 	 */
+ 	enum {
+-		FEC_1_2=0, FEC_2_3=1, FEC_3_4=2, FEC_5_6=3, FEC_7_8=4, FEC_Auto=5, FEC_6_7=6, FEC_8_9=7
++		FEC_1_2=0, FEC_2_3=1, FEC_3_4=2, FEC_5_6=3, FEC_7_8=4, FEC_Auto=5, FEC_3_5=6, FEC_4_5=7
+ 	};
+ 
+ 	enum {
+@@ -134,7 +146,7 @@ struct eDVBFrontendParametersTerrestrial
+ 	int hierarchy;
+ 	int inversion;
+ 	int system;
+-	int plpid;
++	int plp_id;
+ };
+ SWIG_ALLOW_OUTPUT_SIMPLE(eDVBFrontendParametersTerrestrial);
+ 
+@@ -200,6 +212,9 @@ public:
+ 	int getRolloff() const;
+ 	int getPilot() const;
+ 	int getSystem() const;
++	int getIsId() const;
++	int getPLSMode() const;
++	int getPLSCode() const;
+ 	int getBandwidth() const;
+ 	int getCodeRateLp() const;
+ 	int getCodeRateHp() const;
+@@ -231,6 +246,9 @@ public:
+ 	int getRolloff() const;
+ 	int getPilot() const;
+ 	int getSystem() const;
++	int getIsId() const;
++	int getPLSMode() const;
++	int getPLSCode() const;
+ };
+ 
+ class eDVBCableTransponderData : public eDVBTransponderData
+diff --git a/lib/dvb/idvb.h b/lib/dvb/idvb.h
+index dcb64c6..c436418 100644
+--- a/lib/dvb/idvb.h
++++ b/lib/dvb/idvb.h
+@@ -3,6 +3,7 @@
+ 
+ #ifndef SWIG
+ 
++#include <linux/dvb/version.h>
+ #include <linux/dvb/frontend.h>
+ #include <linux/dvb/video.h>
+ #include <lib/base/object.h>
+@@ -479,6 +480,9 @@ public:
+ 	virtual int getRolloff() const = 0;
+ 	virtual int getPilot() const = 0;
+ 	virtual int getSystem() const = 0;
++	virtual int getIsId() const = 0;
++	virtual int getPLSMode() const = 0;
++	virtual int getPLSCode() const = 0;
+ 	virtual int getBandwidth() const = 0;
+ 	virtual int getCodeRateLp() const = 0;
+ 	virtual int getCodeRateHp() const = 0;
 diff --git a/lib/dvb/pmt.cpp b/lib/dvb/pmt.cpp
 index f5028aa..ef3b4f9 100644
 --- a/lib/dvb/pmt.cpp
@@ -2478,6 +3005,42 @@ index f5028aa..ef3b4f9 100644
  		if (!ref.getServiceID().get() /* incorrect sid in meta file or recordings.epl*/ )
  		{
  			eDVBTSTools tstools;
+diff --git a/lib/dvb/scan.cpp b/lib/dvb/scan.cpp
+index e79a121..487f529 100644
+--- a/lib/dvb/scan.cpp
++++ b/lib/dvb/scan.cpp
+@@ -515,8 +515,8 @@ void eDVBScan::addChannelToScan(iDVBFrontendParameters *feparm)
+ 	{
+ 		eDVBFrontendParametersSatellite parm;
+ 		feparm->getDVBS(parm);
+-		SCAN_eDebug("try to add %d %d %d %d %d %d",
+-			parm.orbital_position, parm.frequency, parm.symbol_rate, parm.polarisation, parm.fec, parm.modulation);
++		SCAN_eDebug("try to add %d %d %d %d %d %d %d",
++			parm.orbital_position, parm.frequency, parm.symbol_rate, parm.polarisation, parm.fec, parm.modulation, parm.is_id);
+ 		break;
+ 	}
+ 	case iDVBFrontend::feCable:
+@@ -531,9 +531,9 @@ void eDVBScan::addChannelToScan(iDVBFrontendParameters *feparm)
+ 	{
+ 		eDVBFrontendParametersTerrestrial parm;
+ 		feparm->getDVBT(parm);
+-		SCAN_eDebug("try to add %d %d %d %d %d %d %d %d",
++		SCAN_eDebug("try to add %d %d %d %d %d %d %d %d %d",
+ 			parm.frequency, parm.modulation, parm.transmission_mode, parm.hierarchy,
+-			parm.guard_interval, parm.code_rate_LP, parm.code_rate_HP, parm.bandwidth);
++			parm.guard_interval, parm.code_rate_LP, parm.code_rate_HP, parm.bandwidth, parm.plp_id);
+ 		break;
+ 	}
+ 	}
+@@ -727,7 +727,7 @@ void eDVBScan::channelDone()
+ 							{
+ 								T2 = true;
+ 								t2transponder.system = eDVBFrontendParametersTerrestrial::System_DVB_T2;
+-								t2transponder.plpid = (int)d.getSelectorBytes()->at(0);
++								t2transponder.plp_id = (int)d.getSelectorBytes()->at(0);
+ 								t2transponder.code_rate_HP = t2transponder.code_rate_LP = eDVBFrontendParametersTerrestrial::FEC_Auto;
+ 								t2transponder.hierarchy = eDVBFrontendParametersTerrestrial::Hierarchy_Auto;
+ 								t2transponder.modulation = eDVBFrontendParametersTerrestrial::Modulation_Auto;
 diff --git a/lib/dvb/volume.cpp b/lib/dvb/volume.cpp
 index 8bbbcff..889ffd2 100644
 --- a/lib/dvb/volume.cpp
@@ -4263,7 +4826,7 @@ index 9a40a06..d08ff1e 100644
  			self.partitions.append(p)
  			if p.mountpoint: # Plugins won't expect unmounted devices
 diff --git a/lib/python/Components/NimManager.py b/lib/python/Components/NimManager.py
-index 8658eb7..0792783 100644
+index 8658eb7..9d8eeaf 100644
 --- a/lib/python/Components/NimManager.py
 +++ b/lib/python/Components/NimManager.py
 @@ -20,6 +20,10 @@ from Tools import Directories
@@ -4277,6 +4840,61 @@ index 8658eb7..0792783 100644
  	default_orbpos = None
  	for x in satlist:
  		if x[0] == orbpos:
+@@ -511,7 +515,7 @@ class SecConfigure:
+ 		self.update()
+ 
+ class NIM(object):
+-	def __init__(self, slot, type, description, has_outputs = True, internally_connectable = None, multi_type = {}, frontend_id = None, i2c = None, is_empty = False):
++	def __init__(self, slot, type, description, has_outputs = True, internally_connectable = None, multi_type = {}, frontend_id = None, i2c = None, is_empty = False, multistream = False):
+ 		self.slot = slot
+ 
+ 		if type not in ("DVB-S", "DVB-C", "DVB-T", "DVB-S2", "DVB-T2", "DVB-C2", "ATSC", None):
+@@ -521,6 +525,7 @@ class NIM(object):
+ 		self.type = type
+ 		self.description = description
+ 		self.has_outputs = has_outputs
++		self.multistream = multistream
+ 		self.internally_connectable = internally_connectable
+ 		self.multi_type = multi_type
+ 		self.i2c = i2c
+@@ -609,6 +614,9 @@ class NIM(object):
+ 	def isEmpty(self):
+ 		return self.__is_empty
+ 
++	def hasMultistream(self):
++		return self.multistream
++
+ 	# empty tuners are supported!
+ 	def isSupported(self):
+ 		return (self.frontend_id is not None) or self.__is_empty
+@@ -773,6 +781,9 @@ class NimManager:
+ 					modes = entries[current_slot].get("multi_type", {})
+ 					modes[split2[1]] = split[1].strip()
+ 					entries[current_slot]["multi_type"] = modes
++			elif line.startswith("Multistream:"):
++				input = str(line[len("Multistream:") + 1:])
++				entries[current_slot]["multistream"] = (input == "yes")
+ 			elif line.startswith("I2C_Device:"):
+ 				input = int(line[len("I2C_Device:") + 1:])
+ 				entries[current_slot]["i2c"] = input
+@@ -792,6 +803,8 @@ class NimManager:
+ 				entry["i2c"] = None
+ 			if not (entry.has_key("has_outputs")):
+ 				entry["has_outputs"] = True
++			if not (entry.has_key("multistream")):
++				entry["multistream"] = False
+ 			if entry.has_key("frontend_device"): # check if internally connectable
+ 				if path.exists("/proc/stb/frontend/%d/rf_switch" % entry["frontend_device"]):
+ 					entry["internally_connectable"] = entry["frontend_device"] - 1
+@@ -801,7 +814,7 @@ class NimManager:
+ 				entry["frontend_device"] = entry["internally_connectable"] = None
+ 			if not (entry.has_key("multi_type")):
+ 				entry["multi_type"] = {}
+-			self.nim_slots.append(NIM(slot = id, description = entry["name"], type = entry["type"], has_outputs = entry["has_outputs"], internally_connectable = entry["internally_connectable"], multi_type = entry["multi_type"], frontend_id = entry["frontend_device"], i2c = entry["i2c"], is_empty = entry["isempty"]))
++			self.nim_slots.append(NIM(slot = id, description = entry["name"], type = entry["type"], has_outputs = entry["has_outputs"], internally_connectable = entry["internally_connectable"], multi_type = entry["multi_type"], frontend_id = entry["frontend_device"], i2c = entry["i2c"], is_empty = entry["isempty"], multistream = entry["multistream"]))
+ 
+ 	def hasNimType(self, chktype):
+ 		for slot in self.nim_slots:
 diff --git a/lib/python/Components/Renderer/Progress.py b/lib/python/Components/Renderer/Progress.py
 index a5968aa..c29cd23 100644
 --- a/lib/python/Components/Renderer/Progress.py
@@ -4335,7 +4953,7 @@ index a5968aa..c29cd23 100644
  	def getRange(self):
  		return (self.__start, self.__end)
 diff --git a/lib/python/Components/UsageConfig.py b/lib/python/Components/UsageConfig.py
-index 4b94a09..3e24177 100644
+index 2dd4dee..2f29099 100644
 --- a/lib/python/Components/UsageConfig.py
 +++ b/lib/python/Components/UsageConfig.py
 @@ -197,7 +197,7 @@ def InitUsageConfig():
@@ -4885,7 +5503,7 @@ index c16a1c1..f3fd6fc 100644
  			self.list.append(getConfigListEntry(_("Color format"), config.av.colorformat, _("Configure which color format should be used on the SCART output.")))
  			if level >= 1:
 diff --git a/lib/python/Screens/ChannelSelection.py b/lib/python/Screens/ChannelSelection.py
-index 0487076..57020f1 100644
+index b765e98..f25d124 100644
 --- a/lib/python/Screens/ChannelSelection.py
 +++ b/lib/python/Screens/ChannelSelection.py
 @@ -5,6 +5,11 @@ import Screens.InfoBar
@@ -5006,7 +5624,7 @@ index 0487076..57020f1 100644
  
  	def moveUp(self):
  		self.servicelist.moveUp()
-@@ -2335,6 +2375,11 @@ class SimpleChannelSelection(ChannelSelectionBase):
+@@ -2343,6 +2383,11 @@ class SimpleChannelSelection(ChannelSelectionBase):
  
  	def layoutFinished(self):
  		self.setModeTv()
@@ -5493,10 +6111,148 @@ index 6723801..0c1f1d5 100644
  	def __init__(self):
  		self.inactivityTimer = eTimer()
 diff --git a/lib/python/Screens/ScanSetup.py b/lib/python/Screens/ScanSetup.py
-index 5f9f5a1..197cac3 100644
+index 5f9f5a1..bb7b444 100644
 --- a/lib/python/Screens/ScanSetup.py
 +++ b/lib/python/Screens/ScanSetup.py
-@@ -782,7 +782,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport):
+@@ -17,7 +17,7 @@ from Components.Converter.ChannelNumbers import channelnumbers
+ def buildTerTransponder(frequency,
+ 		inversion=2, bandwidth = 7000000, fechigh = 6, feclow = 6,
+ 		modulation = 2, transmission = 2, guard = 4,
+-		hierarchy = 4, system = 0, plpid = 0):
++		hierarchy = 4, system = 0, plp_id = 0):
+ #	print "freq", frequency, "inv", inversion, "bw", bandwidth, "fech", fechigh, "fecl", feclow, "mod", modulation, "tm", transmission, "guard", guard, "hierarchy", hierarchy
+ 	parm = eDVBFrontendParametersTerrestrial()
+ 	parm.frequency = frequency
+@@ -30,7 +30,7 @@ def buildTerTransponder(frequency,
+ 	parm.guard_interval = guard
+ 	parm.hierarchy = hierarchy
+ 	parm.system = system
+-	parm.plpid = plpid
++	parm.plp_id = plp_id
+ 	return parm
+ 
+ def getInitialTransponderList(tlist, pos):
+@@ -48,6 +48,9 @@ def getInitialTransponderList(tlist, pos):
+ 			parm.modulation = x[6]
+ 			parm.rolloff = x[8]
+ 			parm.pilot = x[9]
++			parm.is_id = x[10]
++			parm.pls_mode = x[11]
++			parm.pls_code = x[12]
+ 			tlist.append(parm)
+ 
+ def getInitialCableTransponderList(tlist, nim):
+@@ -69,13 +72,21 @@ def getInitialTerrestrialTransponderList(tlist, region):
+ 	#self.transponders[self.parsedTer].append((2,freq,bw,const,crh,crl,guard,transm,hierarchy,inv))
+ 
+ 	#def buildTerTransponder(frequency, inversion = 2, bandwidth = 3, fechigh = 6, feclow = 6,
+-				#modulation = 2, transmission = 2, guard = 4, hierarchy = 4):
++				#modulation = 2, transmission = 2, guard = 4, hierarchy = 4, system = 0, plp_id = 0):
+ 
+ 	for x in list:
+ 		if x[0] == 2: #TERRESTRIAL
+ 			parm = buildTerTransponder(x[1], x[9], x[2], x[4], x[5], x[3], x[7], x[6], x[8], x[10], x[11])
+ 			tlist.append(parm)
+ 
++def getRegionTerrestrialTransponderList(region):
++	tlist = []
++	for x in nimmanager.getTranspondersTerrestrial(region):
++		if x[0] == 2: #TERRESTRIAL
++			parm = buildTerTransponder(x[1], x[9], x[2], x[4], x[5], x[3], x[7], x[6], x[8], x[10], x[11])
++			tlist.append((parm, str(x[1] / 1000)))
++	return tlist
++
+ cable_bands = {
+ 	"DVBC_BAND_EU_VHF_I" : 1 << 0,
+ 	"DVBC_BAND_EU_MID" : 1 << 1,
+@@ -400,6 +411,10 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport):
+ 					self.list.append(self.modulationEntry)
+ 					self.list.append(getConfigListEntry(_('Roll-off'), self.scan_sat.rolloff))
+ 					self.list.append(getConfigListEntry(_('Pilot'), self.scan_sat.pilot))
++					if nim.hasMultistream():
++						self.list.append(getConfigListEntry(_('Input Stream ID'), self.scan_sat.is_id))
++						self.list.append(getConfigListEntry(_("PLS Mode"), self.scan_sat.pls_mode))
++						self.list.append(getConfigListEntry(_('PLS Code'), self.scan_sat.pls_code))
+ 			elif self.scan_type.value == "predefined_transponder" and self.satList[index_to_scan]:
+ 				self.updateSatList()
+ 				self.preDefSatList = getConfigListEntry(_('Satellite'), self.scan_satselection[index_to_scan])
+@@ -508,7 +523,9 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport):
+ 			"polarization": eDVBFrontendParametersSatellite.Polarisation_Horizontal,
+ 			"fec": eDVBFrontendParametersSatellite.FEC_Auto,
+ 			"fec_s2": eDVBFrontendParametersSatellite.FEC_9_10,
+-			"modulation": eDVBFrontendParametersSatellite.Modulation_QPSK }
++			"modulation": eDVBFrontendParametersSatellite.Modulation_QPSK,
++			"pls_mode": eDVBFrontendParametersSatellite.PLS_Root,
++			"pls_code": 1 }
+ 		defaultCab = {
+ 			"frequency": 466,
+ 			"inversion": eDVBFrontendParametersCable.Inversion_Unknown,
+@@ -541,6 +558,9 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport):
+ 					defaultSat["fec_s2"] = frontendData.get("fec_inner", eDVBFrontendParametersSatellite.FEC_Auto)
+ 					defaultSat["rolloff"] = frontendData.get("rolloff", eDVBFrontendParametersSatellite.RollOff_alpha_0_35)
+ 					defaultSat["pilot"] = frontendData.get("pilot", eDVBFrontendParametersSatellite.Pilot_Unknown)
++					defaultSat["is_id"] = frontendData.get("is_id", 0)
++					defaultSat["pls_mode"] = frontendData.get("pls_mode", eDVBFrontendParametersSatellite.PLS_Root)
++					defaultSat["pls_code"] = frontendData.get("pls_code", 1)
+ 				else:
+ 					defaultSat["fec"] = frontendData.get("fec_inner", eDVBFrontendParametersSatellite.FEC_Auto)
+ 				defaultSat["modulation"] = frontendData.get("modulation", eDVBFrontendParametersSatellite.Modulation_QPSK)
+@@ -635,7 +655,9 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport):
+ 			(eDVBFrontendParametersSatellite.FEC_9_10, "9/10")])
+ 		self.scan_sat.modulation = ConfigSelection(default = defaultSat["modulation"], choices = [
+ 			(eDVBFrontendParametersSatellite.Modulation_QPSK, "QPSK"),
+-			(eDVBFrontendParametersSatellite.Modulation_8PSK, "8PSK")])
++			(eDVBFrontendParametersSatellite.Modulation_8PSK, "8PSK"),
++			(eDVBFrontendParametersSatellite.Modulation_16APSK, "16APSK"),
++			(eDVBFrontendParametersSatellite.Modulation_32APSK, "32APSK")])
+ 		self.scan_sat.rolloff = ConfigSelection(default = defaultSat.get("rolloff", eDVBFrontendParametersSatellite.RollOff_alpha_0_35), choices = [
+ 			(eDVBFrontendParametersSatellite.RollOff_alpha_0_35, "0.35"),
+ 			(eDVBFrontendParametersSatellite.RollOff_alpha_0_25, "0.25"),
+@@ -645,6 +667,12 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport):
+ 			(eDVBFrontendParametersSatellite.Pilot_Off, _("Off")),
+ 			(eDVBFrontendParametersSatellite.Pilot_On, _("On")),
+ 			(eDVBFrontendParametersSatellite.Pilot_Unknown, _("Auto"))])
++		self.scan_sat.is_id = ConfigInteger(default = defaultSat.get("is_id",0), limits = (0, 255))
++		self.scan_sat.pls_mode = ConfigSelection(default = defaultSat["pls_mode"], choices = [
++			(eDVBFrontendParametersSatellite.PLS_Root, _("Root")),
++			(eDVBFrontendParametersSatellite.PLS_Gold, _("Gold")),
++			(eDVBFrontendParametersSatellite.PLS_Combo, _("Combo"))])
++		self.scan_sat.pls_code = ConfigInteger(default = defaultSat.get("pls_code",1), limits = (0, 262142))
+ 
+ 		# cable
+ 		self.scan_cab.frequency = ConfigInteger(default = defaultCab["frequency"], limits = (50, 999))
+@@ -685,6 +713,11 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport):
+ 		# WORKAROUND: we can't use BW-auto
+ 		self.scan_ter.bandwidth = ConfigSelection(default = defaultTer["bandwidth"], choices = [
+ 			(1712000, "1.712MHz"),
++			(8000000, "8MHz"),
++			(7000000, "7MHz"),
++			(6000000, "6MHz"),
++			])
++		self.scan_ter.bandwidth_t2 = ConfigSelection(default = defaultTer["bandwidth"], choices = [
+ 			(5000000, "5MHz"),
+ 			(6000000, "6MHz"),
+ 			(7000000, "7MHz"),
+@@ -697,18 +730,14 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport):
+ 			(eDVBFrontendParametersTerrestrial.FEC_2_3, "2/3"),
+ 			(eDVBFrontendParametersTerrestrial.FEC_3_4, "3/4"),
+ 			(eDVBFrontendParametersTerrestrial.FEC_5_6, "5/6"),
+-			(eDVBFrontendParametersTerrestrial.FEC_6_7, "6/7"),
+ 			(eDVBFrontendParametersTerrestrial.FEC_7_8, "7/8"),
+-			(eDVBFrontendParametersTerrestrial.FEC_8_9, "8/9"),
+ 			(eDVBFrontendParametersTerrestrial.FEC_Auto, _("Auto"))])
+ 		self.scan_ter.feclow = ConfigSelection(default = defaultTer["feclow"], choices = [
+ 			(eDVBFrontendParametersTerrestrial.FEC_1_2, "1/2"),
+ 			(eDVBFrontendParametersTerrestrial.FEC_2_3, "2/3"),
+ 			(eDVBFrontendParametersTerrestrial.FEC_3_4, "3/4"),
+ 			(eDVBFrontendParametersTerrestrial.FEC_5_6, "5/6"),
+-			(eDVBFrontendParametersTerrestrial.FEC_6_7, "6/7"),
+ 			(eDVBFrontendParametersTerrestrial.FEC_7_8, "7/8"),
+-			(eDVBFrontendParametersTerrestrial.FEC_8_9, "8/9"),
+ 			(eDVBFrontendParametersTerrestrial.FEC_Auto, _("Auto"))])
+ 		self.scan_ter.modulation = ConfigSelection(default = defaultTer["modulation"], choices = [
+ 			(eDVBFrontendParametersTerrestrial.Modulation_QPSK, "QPSK"),
+@@ -782,7 +811,7 @@ class ScanSetup(ConfigListScreen, Screen, CableTransponderSearchSupport):
  		self.last_scan_typecable = "single_transponder"
  		self.cable_toggle = {"single_transponder":"complete", "complete":"single_transponder"}
  		self.scan_typeterrestrial = ConfigSelection(default = defaultTerrSearchType, choices = [("single_transponder", _("User defined transponder")), ("predefined_transponder", _("Predefined transponder")), ("complete", _("Complete"))])
@@ -5598,6 +6354,72 @@ index 84749aa..c8cbe2b 100644
  	},
  	{
  		KEYIDS["BTN_0"]: ("UP", "fp"),
+diff --git a/lib/python/Tools/Transponder.py b/lib/python/Tools/Transponder.py
+index d6ae277..ce4ca4e 100644
+--- a/lib/python/Tools/Transponder.py
++++ b/lib/python/Tools/Transponder.py
+@@ -27,7 +27,8 @@ def ConvertToHumanReadable(tp, type = None):
+ 		ret["modulation"] = {
+ 			eDVBFrontendParametersSatellite.Modulation_Auto : _("Auto"),
+ 			eDVBFrontendParametersSatellite.Modulation_QPSK : "QPSK",
+-			eDVBFrontendParametersSatellite.Modulation_QAM16 : "QAM16",
++			eDVBFrontendParametersSatellite.Modulation_16APSK : "16APSK",
++			eDVBFrontendParametersSatellite.Modulation_32APSK : "32APSK",
+ 			eDVBFrontendParametersSatellite.Modulation_8PSK : "8PSK"}.get(tp.get("modulation"))
+ 		ret["orbital_position"] = nimmanager.getSatName(int(tp.get("orbital_position")))
+ 		ret["polarization"] = {
+@@ -53,6 +54,11 @@ def ConvertToHumanReadable(tp, type = None):
+ 				eDVBFrontendParametersSatellite.Pilot_Unknown : _("Auto"),
+ 				eDVBFrontendParametersSatellite.Pilot_On : _("On"),
+ 				eDVBFrontendParametersSatellite.Pilot_Off : _("Off")}.get(tp.get("pilot"))
++			ret["pls_mode"] = {
++				eDVBFrontendParametersSatellite.PLS_Root : _("Root"),
++				eDVBFrontendParametersSatellite.PLS_Gold : _("Gold"),
++				eDVBFrontendParametersSatellite.PLS_Combo : _("Combo"),
++				eDVBFrontendParametersSatellite.PLS_Unknown : _("Unknown")}.get(tp.get("pls_mode"))
+ 	elif type == "DVB-C":
+ 		ret["tuner_type"] = _("Cable")
+ 		ret["modulation"] = {
+@@ -94,21 +100,21 @@ def ConvertToHumanReadable(tp, type = None):
+ 		ret["code_rate_lp"] = {
+ 			eDVBFrontendParametersTerrestrial.FEC_Auto : _("Auto"),
+ 			eDVBFrontendParametersTerrestrial.FEC_1_2 : "1/2",
++			eDVBFrontendParametersTerrestrial.FEC_3_5 : "3/5",
+ 			eDVBFrontendParametersTerrestrial.FEC_2_3 : "2/3",
+ 			eDVBFrontendParametersTerrestrial.FEC_3_4 : "3/4",
++			eDVBFrontendParametersTerrestrial.FEC_4_5 : "4/5",
+ 			eDVBFrontendParametersTerrestrial.FEC_5_6 : "5/6",
+-			eDVBFrontendParametersTerrestrial.FEC_6_7 : "6/7",
+-			eDVBFrontendParametersTerrestrial.FEC_7_8 : "7/8",
+-			eDVBFrontendParametersTerrestrial.FEC_8_9 : "8/9"}.get(tp.get("code_rate_lp"))
++			eDVBFrontendParametersTerrestrial.FEC_7_8 : "7/8"}.get(tp.get("code_rate_lp"))
+ 		ret["code_rate_hp"] = {
+ 			eDVBFrontendParametersTerrestrial.FEC_Auto : _("Auto"),
+ 			eDVBFrontendParametersTerrestrial.FEC_1_2 : "1/2",
++			eDVBFrontendParametersTerrestrial.FEC_3_5 : "3/5",
+ 			eDVBFrontendParametersTerrestrial.FEC_2_3 : "2/3",
+ 			eDVBFrontendParametersTerrestrial.FEC_3_4 : "3/4",
++			eDVBFrontendParametersTerrestrial.FEC_4_5 : "4/5",
+ 			eDVBFrontendParametersTerrestrial.FEC_5_6 : "5/6",
+-			eDVBFrontendParametersTerrestrial.FEC_6_7 : "6/7",
+-			eDVBFrontendParametersTerrestrial.FEC_7_8 : "7/8",
+-			eDVBFrontendParametersTerrestrial.FEC_8_9 : "8/9"}.get(tp.get("code_rate_hp"))
++			eDVBFrontendParametersTerrestrial.FEC_7_8 : "7/8"}.get(tp.get("code_rate_hp"))
+ 		ret["constellation"] = {
+ 			eDVBFrontendParametersTerrestrial.Modulation_Auto : _("Auto"),
+ 			eDVBFrontendParametersTerrestrial.Modulation_QPSK : "QPSK",
+@@ -131,7 +137,10 @@ def ConvertToHumanReadable(tp, type = None):
+ 			eDVBFrontendParametersTerrestrial.GuardInterval_1_32 : "1/32",
+ 			eDVBFrontendParametersTerrestrial.GuardInterval_1_16 : "1/16",
+ 			eDVBFrontendParametersTerrestrial.GuardInterval_1_8 : "1/8",
+-			eDVBFrontendParametersTerrestrial.GuardInterval_1_4 : "1/4"}.get(tp.get("guard_interval"))
++			eDVBFrontendParametersTerrestrial.GuardInterval_1_4 : "1/4",
++			eDVBFrontendParametersTerrestrial.GuardInterval_1_128 : "1/128",
++			eDVBFrontendParametersTerrestrial.GuardInterval_19_128 : "19/128",
++			eDVBFrontendParametersTerrestrial.GuardInterval_19_256 : "19/256"}.get(tp.get("guard_interval"))
+ 		ret["hierarchy_information"] = {
+ 			eDVBFrontendParametersTerrestrial.Hierarchy_Auto : _("Auto"),
+ 			eDVBFrontendParametersTerrestrial.Hierarchy_None : _("None"),
 diff --git a/lib/python/enigma_python.i b/lib/python/enigma_python.i
 index dd4b8c7..ec6f59b 100644
 --- a/lib/python/enigma_python.i
