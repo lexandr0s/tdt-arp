@@ -11,7 +11,7 @@ ENV{ID_FS_LABEL}=="", ENV{dir_name}="usbhd-%k"
 # Mount the device
 ACTION=="add", ENV{ID_FS_TYPE}=="swap", RUN+="/sbin/swapon /dev/%k"
 ACTION=="add", ENV{ID_FS_TYPE}!="swap|", RUN+="/bin/mkdir -p /media/%E{dir_name}"
-ACTION=="add", ENV{ID_FS_TYPE}=="ntfs", RUN+="/bin/ntfs-3g -o flush,rw,umask=0 /dev/%k /media/%E{dir_name}"
+ACTION=="add", ENV{ID_FS_TYPE}=="ntfs", RUN+="/usr/bin/ntfs-3g -o flush,rw,umask=0 /dev/%k /media/%E{dir_name}"
 ACTION=="add", ENV{ID_FS_TYPE}=="vfat", RUN+="/bin/mount -t vfat -o flush,iocharset=utf8,fmask=0133 /dev/%k /media/%E{dir_name}"
 ACTION=="add", ENV{ID_FS_TYPE}!="swap|ntfs|vfat|", RUN+="/bin/mount /dev/%k /media/%E{dir_name}"
 ACTION=="add", ENV{ID_FS_TYPE}!="swap|", RUN+="/bin/rmdir /media/%E{dir_name}"
