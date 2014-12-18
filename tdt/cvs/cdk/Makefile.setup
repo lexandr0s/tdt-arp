@@ -174,12 +174,16 @@ Makefile.pre: \
   make/cross/*/*.in \
   make/target/*.in \
   make/target/*/*.in \
+  make/local/*.in \
+  make/local/*/*.in \
   make/host/*.mk \
   make/host/*/*.mk \
   make/cross/*.mk \
   make/cross/*/*.mk \
   make/target/*.mk \
   make/target/*/*.mk \
+  make/local/*.mk \
+  make/local/*/*.mk \
   make/archive-specs.mk
 
 	echo "# Automatically generated file; DO NOT EDIT." > $@
