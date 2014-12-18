@@ -202,7 +202,8 @@ CONFIG_FLAGS_${P} = \
 		--arch=sh4 \
 		--disable-debug \
 		--enable-pthreads \
-		--prefix=/usr
+		--prefix=/usr \
+		--shlibdir=/usr/lib
 
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
