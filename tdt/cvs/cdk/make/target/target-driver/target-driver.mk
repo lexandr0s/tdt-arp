@@ -19,6 +19,7 @@ call[[ target_driver_common ]]
 
 BDEPENDS_${P} = $(target_linux_kernel_headers) $(target_linux_kernel)
 PR_${P} = 1
+RM_WORK_${P} = $(false)
 
 call[[ base ]]
 
