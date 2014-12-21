@@ -6,7 +6,7 @@ package[[ target_flash_tools
 BDEPENDS_${P} = $(target_filesystem)
 
 PV_${P} = 0.1
-PR_${P} = 1
+PR_${P} = 2
 
 DESCRIPTION_${P} = Tools for changing internal flash
 
@@ -21,8 +21,7 @@ rule[[
   install_bin:$(PKDIR)/bin/:file://fw_printenv
   install_bin:$(PKDIR)/bin/:file://fw_setenv
   install_bin:$(PKDIR)/bin/setspark.sh:file://setspark.sh
-  install_bin:$(PKDIR)/sbin/:file://flash_*
-  install_bin:$(PKDIR)/sbin/:file://nandwrite
+  install_bin:$(PKDIR)/sbin/:file://flash_erase
 ]]rule
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
