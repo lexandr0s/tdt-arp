@@ -117,6 +117,12 @@ endif #CONFIG_SPARK7162
 #############################################################################
 # end patches
 
+ifdef CONFIG_DEBUG_ARP
+DEBUG_STR=.debug
+else
+DEBUG_STR=
+endif
+
 ${P}_config = linux-sh4-$(KERNEL_UPSTREAM)-$(KERNEL_LABEL)_$(TARGET).config$(DEBUG_STR)
 
 DEPENDS_${P} += $(addprefix ${SDIR}/,$(${P}_patches) $(${P}_config))

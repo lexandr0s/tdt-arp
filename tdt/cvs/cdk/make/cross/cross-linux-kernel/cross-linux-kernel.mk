@@ -42,11 +42,12 @@ endif
 
 ${P}_patches += patch_swap_notify_core_support.diff
 
-# ifdef DEBUG
-# DEBUG_STR=.debug
-# else
-# DEBUG_STR=
-# endif
+ifdef CONFIG_DEBUG_ARP
+DEBUG_STR=.debug
+else
+DEBUG_STR=
+endif
+
 ${P}_config = linux-sh4-$(KERNEL_UPSTREAM)-$(KERNEL_LABEL)_$(TARGET).config$(DEBUG_STR)
 
 
