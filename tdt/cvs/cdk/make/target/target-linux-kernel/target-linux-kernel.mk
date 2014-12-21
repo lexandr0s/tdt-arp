@@ -96,6 +96,8 @@ ifdef CONFIG_SPARK
   ${P}_patches += linux-sh4-lmb_stm24_$(KERNEL_LABEL).patch
   ${P}_patches += linux-sh4-spark_setup_stm24_$(KERNEL_LABEL).patch
   ${P}_patches += bpa2-ignore-bigphysarea-kernel-parameter.patch
+  ${P}_patches += af901x-NXP-TDA18218.patch
+  ${P}_patches += dvb-as102.patch
 
 ifeq ($(CONFIG_KERNEL_0211)$(CONFIG_KERNEL_0215),y)
   ${P}_patches += \
