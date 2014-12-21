@@ -6421,7 +6421,7 @@ index d6ae277..ce4ca4e 100644
  			eDVBFrontendParametersTerrestrial.Hierarchy_Auto : _("Auto"),
  			eDVBFrontendParametersTerrestrial.Hierarchy_None : _("None"),
 diff --git a/lib/python/enigma_python.i b/lib/python/enigma_python.i
-index dd4b8c7..ec6f59b 100644
+index dd4b8c7..8280417 100644
 --- a/lib/python/enigma_python.i
 +++ b/lib/python/enigma_python.i
 @@ -109,6 +109,7 @@ is usually caused by not marking PSignals as immutable.
@@ -6440,6 +6440,26 @@ index dd4b8c7..ec6f59b 100644
  /**************  eptr  **************/
  
  /**************  signals  **************/
+@@ -417,7 +419,9 @@ extern int getPrevAsciiCode();
+ extern void addFont(const char *filename, const char *alias, int scale_factor, int is_replacement, int renderflags = 0);
+ extern const char *getEnigmaVersionString();
+ extern const char *getBoxType();
++#ifdef ENABLE_MEDIAFWGSTREAMER
+ extern const char *getGStreamerVersionString();
++#endif
+ extern void dump_malloc_stats(void);
+ %}
+ 
+@@ -428,7 +432,9 @@ extern void quitMainloop(int exit_code);
+ extern eApplication *getApplication();
+ extern const char *getEnigmaVersionString();
+ extern const char *getBoxType();
++#ifdef ENABLE_MEDIAFWGSTREAMER
+ extern const char *getGStreamerVersionString();
++#endif
+ extern void dump_malloc_stats(void);
+ 
+ %include <lib/python/python_console.i>
 diff --git a/lib/service/Makefile.inc b/lib/service/Makefile.inc
 index 55c2e33..64d108a 100644
 --- a/lib/service/Makefile.inc
@@ -8053,7 +8073,7 @@ index 0000000..3c44792
 +
 +#endif
 diff --git a/lib/service/servicemp3.cpp b/lib/service/servicemp3.cpp
-index 231cbac..cd5b23c 100644
+index 231cbac..e1a6024 100644
 --- a/lib/service/servicemp3.cpp
 +++ b/lib/service/servicemp3.cpp
 @@ -16,8 +16,10 @@
@@ -8661,14 +8681,21 @@ index 231cbac..cd5b23c 100644
  		/* convert pts to nanoseconds */
  	gint64 time_nanoseconds = to * 11111LL;
  	if (!gst_element_seek (m_gst_playbin, m_currentTrickRatio, GST_FORMAT_TIME, (GstSeekFlags)(GST_SEEK_FLAG_FLUSH | GST_SEEK_FLAG_KEY_UNIT),
-@@ -826,6 +1194,7 @@ RESULT eServiceMP3::seekToImpl(pts_t to)
- 		eDebug("eServiceMP3::seekTo failed");
+@@ -827,12 +1195,13 @@ RESULT eServiceMP3::seekToImpl(pts_t to)
  		return -1;
  	}
-+#endif
  
++
  	if (m_paused)
  	{
+ 		m_seek_paused = true;
+ 		gst_element_set_state(m_gst_playbin, GST_STATE_PLAYING);
+ 	}
+-
++#endif
+ 	return 0;
+ }
+ 
 @@ -840,17 +1209,25 @@ RESULT eServiceMP3::seekTo(pts_t to)
  {
  	RESULT ret = -1;
@@ -9168,7 +9195,7 @@ index 231cbac..cd5b23c 100644
 +#endif
  }
 diff --git a/lib/service/servicemp3.h b/lib/service/servicemp3.h
-index b3a685e..14bd58b 100644
+index b3a685e..3fe45e9 100644
 --- a/lib/service/servicemp3.h
 +++ b/lib/service/servicemp3.h
 @@ -6,7 +6,18 @@
@@ -9178,8 +9205,8 @@ index b3a685e..14bd58b 100644
 +#ifdef ENABLE_MEDIAFWGSTREAMER
  #include <gst/gst.h>
 +#else
-+#include <common.h>
-+#include <subtitle.h>
++#include <libeplayer/common.h>
++#include <libeplayer/subtitle.h>
 +#define gint int
 +#define gint64 int64_t
 +extern OutputHandler_t		OutputHandler;
@@ -9431,7 +9458,7 @@ index b62512e..b2981ed 100644
  
  #define RINGBUFFER_SIZE 16384
 diff --git a/main/enigma.cpp b/main/enigma.cpp
-index 8fb7e61..3d8ef96 100644
+index 8fb7e61..6a4f831 100644
 --- a/main/enigma.cpp
 +++ b/main/enigma.cpp
 @@ -30,10 +30,15 @@
@@ -9485,6 +9512,19 @@ index 8fb7e61..3d8ef96 100644
  	printf("executing main\n");
  
  	bsodCatchSignals();
+@@ -323,10 +340,12 @@ const char *getBoxType()
+ 	return BOXTYPE;
+ }
+ 
++#ifdef ENABLE_MEDIAFWGSTREAMER
+ const char *getGStreamerVersionString()
+ {
+ 	return gst_version_string();
+ }
++#endif
+ 
+ #include <malloc.h>
+ 
 diff --git a/mytest.py b/mytest.py
 index 8e3fdcf..d9cb10a 100644
 --- a/mytest.py
