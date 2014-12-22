@@ -8,7 +8,7 @@ BREPLACES_${P} = $(target_glibc_first) $(target_glibc_headers)
 
 PR_${P} = 2
 
-${P}_VERSION := 2.14.1-51
+${P}_VERSION := 2.14.1-53
 ${P}_SPEC = stm-$(${P}).spec
 ${P}_SPEC_PATCH = 
 ${P}_PATCHES = 
