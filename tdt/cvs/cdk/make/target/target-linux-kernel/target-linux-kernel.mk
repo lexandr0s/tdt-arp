@@ -59,8 +59,11 @@ ifeq ($(CONFIG_KERNEL_0211),y)
 ${P}_patches += linux-tune_stm24.patch
 endif
 
+ifdef CONFIG_GIT_KERNEL_ARP
+else
 ifeq ($(CONFIG_KERNEL_0215),y)
 ${P}_patches += fix_localversion_stm24_$(KERNEL_LABEL).diff
+endif
 endif
 
 ifeq ($(CONFIG_KERNEL_0215)$(CONFIG_KERNEL_0217),y)
