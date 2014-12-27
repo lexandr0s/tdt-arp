@@ -149,24 +149,12 @@ endif
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(PREPARE_${P})
 	cd $(DIR_${P}) && cat $(addprefix ${SDIR}/,$(${P}_patches)) | patch -p1
-	cp ${SDIR}/$(${P}_config) $(DIR_${P})/.config
-	rm $(DIR_${P})/localversion*
-	echo "_$(KERNEL_STM)_$(KERNEL_LABEL)" > $(DIR_${P})/localversion-stm
-	cd $(DIR_${P}) && $(MAKE) ARCH=sh oldconfig
-	cd $(DIR_${P}) && $(MAKE) ARCH=sh include/asm
-	cd $(DIR_${P}) && $(MAKE) ARCH=sh include/linux/version.h
-	rm $(DIR_${P})/.config
-	install -d $(targetprefix)/usr/include
-	cp -a $(DIR_${P})/include/linux $(targetprefix)/usr/include
-	cp -a $(DIR_${P})/include/asm-sh $(targetprefix)/usr/include/asm
-	cp -a $(DIR_${P})/include/asm-generic $(targetprefix)/usr/include
-	cp -a $(DIR_${P})/include/mtd $(targetprefix)/usr/include
-	touch $@
-
-$(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 	cd $(DIR_${P}) && $(MAKE) ${MAKE_FLAGS} mrproper
 	ln -sf ${SDIR}/integrated_firmware $(DIR_${P})/../integrated_firmware
 	cp ${SDIR}/$(${P}_config) $(DIR_${P})/.config
+	touch $@
+
+$(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 	cd $(DIR_${P}) && $(MAKE) ${MAKE_FLAGS} uImage modules
 ifdef CONFIG_DEBUG_ARP
 	cd $(DIR_${P})/tools/perf && $(MAKE) ${MAKE_FLAGS} $(MAKE_ARGS) all
