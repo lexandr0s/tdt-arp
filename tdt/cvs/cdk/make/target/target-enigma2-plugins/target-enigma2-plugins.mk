@@ -102,6 +102,7 @@ $(TARGET_${P}).do_split_post: $(TARGET_${P}).do_split
 	set -e; \
 	for p in $(PACKAGES_DYNAMIC_${P}); do \
 		cd ${DIR}/$$p && $(MAKE) install DESTDIR=${SPLITDIR}/$$p; \
+		find ${SPLITDIR}/$$p -name "*.pyc" -delete; \
 		mv ${SPLITDIR}/$$p/usr/share/meta/* ${SPLITDIR}/enigma2_plugins_meta/usr/share/meta || true; \
 		rm -rf ${SPLITDIR}/$$p/usr/share/meta; \
 		for f in preinst postinst prerm postrm; do \
