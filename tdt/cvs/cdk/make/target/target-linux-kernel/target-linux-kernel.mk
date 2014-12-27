@@ -184,6 +184,7 @@ FILES_${P} = \
 	/lib/modules/$(KERNEL_VERSION)/kernel \
 	/lib/modules/$(KERNEL_VERSION)/modules.* \
 	/boot/uImage
+RDEPENDS_${P} = flash-tools
 
 define postinst_${P}
 #!/bin/sh
