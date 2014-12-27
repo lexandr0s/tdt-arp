@@ -31,3 +31,101 @@ index c558b24..f3245d6 100644
  		if (!chanctx_conf)
  			goto fail_rcu;
  		band = chanctx_conf->def.chan->band;
+diff --git a/drivers/net/wireless/ath/carl9170/rx.c b/drivers/net/wireless/ath/carl9170/rx.c
+index e935f61..0ad905e 100644
+--- a/drivers/net/wireless/ath/carl9170/rx.c
++++ b/drivers/net/wireless/ath/carl9170/rx.c
+@@ -343,9 +343,8 @@ static int carl9170_rx_mac_status(struct ar9170 *ar,
+ 	if (unlikely(error)) {
+ 		/* TODO: update netdevice's RX dropped/errors statistics */
+ 
+-		if (net_ratelimit())
+-			wiphy_dbg(ar->hw->wiphy, "received frame with "
+-			       "suspicious error code (%#x).\n", error);
++		net_ratelimited_function(wiphy_dbg, ar->hw->wiphy,
++			"received frame with suspicious error code (%#x).\n", error);
+ 
+ 		return -EINVAL;
+ 	}
+@@ -374,11 +373,8 @@ static int carl9170_rx_mac_status(struct ar9170 *ar,
+ 			status->rate_idx = 3;
+ 			break;
+ 		default:
+-			if (net_ratelimit()) {
+-				wiphy_err(ar->hw->wiphy, "invalid plcp cck "
+-				       "rate (%x).\n", head->plcp[0]);
+-			}
+-
++			net_ratelimited_function(wiphy_err, ar->hw->wiphy,
++				"invalid plcp cck rate (%x).\n", head->plcp[0]);
+ 			return -EINVAL;
+ 		}
+ 		break;
+@@ -411,11 +407,8 @@ static int carl9170_rx_mac_status(struct ar9170 *ar,
+ 			status->rate_idx = 7;
+ 			break;
+ 		default:
+-			if (net_ratelimit()) {
+-				wiphy_err(ar->hw->wiphy, "invalid plcp ofdm "
+-					"rate (%x).\n", head->plcp[0]);
+-			}
+-
++			net_ratelimited_function(wiphy_err, ar->hw->wiphy,
++				"invalid plcp ofdm rate (%x).\n", head->plcp[0]);
+ 			return -EINVAL;
+ 		}
+ 		if (status->band == IEEE80211_BAND_2GHZ)
+@@ -742,11 +735,8 @@ static void carl9170_rx_untie_data(struct ar9170 *ar, u8 *buf, int len)
+ 
+ 			ar->rx_has_plcp = true;
+ 		} else {
+-			if (net_ratelimit()) {
+-				wiphy_err(ar->hw->wiphy, "plcp info "
+-					"is clipped.\n");
+-			}
+-
++			net_ratelimited_function(wiphy_err, ar->hw->wiphy,
++				"plcp info is clipped.\n");
+ 			goto drop;
+ 		}
+ 		break;
+@@ -763,11 +753,8 @@ static void carl9170_rx_untie_data(struct ar9170 *ar, u8 *buf, int len)
+ 			mpdu_len -= sizeof(struct ar9170_rx_phystatus);
+ 			phy = (void *)(buf + mpdu_len);
+ 		} else {
+-			if (net_ratelimit()) {
+-				wiphy_err(ar->hw->wiphy, "frame tail "
+-					"is clipped.\n");
+-			}
+-
++			net_ratelimited_function(wiphy_err, ar->hw->wiphy,
++				"frame tail is clipped.\n");
+ 			goto drop;
+ 		}
+ 
+@@ -900,11 +887,8 @@ static void carl9170_rx_stream(struct ar9170 *ar, void *buf, unsigned int len)
+ 			if (!ar->rx_failover_missing) {
+ 
+ 				/* this is not "short read". */
+-				if (net_ratelimit()) {
+-					wiphy_err(ar->hw->wiphy,
++				net_ratelimited_function(wiphy_err, ar->hw->wiphy,
+ 						"missing tag!\n");
+-				}
+-
+ 				__carl9170_rx(ar, tbuf, tlen);
+ 				return;
+ 			}
+@@ -973,11 +957,8 @@ static void carl9170_rx_stream(struct ar9170 *ar, void *buf, unsigned int len)
+ 	}
+ 
+ 	if (tlen) {
+-		if (net_ratelimit()) {
+-			wiphy_err(ar->hw->wiphy, "%d bytes of unprocessed "
+-				"data left in rx stream!\n", tlen);
+-		}
+-
++		net_ratelimited_function(wiphy_err, ar->hw->wiphy,
++			"%d bytes of unprocessed data left in rx stream!\n", tlen);
+ 		goto err_telluser;
+ 	}

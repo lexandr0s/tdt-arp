@@ -7,7 +7,7 @@ PV_${P} = 2012-12-06
 PACKAGE_ARCH_${P} = $(box_arch)
 
 DESCRIPTION_${P} = Drivers wireless for stm box
-BDEPENDS_${P} = $(target_linux_kernel_headers) $(target_linux_kernel)
+BDEPENDS_${P} = $(target_linux_kernel)
 PR_${P} = 1
 
 call[[ base ]]
@@ -23,7 +23,7 @@ MAKE_FLAGS_${P} = \
 	ARCH=sh \
 	CROSS_COMPILE=$(target)- \
 	DESTDIR=$(DIR_${P}) \
-	KLIB=$(targetprefix)/lib/modules/$(KERNEL_VERSION)/updates \
+	KLIB=/lib/modules/$(KERNEL_VERSION) \
 	KLIB_BUILD=$(targetprefix)/lib/modules/$(KERNEL_VERSION)/build
 
 

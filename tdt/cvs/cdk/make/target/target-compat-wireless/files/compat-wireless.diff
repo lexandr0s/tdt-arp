@@ -28,6 +28,24 @@ index d33db46..0fc0db2 100644
  }
  #endif
  EXPORT_SYMBOL_GPL(netif_set_real_num_tx_queues);
+--- a/compat/compat-2.6.37.c	2014-12-27 22:47:40.398386290 +0100
++++ b/compat/compat-2.6.37.c	2014-12-27 22:22:57.678368175 +0100
+@@ -334,7 +334,7 @@
+ 	led_classdev_unregister(led_cdev);
+ }
+ EXPORT_SYMBOL_GPL(compat_led_classdev_unregister);
+-
++#endif
+ /**
+  *	vzalloc - allocate virtually contiguous memory with zero fill
+  *	@size:	allocation size
+@@ -355,4 +355,4 @@
+ }
+ EXPORT_SYMBOL_GPL(compat_vzalloc);
+ 
+-#endif
++
+
 --- a/drivers/net/wireless/ath/ath5k/Kconfig	2012-12-06 22:14:19.000000000 +0100
 +++ b/drivers/net/wireless/ath/ath5k/Kconfig	2014-08-13 21:21:15.600349384 +0200
 @@ -54,7 +54,7 @@
