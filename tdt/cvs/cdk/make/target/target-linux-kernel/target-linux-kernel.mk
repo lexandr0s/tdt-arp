@@ -31,7 +31,7 @@ MAKE_FLAGS_${P} = ARCH=sh CROSS_COMPILE=$(target)-
 
 package[[ target_linux_kernel
 
-BDEPENDS_${P} = $(target_glibc) $(host_u_boot_tools)
+BDEPENDS_${P} = $(host_u_boot_tools)
 # We need kernel dir for building modules
 RM_WORK_${P} = $(false)
 
@@ -148,16 +148,25 @@ endif
 
 $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 	$(PREPARE_${P})
-
 	cd $(DIR_${P}) && cat $(addprefix ${SDIR}/,$(${P}_patches)) | patch -p1
-	cd $(DIR_${P}) && $(MAKE) ${MAKE_FLAGS} mrproper
-# FIXME:
-	ln -sf ${SDIR}/integrated_firmware $(DIR_${P})/../integrated_firmware
-
 	cp ${SDIR}/$(${P}_config) $(DIR_${P})/.config
+	rm $(DIR_${P})/localversion*
+	echo "_$(KERNEL_STM)_$(KERNEL_LABEL)" > $(DIR_${P})/localversion-stm
+	cd $(DIR_${P}) && $(MAKE) ARCH=sh oldconfig
+	cd $(DIR_${P}) && $(MAKE) ARCH=sh include/asm
+	cd $(DIR_${P}) && $(MAKE) ARCH=sh include/linux/version.h
+	rm $(DIR_${P})/.config
+	install -d $(targetprefix)/usr/include
+	cp -a $(DIR_${P})/include/linux $(targetprefix)/usr/include
+	cp -a $(DIR_${P})/include/asm-sh $(targetprefix)/usr/include/asm
+	cp -a $(DIR_${P})/include/asm-generic $(targetprefix)/usr/include
+	cp -a $(DIR_${P})/include/mtd $(targetprefix)/usr/include
 	touch $@
 
 $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
+	cd $(DIR_${P}) && $(MAKE) ${MAKE_FLAGS} mrproper
+	ln -sf ${SDIR}/integrated_firmware $(DIR_${P})/../integrated_firmware
+	cp ${SDIR}/$(${P}_config) $(DIR_${P})/.config
 	cd $(DIR_${P}) && $(MAKE) ${MAKE_FLAGS} uImage modules
 ifdef CONFIG_DEBUG_ARP
 	cd $(DIR_${P})/tools/perf && $(MAKE) ${MAKE_FLAGS} $(MAKE_ARGS) all
@@ -207,22 +216,3 @@ call[[ TARGET_base_do_config ]]
 
 ]]package
 
-package[[ target_linux_kernel_headers
-
-DEPENDS_${P} = $(target_linux_kernel).do_prepare
-
-BDEPENDS_${P} = $(target_filesystem)
-BREPLACES_${P} = $(target_kernel_headers)
-
-call[[ target_linux_kernel_in ]]
-call[[ base ]]
-
-$(TARGET_${P}).do_package: $(DEPENDS_${P})
-	$(PKDIR_clean)
-	cd $(DIR_${P}) && make ${MAKE_FLAGS} INSTALL_HDR_PATH=$(PKDIR)/usr headers_install
-	rm -rf $(PKDIR)/usr/include/scsi
-	touch $@
-
-call[[ ipk ]]
-
-]]package

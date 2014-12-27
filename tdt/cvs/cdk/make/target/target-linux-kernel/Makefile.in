@@ -1,7 +1,3 @@
 package[[ target_linux_kernel
 call[[ header ]]
 ]]package
-
-package[[ target_linux_kernel_headers
-call[[ header ]]
-]]package
