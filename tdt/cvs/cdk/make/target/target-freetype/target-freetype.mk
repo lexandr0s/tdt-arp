@@ -3,7 +3,8 @@
 #
 package[[ target_freetype
 
-BDEPENDS_${P} = $(target_glibc)
+BDEPENDS_${P} = $(target_glibc) $(target_libpng) $(target_zlib)
+
 
 PV_${P} = 2.5.4
 PR_${P} = 2
@@ -32,8 +33,6 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 			--build=$(build) \
 			--host=$(target) \
 			--prefix=/usr \
-			--with-zlib=no \
-			--with-png=no \
 		&& \
 		$(MAKE)
 	touch $@
