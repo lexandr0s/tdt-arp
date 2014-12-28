@@ -8,7 +8,7 @@ ifdef CONFIG_ENIGMA2_SRC_MAX
 BDEPENDS_${P} += $(target_libjpeg_turbo)
 RDEPENDS_${P} = libjpeg-turbo
 else
-BDEPENDS_${P} += $(target_libjpeg)
+BDEPENDS_${P} += $(target_libpng) $(target_libjpeg)
 RDEPENDS_${P} = libjpeg8
 endif
 
