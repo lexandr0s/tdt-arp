@@ -7,7 +7,7 @@ PV_${P} = git
 PACKAGE_ARCH_${P} = $(box_arch)
 
 DESCRIPTION_${P} = Drivers for stm box
-SRC_URI_${P} = http://gitorious.org/~schpuntik/open-duckbox-project-sh4/tdt-amiko
+SRC_URI_${P} = https://github.com/OpenAR-P/tdt-arp
 
 GIT_DIR_${P} = $(driverdir)
 
@@ -17,7 +17,7 @@ package[[ target_driver
 
 call[[ target_driver_common ]]
 
-BDEPENDS_${P} = $(target_linux_kernel_headers) $(target_linux_kernel)
+BDEPENDS_${P} = $(target_linux_kernel)
 PR_${P} = 1
 
 call[[ base ]]
