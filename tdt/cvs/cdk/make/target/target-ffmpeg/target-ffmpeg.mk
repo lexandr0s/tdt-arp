@@ -188,6 +188,8 @@ CONFIG_FLAGS_${P} = \
 		--enable-libbluray \
 		--enable-protocol=bluray \
 		--disable-protocol=data \
+		--disable-protocol=icecast \
+		--disable-protocol=md5 \
 		--disable-protocol=pipe \
 		--disable-protocol=unix \
 		--enable-nonfree \
