@@ -49,7 +49,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 	$(INSTALL_BIN) $(DIR_${P})/udev/compat_firmware.sh $(PKDIR)/lib/udev
 	cd $(DIR_${P}) && \
 	  for f in `find . -name *.ko`; do \
-	    sh4-linux-strip --strip-unneeded $$f; \
+	    sh4-linux-strip --strip-debug $$f; \
 	    mkdir -p $(PKDIR)/lib/modules/$(KERNEL_VERSION)/updates/`dirname $$f`; \
 	    cp $$f $(PKDIR)/lib/modules/$(KERNEL_VERSION)/updates/`dirname $$f`; done
 	touch $@
