@@ -5,7 +5,7 @@ package[[ target_smbnetfs
 
 BDEPENDS_${P} = $(target_fuse) $(target_samba)
 
-PV_${P} = 0.5.3b
+PV_${P} = 0.6.0
 PR_${P} = 1
 
 call[[ base ]]
@@ -63,7 +63,7 @@ update-rc.d -r $$OPKG_OFFLINE_ROOT/ smbnetfs remove
 endef
 
 FILES_${P} = /etc \
-/usr/lib
+/usr/bin
 
 call[[ ipkbox ]]
 
