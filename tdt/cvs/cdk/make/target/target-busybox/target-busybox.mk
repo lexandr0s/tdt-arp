@@ -71,6 +71,7 @@ FILES_busybox_syslog = \
 define postinst_busybox_cron
 #!/bin/sh
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ busybox-cron start 03 S . stop 99 0 6 .
+/etc/init.d/busybox-cron start
 endef
 define prerm_busybox_cron
 #!/bin/sh
@@ -81,6 +82,7 @@ endef
 define postinst_busybox_syslog
 #!/bin/sh
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ syslog.busybox start 36 S .
+/etc/init.d/syslog.busybox start
 endef
 define prerm_busybox_syslog
 #!/bin/sh
