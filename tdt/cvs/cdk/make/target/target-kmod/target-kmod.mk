@@ -14,6 +14,7 @@ call[[ base ]]
 
 rule[[
   git://git.kernel.org/pub/scm/utils/kernel/${PN}/${PN}.git
+  patch:file://${PN}.patch
 ]]rule
 
 call[[ git ]]
@@ -31,11 +32,9 @@ $(TARGET_${P}).do_compile: $(TARGET_${P}).do_prepare
 			--host=$(target) \
 			--prefix=/usr \
 			--sysconfdir=/etc \
-			--libdir=/usr/lib \
-			--enable-tools \
 			--disable-manpages \
+			--disable-logging \
 			--with-zlib \
-			$(CONFIG_FLAGS_${P}) \
 		&& \
 		make
 	touch $@
@@ -51,7 +50,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 
 call[[ ipk ]]
 
-FILES_kmod = /usr/bin /usr/lib /sbin
+FILES_kmod = /usr/bin /sbin
 
 call[[ ipkbox ]]
 
