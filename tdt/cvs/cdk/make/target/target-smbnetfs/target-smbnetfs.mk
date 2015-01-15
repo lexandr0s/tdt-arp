@@ -6,7 +6,7 @@ package[[ target_smbnetfs
 BDEPENDS_${P} = $(target_fuse) $(target_samba)
 
 PV_${P} = 0.6.0
-PR_${P} = 1
+PR_${P} = 2
 
 call[[ base ]]
 
@@ -46,7 +46,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 call[[ ipk ]]
 
 DESCRIPTION_${P} = SMBNetFS is a Linux/FreeBSD filesystem that allow you to use samba/microsoft network in the same manner as the network neighborhood in Microsoft Windows.
-RDEPENDS_${P} = 
+RDEPENDS_${P} = samba-lib
 
 define preinst_${P}
 #!/bin/sh
