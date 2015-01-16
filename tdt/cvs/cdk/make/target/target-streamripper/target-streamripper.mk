@@ -6,7 +6,7 @@ package[[ target_streamripper
 BDEPENDS_${P} =  $(target_libogg) $(target_libvorbis) $(target_libmad)
 
 PV_${P} = 1.64.6
-PR_${P} = 1
+PR_${P} = 2
 
 call[[ base ]]
 
@@ -38,7 +38,7 @@ $(TARGET_${P}).do_package: $(TARGET_${P}).do_compile
 call[[ ipk ]]
 
 DESCRIPTION_${P} = Records shoutcast-compatible streams
-RDEPENDS_${P} = libogg libvorbis libmad
+RDEPENDS_${P} = libogg0 libvorbis libmad0
 FILES_${P} = /usr/bin/streamripper
 
 call[[ ipkbox ]]
