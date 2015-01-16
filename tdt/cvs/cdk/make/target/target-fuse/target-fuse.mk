@@ -6,7 +6,7 @@ package[[ target_fuse
 BDEPENDS_${P} = $(target_glibc) $(target_glib2)
 
 PV_${P} = 2.9.3
-PR_${P} = 1
+PR_${P} = 2
 
 call[[ base ]]
 
@@ -69,7 +69,7 @@ update-rc.d -r $$OPKG_OFFLINE_ROOT/ fuse start 34 S .
 endef
 define prerm_fuse_utils
 #!/bin/sh
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ fuse remove
+update-rc.d -f -r $$OPKG_OFFLINE_ROOT/ fuse remove
 endef
 FILES_fuse_utils = /etc/init.d/fuse /etc/udev/* /sbin/mount.fuse /usr/bin/*
 
