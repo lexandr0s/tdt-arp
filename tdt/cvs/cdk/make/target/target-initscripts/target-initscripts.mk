@@ -43,16 +43,18 @@ $(TARGET_${P}).do_prepare: $(DEPENDS_${P})
 $(TARGET_${P}).do_package: $(TARGET_${P}).do_prepare
 	$(PKDIR_clean)
 	cd $(DIR_${P}) && $(INSTALL_${P})
-
 	ln -sf ../init.d $(PKDIR)/etc/rc.d/init.d
-
 	touch $@
+
+PACKAGES_${P} = inetd initscripts
+
+FILES_initscripts = /
+FILES_inetd = /etc/init.d/inetd
 
 define postinst_${P}
 #!/bin/sh
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ halt start 90 0 .
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ hostname start 40 S 0 .
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ inetd start 43 2 3 4 5 . stop 20 0 1 6 .
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ initmodules start 9 S .
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ mountall start 35 S .
 update-rc.d -r $$OPKG_OFFLINE_ROOT/ mountsysfs start 02 S .
@@ -69,21 +71,29 @@ endef
 
 define prerm_${P}
 #!/bin/sh
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ halt remove
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ hostname remove
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ inetd remove
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ initmodules remove
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ mountall remove
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ mountsysfs remove
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ networking remove
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ reboot remove
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ sendsigs remove
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ syslogd remove
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ telnetd remove
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ lircd remove
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ umountfs remove
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ avahi-daemon remove
-update-rc.d -r $$OPKG_OFFLINE_ROOT/ rdate remove
+update-rc.d -f -r $$OPKG_OFFLINE_ROOT/ halt remove
+update-rc.d -f -r $$OPKG_OFFLINE_ROOT/ hostname remove
+update-rc.d -f -r $$OPKG_OFFLINE_ROOT/ initmodules remove
+update-rc.d -f -r $$OPKG_OFFLINE_ROOT/ mountall remove
+update-rc.d -f -r $$OPKG_OFFLINE_ROOT/ mountsysfs remove
+update-rc.d -f -r $$OPKG_OFFLINE_ROOT/ networking remove
+update-rc.d -f -r $$OPKG_OFFLINE_ROOT/ reboot remove
+update-rc.d -f -r $$OPKG_OFFLINE_ROOT/ sendsigs remove
+update-rc.d -f -r $$OPKG_OFFLINE_ROOT/ telnetd remove
+update-rc.d -f -r $$OPKG_OFFLINE_ROOT/ lircd remove
+update-rc.d -f -r $$OPKG_OFFLINE_ROOT/ umountfs remove
+update-rc.d -f -r $$OPKG_OFFLINE_ROOT/ avahi-daemon remove
+update-rc.d -f -r $$OPKG_OFFLINE_ROOT/ rdate remove
+endef
+
+define postinst_inetd
+#!/bin/sh
+update-rc.d -r $$OPKG_OFFLINE_ROOT/ inetd start 43 2 3 4 5 . stop 20 0 1 6 .
+endef
+
+define prerm_inetd
+#!/bin/sh
+update-rc.d -f -r $$OPKG_OFFLINE_ROOT/ inetd remove
 endef
 
 call[[ ipkbox ]]
