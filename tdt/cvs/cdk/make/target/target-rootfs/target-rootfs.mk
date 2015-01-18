@@ -20,8 +20,10 @@ opkg_my_list = \
 	udev \
 	udev-rules \
 	initscripts \
+	inetd \
 	update-rc.d \
 	busybox \
+	kmod \
 	base-passwd \
 	base-files \
 	netbase \
